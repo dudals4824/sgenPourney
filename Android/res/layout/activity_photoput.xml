@@ -1,0 +1,159 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context="sgen.sgen_pourney.PhotoputActivity"
+    android:background="#EEEEEE"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <!-- 상단 단계 부분 -->
+
+        <RelativeLayout
+            android:id="@+id/layoutStep"
+            android:layout_width="fill_parent"
+            android:layout_height="62dp"
+            android:layout_centerHorizontal="true"
+            android:background="#003558" >
+
+            <ImageButton
+                android:id="@+id/btnMakeVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="7.6dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_makevideo_360x114" />
+
+            <ImageButton
+                android:id="@+id/btnInputPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="110.667dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_photoput_442x146" />
+
+            <ImageButton
+                android:id="@+id/btnTravelInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7.333dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_travelinfo_skyblue" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutInfoSummary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp" >
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10.33dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/i_back_1015x275" />
+
+            <ImageView
+                android:id="@+id/imgBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="52.33dp"
+                android:layout_marginTop="12.67dp"
+                android:src="@drawable/i_bar_544x70" />
+
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19.67dp"
+                android:layout_marginTop="30.33dp"
+                android:src="@drawable/i_profile_238x240" />
+
+            <ImageView
+                android:id="@+id/imgProfileColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="78.33dp"
+                android:layout_marginTop="33.67dp"
+                android:src="@drawable/ic_profilecolor_45x45" />
+
+            <ImageView
+                android:id="@+id/iconWrite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgBar"
+                android:layout_marginLeft="137.67dp"
+                android:layout_marginTop="9.67dp"
+                android:src="@drawable/ic_write_40x42" />
+
+            <ImageView
+                android:id="@+id/iconCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/iconWrite"
+                android:layout_below="@id/iconWrite"
+                android:layout_marginTop="7.67dp"
+                android:src="@drawable/ic_calendar_40x42" />
+
+            <ImageView
+                android:id="@+id/iconPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/iconWrite"
+                android:layout_below="@id/iconCalendar"
+                android:layout_marginTop="7.33dp"
+                android:src="@drawable/ic_people_42x46" />
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconWrite"
+                android:layout_marginLeft="18.67dp"
+                android:layout_toRightOf="@+id/iconPeople"
+                android:text="Visit America!!" />
+
+            <TextView
+                android:id="@+id/textCalender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconCalendar"
+                android:layout_alignLeft="@id/textTitle"
+                android:layout_toRightOf="@+id/iconCalendar"
+                android:text="2013 07.22 - 2013 07.27" />
+
+            <TextView
+                android:id="@+id/textPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconPeople"
+                android:layout_alignLeft="@id/textTitle"
+                android:layout_toRightOf="@+id/iconPeople"
+                android:text="With five People" />
+        </RelativeLayout>
+        
+    </LinearLayout>
+
+</ScrollView>

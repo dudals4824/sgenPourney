@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:background="@drawable/i_backimage_1080x1920" >
+
+    <ImageView
+        android:id="@+id/imgLogoimage"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27.33dp"
+        android:layout_marginRight="79dp"
+        android:src="@drawable/i_logoimage" />
+
+    <EditText
+        android:id="@+id/editEmailaddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgLogoimage"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="E-mail address"
+        android:background="@drawable/i_emailaddress" 
+        android:layout_marginTop="27.67dp"
+        android:onClick="onClick"/>
+
+    <EditText
+        android:id="@+id/editPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editEmailaddress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10.33dp"
+        android:ems="10"
+        android:background="@drawable/i_password"
+        android:inputType="textPassword" />
+
+    <ImageButton
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editPwd"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19.67dp"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/i_login_818x122" />
+
+    <ImageButton
+        android:id="@+id/btnLostpwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginLeft="50.33dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="31.67dp"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/i_lostpassword_354x43" />
+
+    <ImageButton
+        android:id="@+id/btnJoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnLostpwd"
+        android:layout_toRightOf="@id/btnLostpwd"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/i_joinmemeber_354x43" />
+
+    <ImageButton
+        android:id="@+id/btnFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLostpwd"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="96dp"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/i_facebook_852x122" />
+<TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+</RelativeLayout>

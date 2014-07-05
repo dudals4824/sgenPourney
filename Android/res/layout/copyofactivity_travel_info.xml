@@ -1,0 +1,353 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEE"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <!-- 상단 단계 부분 -->
+
+        <RelativeLayout
+            android:id="@+id/layoutStep"
+            android:layout_width="fill_parent"
+            android:layout_height="62dp"
+            android:layout_centerHorizontal="true"
+            android:background="#003558" >
+
+            <ImageButton
+                android:id="@+id/btnMakeVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="9.333dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_makevideo_360x114" />
+
+            <ImageButton
+                android:id="@+id/btnInputPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="110.667dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_inputphoto_360x114" />
+
+            <ImageButton
+                android:id="@+id/btnTravelInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7.333dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_travelinfo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutInfoSummary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp" >
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10.33dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/i_back_1015x275" />
+
+            <ImageView
+                android:id="@+id/imgBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="52.33dp"
+                android:layout_marginTop="12.67dp"
+                android:src="@drawable/i_bar_544x70" />
+
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19.67dp"
+                android:layout_marginTop="30.33dp"
+                android:src="@drawable/i_profile_238x240" />
+
+            <ImageView
+                android:id="@+id/imgProfileColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="78.33dp"
+                android:layout_marginTop="33.67dp"
+                android:src="@drawable/ic_profilecolor_45x45" />
+
+            <ImageView
+                android:id="@+id/iconWrite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgBar"
+                android:layout_marginLeft="137.67dp"
+                android:layout_marginTop="9.67dp"
+                android:src="@drawable/ic_write_40x42" />
+
+            <ImageView
+                android:id="@+id/iconCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/iconWrite"
+                android:layout_below="@id/iconWrite"
+                android:layout_marginTop="7.67dp"
+                android:src="@drawable/ic_calendar_40x42" />
+
+            <ImageView
+                android:id="@+id/iconPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/iconWrite"
+                android:layout_below="@id/iconCalendar"
+                android:layout_marginTop="7.33dp"
+                android:src="@drawable/ic_people_42x46" />
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconWrite"
+                android:layout_marginLeft="18.67dp"
+                android:layout_toRightOf="@+id/iconPeople"
+                android:text="Visit America!!" />
+
+            <TextView
+                android:id="@+id/textCalender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconCalendar"
+                android:layout_alignLeft="@id/textTitle"
+                android:layout_toRightOf="@+id/iconCalendar"
+                android:text="2013 07.22 - 2013 07.27" />
+
+            <TextView
+                android:id="@+id/textPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconPeople"
+                android:layout_alignLeft="@id/textTitle"
+                android:layout_toRightOf="@+id/iconPeople"
+                android:text="With five People" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutInputInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp"
+            android:background="#ffffff" >
+
+            <ImageView
+                android:id="@+id/iconCalenderFlag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="54.33dp"
+                android:layout_marginTop="10.67dp"
+                android:src="@drawable/ic_calendar_flag_62x78" />
+
+            <TextView
+                android:id="@+id/textInputInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="11.67dp"
+                android:layout_toRightOf="@id/iconCalenderFlag"
+                android:text="여행기본정보 입력(필수입력)"
+                android:textColor="#005d95"
+                android:textSize="10pt" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="6.33dp"
+                android:layout_marginRight="6.33dp"
+                android:layout_marginTop="42dp"
+                android:background="#D3EAFA" >
+
+                <TextView
+                    android:id="@+id/textTitleHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="11.67dp"
+                    android:text="01 여행의 제목을 입력해주세요"
+                    android:textColor="#4d4d4d"
+                    android:textSize="9pt" />
+
+                <ImageView
+                    android:id="@+id/iconWriteBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/textTitleHere"
+                    android:layout_marginRight="21dp"
+                    android:layout_toLeftOf="@id/textTitleHere"
+                    android:src="@drawable/ic_write_40x40" />
+
+                <EditText
+                    android:id="@+id/editTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textTitleHere"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="12.33dp"
+                    android:background="@drawable/i_title_924x98"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:hint="VISIT AMERICA WITH POURNEY" />
+
+                <TextView
+                    android:id="@+id/textCalendarHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/editTitle"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="29.67dp"
+                    android:text="02 여행기간을 선택해주세요"
+                    android:textColor="#4d4d4d"
+                    android:textSize="9pt" />
+
+                <ImageView
+                    android:id="@+id/iconCalendarBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/iconWriteBlack"
+                    android:layout_below="@id/editTitle"
+                    android:layout_marginRight="21dp"
+                    android:layout_marginTop="27.67dp"
+                    android:src="@drawable/ic_calendar_40x40" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutCalendar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textCalendarHere" >
+
+                    <ImageView
+                        android:id="@+id/imgCalendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="13dp"
+                        android:src="@drawable/i_calendar_title_back" />
+
+                    <ImageView
+                        android:id="@+id/imgBarCalendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="29.67dp"
+                        android:src="@drawable/i_bar_calendar_454x78" />
+
+                    <TextView
+                        android:id="@+id/textMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="29.67dp"
+                        android:text="month" />
+
+                    <ImageButton
+                        android:id="@+id/btnPrevMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="34dp"
+                        android:layout_toLeftOf="@id/imgBarCalendar"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_calendar_prevbutton_52x52" />
+
+                    <ImageButton
+                        android:id="@+id/btnnextMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/btnPrevMonth"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/imgBarCalendar"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_calendar_nextbutton_52x52" />
+
+                    <sgen.sgen_pourney.ExpandableHeightGridView
+                        android:id="@+id/gridDate"
+                        android:layout_width="318.67dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imgCalendar"
+                        android:layout_marginLeft="9.33dp"
+                        android:layout_marginRight="9.33dp"
+                        android:background="#ffffff"
+                        android:numColumns="7" />
+
+                    <sgen.sgen_pourney.ExpandableHeightGridView
+                        android:id="@+id/gridCalendar"
+                        android:layout_width="318.67dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/gridDate"
+                        android:layout_marginLeft="9.33dp"
+                        android:layout_marginRight="9.33dp"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:numColumns="7" />
+                </RelativeLayout>
+                <!-- end of layoutCalendar -->
+
+                <TextView
+                    android:id="@+id/textPeopleHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layoutCalendar"
+                    android:layout_gravity="center_horizontal"
+                    android:text="03 함께하는 동행을 추가해주세요"
+                    android:textColor="#4d4d4d"
+                    android:textSize="9pt" />
+
+                <ImageView
+                    android:id="@+id/iconPeopleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/textPeopleHere"
+                    android:layout_alignLeft="@id/iconWriteBlack"
+                    android:layout_marginRight="21dp"
+                    android:layout_marginTop="48dp"
+                    android:src="@drawable/ic_people_42x46" />
+
+                <GridLayout
+                    android:id="@+id/layoutGrid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textPeopleHere"
+                    android:columnCount="2"
+                    android:rowCount="2" >
+                </GridLayout>
+            </RelativeLayout>
+            <!-- end of inner rect -->
+        </RelativeLayout>
+        <!-- - end of input info -->
+    </LinearLayout>
+
+</ScrollView>

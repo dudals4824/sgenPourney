@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/xuggle-utils-1.22.jar"/>
+	<classpathentry kind="lib" path="slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="slf4j-nop-1.7.7.jar"/>
+	<classpathentry kind="lib" path="xuggle-xuggler-5.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/김영민/Desktop/Filters/dist/Filters.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

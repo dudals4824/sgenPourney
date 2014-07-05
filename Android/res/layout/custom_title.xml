@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="#78C0F2" >
+
+    <ImageButton
+        android:id="@+id/btnMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7.33dp"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_menu" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="9dp"
+        android:src="@drawable/i_title" />
+
+</RelativeLayout>

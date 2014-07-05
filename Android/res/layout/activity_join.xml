@@ -1,0 +1,199 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sgen.sgen_pourney.JoinActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <!-- 상단 -->
+
+    <RelativeLayout
+        android:id="@+id/layoutTopback"
+        android:layout_width="fill_parent"
+        android:layout_height="157.33dp"
+        android:background="#012440" >
+
+        <ImageView
+            android:id="@+id/imgMakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27.33dp"
+            android:src="@drawable/i_makephoto" />
+
+        <ImageView
+            android:id="@+id/imgInfoBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="58.67dp"
+            android:layout_marginTop="18.67dp"
+            android:src="@drawable/i_infobutton" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/layoutTopback"
+        android:background="#67b2ee" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/i_stroke" />
+
+        <TextView
+            android:id="@+id/textEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="42.33dp"
+            android:layout_marginTop="37.33dp"
+            android:text="이메일"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/imgVerticalStroke1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14.67dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/textEmail"
+            android:src="@drawable/i_verticalstroke" />
+
+        <EditText
+            android:id="@+id/editEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14.33dp"
+            android:layout_marginTop="27dp"
+            android:layout_toRightOf="@id/imgVerticalStroke1"
+            android:background="@drawable/i_emailbutton" />
+
+        <TextView
+            android:id="@+id/textNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEmail"
+            android:layout_marginLeft="42.33dp"
+            android:layout_marginTop="42.33dp"
+            android:text="닉네임"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/imgVerticalStroke2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgVerticalStroke1"
+            android:layout_marginLeft="14.67dp"
+            android:layout_marginTop="28dp"
+            android:layout_toRightOf="@id/textNickName"
+            android:src="@drawable/i_verticalstroke" />
+
+        <EditText
+            android:id="@+id/editNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editEmail"
+            android:layout_marginLeft="14.33dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/imgVerticalStroke2"
+            android:background="@drawable/i_button"
+            android:gravity="center"
+            android:hint="8자 이상" />
+
+        <ImageButton
+            android:id="@+id/btnConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/editNickName"
+            android:layout_below="@id/editNickName"
+            android:layout_marginTop="9.67dp"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_confirm" />
+
+        <!-- 비밀번호 -->
+
+        <TextView
+            android:id="@+id/textPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/textEmail"
+            android:layout_below="@id/textNickName"
+            android:layout_marginTop="85.33dp"
+            android:text="비밀번호"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/imgVerticalStroke3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgVerticalStroke2"
+            android:layout_marginLeft="14.67dp"
+            android:layout_marginTop="70.67dp"
+            android:layout_toRightOf="@id/textNickName"
+            android:src="@drawable/i_verticalstroke" />
+
+        <EditText
+            android:id="@+id/editPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/editNickName"
+            android:layout_below="@id/btnConfirm"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/imgVerticalStroke2"
+            android:background="@drawable/i_button"
+            android:gravity="center" />
+
+        <!-- 비밀번호 확인 -->
+
+        <TextView
+            android:id="@+id/textPasswordConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/textEmail"
+            android:layout_below="@id/textPassword"
+            android:layout_marginTop="30.67dp"
+            android:text="비밀번호확인"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/imgVerticalStroke4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgVerticalStroke3"
+            android:layout_marginLeft="14.67dp"
+            android:layout_marginTop="30.67dp"
+            android:layout_toRightOf="@id/textPasswordConfirm"
+            android:src="@drawable/i_verticalstroke" />
+
+        <EditText
+            android:id="@+id/editPasswordConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/editNickName"
+            android:layout_below="@id/editPassword"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/imgVerticalStroke4"
+            android:background="@drawable/i_button"
+            android:gravity="center"
+            android:hint="8자 이상" />
+
+        <ImageButton
+            android:id="@+id/btnJoin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editPasswordConfirm"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/i_register"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:layout_marginTop="27.67dp" >
+        </ImageButton>
+    </RelativeLayout>
+
+</RelativeLayout>
