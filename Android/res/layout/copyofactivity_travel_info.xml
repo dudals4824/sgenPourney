@@ -3,12 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEEEEE"
-    android:fillViewport="true" >
+    android:fillViewport="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical" >
 
         <!-- 상단 단계 부분 -->
@@ -186,6 +190,7 @@
                 android:layout_marginLeft="6.33dp"
                 android:layout_marginRight="6.33dp"
                 android:layout_marginTop="42dp"
+                android:layout_marginBottom="8dp"
                 android:background="#D3EAFA" >
 
                 <TextView
@@ -341,9 +346,79 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textPeopleHere"
-                    android:columnCount="2"
-                    android:rowCount="2" >
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="22dp"
+                    android:columnCount="4"
+                    android:paddingLeft="14.33dp"
+                    android:paddingRight="14.33dp"
+                    android:useDefaultMargins="true" >
+
+                    <ImageButton
+                        android:id="@+id/btnPeople1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnPeople2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnPeople3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnPeople4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnPeople5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnPeople6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
                 </GridLayout>
+
+                <ImageButton
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/layoutGrid"
+                    android:id="@+id/btnPut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21.67dp"
+                    android:background="@android:color/transparent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/i_put" />
             </RelativeLayout>
             <!-- end of inner rect -->
         </RelativeLayout>
