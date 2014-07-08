@@ -302,9 +302,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 			if (isDuplicationChecked && isPasswordValid && !isIdDuplicated
 					&& !isEmailDuplicated && password.equals(passwordConfirm)) {
 				// 5개 validation check 모두 했을시 회원가입 task 수행.
-
-				checkDuplication = new CheckDuplication();
-				checkDuplication.execute(email, nickname);
 				registTask = new RegistTask();
 				registTask.execute(email, nickname, password);
 			}
@@ -334,20 +331,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 						Toast.LENGTH_SHORT);
 				toast.show();
 			}
-
-			/*
-			 * if (!isDuplicationChecked) { Toast toast = Toast.makeText(this,
-			 * "중복체크를 해주세요.", Toast.LENGTH_SHORT); toast.show(); } // password
-			 * confirming and regist else if (password.equals(passwordConfirm)
-			 * && !isIdDuplicated && !isEmailDuplicated) { // execute register
-			 * task when password is same registTask = new RegistTask();
-			 * registTask.execute(email, nickname, password); } else {
-			 * 
-			 * Log.e("register log", "password different"); Toast toast =
-			 * Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT);
-			 * toast.show(); }
-			 */
-
 		}
 		// check duplication
 		else if (arg0.getId() == R.id.btnConfirm) {
@@ -363,7 +346,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 	}
 
 	private boolean PasswordValidityCheck(String password) {
-		if (password.length() < 9)
+		if (password.length() < 8)
 			return false;
 		else
 			return true;
