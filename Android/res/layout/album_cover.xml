@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:id="@+id/cover"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
@@ -10,17 +11,17 @@
                 android:id="@+id/shadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="6.33dp"
                 android:layout_marginTop="13dp"
+                android:layout_marginLeft="16dp"
+                
                 android:src="@drawable/i_shadow" />
 
             <ImageView
                 android:id="@+id/backcard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="6.33dp"
                 android:layout_marginTop="13dp"
+                android:layout_marginLeft="14dp"
                 android:src="@drawable/i_backcard" />
 
             <ImageButton
