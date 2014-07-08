@@ -51,11 +51,11 @@ public class JoinActivity extends Activity implements OnClickListener {
 		// layout initializing
 		initLayout();
 
-		idDuplicationToast = Toast.makeText(this, "ID°¡ Áßº¹µË´Ï´Ù.",
+		idDuplicationToast = Toast.makeText(this, "IDê°€ ì¤‘ë³µë©ë‹ˆë‹¤.",
 				Toast.LENGTH_SHORT);
-		emailDuplicationToast = Toast.makeText(this, "ÀÌ¸ŞÀÏÀÌ Áßº¹µË´Ï´Ù.",
+		emailDuplicationToast = Toast.makeText(this, "ì´ë©”ì¼ì´ ì¤‘ë³µë©ë‹ˆë‹¤.",
 				Toast.LENGTH_SHORT);
-		duplicationCheckOk = Toast.makeText(this, "Áßº¹¾øÀ½¤»", Toast.LENGTH_SHORT);
+		duplicationCheckOk = Toast.makeText(this, "ì¤‘ë³µì—†ìŒã…‹", Toast.LENGTH_SHORT);
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
@@ -296,41 +296,55 @@ public class JoinActivity extends Activity implements OnClickListener {
 
 			isPasswordValid = PasswordValidityCheck(password);
 			/*
-			 * 1. Áßº¹Ã¼Å©Çß´ÂÁö È®ÀÎ 2. passwordÀÏÄ¡ÇÏ´ÂÁö È®ÀÎ 3. id Áßº¹ÀÎÁö È®ÀÎ. 4.
+			 * 1. ì¤‘ë³µì²´í¬í–ˆëŠ”ì§€ í™•ì¸ 2. passwordì¼ì¹˜í•˜ëŠ”ì§€ í™•ì¸ 3. id ì¤‘ë³µì¸ì§€ í™•ì¸. 4.
 			 */
 
 			if (isDuplicationChecked && isPasswordValid && !isIdDuplicated
 					&& !isEmailDuplicated && password.equals(passwordConfirm)) {
-				// 5°³ validation check ¸ğµÎ ÇßÀ»½Ã È¸¿ø°¡ÀÔ task ¼öÇà.
+				// 5ê°œ validation check ëª¨ë‘ í–ˆì„ì‹œ íšŒì›ê°€ì… task ìˆ˜í–‰.
 				registTask = new RegistTask();
 				registTask.execute(email, nickname, password);
 			}
-			// ¿¹¿ÜÃ³¸®
+			// ì˜ˆì™¸ì²˜ë¦¬
 			else if (!isDuplicationChecked) {
-				Toast toast = Toast.makeText(this, "ID Áßº¹Ã¼Å©¸¦ ÇÏÁö ¾Ê¾Ò½À´Ï´Ù.",
+				Toast toast = Toast.makeText(this, "ID ì¤‘ë³µì²´í¬ë¥¼ í•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			} else if (!isPasswordValid) {
-				Toast toast = Toast.makeText(this, "Password°¡ ³Ê¹« Âª½À´Ï´Ù.",
+				Toast toast = Toast.makeText(this, "Passwordê°€ ë„ˆë¬´ ì§§ìŠµë‹ˆë‹¤.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			} else if (isIdDuplicated) {
-				Toast toast = Toast.makeText(this, "ID°¡ Áßº¹µË´Ï´Ù.",
+				Toast toast = Toast.makeText(this, "IDê°€ ì¤‘ë³µë©ë‹ˆë‹¤.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			} else if (isEmailDuplicated) {
-				Toast toast = Toast.makeText(this, "¸ŞÀÏÁÖ¼Ò°¡ Áßº¹µË´Ï´Ù.",
+				Toast toast = Toast.makeText(this, "ë©”ì¼ì£¼ì†Œê°€ ì¤‘ë³µë©ë‹ˆë‹¤.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			} else if (!password.equals(passwordConfirm)) {
-				Toast toast = Toast.makeText(this, "ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.",
+				Toast toast = Toast.makeText(this, "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			} else {
-				Toast toast = Toast.makeText(this, "´Ù½Ã ½ÃµµÇØ ÁÖ½Ê½Ã¿À.",
+				Toast toast = Toast.makeText(this, "ë‹¤ì‹œ ì‹œë„í•´ ì£¼ì‹­ì‹œì˜¤.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			}
+
+			/*
+			 * if (!isDuplicationChecked) { Toast toast = Toast.makeText(this,
+			 * "ì¤‘ë³µì²´í¬ë¥¼ í•´ì£¼ì„¸ìš”.", Toast.LENGTH_SHORT); toast.show(); } // password
+			 * confirming and regist else if (password.equals(passwordConfirm)
+			 * && !isIdDuplicated && !isEmailDuplicated) { // execute register
+			 * task when password is same registTask = new RegistTask();
+			 * registTask.execute(email, nickname, password); } else {
+			 * 
+			 * Log.e("register log", "password different"); Toast toast =
+			 * Toast.makeText(this, "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.", Toast.LENGTH_SHORT);
+			 * toast.show(); }
+			 */
+
 		}
 		// check duplication
 		else if (arg0.getId() == R.id.btnConfirm) {
