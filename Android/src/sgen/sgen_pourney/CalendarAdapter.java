@@ -4,6 +4,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ public class CalendarAdapter extends BaseAdapter {
 	LayoutInflater inflator;
 	TextView textview;
 	ImageView gridflag;
+	int startdate, enddate;
 
 	public CalendarAdapter(Context context, int grid, String[] dayArray,
 			Dayinfo today) {
@@ -36,6 +39,21 @@ public class CalendarAdapter extends BaseAdapter {
 		res_id = grid;
 		inflator = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		Log.d("adapter", "캘린더어댑터");
+	}
+
+	public CalendarAdapter(Context context, int grid, String[] dayArray,
+			Dayinfo today, int startdate, int enddate) {
+		// TODO Auto-generated constructor stub
+		this.context = context;
+		DayArray = dayArray;
+		this.today = today;
+		res_id = grid;
+		inflator = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		Log.d("adapter", "캘린더어댑터");
+		this.startdate = startdate;
+		this.enddate = enddate;
 	}
 
 	@Override
@@ -76,6 +94,17 @@ public class CalendarAdapter extends BaseAdapter {
 		//
 		textview = (TextView) convertView.findViewById(R.id.textview_grid);
 		textview.setText(DayArray[position]);
+		if (startdate > 0) {
+			// Log.d("getItemId", getItemId(position) + "");
+			
+			if (startdate <= getItemId(position) && getItemId(position) <= enddate) {
+				Log.d("getItemId", getItemId(position) + "");
+				if (getItemId(position) == startdate || getItemId(position) == enddate)
+					convertView.setBackgroundResource(R.drawable.ic_numberput_84x84);
+				convertView.setBackgroundColor(Color.rgb(120, 192, 242));
+				
+			}
+		}
 		// if (DayArray[position] != null){
 		// numberFormat.setMinimumIntegerDigits(2);
 		// month = numberFormat.format((today.month+1));
@@ -91,10 +120,9 @@ public class CalendarAdapter extends BaseAdapter {
 		// gridflag.setVisibility(1);
 		// }
 		// }
-		textview.setPadding(1, 1, 1, 1);
-//left top right bottom
+		// left top right bottom
 		// textview.setTextColor(Color.rgb(153, 153, 153));
-		 textview.setGravity(Gravity.CENTER);
+		textview.setGravity(Gravity.CENTER);
 		convertView.setPadding(5, 5, 5, 5);
 		return convertView;
 	}
