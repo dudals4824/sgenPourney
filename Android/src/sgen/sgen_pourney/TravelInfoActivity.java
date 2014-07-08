@@ -4,8 +4,11 @@ import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -17,20 +20,25 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class TravelInfoActivity extends Activity implements OnClickListener, OnItemClickListener, OnFocusChangeListener {
+public class TravelInfoActivity extends Activity implements OnClickListener,
+		OnItemClickListener, OnFocusChangeListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
 	private TextView textTitleHere, textCalendarHere, textPeopleHere,
 			textInputInfo, textMonth;
-	private ImageButton btnPrevMonth, btnNextMonth;
+	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private EditText editTitle;
+	private Dayinfo today;
+	private int flagselectdate = 0;
+	int startdate = 0;
+	int enddate = 0;
 	String[] DayArray;
 	Dayadapter dayadapter;
 	CalendarAdapter calendarAdapter;
 	// 달력 이동을 위한 변수
 	private int cnt = 0;
-	private String strMonth[] = { "January", "February", "March", "April", "May",
-			"June", "July", "August", "September", "October", "November",
-			"December" };
+	private String strMonth[] = { "January", "February", "March", "April",
+			"May", "June", "July", "August", "September", "October",
+			"November", "December" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +50,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener, OnI
 				R.layout.custom_title);
 
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
-		gridDate=(ExpandableHeightGridView)findViewById(R.id.gridDate);
+		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
 		textTitleHere = (TextView) findViewById(R.id.textTitleHere);
 		textCalendarHere = (TextView) findViewById(R.id.textCalendarHere);
 		textPeopleHere = (TextView) findViewById(R.id.textPeopleHere);
@@ -50,16 +58,17 @@ public class TravelInfoActivity extends Activity implements OnClickListener, OnI
 		textMonth = (TextView) findViewById(R.id.textMonth);
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
-		editTitle=(EditText)findViewById(R.id.editTitle);
+		btnPut = (ImageButton) findViewById(R.id.btnPut);
+		editTitle = (EditText) findViewById(R.id.editTitle);
 
 		setFont();
 
-		Dayinfo today = new Dayinfo();
+		today = new Dayinfo();
 		getCalendar(today);
-		
-		
+
 		btnPrevMonth.setOnClickListener(this);
 		btnNextMonth.setOnClickListener(this);
+		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
 	}
@@ -78,8 +87,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener, OnI
 		dayadapter = new Dayadapter(this);
 		gridDate.setAdapter(dayadapter);
 		setCalendar(today);
-		calendarAdapter = new CalendarAdapter(this, R.layout.calendar_grid,
-				DayArray, today);
+		calendarAdapter = new CalendarAdapter(TravelInfoActivity.this,
+				R.layout.calendar_grid, DayArray, today, startdate, enddate);
 		gridCalendar.setAdapter(calendarAdapter);
 		gridCalendar.setExpanded(true);
 
@@ -100,36 +109,60 @@ public class TravelInfoActivity extends Activity implements OnClickListener, OnI
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-	//	editTitle.clearFocus();
+		// editTitle.clearFocus();
 		InputMethodManager imm = (InputMethodManager) v.getContext()
-	            .getSystemService(Context.INPUT_METHOD_SERVICE);
-	    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-	    editTitle.clearFocus();
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		editTitle.clearFocus();
 		if (v.getId() == R.id.btnPrevMonth) {
 			cnt--;
-		}
-		if (v.getId() == R.id.btnnextMonth) {
+		} else if (v.getId() == R.id.btnnextMonth) {
 			cnt++;
+		} else if (v.getId() == R.id.btnPut) {
+			Intent intent = new Intent(TravelInfoActivity.this,
+					PhotoputActivity.class);
+			startActivity(intent);
 		}
-		Dayinfo today = new Dayinfo(cnt);
+		today = new Dayinfo(cnt);
 		getCalendar(today);
-		textMonth.setText(strMonth[today.getMonth()]+" "+today.getYear());
+		textMonth.setText(strMonth[today.getMonth()] + " " + today.getYear());
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stube
-	//	editTitle.clearFocus();
-		
+		Log.d("id", id + "");
+		flagselectdate++;
+		int temp;
+		if (flagselectdate == 1)
+			startdate = (int) id;
+		else if (flagselectdate == 2) {
+			enddate = (int) id;
+			flagselectdate = 0;
+			// 선택된 날짜 중 큰 수를 startdate로
+			if (startdate > enddate) {
+				temp = startdate;
+				startdate = enddate;
+				enddate = temp;
+			}
+		}
+
+		calendarAdapter = new CalendarAdapter(TravelInfoActivity.this,
+				R.layout.calendar_grid, DayArray, today, startdate, enddate);
+		gridCalendar.setAdapter(calendarAdapter);
+		Log.d("flagselectdate", flagselectdate + "");
+		Log.d("startdate", startdate + "");
+		Log.d("enddate", enddate + "");
+
 	}
 
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
 		// TODO Auto-generated method stub
-		if(v.getId()==R.id.editTitle&&hasFocus){
+		if (v.getId() == R.id.editTitle && hasFocus) {
 			editTitle.setBackgroundResource(R.drawable.i_titleput_924x98);
-		}else
+		} else
 			editTitle.clearFocus();
 	}
 
