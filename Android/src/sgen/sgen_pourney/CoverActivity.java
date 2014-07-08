@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 public class CoverActivity extends Activity implements OnClickListener{
 
 	private ImageButton btn_new_travel;
+	Cover_cell marble=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +31,9 @@ public class CoverActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_cover);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);		
+		marble=(Cover_cell)findViewById(R.id.box1);
+        //marble.mImage.setBackgroundResource(R.drawable.icon);
+
 		btn_new_travel=(ImageButton)findViewById(R.id.backcardNew);
 		btn_new_travel.setOnClickListener(this);
 	}
