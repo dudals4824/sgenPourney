@@ -1,26 +1,110 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="${packageName}.${activityClass}" >
+    android:background="#78C0F2"
+    android:fillViewport="true" >
 
-
-    <Button
-        android:id="@+id/btn_temp"
-        android:layout_width="wrap_content"
+    <GridLayout
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="여행생성화면ㄱㄱ" />
-    <com.facebook.widget.ProfilePictureView
-    android:id="@+id/profilePicture"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:is_cropped="true"
-    app:preset_size="small" />
+        android:layout_marginLeft="32.67dp"
+        android:layout_marginRight="32.67dp" >
+        <RelativeLayout>
+
+            <ImageView
+                android:id="@+id/shadow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="6.33dp"
+                android:layout_marginTop="13dp"
+                android:src="@drawable/i_shadow" />
+
+            <ImageView
+                android:id="@+id/backcard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6.33dp"
+                android:layout_marginTop="13dp"
+                android:src="@drawable/i_backcard" />
+
+            <ImageButton
+                android:id="@+id/cphoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/backcard"
+                android:layout_alignTop="@+id/backcard"
+                android:layout_marginLeft="6.33dp"
+                android:layout_marginRight="11.33dp"
+                android:layout_marginTop="10.33dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_photo" />
+
+            <TextView
+                android:id="@+id/travelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/backcard"
+                android:layout_alignTop="@+id/backcard"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="8.67dp"
+                android:layout_marginTop="39.33dp"
+                android:text="01.Title"
+                android:textSize="10dip"
+                android:gravity="center" 
+                android:background="@drawable/i_titleback" />
+
+            <TextView
+                android:id="@+id/dayBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/backcard"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="55dp"
+                android:text="2014.4.5~2014.4.10"
+                android:textSize="10dip"
+                android:gravity="center" 
+                android:background="@drawable/i_dayback" />
+
+            <TextView
+                android:id="@+id/peopleBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/backcard"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="19.33dp"
+                android:text="With N people"
+                android:textSize="10dip"
+                android:gravity="center" 
+                android:background="@drawable/i_peopleback" />
+        </RelativeLayout>
+        <RelativeLayout>
+
+            <ImageView
+                android:id="@+id/shadow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="6.33dp"
+                android:layout_marginTop="13dp"
+                android:src="@drawable/i_shadow" />
+
+            <ImageButton
+                android:id="@+id/backcardNew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="6.33dp"
+                android:layout_marginTop="13dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_backcard_new" />
 
 
+        </RelativeLayout>
+        
+    </GridLayout>
 
-</RelativeLayout>
+</ScrollView>
