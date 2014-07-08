@@ -69,7 +69,10 @@
             android:layout_marginLeft="14.33dp"
             android:layout_marginTop="27dp"
             android:layout_toRightOf="@id/imgVerticalStroke1"
-            android:background="@drawable/i_emailbutton" />
+            android:background="@drawable/i_button"
+            android:gravity="center"
+            android:hint="E-mail address" 
+             />
 
         <TextView
             android:id="@+id/textNickName"
