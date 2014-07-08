@@ -38,10 +38,10 @@ public class CoverActivity extends Activity implements OnClickListener{
 		//marble=(Cover_cell)findViewById(R.id.box1);
 
 		layout_cover  = (GridLayout)findViewById(R.id.layout_cover);
-		layout_cover.addView(new Cover_cell(this));
-		layout_cover.addView(new Cover_cell(this));
-		layout_cover.addView(new Cover_cell(this));//앨범 갯수만큼 포문 돌리면 됨 나중에
-		layout_cover.addView(new Cover_cell_new(this));
+		layout_cover.addView(new CoverCell(this));
+		layout_cover.addView(new CoverCell(this));
+		layout_cover.addView(new CoverCell(this));//앨범 갯수만큼 포문 돌리면 됨 나중에
+		layout_cover.addView(new CoverCellNew(this));
 //		layout_cover_new  = (GridLayout)findViewById(R.id.layout_cover_new);
 //		layout_cover_new.addView(new Cover_cell_new(this));
 		
