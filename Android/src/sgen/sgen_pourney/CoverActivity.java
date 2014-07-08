@@ -25,9 +25,8 @@ import android.view.View.OnClickListener;
 public class CoverActivity extends Activity implements OnClickListener{
 	
 	private GridLayout layout_cover;
-	private GridLayout layout_cover_new;
 	private ImageButton btn_new_travel;
-	//Cover_cell marble=null;
+	//CoverCell marble=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,7 +43,7 @@ public class CoverActivity extends Activity implements OnClickListener{
 		layout_cover.addView(new CoverCellNew(this));
 //		layout_cover_new  = (GridLayout)findViewById(R.id.layout_cover_new);
 //		layout_cover_new.addView(new Cover_cell_new(this));
-		
+//      걍 그리는거임 참고용 mable 		
 		
 		btn_new_travel=(ImageButton)findViewById(R.id.backcardNew);
 		btn_new_travel.setOnClickListener(this);
