@@ -131,7 +131,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("email", params[0]));
+			nameValuePairs.add(new BasicNameValuePair("emailAddress", params[0]));
 			nameValuePairs.add(new BasicNameValuePair("password", params[1]));
 
 			try {
