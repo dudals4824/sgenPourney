@@ -24,8 +24,8 @@ public class ResizingImage {
 		for(i=0;i<4;i++)
 		outputImg[i] = new File("C:/image/resized"+(i+1)+".png");*/
 		
-		File input_image=new File("C:/image/low_qual.jpeg");
-		File output_image=new File("C:/image/resizedjun.jpeg");
+		File input_image=new File("C:/image/after.png");
+		File output_image=new File("C:/image/resized_after.png");
 		
 		int scaledWidth=300;
 		int scaledHeight=300;
@@ -38,7 +38,7 @@ public class ResizingImage {
 		BufferedImage bgrScreen = convertToType(screen,BufferedImage.TYPE_3BYTE_BGR);
 		
 		resizedImage=createResizedCopy(bgrScreen,scaledWidth,scaledHeight,preserveAlpha);
-		ImageIO.write(resizedImage, "jpeg", output_image);
+		ImageIO.write(resizedImage, "png", output_image);
 		/*}
 	*/
 	}

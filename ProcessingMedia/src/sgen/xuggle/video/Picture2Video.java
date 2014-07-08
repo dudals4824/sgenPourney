@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import com.xuggle.mediatool.IMediaReader;
 import com.xuggle.mediatool.IMediaViewer;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
@@ -27,7 +28,7 @@ public class Picture2Video {
 
 	private static final double FRAME_RATE = 0.25;
 	private static final int SECONDS_TO_RUN_FOR = 16;
-	private static final String outputFilename = "C:/image/new2.mp4";
+	private static final String outputFilename = "C:/image/new3.mp4";
 	private static Dimension screenBounds;
 	int audioStreamIndex = 0;
 	int audioStreamId = 0;
@@ -63,18 +64,17 @@ public class Picture2Video {
 		File[] seqimg = new File[4];
 
 		for (i = 0; i < 4; i++)
-			seqimg[i] = new File("C:/image/"+ (i + 1)+".png");
+			seqimg[i] = new File("C:/image/" + (i + 1) + ".png");
 
 		// short[] javaSamples = new short[sampleCount*2];
 		for (int index = 0; index < SECONDS_TO_RUN_FOR * FRAME_RATE; index++) {
 
 			// take the screen shot
-			BufferedImage screen = getImage(seqimg[index]);
 
-			// convert to the right image type
+			BufferedImage screen = (getImage(seqimg[index]));
 			BufferedImage bgrScreen = convertToType(screen,
 					BufferedImage.TYPE_3BYTE_BGR);
-
+			// convert to the right image type
 			// encode the image to stream #0
 			writer.encodeVideo(0, bgrScreen, System.nanoTime() - startTime,
 					TimeUnit.NANOSECONDS);
@@ -127,31 +127,31 @@ public class Picture2Video {
 		}
 		return null;
 	}
-	
-    private IVideoPicture getRGBPicture(IVideoPicture picture) {
-        IVideoResampler resampler = null;
-        if (picture.getPixelType() != IPixelFormat.Type.BGR24) {
-                // if this stream is not in BGR24, we're going to need to
-                // convert it. The VideoResampler does that for us.
-                resampler = IVideoResampler.make(picture.getWidth(), picture
-                                .getHeight(), IPixelFormat.Type.BGR24, picture
-                                .getWidth(), picture.getHeight(), picture
-                                .getPixelType());
-                if (resampler == null)
-                        throw new RuntimeException("could not create color space resampler for picture");
-        }
-        if (resampler != null) {
-                // we must resample
-                IVideoPicture newPic = IVideoPicture.make(resampler
-                                .getOutputPixelFormat(), picture.getWidth(), picture
-                                .getHeight());
-                if (resampler.resample(newPic, picture) < 0)
-                        throw new RuntimeException("could not resample video ");
 
-                picture = newPic;
-        }
-        return picture;
-}
+	private IVideoPicture getRGBPicture(IVideoPicture picture) {
+		IVideoResampler resampler = null;
+		if (picture.getPixelType() != IPixelFormat.Type.BGR24) {
+			// if this stream is not in BGR24, we're going to need to
+			// convert it. The VideoResampler does that for us.
+			resampler = IVideoResampler.make(picture.getWidth(),
+					picture.getHeight(), IPixelFormat.Type.BGR24,
+					picture.getWidth(), picture.getHeight(),
+					picture.getPixelType());
+			if (resampler == null)
+				throw new RuntimeException(
+						"could not create color space resampler for picture");
+		}
+		if (resampler != null) {
+			// we must resample
+			IVideoPicture newPic = IVideoPicture.make(
+					resampler.getOutputPixelFormat(), picture.getWidth(),
+					picture.getHeight());
+			if (resampler.resample(newPic, picture) < 0)
+				throw new RuntimeException("could not resample video ");
 
+			picture = newPic;
+		}
+		return picture;
+	}
 
 }
