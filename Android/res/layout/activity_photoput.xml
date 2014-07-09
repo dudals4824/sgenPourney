@@ -3,9 +3,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EEEEEE"
     android:fillViewport="true"
     tools:context="sgen.sgen_pourney.PhotoputActivity"
-    android:background="#EEEEEE"
     tools:ignore="MergeRootFrame" >
 
     <LinearLayout
@@ -153,7 +153,13 @@
                 android:layout_toRightOf="@+id/iconPeople"
                 android:text="With five People" />
         </RelativeLayout>
-        
+
+        <LinearLayout
+            android:id="@+id/layoutAlbum"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
