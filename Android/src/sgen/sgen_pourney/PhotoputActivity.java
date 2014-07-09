@@ -9,19 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.os.Build;
 
 public class PhotoputActivity extends Activity {
-
+	LinearLayout layoutAlbum;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photoput);
-
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
+		layoutAlbum=(LinearLayout)findViewById(R.id.layoutAlbum);
+		
+		layoutAlbum.addView(new DayAlbumCell(this));
+		
 	}
 
 	@Override
@@ -42,23 +42,6 @@ public class PhotoputActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_photoput,
-					container, false);
-			return rootView;
-		}
 	}
 
 }
