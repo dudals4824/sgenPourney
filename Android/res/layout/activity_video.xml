@@ -1,0 +1,140 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEE"
+    android:fillViewport="true"
+    tools:context="sgen.sgen_pourney.PhotoputActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <!-- 상단 단계 부분 -->
+
+        <RelativeLayout
+            android:id="@+id/layoutStep"
+            android:layout_width="fill_parent"
+            android:layout_height="62dp"
+            android:layout_centerHorizontal="true"
+            android:background="#003558" >
+
+            <ImageButton
+                android:id="@+id/btnMakeVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="7.6dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_makevideo" />
+
+            <ImageButton
+                android:id="@+id/btnInputPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="106.33dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_registerphoto" />
+
+            <ImageButton
+                android:id="@+id/btnTravelInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7.333dp"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_travelinfo_skyblue" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutMakingMovie"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp" >
+
+            <ImageView
+                android:id="@+id/imgBackVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10.33dp"
+                android:src="@drawable/i_back_video" />
+
+            <ImageView
+                android:id="@+id/imgMakingVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="68dp"
+                android:layout_marginTop="74dp"
+                android:src="@drawable/i_makingvideo" />
+
+            <EditText
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="328.33dp"
+                android:background="@drawable/i_timer"
+                android:gravity="center_horizontal|center_vertical"
+                android:hint="24:00:00" />
+        </RelativeLayout>
+
+        <GridLayout
+            android:id="@+id/peopleGrid"
+            android:layout_width="fill_parent"
+            android:layout_height="120dp"
+            android:background="#78C0F2"
+            android:columnCount="4"
+            android:paddingLeft="14.33dp"
+            android:paddingRight="14.33dp"
+            android:useDefaultMargins="true" >
+
+            <ImageButton
+                android:id="@+id/btnPeopleMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_profile_me" />
+
+            <ImageButton
+                android:id="@+id/btnPeople1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:paddingBottom="14.33dp"
+                android:paddingTop="20.33dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_profile_200x200" />
+
+            <ImageButton
+                android:id="@+id/btnPeople2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:paddingBottom="14.33dp"
+                android:paddingTop="20.33dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_profile_200x200" />
+        </GridLayout>
+    </LinearLayout>
+
+</ScrollView>
