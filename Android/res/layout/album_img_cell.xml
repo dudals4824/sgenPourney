@@ -9,6 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/i_photo_gray_mask318x318"/>
-    <ImageButton android:id="@+id/btn"/>
+    <ImageButton android:id="@+id/btnMemoWrite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     </RelativeLayout>
 
