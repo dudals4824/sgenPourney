@@ -8,11 +8,11 @@ import java.awt.image.*;
   
 public class ImageQualityReducer {  
     public static void main(String[] args) throws Exception {  
-       File input_file = new File("C:/image/after.jpeg");
-       File output_file = new File("C:/image/low_qual.jpeg");
+       File input_file = new File("C:/image/1.png");
+       File output_file = new File("C:/image/low_qual.png");
         float quality =0.2f;
   
-        Iterator iter = ImageIO.getImageWritersByFormatName("jpeg");  
+        Iterator iter = ImageIO.getImageWritersByFormatName("png");  
   
         ImageWriter writer = (ImageWriter)iter.next();  
   
