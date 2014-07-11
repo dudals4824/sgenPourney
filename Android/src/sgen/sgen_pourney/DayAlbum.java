@@ -10,34 +10,34 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class DayAlbumCell extends LinearLayout {
+public class DayAlbum extends LinearLayout {
 	TextView textDay,textPhotoNum ;
 	ImageButton btnPhoto;
 	Context mContext = null;
-	static final int REQUEST_ALBUM = 1;
+	static final int SELECT_PICTURE = 1;
 	static final int REQUEST_PICTURE = 2;
 
 
-	public DayAlbumCell(Context context, AttributeSet attrs) {
+	public DayAlbum(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initMarbleView(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	public DayAlbumCell(Context context) {
+	public DayAlbum(Context context) {
 		super(context);
 		initMarbleView(context);
 
 		// TODO Auto-generated constructor stub
 	}
-
+ 
 	void initMarbleView(Context context) {
 
 		mContext = context;
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
-		View v = li.inflate(R.layout.dayalbum_cell, this, false);
+		View v = li.inflate(R.layout.dayalbum, this, false);
 		addView(v);
 		textDay=(TextView)findViewById(R.id.textDay);
 		textPhotoNum=(TextView)findViewById(R.id.textPhotoNum);
@@ -51,8 +51,8 @@ public class DayAlbumCell extends LinearLayout {
 				Intent intent = new Intent();
 				intent.setType("image/*");
 				intent.setAction(Intent.ACTION_GET_CONTENT);
-				mContext.startActivity(
-						Intent.createChooser(intent, "Select Picture"));
+				((Activity) mContext).startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
+			
 			
 			}
 		});
