@@ -187,10 +187,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="6.33dp"
                 android:layout_marginRight="6.33dp"
                 android:layout_marginTop="42dp"
-                android:layout_marginBottom="8dp"
                 android:background="#D3EAFA" >
 
                 <TextView
@@ -248,30 +248,21 @@
                     android:id="@+id/layoutCalendar"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textCalendarHere" >
-
-                    <ImageView
-                        android:id="@+id/imgCalendar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="13dp"
-                        android:src="@drawable/i_calendar_title_back" />
-
-                    <ImageView
-                        android:id="@+id/imgBarCalendar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="29.67dp"
-                        android:src="@drawable/i_bar_calendar_454x78" />
+                    android:layout_below="@id/textCalendarHere"
+                    android:layout_marginLeft="9.33dp"
+                    android:layout_marginRight="9.33dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="18.67dp"
+                    android:background="#ffffff" >
 
                     <TextView
                         android:id="@+id/textMonth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="29.67dp"
+                        android:layout_marginTop="14.33dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@drawable/i_bar_calendar_454x78"
                         android:text="month" />
 
                     <ImageButton
@@ -279,8 +270,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="34dp"
-                        android:layout_toLeftOf="@id/imgBarCalendar"
+                        android:layout_marginTop="19.34dp"
+                        android:layout_toLeftOf="@id/textMonth"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
@@ -292,7 +283,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/btnPrevMonth"
                         android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@id/imgBarCalendar"
+                        android:layout_toRightOf="@id/textMonth"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
@@ -302,7 +293,7 @@
                         android:id="@+id/gridDate"
                         android:layout_width="318.67dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/imgCalendar"
+                        android:layout_below="@id/textMonth"
                         android:layout_marginLeft="9.33dp"
                         android:layout_marginRight="9.33dp"
                         android:background="#ffffff"
@@ -327,6 +318,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layoutCalendar"
                     android:layout_gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
                     android:text="03 함께하는 동행을 추가해주세요"
                     android:textColor="#4d4d4d"
                     android:textSize="9pt" />
@@ -409,11 +401,11 @@
                 </GridLayout>
 
                 <ImageButton
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/layoutGrid"
                     android:id="@+id/btnPut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutGrid"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="21.67dp"
                     android:background="@android:color/transparent"
                     android:fitsSystemWindows="true"
