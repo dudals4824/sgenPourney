@@ -5,5 +5,32 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="lib" path="/Pourney_ProcessingMedia/lib/xuggle-utils-1.22.jar"/>
+	<classpathentry kind="lib" path="/Pourney_ProcessingMedia/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="/Pourney_ProcessingMedia/slf4j-nop-1.7.7.jar"/>
+	<classpathentry kind="lib" path="/Pourney_ProcessingMedia/xuggle-xuggler-5.4.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/charsets.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/deploy.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/javaws.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/jce.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/jfr.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/jfxswt.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/jsse.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/management-agent.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/plugin.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/resources.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/rt.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/access-bridge-64.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/cldrdata.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/dnsns.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/jaccess.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/jfxrt.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/localedata.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/nashorn.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/sunec.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/sunjce_provider.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/sunmscapi.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/sunpkcs11.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre8/lib/ext/zipfs.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
