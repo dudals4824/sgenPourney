@@ -134,6 +134,16 @@
                 android:paddingTop="20.33dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/i_profile_200x200" />
+            <ImageButton
+                android:id="@+id/btnPeople3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fitsSystemWindows="true"
+                android:paddingBottom="14.33dp"
+                android:paddingTop="20.33dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/i_profile_200x200" />
         </GridLayout>
     </LinearLayout>
 
