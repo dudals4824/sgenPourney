@@ -57,12 +57,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		if (v.getId() == R.id.btnLogin) {
 	
-			String emailAddress, password;
-			emailAddress = editEmailaddress.getText().toString();
-			password = editPassword.getText().toString();
+			//String emailAddress, password;
+			//emailAddress = editEmailaddress.getText().toString();
+			//password = editPassword.getText().toString();
 			
-			LoginTask loginTask = new LoginTask();
-			loginTask.execute(emailAddress, password);
+			//LoginTask loginTask = new LoginTask();
+			//loginTask.execute(emailAddress, password);
 
 			System.out.println("login");
 			Intent intent = new Intent(LoginActivity.this,
