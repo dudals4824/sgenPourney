@@ -29,7 +29,6 @@
             android:name="sgen.sgen_pourney.TravelInfoActivity"
             android:label="@string/title_activity_travel_info" >
         </activity>
-
         <activity
             android:name="sgen.sgen_pourney.CoverActivity"
             android:label="@string/title_activity_cover" >
@@ -50,6 +49,10 @@
         <activity
             android:name="sgen.sgen_pourney.PhotoputActivity"
             android:label="@string/title_activity_photoput" >
+        </activity>
+        <activity
+            android:name="sgen.sgen_pourney.AlbumCellActivity"
+            android:label="@string/title_activity_album_cell" >
         </activity>
     </application>
 
