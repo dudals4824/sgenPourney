@@ -18,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,7 +42,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 	private CheckDuplication checkDuplication;
 	private boolean isDuplicationChecked = false;
 	EditText editEmail, editNickname, editPassword, editPasswordConfirm;
-	ImageButton checkDuplicationBtn, registBtn;
+	ImageButton btnCheckDuplication, registBtn;
 
 	Toast idDuplicationToast, emailDuplicationToast, duplicationCheckOk;
 
@@ -73,8 +75,8 @@ public class JoinActivity extends Activity implements OnClickListener {
 		editPassword = (EditText) findViewById(R.id.editPassword);
 		editPasswordConfirm = (EditText) findViewById(R.id.editPasswordConfirm);
 
-		checkDuplicationBtn = (ImageButton) findViewById(R.id.btnConfirm);
-		checkDuplicationBtn.setOnClickListener(this);
+		btnCheckDuplication = (ImageButton) findViewById(R.id.btnCheckDuplications);
+		btnCheckDuplication.setOnClickListener(this);
 
 		registBtn = (ImageButton) findViewById(R.id.btnJoin);
 		registBtn.setOnClickListener(this);
@@ -350,8 +352,11 @@ public class JoinActivity extends Activity implements OnClickListener {
 
 		}
 		// check duplication
-		else if (arg0.getId() == R.id.btnConfirm) {
-
+		else if (arg0.getId() == R.id.btnCheckDuplications) {
+			Dialog dialog=new Dialog(JoinActivity.this, R.style.CustomDialogTheme);
+			dialog.setTitle("ddd");
+			dialog.setCancelable(true);
+			dialog.show();
 			isDuplicationChecked = true;
 
 			String email = editEmail.getText().toString();
