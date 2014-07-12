@@ -49,10 +49,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_login);
 		init();
 	}
-	
-	private void init(){
+
+	private void init() {
 		Log.e("log_msg", "Initializing Layout...");
-		
+
 		btnLogin = (ImageButton) findViewById(R.id.btnLogin);
 		btnFacebook = (ImageButton) findViewById(R.id.btnFacebook);
 		btnJoin = (ImageButton) findViewById(R.id.btnJoin);
@@ -61,7 +61,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		btnLogin.setOnClickListener(this);
 		btnFacebook.setOnClickListener(this);
 		btnJoin.setOnClickListener(this);
-		
+
 		isLoginSuccessful = false;
 		Log.e("log_msg", "Initializing done...");
 	}
@@ -74,8 +74,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 			String emailAddress, password;
 			emailAddress = editEmailaddress.getText().toString();
 			password = editPassword.getText().toString();
-			
-			Log.e("log_msg", "Email : " + emailAddress + " , Password: " + password);
+
+			Log.e("log_msg", "Email : " + emailAddress + " , Password: "
+					+ password);
 
 			if (emailAddress.trim().length() > 0
 					&& password.trim().length() > 0) {
@@ -83,21 +84,24 @@ public class LoginActivity extends Activity implements OnClickListener {
 				LoginTask loginTask = new LoginTask();
 				loginTask.execute(emailAddress, password);
 
+				Log.e("log_msg", "before create session");
+
 				// if(서버 로그인 성공이면)
 				if (true) {
-					session.createUserLoginSession("Android Example",
-							"androidexample84@gmail.com");
-
-					// Starting MainActivity
-					Intent i = new Intent(getApplicationContext(),
-							LoginActivity.class);
-					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-					// Add new Flag to start new Activity
-					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(i);
-
-					finish();
+					// session.createUserLoginSession("Android Example",
+					// "androidexample84@gmail.com");
+					//
+					// // Starting MainActivity
+					// Intent i = new Intent(getApplicationContext(),
+					// LoginActivity.class);
+					// i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					//
+					// // Add new Flag to start new Activity
+					// i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					// startActivity(i);
+					//
+					// finish();
+					Log.e("log_msg", "after create session");
 				} else {
 					// username / password doesn't match&
 					Toast.makeText(getApplicationContext(),
@@ -111,10 +115,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 						.show();
 			}
 
-			System.out.println("login");
-			Intent intent = new Intent(LoginActivity.this,
-					TravelInfoActivity.class);
-			startActivity(intent);
+			// System.out.println("login");
+			// Intent intent = new Intent(LoginActivity.this,
+			// TravelInfoActivity.class);
+			// startActivity(intent);
 		} else if (v.getId() == R.id.editEmailaddress) {
 			editEmailaddress
 					.setBackgroundResource(R.drawable.i_emailaddress_put);
@@ -177,8 +181,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs
-					.add(new BasicNameValuePair("emailAddress", params[0]));
+			nameValuePairs.add(new BasicNameValuePair("email", params[0]));
 			nameValuePairs.add(new BasicNameValuePair("password", params[1]));
 
 			try {
@@ -206,26 +209,34 @@ public class LoginActivity extends Activity implements OnClickListener {
 				}
 
 				is.close();
-				result = sb.toString();
-				Log.e("result", result);
+				result = sb.toString().trim();
+				Log.e("result123", result);
 
 			} catch (Exception e) {
 				Log.e("log_tag", "Error converting result " + e.toString());
 			}
 
 			try {
-				JSONArray jArray = new JSONArray(result);
-				JSONObject json_data = null;
 
-				json_data = jArray.getJSONObject(0);
-				String nickname1 = json_data.getString("nick_name");
-				Log.e("nickname", nickname1);
-
+				if (result.equals("wrong password")) {
+					// id인증 실패
+					Log.e("log_msg", "wrong password");
+				}
+				// id 인증 성공
+				else {
+					Log.e("log_msg", "right password");
+					JSONArray jArray = new JSONArray(result);
+					// id 값 없을 경우
+					// wrong password 받으면서 json error난다.
+					// 맞게하면 에러 안남.
+					JSONObject json_data = null;
+					json_data = jArray.getJSONObject(0);
+					String nickname1 = json_data.getString("nick_name");
+					Log.e("nickname", nickname1);
+				}
 			} catch (JSONException e1) {
-				Toast.makeText(getBaseContext(), "No", Toast.LENGTH_LONG)
-						.show();
+				Log.e("log_msg", e1.toString());
 			}
-
 			return null;
 		}
 
