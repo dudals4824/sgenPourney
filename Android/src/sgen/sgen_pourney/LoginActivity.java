@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import sgen.session.UserSessionManager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		init();
+		
 	}
 
 	private void init() {
@@ -63,7 +65,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 		btnJoin.setOnClickListener(this);
 
 		isLoginSuccessful = false;
-		Log.e("log_msg", "Initializing done...");
+		
+		// User Session Manager
+        session = new UserSessionManager(getApplicationContext());
+        Log.e("log_msg", "Initializing done...");
 	}
 
 	@Override
@@ -74,7 +79,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			String emailAddress, password;
 			emailAddress = editEmailaddress.getText().toString();
 			password = editPassword.getText().toString();
-
+			isLoginSuccessful = false;
 			Log.e("log_msg", "Email : " + emailAddress + " , Password: "
 					+ password);
 
@@ -83,42 +88,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 				LoginTask loginTask = new LoginTask();
 				loginTask.execute(emailAddress, password);
-
-				Log.e("log_msg", "before create session");
-
-				// if(서버 로그인 성공이면)
-				if (true) {
-					// session.createUserLoginSession("Android Example",
-					// "androidexample84@gmail.com");
-					//
-					// // Starting MainActivity
-					// Intent i = new Intent(getApplicationContext(),
-					// LoginActivity.class);
-					// i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					//
-					// // Add new Flag to start new Activity
-					// i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					// startActivity(i);
-					//
-					// finish();
-					Log.e("log_msg", "after create session");
-				} else {
-					// username / password doesn't match&
-					Toast.makeText(getApplicationContext(),
-							"Username/Password is incorrect", Toast.LENGTH_LONG)
-							.show();
-				}
 			} else {
 				// user didn't entered username or password
 				Toast.makeText(getApplicationContext(),
 						"Please enter username and password", Toast.LENGTH_LONG)
 						.show();
 			}
-
-			// System.out.println("login");
-			// Intent intent = new Intent(LoginActivity.this,
-			// TravelInfoActivity.class);
-			// startActivity(intent);
 		} else if (v.getId() == R.id.editEmailaddress) {
 			editEmailaddress
 					.setBackgroundResource(R.drawable.i_emailaddress_put);
@@ -170,8 +145,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	/*
 	 * 김준기 login btn click시 호출되는 스레드 서버에 email, password 보내서 정보 요청함.
 	 */
-	class LoginTask extends AsyncTask<String, String, String> {
-
+	public class LoginTask extends AsyncTask<String, String, String> {
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
@@ -225,6 +199,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 				// id 인증 성공
 				else {
 					Log.e("log_msg", "right password");
+					// login 상태 성공으로 변경 activity에서 세션 저장용으로 사용.
+					isLoginSuccessful = true;
 					JSONArray jArray = new JSONArray(result);
 					// id 값 없을 경우
 					// wrong password 받으면서 json error난다.
@@ -249,6 +225,25 @@ public class LoginActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			// if(서버 로그인 성공이면)
+			if (isLoginSuccessful) {
+				Log.e("log_msg", "onPostExecute intent..");
+				session.createUserLoginSession("aa","aaa");
+				
+//				// Starting MainActivity
+//				Intent intent = new Intent(LoginActivity.this, TravelInfoActivity.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				// Add new Flag to start new Activity
+//				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				startActivity(intent);
+//				finish();
+				Log.e("log_msg", "logged in..");
+			} else {
+				// username / password doesn't match&
+				Toast.makeText(getApplicationContext(),
+						"Username/Password is incorrect", Toast.LENGTH_LONG)
+						.show();
+			}
 		}
 
 		@Override
