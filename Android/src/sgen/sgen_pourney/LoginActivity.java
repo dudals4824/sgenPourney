@@ -17,7 +17,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.UserDataHandler;
 
+import sgen.DTO.UserDTO;
 import sgen.session.UserSessionManager;
 
 import android.app.Activity;
@@ -40,6 +42,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private ImageButton btnFacebook, btnJoin;
 	private EditText editEmailaddress, editPassword;
 	private boolean isLoginSuccessful;
+	private UserDTO loggedInUser;
 
 	// User Session Manager Class
 	UserSessionManager session;
@@ -65,6 +68,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 		btnJoin.setOnClickListener(this);
 
 		isLoginSuccessful = false;
+		
+		//UserDTO init
+		loggedInUser = new UserDTO();
 		
 		// User Session Manager
         session = new UserSessionManager(getApplicationContext());
@@ -207,8 +213,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 					// 맞게하면 에러 안남.
 					JSONObject json_data = null;
 					json_data = jArray.getJSONObject(0);
-					String nickname1 = json_data.getString("nick_name");
-					Log.e("nickname", nickname1);
+					loggedInUser.setUserId(json_data.getInt("user_id"));
+					loggedInUser.setNickName(json_data.getString("nick_name"));
+					loggedInUser.setEmail(json_data.getString("email"));
+					loggedInUser.setProfileFilename(json_data.getString("profile_filename"));
+					Log.e("user information", loggedInUser.toString());
 				}
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
@@ -228,7 +237,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			// if(서버 로그인 성공이면)
 			if (isLoginSuccessful) {
 				Log.e("log_msg", "onPostExecute intent..");
-				session.createUserLoginSession("aa","aaa");
+				session.createUserLoginSession(loggedInUser.getNickName(),loggedInUser.getEmail());
 				
 //				// Starting MainActivity
 //				Intent intent = new Intent(LoginActivity.this, TravelInfoActivity.class);
