@@ -38,7 +38,7 @@ public class UserSessionManager {
 	private static final String IS_USER_LOGIN = "IsUserLoggedIn";
 
 	// User name (make variable public to access from outside)
-	public static final String KEY_NAME = "name";
+	public static final String KEY_ID = "user_id";
 
 	// Email address (make variable public to access from outside)
 	public static final String KEY_EMAIL = "email";
@@ -51,11 +51,11 @@ public class UserSessionManager {
 	}
 
 	// Create login session
-	public void createUserLoginSession(String name, String email) {
+	public void createUserLoginSession(String user_id, String email) {
 		// Storing login value as TRUE
 		editor.putBoolean(IS_USER_LOGIN, true);
 		// Storing name in pref
-		editor.putString(KEY_NAME, name);
+		editor.putString(KEY_ID, user_id);
 		// Storing email in pref
 		editor.putString(KEY_EMAIL, email);
 		// commit changes
@@ -96,7 +96,7 @@ public class UserSessionManager {
 		HashMap<String, String> user = new HashMap<String, String>();
 
 		// user name
-		user.put(KEY_NAME, pref.getString(KEY_NAME, null));
+		user.put(KEY_ID, pref.getString(KEY_ID, null));
 
 		// user email id
 		user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
