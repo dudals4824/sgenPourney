@@ -17,9 +17,13 @@ import android.os.Environment;
 
 public class Scaling{
 
+	public static void main(String args[]){
+		final String imageURI="C:/image/1.png";
+		Bitmap scaledImage=decodeFile(imageURI,300,300);
+		
+	}
 	
-	
-	private String decodeFile(String path,int DESIREDWIDTH, int DESIREDHEIGHT) {
+	private static Bitmap decodeFile(String path,int DESIREDWIDTH, int DESIREDHEIGHT) {
         String strMyImagePath = null;
         Bitmap scaledBitmap = null;
 
@@ -32,7 +36,7 @@ public class Scaling{
                 scaledBitmap = ScalingUtilities.createScaledBitmap(unscaledBitmap, DESIREDWIDTH, DESIREDHEIGHT, ScalingLogic.FIT);
             } else {
                 unscaledBitmap.recycle();
-                return path;
+                return scaledBitmap;
             }
 
             // Store to tmp file
@@ -67,9 +71,9 @@ public class Scaling{
         }
 
         if (strMyImagePath == null) {
-            return path;
+            return null;
         }
-        return strMyImagePath;
+        return scaledBitmap;
 
     }
 }
