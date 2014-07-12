@@ -1,6 +1,9 @@
 package sgen.sgen_pourney;
 
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+
+import sgen.session.UserSessionManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener {
@@ -73,6 +77,17 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
 		
+		//session test
+		UserSessionManager session = new UserSessionManager(getApplicationContext());
+		HashMap<String, String> map = new HashMap<String, String>();
+		map = session.getUserDetails();
+		String UserEmail = map.get("email");
+		String UserNickname = map.get("name");
+		
+		Toast.makeText(getApplicationContext(),
+				"email : "+UserEmail+"  name : "+UserNickname, Toast.LENGTH_LONG)
+				.show();
+		//////
 	}
 
 	private void setFont() {
