@@ -239,13 +239,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 				Log.e("log_msg", "onPostExecute intent..");
 				session.createUserLoginSession(loggedInUser.getNickName(),loggedInUser.getEmail());
 				
-//				// Starting MainActivity
-//				Intent intent = new Intent(LoginActivity.this, TravelInfoActivity.class);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//				// Add new Flag to start new Activity
-//				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				startActivity(intent);
-//				finish();
+				// Starting MainActivity
+				Intent intent = new Intent(getApplicationContext(), TravelInfoActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				// Add new Flag to start new Activity
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				finish();
 				Log.e("log_msg", "logged in..");
 			} else {
 				// username / password doesn't match&
