@@ -2,7 +2,8 @@ package sgen.sgen_pourney;
 
 import java.io.File;
 
-import sgen.image_resizing.Scaling;
+import sgen.image.resizer.ImageResizer;
+import sgen.image.resizer.ResizeMode;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Window;
@@ -24,6 +26,7 @@ public class PhotoputActivity extends Activity {
 	private File imgFile;
 	private Bitmap mBitmap;
 	private int tevelTerm;
+	private Bitmap scaledBitmap;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +54,10 @@ public class PhotoputActivity extends Activity {
 			Log.d("KJK", "URI : " + currImageURI.toString());
 			Log.d("KJK", "Real Path : " + imagePath);
 			
-			Scaling scaling=new Scaling();
-			scaling.decodeFile(imagePath, 300, 300);
+			
+			
+			scaledBitmap = ImageResizer.resize(imgFile, 300, 300, ResizeMode.FIT_EXACT);
+			ImageResizer.saveToFile(scaledBitmap, Environment.getExternalStorageDirectory());
 			// image path 얻어왔으면 imgFile초기화.
 			imgFile = new File(imagePath);
 			// img file bitmap 변경
