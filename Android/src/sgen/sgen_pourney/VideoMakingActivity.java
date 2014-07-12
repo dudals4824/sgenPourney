@@ -22,8 +22,8 @@ public class VideoMakingActivity extends Activity {
 //	int time = Hour*60*60+Minute*60+Second+24*60*60; // 줘야 함. 이건 디비에 저장하기 
 	private CountDownTimer countDownTimer;
 	private TextView timer;
-	private final long startTime = 24 * 60 * 60 * 1000; //24시간 밀리세컨 단위임
-	private final long interval = 1 * 1000;
+	private final long startTime = 24 * 60 * 60 * 1000; //24시간 밀리세컨 단위임 비교한 값 여기에 넣으면 됨요
+	private final long interval = 100 ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,8 @@ public class VideoMakingActivity extends Activity {
 
 			timer.setText(String.valueOf(millisUntilFinished / 1000 / 60 /60 ) //시
 					+" : "+String.valueOf((millisUntilFinished / 1000 / 60 )%60) //분
-					+" : "+String.valueOf((millisUntilFinished / 1000)%60));  //초
+					+" : "+String.valueOf((millisUntilFinished / 1000)%60) //초
+					+" : "+String.valueOf((millisUntilFinished % 1000)/100));  //밀리초
 //			timer.setText("" + millisUntilFinished / 1000);
 
 		}
