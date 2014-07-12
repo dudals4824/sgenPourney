@@ -10,5 +10,6 @@
     <string name="title_activity_join">JoinActivity</string>
     <string name="title_activity_photoput">PhotoputActivity</string>
     <string name="title_activity_album_cell">AlbumCellActivity</string>
+    <string name="title_activity_video">VideoMakingActivity</string>
 
 </resources>

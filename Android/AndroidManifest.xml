@@ -50,6 +50,10 @@
             android:name="sgen.sgen_pourney.PhotoputActivity"
             android:label="@string/title_activity_photoput" >
         </activity>
+        <activity
+            android:name="sgen.sgen_pourney.VideoMakingActivity"
+            android:label="@string/title_activity_video" >
+        </activity>
     </application>
 
 </manifest>
