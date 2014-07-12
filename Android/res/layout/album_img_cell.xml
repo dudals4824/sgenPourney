@@ -1,16 +1,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="sgen.sgen_pourney.AlbumCellActivity"
-    tools:ignore="MergeRootFrame" >
-    <ImageView android:id="@+id/imgPhotomask"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageButton
+        android:id="@+id/btnPhotoAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/i_photo_gray_mask318x318"/>
-    <ImageButton android:id="@+id/btnMemoWrite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    </RelativeLayout>
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/i_photo_gray318x318" />
 
+    <ImageButton
+        android:id="@+id/btnMemoWrite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6.67dp"
+        android:layout_marginRight="6.67dp"
+        android:layout_alignBottom="@+id/btnPhotoAdd"
+        android:layout_alignRight="@+id/btnPhotoAdd"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/i_write" />
+
+</RelativeLayout>
