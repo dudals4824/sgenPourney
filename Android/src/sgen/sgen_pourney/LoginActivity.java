@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import sgen.session.UserSessionManager;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -36,33 +38,78 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private ImageButton btnLogin;
 	private ImageButton btnFacebook, btnJoin;
 	private EditText editEmailaddress, editPassword;
+	private boolean isLoginSuccessful;
+
+	// User Session Manager Class
+	UserSessionManager session;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-
+		init();
+	}
+	
+	private void init(){
+		Log.e("log_msg", "Initializing Layout...");
+		
 		btnLogin = (ImageButton) findViewById(R.id.btnLogin);
 		btnFacebook = (ImageButton) findViewById(R.id.btnFacebook);
 		btnJoin = (ImageButton) findViewById(R.id.btnJoin);
 		editEmailaddress = (EditText) findViewById(R.id.editEmailaddress);
-		editPassword = (EditText) findViewById(R.id.editPassword);
+		editPassword = (EditText) findViewById(R.id.editPwd);
 		btnLogin.setOnClickListener(this);
 		btnFacebook.setOnClickListener(this);
 		btnJoin.setOnClickListener(this);
+		
+		isLoginSuccessful = false;
+		Log.e("log_msg", "Initializing done...");
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		if (v.getId() == R.id.btnLogin) {
-	
-			//String emailAddress, password;
-			//emailAddress = editEmailaddress.getText().toString();
-			//password = editPassword.getText().toString();
+
+			String emailAddress, password;
+			emailAddress = editEmailaddress.getText().toString();
+			password = editPassword.getText().toString();
 			
-			//LoginTask loginTask = new LoginTask();
-			//loginTask.execute(emailAddress, password);
+			Log.e("log_msg", "Email : " + emailAddress + " , Password: " + password);
+
+			if (emailAddress.trim().length() > 0
+					&& password.trim().length() > 0) {
+
+				LoginTask loginTask = new LoginTask();
+				loginTask.execute(emailAddress, password);
+
+				// if(서버 로그인 성공이면)
+				if (true) {
+					session.createUserLoginSession("Android Example",
+							"androidexample84@gmail.com");
+
+					// Starting MainActivity
+					Intent i = new Intent(getApplicationContext(),
+							LoginActivity.class);
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+					// Add new Flag to start new Activity
+					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(i);
+
+					finish();
+				} else {
+					// username / password doesn't match&
+					Toast.makeText(getApplicationContext(),
+							"Username/Password is incorrect", Toast.LENGTH_LONG)
+							.show();
+				}
+			} else {
+				// user didn't entered username or password
+				Toast.makeText(getApplicationContext(),
+						"Please enter username and password", Toast.LENGTH_LONG)
+						.show();
+			}
 
 			System.out.println("login");
 			Intent intent = new Intent(LoginActivity.this,
@@ -116,9 +163,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 				resultCode, data);
 	}
 
-	/* 김준기
-	 * login btn click시 호출되는 스레드
-	 * 서버에 email, password 보내서 정보 요청함.
+	/*
+	 * 김준기 login btn click시 호출되는 스레드 서버에 email, password 보내서 정보 요청함.
 	 */
 	class LoginTask extends AsyncTask<String, String, String> {
 
@@ -131,7 +177,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("emailAddress", params[0]));
+			nameValuePairs
+					.add(new BasicNameValuePair("emailAddress", params[0]));
 			nameValuePairs.add(new BasicNameValuePair("password", params[1]));
 
 			try {
