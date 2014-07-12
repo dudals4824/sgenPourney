@@ -5,6 +5,7 @@ import java.io.File;
 import sgen.image.resizer.ImageResizer;
 import sgen.image.resizer.ResizeMode;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -23,7 +25,8 @@ public class PhotoputActivity extends Activity {
 	LinearLayout layoutAlbum;
 	private Uri currImageURI;
 	private String imagePath;
-	private String storagePath=Environment.getExternalStorageDirectory()+"/pic";
+
+	private String storagePath="/storage/sdcard0/pic";
 	private File imgFile;
 	private File storageFile;
 	private Bitmap mBitmap;
@@ -55,17 +58,15 @@ public class PhotoputActivity extends Activity {
 			imagePath = getRealPathFromURI(currImageURI);
 			Log.d("KJK", "URI : " + currImageURI.toString());
 			Log.d("KJK", "Real Path : " + imagePath);
-			
-			// image path 얻어왔으면 imgFile초기화.
 			imgFile = new File(imagePath);
-			storageFile = new File(storagePath);
-			
-			scaledBitmap = ImageResizer.resize(imgFile, 300, 300, ResizeMode.FIT_EXACT);
-			System.out.println("되는중");
-			Log.d("resize", scaledBitmap+"");
-			System.out.println("로그가 뜬거니?");
-			ImageResizer.saveToFile(scaledBitmap,storageFile);
-			System.out.println("폴더에 저장하고있엉");
+			storageFile=new File(storagePath);
+
+			scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
+			ImageResizer.saveToFile(scaledBitmap, storageFile);
+			// image path 얻어왔으면 imgFile초기화.
+	
+			Log.d("resize","resizing!");
+
 			// img file bitmap 변경
 			if (imgFile.exists()) {
 				mBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
