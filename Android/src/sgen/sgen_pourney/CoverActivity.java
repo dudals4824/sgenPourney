@@ -5,7 +5,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
-import com.facebook.widget.ProfilePictureView;
+import com.facebook.widget.ProfilePictureView; //페북로긴에 필요함
 
 import android.app.Activity;
 import android.content.Intent;

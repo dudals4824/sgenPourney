@@ -1,16 +1,14 @@
 package sgen.sgen_pourney;
 
-import java.util.Calendar;
+import java.util.Calendar; //나중에 필요
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class VideoMakingActivity extends Activity {
-	LinearLayout layoutAlbum;
 
 //	final Calendar c = Calendar.getInstance();
 //
