@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 public class PhotoputActivity extends Activity {
@@ -26,7 +27,10 @@ public class PhotoputActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_photoput);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+				R.layout.custom_title);		
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
