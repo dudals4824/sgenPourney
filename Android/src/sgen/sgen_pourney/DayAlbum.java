@@ -44,7 +44,6 @@ public class DayAlbum extends LinearLayout {
 		
 		textDay=(TextView)findViewById(R.id.textDay);
 		textPhotoNum=(TextView)findViewById(R.id.textPhotoNum);
-		btnPhoto=(ImageButton)findViewById(R.id.btnPhoto);
 		layoutGridPhotoAlbum=(GridLayout)findViewById(R.id.layoutGridPhotoAlbum);
 		
 		layoutGridPhotoAlbum.addView(new AlbumImgCell(mContext));
