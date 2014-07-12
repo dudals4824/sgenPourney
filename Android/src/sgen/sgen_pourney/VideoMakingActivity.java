@@ -19,10 +19,10 @@ public class VideoMakingActivity extends Activity {
 //	int Minute = c.get(Calendar.MINUTE);
 //	int Second = c.get(Calendar.SECOND); // 저장하기 위해서 시,분,초 값을 받아오는 부분
 //											// 나중에는 과반수 이상이 만들기를 눌렀다는 조건문을 포함 시켜
-//											// 줘야 함
+//	int time = Hour*60*60+Minute*60+Second+24*60*60; // 줘야 함. 이건 디비에 저장하기 
 	private CountDownTimer countDownTimer;
 	private TextView timer;
-	private final long startTime = 100 * 1000;
+	private final long startTime = 24 * 60 * 60 * 1000; //24시간 밀리세컨 단위임
 	private final long interval = 1 * 1000;
 
 	@Override
@@ -60,7 +60,9 @@ public class VideoMakingActivity extends Activity {
 		@Override
 		public void onTick(long millisUntilFinished) {
 
-			timer.setText(String.valueOf(millisUntilFinished / 1000*60 )+" : "+String.valueOf((millisUntilFinished / 1000)%60));
+			timer.setText(String.valueOf(millisUntilFinished / 1000 / 60 /60 ) //시
+					+" : "+String.valueOf((millisUntilFinished / 1000 / 60 )%60) //분
+					+" : "+String.valueOf((millisUntilFinished / 1000)%60));  //초
 //			timer.setText("" + millisUntilFinished / 1000);
 
 		}
