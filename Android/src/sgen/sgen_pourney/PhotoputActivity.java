@@ -23,7 +23,9 @@ public class PhotoputActivity extends Activity {
 	LinearLayout layoutAlbum;
 	private Uri currImageURI;
 	private String imagePath;
+	private String storagePath=Environment.getExternalStorageDirectory()+"/pic";
 	private File imgFile;
+	private File storageFile;
 	private Bitmap mBitmap;
 	private int tevelTerm;
 	private Bitmap scaledBitmap;
@@ -54,16 +56,21 @@ public class PhotoputActivity extends Activity {
 			Log.d("KJK", "URI : " + currImageURI.toString());
 			Log.d("KJK", "Real Path : " + imagePath);
 			
-			
-			
-			scaledBitmap = ImageResizer.resize(imgFile, 300, 300, ResizeMode.FIT_EXACT);
-			ImageResizer.saveToFile(scaledBitmap, Environment.getExternalStorageDirectory());
 			// image path 얻어왔으면 imgFile초기화.
 			imgFile = new File(imagePath);
+			storageFile = new File(storagePath);
+			
+			scaledBitmap = ImageResizer.resize(imgFile, 300, 300, ResizeMode.FIT_EXACT);
+			System.out.println("되는중");
+			Log.d("resize", scaledBitmap+"");
+			System.out.println("로그가 뜬거니?");
+			ImageResizer.saveToFile(scaledBitmap,storageFile);
+			System.out.println("폴더에 저장하고있엉");
 			// img file bitmap 변경
 			if (imgFile.exists()) {
 				mBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 				// getCroppedBitmap(mBitmap);
+				
 				Log.e("비트맵 로드", "성공");
 			} else
 				Log.e("비트맵 디코딩", "실패");
