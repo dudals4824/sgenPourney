@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="9dp"
-        android:src="@drawable/i_title" />
+        android:src="@drawable/i_main_title" />
 
 </RelativeLayout>
