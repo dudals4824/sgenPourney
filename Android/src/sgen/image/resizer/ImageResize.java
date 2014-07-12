@@ -30,6 +30,7 @@ public class ImageResize {
 	public static Bitmap resize(File original, int width, int height, ResizeMode mode) {
 		Bitmap sampledSrcBitmap = ImageDecoder.decodeFile(original, width, height);
 		if(sampledSrcBitmap == null) {
+			System.out.println("resise : null");
 			return null;
 		}
 		

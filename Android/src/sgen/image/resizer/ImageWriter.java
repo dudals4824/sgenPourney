@@ -13,7 +13,7 @@ public class ImageWriter {
 
 	public static boolean writeToFile(Bitmap image, File file) {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		image.compress(CompressFormat.JPEG, 100, bytes);
+		image.compress(CompressFormat.PNG, 100, bytes);
     	
     	try {
     		FileOutputStream fos = new FileOutputStream(file);
