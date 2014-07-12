@@ -14,16 +14,17 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 
 public class Scaling{
 
-	public static void main(String args[]){
-		final String imageURI="C:/image/1.png";
-		Bitmap scaledImage=decodeFile(imageURI,300,300);
-		
-	}
-	
-	private static Bitmap decodeFile(String path,int DESIREDWIDTH, int DESIREDHEIGHT) {
+//	public static void main(String args[]){
+//		final String imageURI="C:/image/1.png";
+//		Bitmap scaledImage=decodeFile(imageURI,300,300);
+//		
+//	}
+//	
+	public static Bitmap decodeFile(String path,int DESIREDWIDTH, int DESIREDHEIGHT) {
         String strMyImagePath = null;
         Bitmap scaledBitmap = null;
 
@@ -42,7 +43,7 @@ public class Scaling{
             // Store to tmp file
 
             String extr = Environment.getExternalStorageDirectory().toString();
-            File mFolder = new File(extr + "/TMMFOLDER");
+            File mFolder = new File(extr +"/pic");
             if (!mFolder.exists()) {
                 mFolder.mkdir();
             }
