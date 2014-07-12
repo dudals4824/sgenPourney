@@ -23,7 +23,7 @@ import android.widget.TextView;
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
-	private TextView textTitleHere, textCalendarHere, textPeopleHere,
+	private TextView textTitle, textTitleHere, textCalendarHere, textPeopleHere,
 			textInputInfo, textMonth;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private EditText editTitle;
@@ -51,6 +51,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
+		textTitle = (TextView) findViewById(R.id.textTitle);
 		textTitleHere = (TextView) findViewById(R.id.textTitleHere);
 		textCalendarHere = (TextView) findViewById(R.id.textCalendarHere);
 		textPeopleHere = (TextView) findViewById(R.id.textPeopleHere);
@@ -71,6 +72,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
+		
 	}
 
 	private void setFont() {
@@ -113,7 +115,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		InputMethodManager imm = (InputMethodManager) v.getContext()
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		editTitle.clearFocus();
+		findViewById(R.id.container).requestFocus();
 		if (v.getId() == R.id.btnPrevMonth) {
 			cnt--;
 		} else if (v.getId() == R.id.btnnextMonth) {
@@ -162,8 +164,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		if (v.getId() == R.id.editTitle && hasFocus) {
 			editTitle.setBackgroundResource(R.drawable.i_titleput_924x98);
-		} else
-			editTitle.clearFocus();
+		} else if(v.getId() == R.id.gridDate && hasFocus){
+			
+		}else{}
+		textTitle.setText(editTitle.getText());
 	}
-
+	
 }

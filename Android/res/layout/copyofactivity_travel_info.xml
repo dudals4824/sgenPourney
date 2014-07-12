@@ -9,6 +9,7 @@
 
     <LinearLayout
         android:id="@+id/container"
+        
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:focusable="true"
@@ -133,8 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/iconWrite"
                 android:layout_marginLeft="18.67dp"
-                android:layout_toRightOf="@+id/iconPeople"
-                android:text="Visit America!!" />
+                android:layout_toRightOf="@+id/iconPeople" />
 
             <TextView
                 android:id="@+id/textCalender"
@@ -246,6 +246,7 @@
 
                 <RelativeLayout
                     android:id="@+id/layoutCalendar"
+                    android:focusableInTouchMode="true"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textCalendarHere"
@@ -257,6 +258,7 @@
 
                     <TextView
                         android:id="@+id/textMonth"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -267,6 +269,7 @@
 
                     <ImageButton
                         android:id="@+id/btnPrevMonth"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -279,6 +282,7 @@
 
                     <ImageButton
                         android:id="@+id/btnnextMonth"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/btnPrevMonth"
@@ -291,6 +295,7 @@
 
                     <sgen.sgen_pourney.ExpandableHeightGridView
                         android:id="@+id/gridDate"
+                        android:focusableInTouchMode="true"
                         android:layout_width="318.67dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textMonth"
@@ -301,6 +306,7 @@
 
                     <sgen.sgen_pourney.ExpandableHeightGridView
                         android:id="@+id/gridCalendar"
+                        android:focusableInTouchMode="true"
                         android:layout_width="318.67dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/gridDate"
@@ -335,6 +341,7 @@
 
                 <GridLayout
                     android:id="@+id/layoutGrid"
+                    android:focusableInTouchMode="true"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textPeopleHere"
@@ -347,6 +354,7 @@
 
                     <ImageButton
                         android:id="@+id/btnPeople1"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -356,6 +364,7 @@
 
                     <ImageButton
                         android:id="@+id/btnPeople2"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -365,6 +374,7 @@
 
                     <ImageButton
                         android:id="@+id/btnPeople3"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -374,6 +384,7 @@
 
                     <ImageButton
                         android:id="@+id/btnPeople4"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -383,6 +394,7 @@
 
                     <ImageButton
                         android:id="@+id/btnPeople5"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -392,6 +404,7 @@
 
                     <ImageButton
                         android:id="@+id/btnPeople6"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
