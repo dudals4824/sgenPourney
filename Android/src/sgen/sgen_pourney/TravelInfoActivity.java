@@ -27,8 +27,8 @@ import android.widget.Toast;
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
-	private TextView textTitle, textTitleHere, textCalendarHere, textPeopleHere,
-			textInputInfo, textMonth;
+	private TextView textTitle, textTitleHere, textCalendarHere,
+			textPeopleHere, textInputInfo, textMonth;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private EditText editTitle;
 	private Dayinfo today;
@@ -76,18 +76,17 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
-		
-		//session test
-		UserSessionManager session = new UserSessionManager(getApplicationContext());
+
+		// session test code
+		UserSessionManager session = new UserSessionManager(
+				getApplicationContext());
 		HashMap<String, String> map = new HashMap<String, String>();
 		map = session.getUserDetails();
-		String UserEmail = map.get("email");
-		String UserNickname = map.get("name");
-		
-		Toast.makeText(getApplicationContext(),
-				"email : "+UserEmail+"  name : "+UserNickname, Toast.LENGTH_LONG)
-				.show();
-		//////
+		String UserId = map.get("user_id");
+
+		Toast.makeText(getApplicationContext(), "user id : " + UserId,
+				Toast.LENGTH_LONG).show();
+		// ////
 	}
 
 	private void setFont() {
@@ -179,10 +178,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		if (v.getId() == R.id.editTitle && hasFocus) {
 			editTitle.setBackgroundResource(R.drawable.i_titleput_924x98);
-		} else if(v.getId() == R.id.gridDate && hasFocus){
-			
-		}else{}
+		} else if (v.getId() == R.id.gridDate && hasFocus) {
+
+		} else {
+		}
 		textTitle.setText(editTitle.getText());
 	}
-	
+
 }
