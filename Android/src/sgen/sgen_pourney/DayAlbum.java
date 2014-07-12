@@ -6,14 +6,16 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DayAlbum extends LinearLayout {
-	TextView textDay,textPhotoNum ;
-	ImageButton btnPhoto;
-	Context mContext = null;
+	private TextView textDay,textPhotoNum ;
+	private ImageButton btnPhoto;
+	private Context mContext = null;
+	private GridLayout layoutGridPhotoAlbum;
 	static final int SELECT_PICTURE = 1;
 	static final int REQUEST_PICTURE = 2;
 
@@ -39,23 +41,14 @@ public class DayAlbum extends LinearLayout {
 				infService);
 		View v = li.inflate(R.layout.dayalbum, this, false);
 		addView(v);
+		
 		textDay=(TextView)findViewById(R.id.textDay);
 		textPhotoNum=(TextView)findViewById(R.id.textPhotoNum);
 		btnPhoto=(ImageButton)findViewById(R.id.btnPhoto);
+		layoutGridPhotoAlbum=(GridLayout)findViewById(R.id.layoutGridPhotoAlbum);
 		
-		btnPhoto.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setType("image/*");
-				intent.setAction(Intent.ACTION_GET_CONTENT);
-				((Activity) mContext).startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
-			
-			
-			}
-		});
+		layoutGridPhotoAlbum.addView(new AlbumImgCell(mContext));
+		
 	}
 
 }
