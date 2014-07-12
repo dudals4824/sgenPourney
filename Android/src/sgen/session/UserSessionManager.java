@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 import sgen.sgen_pourney.*;
 
@@ -53,13 +54,10 @@ public class UserSessionManager {
 	public void createUserLoginSession(String name, String email) {
 		// Storing login value as TRUE
 		editor.putBoolean(IS_USER_LOGIN, true);
-
 		// Storing name in pref
 		editor.putString(KEY_NAME, name);
-
 		// Storing email in pref
 		editor.putString(KEY_EMAIL, email);
-
 		// commit changes
 		editor.commit();
 	}
@@ -73,7 +71,7 @@ public class UserSessionManager {
 		if (!this.isUserLoggedIn()) {
 
 			// user is not logged in redirect him to Login Activity
-			Intent i = new Intent(_context, LoginActivity.class);
+			Intent i = new Intent(_context, TravelInfoActivity.class);
 
 			// Closing all the Activities from stack
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -117,7 +115,7 @@ public class UserSessionManager {
 		editor.commit();
 
 		// After logout redirect user to Login Activity
-		Intent i = new Intent(_context, LoginActivity.class);
+		Intent i = new Intent(_context, TravelInfoActivity.class);
 
 		// Closing all the Activities
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
