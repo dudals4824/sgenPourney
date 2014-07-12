@@ -26,7 +26,7 @@ public class PhotoputActivity extends Activity {
 	private Uri currImageURI;
 	private String imagePath;
 
-	private String storagePath="/storage/sdcard0/pic";
+	private String storagePath=Environment.DIRECTORY_DCIM+"/pic";
 	private File imgFile;
 	private File storageFile;
 	private Bitmap mBitmap;
@@ -50,6 +50,7 @@ public class PhotoputActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
+		Log.d("ddd", "ddd");
 		switch (resultCode) {
 		case SELECT_PICTURE:
 			currImageURI = data.getData();
@@ -58,14 +59,19 @@ public class PhotoputActivity extends Activity {
 			imagePath = getRealPathFromURI(currImageURI);
 			Log.d("KJK", "URI : " + currImageURI.toString());
 			Log.d("KJK", "Real Path : " + imagePath);
+
+			/*Log.d("path",imagePath);
 			imgFile = new File(imagePath);
+			Log.d("path",storagePath);
 			storageFile=new File(storagePath);
 
 			scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
-			ImageResizer.saveToFile(scaledBitmap, storageFile);
+			
+			ImageResizer.saveToFile(scaledBitmap, storageFile);*/
+			
 			// image path 얻어왔으면 imgFile초기화.
 	
-			Log.d("resize","resizing!");
+/*			Log.d("resize","resizing!");*/
 
 			// img file bitmap 변경
 			if (imgFile.exists()) {
