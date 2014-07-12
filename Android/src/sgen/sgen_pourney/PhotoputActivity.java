@@ -2,6 +2,7 @@ package sgen.sgen_pourney;
 
 import java.io.File;
 
+import sgen.image_resizing.Scaling;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -49,7 +50,9 @@ public class PhotoputActivity extends Activity {
 			imagePath = getRealPathFromURI(currImageURI);
 			Log.d("KJK", "URI : " + currImageURI.toString());
 			Log.d("KJK", "Real Path : " + imagePath);
-
+			
+			Scaling scaling=new Scaling();
+			scaling.decodeFile(imagePath, 300, 300);
 			// image path 얻어왔으면 imgFile초기화.
 			imgFile = new File(imagePath);
 			// img file bitmap 변경
