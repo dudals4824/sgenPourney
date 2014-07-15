@@ -28,18 +28,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,11 +55,12 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private TextView textTitle, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
-	private EditText editTitle;
+	private ImageButton btnPeople1, btnPeople2, btnPeople3;
+	private EditText editTitle, peopleName;
 	private Dayinfo today;
 	private int flagselectdate = 0;
-	UserSessionManager session; //민아
-	private TripDTO insertInTrip; //민아
+	UserSessionManager session; // 민아
+	private TripDTO insertInTrip; // 민아
 	int startdate = 0;
 	int enddate = 0;
 	String[] DayArray;
@@ -64,8 +71,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private String strMonth[] = { "January", "February", "March", "April",
 			"May", "June", "July", "August", "September", "October",
 			"November", "December" };
-	
-	private TravleInfoPhp travelInfoPhp;//민아
+
+	private TravleInfoPhp travelInfoPhp;// 민아
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +94,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
+		btnPeople1 = (ImageButton) findViewById(R.id.btnPeople1);
+		btnPeople2 = (ImageButton) findViewById(R.id.btnPeople2);
+		btnPeople3 = (ImageButton) findViewById(R.id.btnPeople3);
 		editTitle = (EditText) findViewById(R.id.editTitle);
+		peopleName = (EditText) findViewById(R.id.peopleName);
 
 		setFont();
 
@@ -96,6 +107,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 		btnPrevMonth.setOnClickListener(this);
 		btnNextMonth.setOnClickListener(this);
+		btnPeople1.setOnClickListener(this);
+		btnPeople2.setOnClickListener(this);
+		btnPeople3.setOnClickListener(this);
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
@@ -157,12 +171,69 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			cnt--;
 		} else if (v.getId() == R.id.btnnextMonth) {
 			cnt++;
-		} else if (v.getId() == R.id.btnPut) {
+		} else if (v.getId() == R.id.btnPeople1) {// 친구찾기 검색창 부분
+
+			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+					.getSystemService(LAYOUT_INFLATER_SERVICE);
+			View popupView = layoutInflater.inflate(R.layout.find_friend_popup,
+					null);
+			
+			final PopupWindow popupWindow = new PopupWindow(popupView,
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+			popupWindow.setBackgroundDrawable(new BitmapDrawable());
+			popupWindow.setFocusable(true);
+			popupWindow.setOutsideTouchable(true);
+			popupWindow.setTouchInterceptor(new OnTouchListener() {
+
+		        public boolean onTouch(View v, MotionEvent event) {
+		            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+
+		            	popupWindow.dismiss();
+
+
+		                return true;
+
+		            }
+
+		            return false;
+
+		        }
+		    });
+			ImageButton btnDismiss = (ImageButton) popupView
+					.findViewById(R.id.cancel);
+			ImageButton findfriend = (ImageButton) popupView
+					.findViewById(R.id.findfriend);
+			btnDismiss.setOnClickListener (new ImageButton.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if (v.getId() == R.id.cancel) {
+						popupWindow.dismiss();
+					} else if (v.getId() == R.id.findfriend) {
+						// 친구찾은 목록 보여주믄 됨
+					}
+				}
+				
+				
+				
+			});
+
+
+			popupWindow.showAsDropDown(textCalendarHere, -150, 50);
+			
+			
+		} else if (v.getId() == R.id.btnPeople2) {
+
+		} else if (v.getId() == R.id.btnPeople3) {
+
+		}
+
+		else if (v.getId() == R.id.btnPut) {
 			Intent intent = new Intent(TravelInfoActivity.this,
 					PhotoputActivity.class);
 			startActivity(intent);
-			
-			
+
 			String trip_name = editTitle.getText().toString();
 			String start_date = Integer.toString(startdate);
 			String end_date = Integer.toString(enddate);
@@ -174,11 +245,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			String User_Id = Integer.toString(UserId);
 			String friend1 = "mina";
 			String friend2 = "mnsjdj";
-			
+
 			travelInfoPhp = new TravleInfoPhp();
 			travelInfoPhp.execute(trip_name, start_date, end_date, User_Id);
-			
-			
+
 		}
 		today = new Dayinfo(cnt);
 		getCalendar(today);
@@ -225,8 +295,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 		textTitle.setText(editTitle.getText());
 	}
-	
-	
+
 	public class TravleInfoPhp extends AsyncTask<String, String, String> {
 
 		@Override
@@ -254,7 +323,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				is = entity.getContent();
 			} catch (Exception e) {
 				Log.e("log_tag", "error in http connection" + e.toString());
-			}		
+			}
 			try {
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(is, "iso-8859-1"), 8);
@@ -274,7 +343,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				Log.e("log_tag", "Error converting result " + e.toString());
 			}
 
-			
 			try {
 				JSONArray jArray = new JSONArray(result);
 				JSONObject json_data = null;
@@ -282,7 +350,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				json_data = jArray.getJSONObject(0);
 				trip_id = json_data.getString("trip_id");
 				Log.e("trip_id", trip_id);
-				
 
 			} catch (JSONException e1) {
 				e1.printStackTrace();
@@ -301,18 +368,19 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			
-				Log.e("log_msg", "onPostExecute intent..");
-//				session.createTripIdSession(insertInTrip.getTripId());
-//				
-//				// Starting MainActivity
-//				Intent intent = new Intent(getApplicationContext(), TravelInfoActivity.class);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//				// Add new Flag to start new Activity
-//				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				startActivity(intent);
-//				finish();
-//				Log.e("log_msg", "insert complete");
+
+			Log.e("log_msg", "onPostExecute intent..");
+			// session.createTripIdSession(insertInTrip.getTripId());
+			//
+			// // Starting MainActivity
+			// Intent intent = new Intent(getApplicationContext(),
+			// TravelInfoActivity.class);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			// // Add new Flag to start new Activity
+			// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			// startActivity(intent);
+			// finish();
+			// Log.e("log_msg", "insert complete");
 		}
 
 		@Override
@@ -322,6 +390,5 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 
 	}
-
 
 }
