@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 
@@ -26,6 +27,9 @@ public class CoverActivity extends Activity implements OnClickListener{
 	
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel;
+	long m_startTime;       
+	long m_endTime;
+	boolean m_isPressedBackButton;
 	//CoverCell marble=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class CoverActivity extends Activity implements OnClickListener{
 				R.layout.custom_title);		
 		//marble=(Cover_cell)findViewById(R.id.box1);
 
+		m_startTime=System.currentTimeMillis();
 		layout_cover  = (GridLayout)findViewById(R.id.layout_cover);
 		layout_cover.addView(new CoverCell(this));
 		layout_cover.addView(new CoverCell(this));
@@ -55,5 +60,24 @@ public class CoverActivity extends Activity implements OnClickListener{
 		Intent intent=new Intent(CoverActivity.this, VideoMakingActivity.class);
 		startActivity(intent);
 		}
+	}
+	public void onBackPressed() {
+	    m_endTime = System.currentTimeMillis();
+	 
+	    if (m_endTime - m_startTime > 2000)
+	        m_isPressedBackButton = false;
+	  
+	    if (m_isPressedBackButton == false) {
+	        m_isPressedBackButton = true;
+	   
+	        m_startTime = System.currentTimeMillis();
+	   
+	        Toast.makeText(this, "'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+	    }
+	    else {
+	        finish();
+	        System.exit(0);
+	        android.os.Process.killProcess(android.os.Process.myPid());
+	    }
 	}
 }
