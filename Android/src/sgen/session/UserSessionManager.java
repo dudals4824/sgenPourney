@@ -37,11 +37,17 @@ public class UserSessionManager {
 	// All Shared Preferences Keys
 	private static final String IS_USER_LOGIN = "IsUserLoggedIn";
 
+	// All Shared Preferences Keys
+	//private static final String CHECK_INSERT_TRIPINFO = "CheckTravelInfoInserted";
+
 	// User name (make variable public to access from outside)
 	public static final String KEY_ID = "user_id";
 
 	// Email address (make variable public to access from outside)
-	public static final String KEY_EMAIL = "email";
+	//public static final String KEY_EMAIL = "email";
+	
+	// Trip id (make variable public to access from outside)
+	public static final String KEY_TRIP_ID = "trip_id";
 
 	// Constructor
 	public UserSessionManager(Context context) {
@@ -51,16 +57,23 @@ public class UserSessionManager {
 	}
 
 	// Create login session
-	public void createUserLoginSession(String user_id, String email) {
+	public void createUserLoginSession(int user_id) {
 		// Storing login value as TRUE
 		editor.putBoolean(IS_USER_LOGIN, true);
 		// Storing name in pref
-		editor.putString(KEY_ID, user_id);
-		// Storing email in pref
-		editor.putString(KEY_EMAIL, email);
+		editor.putInt(KEY_ID, user_id);
 		// commit changes
 		editor.commit();
 	}
+	
+	public void createTripIdSession(int trip_id) {
+		// Storing name in pref
+		editor.putInt(KEY_TRIP_ID, trip_id);
+		// commit changes
+		editor.commit();
+	}
+	
+	
 
 	/**
 	 * Check login method will check user login status If false it will redirect
@@ -90,19 +103,28 @@ public class UserSessionManager {
 	/**
 	 * Get stored session data
 	 * */
-	public HashMap<String, String> getUserDetails() {
+	public HashMap<String, Integer> getUserDetails() {
 
 		// Use hashmap to store user credentials
-		HashMap<String, String> user = new HashMap<String, String>();
+		HashMap<String, Integer> user = new HashMap<String, Integer>();
 
 		// user name
-		user.put(KEY_ID, pref.getString(KEY_ID, null));
-
-		// user email id
-		user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+		user.put(KEY_ID, pref.getInt(KEY_ID, 0));
 
 		// return user
 		return user;
+	}
+
+	public HashMap<String, Integer> getTripDetails() {
+		
+		// Use hashmap to store user credentials
+		HashMap<String, Integer> trip = new HashMap<String, Integer>();
+		
+		// user name
+		trip.put(KEY_ID, pref.getInt(KEY_TRIP_ID, 0));
+		
+		// return user
+		return trip;
 	}
 
 	/**
