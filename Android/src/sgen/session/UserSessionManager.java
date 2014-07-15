@@ -121,7 +121,7 @@ public class UserSessionManager {
 		HashMap<String, Integer> trip = new HashMap<String, Integer>();
 		
 		// user name
-		trip.put(KEY_ID, pref.getInt(KEY_TRIP_ID, 0));
+		trip.put(KEY_TRIP_ID, pref.getInt(KEY_TRIP_ID, 0));
 		
 		// return user
 		return trip;
