@@ -57,7 +57,7 @@ public class CoverActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(v.getId()==R.id.backcardNew){
-		Intent intent=new Intent(CoverActivity.this, VideoMakingActivity.class);
+		Intent intent=new Intent(CoverActivity.this, TravelInfoActivity.class);
 		startActivity(intent);
 		}
 	}
