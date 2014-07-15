@@ -244,8 +244,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			// if(서버 로그인 성공이면)
 			if (isLoginSuccessful) {
 				Log.e("log_msg", "onPostExecute intent..");
-				session.createUserLoginSession(loggedInUser.getNickName(),
-						loggedInUser.getEmail());
+				session.createUserLoginSession(loggedInUser.getUserId());
 
 				// Starting MainActivity
 				Intent intent = new Intent(getApplicationContext(),
