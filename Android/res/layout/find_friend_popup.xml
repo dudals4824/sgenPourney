@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/popupback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/i_popup_back"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY" >
+
+        <ImageView
+            android:id="@+id/popupsearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="65dp"
+            android:background="@drawable/i_popup_search" />
+
+        <ImageView
+            android:id="@+id/popuptitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/i_popup_title" />
+
+        <EditText
+            android:id="@+id/peopleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/popupsearch"
+            android:layout_alignRight="@+id/popupsearch"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="-5dp"
+            android:background="@drawable/i_popup_inputbutton"
+            android:ems="10"
+            android:inputType="text"
+            android:gravity="center_horizontal|center_vertical" />
+
+        <ImageButton
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/popupsearch"
+            android:layout_alignTop="@+id/popupsearch"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_cancel" />
+
+        <ImageButton
+            android:id="@+id/findfriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/popupsearch"
+            android:layout_alignTop="@+id/popupsearch"
+            android:layout_marginRight="13dp"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_findfriend" />
+    </RelativeLayout>
+
+</LinearLayout>
