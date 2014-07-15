@@ -1,15 +1,34 @@
 package sgen.sgen_pourney;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-import sgen.session.UserSessionManager;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import sgen.DTO.TripDTO;
+import sgen.DTO.UserDTO;
+import sgen.session.UserSessionManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +52,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private EditText editTitle;
 	private Dayinfo today;
 	private int flagselectdate = 0;
+	UserSessionManager session; //민아
+	private TripDTO insertInTrip; //민아
 	int startdate = 0;
 	int enddate = 0;
 	String[] DayArray;
@@ -43,6 +64,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private String strMonth[] = { "January", "February", "March", "April",
 			"May", "June", "July", "August", "September", "October",
 			"November", "December" };
+	
+	private TravleInfoPhp travelInfoPhp;//민아
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +103,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		// session test code
 		UserSessionManager session = new UserSessionManager(
 				getApplicationContext());
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map = session.getUserDetails();
-		String UserId = map.get("user_id");
+		int UserId = map.get("user_id");
 
 		Toast.makeText(getApplicationContext(), "user id : " + UserId,
 				Toast.LENGTH_LONG).show();
@@ -138,6 +161,24 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			Intent intent = new Intent(TravelInfoActivity.this,
 					PhotoputActivity.class);
 			startActivity(intent);
+			
+			
+			String trip_name = editTitle.getText().toString();
+			String start_date = Integer.toString(startdate);
+			String end_date = Integer.toString(enddate);
+			UserSessionManager session = new UserSessionManager(
+					getApplicationContext());
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map = session.getUserDetails();
+			int UserId = map.get("user_id");
+			String User_Id = Integer.toString(UserId);
+			String friend1 = "mina";
+			String friend2 = "mnsjdj";
+			
+			travelInfoPhp = new TravleInfoPhp();
+			travelInfoPhp.execute(trip_name, start_date, end_date, User_Id);
+			
+			
 		}
 		today = new Dayinfo(cnt);
 		getCalendar(today);
@@ -184,5 +225,103 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 		textTitle.setText(editTitle.getText());
 	}
+	
+	
+	public class TravleInfoPhp extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+
+			String trip_id = null;
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("trip_name", arg0[0]));
+			nameValuePairs.add(new BasicNameValuePair("start_date", arg0[1]));
+			nameValuePairs.add(new BasicNameValuePair("end_date", arg0[2]));
+			nameValuePairs.add(new BasicNameValuePair("user_id", arg0[3]));
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/travelInformation.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}		
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+
+				is.close();
+				result = sb.toString();
+				Log.e("result_trip_id", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+
+			
+			try {
+				JSONArray jArray = new JSONArray(result);
+				JSONObject json_data = null;
+
+				json_data = jArray.getJSONObject(0);
+				trip_id = json_data.getString("trip_id");
+				Log.e("trip_id", trip_id);
+				
+
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onCancelled() {
+			// TODO Auto-generated method stub
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			
+				Log.e("log_msg", "onPostExecute intent..");
+//				session.createTripIdSession(insertInTrip.getTripId());
+//				
+//				// Starting MainActivity
+//				Intent intent = new Intent(getApplicationContext(), TravelInfoActivity.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				// Add new Flag to start new Activity
+//				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				startActivity(intent);
+//				finish();
+//				Log.e("log_msg", "insert complete");
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
+
+	}
+
 
 }
