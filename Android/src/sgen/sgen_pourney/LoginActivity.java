@@ -6,6 +6,13 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.ProfilePictureView; //페북로긴에 필요함
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -21,7 +28,6 @@ import org.w3c.dom.UserDataHandler;
 
 import sgen.DTO.UserDTO;
 import sgen.session.UserSessionManager;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +38,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
@@ -52,7 +59,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		init();
-		
+
 	}
 
 	private void init() {
@@ -68,13 +75,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 		btnJoin.setOnClickListener(this);
 
 		isLoginSuccessful = false;
-		
-		//UserDTO init
+
+		// UserDTO init
 		loggedInUser = new UserDTO();
-		
+
 		// User Session Manager
-        session = new UserSessionManager(getApplicationContext());
-        Log.e("log_msg", "Initializing done...");
+		session = new UserSessionManager(getApplicationContext());
+		Log.e("log_msg", "Initializing done...");
 	}
 
 	@Override
@@ -105,35 +112,32 @@ public class LoginActivity extends Activity implements OnClickListener {
 					.setBackgroundResource(R.drawable.i_emailaddress_put);
 		} else if (v.getId() == R.id.btnFacebook) { // facebook login 占쏙옙 id
 													// 占쏙옙占�
-			// System.out.println("占싹뤄옙 占쏙옙占쏙옙 占승댐옙");
-			// Session.openActiveSession(this, true, new
-			// Session.StatusCallback() {
-			//
-			// // callback when session changes state
-			// @Override
-			// public void call(Session session, SessionState state, Exception
-			// exception) {
-			// System.out.println("占싹뤄옙 占쏙옙占쏙옙 占승댐옙");
-			// if (session.isOpened()) {
-			// System.out.println("占쏙옙占쏙옙 占쏙옙占싫댐옙占쏙옙");
-			// // make request to the /me API
-			// Request.newMeRequest(session, new Request.GraphUserCallback() {
-			//
-			// // callback after Graph API response with user object
-			// @Override
-			// public void onCompleted(GraphUser user, Response response) {
-			// System.out.println("占실몌옙 占쏙옙占싱듸옙 占쏙옙占쏙옙占쏙옙占�");
-			// if (user != null) {
-			// TextView welcome = (TextView) findViewById(R.id.welcome);
-			// welcome.setText(user.getName());
-			// }
-			// }
-			// }).executeAsync();
-			// } System.out.println("占싹뤄옙 占쏙옙占쏙옙 占승댐옙22");
-			// }
-			// });
-			Intent intent = new Intent(LoginActivity.this, CoverActivity.class);
-			startActivity(intent);
+				Session.openActiveSession(this, true, new Session.StatusCallback() {
+
+				// callback when session changes state
+				@Override
+				public void call(Session session, SessionState state,
+						Exception exception) {
+					if (session.isOpened()) {
+						// make request to the /me API
+						Request.newMeRequest(session,
+								new Request.GraphUserCallback() {
+
+									// callback after Graph API response with
+									// user object
+									@Override
+									public void onCompleted(GraphUser user,
+											Response response) {
+										if (user != null) {
+											Intent intent = new Intent(LoginActivity.this, CoverActivity.class);
+											startActivity(intent);
+										}
+									}
+								}).executeAsync();
+					}
+				}
+			});
+
 		} else if (v.getId() == R.id.btnJoin) {
 			System.out.println("Join");
 			Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
@@ -178,6 +182,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 
 			try {
+				
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(is, "iso-8859-1"), 8);
 				sb = new StringBuilder();
@@ -216,7 +221,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 					loggedInUser.setUserId(json_data.getInt("user_id"));
 					loggedInUser.setNickName(json_data.getString("nick_name"));
 					loggedInUser.setEmail(json_data.getString("email"));
-					loggedInUser.setProfileFilename(json_data.getString("profile_filename"));
+					loggedInUser.setProfileFilename(json_data
+							.getString("profile_filename"));
 					Log.e("user information", loggedInUser.toString());
 				}
 			} catch (JSONException e1) {
@@ -237,10 +243,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 			// if(서버 로그인 성공이면)
 			if (isLoginSuccessful) {
 				Log.e("log_msg", "onPostExecute intent..");
-				session.createUserLoginSession(loggedInUser.getNickName(),loggedInUser.getEmail());
-				
+				session.createUserLoginSession(loggedInUser.getNickName(),
+						loggedInUser.getEmail());
+
 				// Starting MainActivity
-				Intent intent = new Intent(getApplicationContext(), TravelInfoActivity.class);
+				Intent intent = new Intent(getApplicationContext(),
+						CoverActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				// Add new Flag to start new Activity
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
