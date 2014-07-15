@@ -129,6 +129,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 									public void onCompleted(GraphUser user,
 											Response response) {
 										if (user != null) {
+											finish();
 											Intent intent = new Intent(LoginActivity.this, CoverActivity.class);
 											startActivity(intent);
 										}
