@@ -57,21 +57,23 @@ public class UserSessionManager {
 	}
 
 	// Create login session
-	public void createUserLoginSession(int user_id) {
+	public void createUserLoginSession(int user_id, int trip_id) {
 		// Storing login value as TRUE
 		editor.putBoolean(IS_USER_LOGIN, true);
-		// Storing name in pref
+		// Storing userid in pref
 		editor.putInt(KEY_ID, user_id);
-		// commit changes
-		editor.commit();
-	}
-	
-	public void createTripIdSession(int trip_id) {
-		// Storing name in pref
+		// Storing tripid in pref
 		editor.putInt(KEY_TRIP_ID, trip_id);
 		// commit changes
 		editor.commit();
 	}
+	
+//	public void createTripIdSession(int trip_id) {
+//		// Storing name in pref
+//		editor.putInt(KEY_TRIP_ID, trip_id);
+//		// commit changes
+//		editor.commit();
+//	}
 	
 	
 
@@ -110,22 +112,24 @@ public class UserSessionManager {
 
 		// user name
 		user.put(KEY_ID, pref.getInt(KEY_ID, 0));
+		
+		user.put(KEY_TRIP_ID, pref.getInt(KEY_TRIP_ID, 0));
 
 		// return user
 		return user;
 	}
 
-	public HashMap<String, Integer> getTripDetails() {
-		
-		// Use hashmap to store user credentials
-		HashMap<String, Integer> trip = new HashMap<String, Integer>();
-		
-		// user name
-		trip.put(KEY_TRIP_ID, pref.getInt(KEY_TRIP_ID, 0));
-		
-		// return user
-		return trip;
-	}
+//	public HashMap<String, Integer> getTripDetails() {
+//		
+//		// Use hashmap to store user credentials
+//		HashMap<String, Integer> trip = new HashMap<String, Integer>();
+//		
+//		// user name
+//		trip.put(KEY_TRIP_ID, pref.getInt(KEY_TRIP_ID, 0));
+//		
+//		// return user
+//		return trip;
+//	}
 
 	/**
 	 * Clear session details
