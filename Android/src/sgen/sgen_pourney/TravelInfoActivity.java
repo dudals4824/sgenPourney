@@ -60,6 +60,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private Dayinfo today;
 	private int flagselectdate = 0;
 	UserSessionManager session; // 민아
+	private UserDTO loggedInUser;
 	private TripDTO insertInTrip; // 민아
 	int startdate = 0;
 	int enddate = 0;
@@ -73,10 +74,14 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			"November", "December" };
 
 	private TravleInfoPhp travelInfoPhp;// 민아
+	private UserInTrips userInTrips;// 민아
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		insertInTrip = new TripDTO();
+		loggedInUser = new UserDTO();
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.copyofactivity_travel_info);
@@ -119,9 +124,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				getApplicationContext());
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map = session.getUserDetails();
-		int UserId = map.get("user_id");
+		int userId = map.get("user_id");
+		
+		loggedInUser.setUserId(userId);
 
-		Toast.makeText(getApplicationContext(), "user id : " + UserId,
+		Toast.makeText(getApplicationContext(), "user id : " + userId,
 				Toast.LENGTH_LONG).show();
 		// ////
 	}
@@ -177,7 +184,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.find_friend_popup,
 					null);
-			
+
 			final PopupWindow popupWindow = new PopupWindow(popupView,
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
 			popupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -185,25 +192,24 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			popupWindow.setOutsideTouchable(true);
 			popupWindow.setTouchInterceptor(new OnTouchListener() {
 
-		        public boolean onTouch(View v, MotionEvent event) {
-		            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
 
-		            	popupWindow.dismiss();
+						popupWindow.dismiss();
 
+						return true;
 
-		                return true;
+					}
 
-		            }
+					return false;
 
-		            return false;
-
-		        }
-		    });
+				}
+			});
 			ImageButton btnDismiss = (ImageButton) popupView
 					.findViewById(R.id.cancel);
 			ImageButton findfriend = (ImageButton) popupView
 					.findViewById(R.id.findfriend);
-			btnDismiss.setOnClickListener (new ImageButton.OnClickListener() {
+			btnDismiss.setOnClickListener(new ImageButton.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -214,15 +220,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 						// 친구찾은 목록 보여주믄 됨
 					}
 				}
-				
-				
-				
+
 			});
 
-
 			popupWindow.showAsDropDown(textCalendarHere, -150, 50);
-			
-			
+
 		} else if (v.getId() == R.id.btnPeople2) {
 
 		} else if (v.getId() == R.id.btnPeople3) {
@@ -243,8 +245,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			map = session.getUserDetails();
 			int UserId = map.get("user_id");
 			String User_Id = Integer.toString(UserId);
-			String friend1 = "mina";
-			String friend2 = "mnsjdj";
 
 			travelInfoPhp = new TravleInfoPhp();
 			travelInfoPhp.execute(trip_name, start_date, end_date, User_Id);
@@ -324,6 +324,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			} catch (Exception e) {
 				Log.e("log_tag", "error in http connection" + e.toString());
 			}
+
 			try {
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(is, "iso-8859-1"), 8);
@@ -336,8 +337,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				}
 
 				is.close();
-				result = sb.toString();
-				Log.e("result_trip_id", result);
+				result = sb.toString().trim();
+				Log.e("trips123", result);
 
 			} catch (Exception e) {
 				Log.e("log_tag", "Error converting result " + e.toString());
@@ -348,13 +349,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				JSONObject json_data = null;
 
 				json_data = jArray.getJSONObject(0);
-				trip_id = json_data.getString("trip_id");
-				Log.e("trip_id", trip_id);
-
+				insertInTrip.setTripId(json_data.getInt("trip_id"));
+				insertInTrip.setTriptitle(json_data.getString("trip_name"));
+				insertInTrip.setStartdate(Integer.toString(json_data
+						.getInt("start_date")));
+				insertInTrip.setEnddate(Integer.toString(json_data
+						.getInt("end_date")));
+				Log.e("Trip information", insertInTrip.toString());
 			} catch (JSONException e1) {
-				e1.printStackTrace();
-			} catch (ParseException e1) {
-				e1.printStackTrace();
+				Log.e("log_msg", e1.toString());
 			}
 			return null;
 		}
@@ -369,18 +372,28 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 
-			Log.e("log_msg", "onPostExecute intent..");
-			// session.createTripIdSession(insertInTrip.getTripId());
-			//
-			// // Starting MainActivity
-			// Intent intent = new Intent(getApplicationContext(),
-			// TravelInfoActivity.class);
-			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			// // Add new Flag to start new Activity
-			// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			// startActivity(intent);
-			// finish();
-			// Log.e("log_msg", "insert complete");
+			Log.e("log_msg", "onPostExecute intent.. hererere");
+			// session.createUserLoginSession(loggedInUser.getUserId(),
+			// insertInTrip.getTripId());
+			Log.e("user info",
+					loggedInUser.getUserId() + " " + insertInTrip.getTripId());
+
+			Log.e("log_msg", "INSERT SUCCESS..");
+
+			String friend1 = "test";
+			String friend2 = "mnsjdj";
+
+			userInTrips = new UserInTrips();
+			userInTrips.execute(friend1, friend2);
+
+			// Starting MainActivity
+			Intent intent = new Intent(getApplicationContext(),
+					CoverActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			// Add new Flag to start new Activity
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			finish();
 		}
 
 		@Override
@@ -389,6 +402,103 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			super.onPreExecute();
 		}
 
+	}
+
+	public class UserInTrips extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+
+			UserSessionManager session = new UserSessionManager(
+					getApplicationContext());
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map = session.getUserDetails();
+			int TripId = map.get("trip_id");
+			String trip_id = Integer.toString(TripId);
+
+			for (int k = 0; k < arg0.length; k++) {
+				String user_id = null;
+				InputStream is = null;
+				StringBuilder sb = null;
+				String result = null;
+
+				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs
+						.add(new BasicNameValuePair("nick_name", arg0[k]));
+				nameValuePairs.add(new BasicNameValuePair("trip_id", trip_id));
+				Log.e("trip_id", trip_id);
+				Log.e("nick_name", arg0[k]);
+
+				try {
+					HttpClient httpclient = new DefaultHttpClient();
+					HttpPost httppost = new HttpPost(
+							"http://54.178.166.213/userInTrips.php");
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+					HttpResponse response = httpclient.execute(httppost);
+					HttpEntity entity = response.getEntity();
+					is = entity.getContent();
+				} catch (Exception e) {
+					Log.e("log_tag", "error in http connection" + e.toString());
+				}
+				try {
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(is, "iso-8859-1"), 8);
+					sb = new StringBuilder();
+					sb.append(reader.readLine() + "\n");
+					String line = "0";
+
+					while ((line = reader.readLine()) != null) {
+						sb.append(line + "\n");
+					}
+
+					is.close();
+					result = sb.toString();
+					Log.e("result_user_id", result);
+
+				} catch (Exception e) {
+					Log.e("log_tag", "Error converting result " + e.toString());
+				}
+
+				try {
+					JSONArray jArray = new JSONArray(result);
+					JSONObject json_data = null;
+
+					json_data = jArray.getJSONObject(0);
+					user_id = json_data.getString("user_id");
+					Log.e("user_id", user_id);
+
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onCancelled() {
+			// TODO Auto-generated method stub
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			if (result != null) {
+				Log.d("ASYNC", "result = " + result);
+			}
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
 	}
 
 }
