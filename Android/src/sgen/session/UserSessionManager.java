@@ -37,15 +37,9 @@ public class UserSessionManager {
 	// All Shared Preferences Keys
 	private static final String IS_USER_LOGIN = "IsUserLoggedIn";
 
-	// All Shared Preferences Keys
-	//private static final String CHECK_INSERT_TRIPINFO = "CheckTravelInfoInserted";
-
 	// User name (make variable public to access from outside)
 	public static final String KEY_ID = "user_id";
 
-	// Email address (make variable public to access from outside)
-	//public static final String KEY_EMAIL = "email";
-	
 	// Trip id (make variable public to access from outside)
 	public static final String KEY_TRIP_ID = "trip_id";
 
@@ -68,15 +62,15 @@ public class UserSessionManager {
 		editor.commit();
 	}
 	
-//	public void createTripIdSession(int trip_id) {
-//		// Storing name in pref
-//		editor.putInt(KEY_TRIP_ID, trip_id);
-//		// commit changes
-//		editor.commit();
-//	}
+	//Change login session
+	public void changeUserSession(int user_id, int trip_id){
+		if(user_id>0)
+			editor.putInt(KEY_ID, user_id);
+		if(trip_id>0)
+			editor.putInt(KEY_TRIP_ID, trip_id);
+		editor.commit();
+	}
 	
-	
-
 	/**
 	 * Check login method will check user login status If false it will redirect
 	 * user to login page Else do anything
@@ -118,18 +112,6 @@ public class UserSessionManager {
 		// return user
 		return user;
 	}
-
-//	public HashMap<String, Integer> getTripDetails() {
-//		
-//		// Use hashmap to store user credentials
-//		HashMap<String, Integer> trip = new HashMap<String, Integer>();
-//		
-//		// user name
-//		trip.put(KEY_TRIP_ID, pref.getInt(KEY_TRIP_ID, 0));
-//		
-//		// return user
-//		return trip;
-//	}
 
 	/**
 	 * Clear session details
