@@ -22,6 +22,18 @@
             android:layout_marginTop="27.33dp"
             android:src="@drawable/i_makephoto" />
 
+        <ImageButton 
+            android:id="@+id/btnForProfilePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imgMakePhoto"
+            android:layout_alignLeft="@+id/imgMakePhoto"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/i_profilephoto_button"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"/>
         <ImageView
             android:id="@+id/imgInfoBar"
             android:layout_width="wrap_content"
