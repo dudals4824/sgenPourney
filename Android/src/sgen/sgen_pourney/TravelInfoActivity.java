@@ -62,6 +62,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private int flagselectdate = 0;
 	private UserDTO loggedInUser;
 	private TripDTO selectedTrip; // 민아
+
+	// array list for add friend junki
+	private ArrayList<String> friendList = new ArrayList<String>();
+
 	int startdate = 0;
 	int enddate = 0;
 	String[] DayArray;
@@ -82,7 +86,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			"November", "December" };
 
 	private MakeTravelTask makeTravelTask;// 민아
-	private InsertUserInTrips insertUserInTrips;// 민아
+	private InsertUsersInTrip insertUserInTrips;// 민아
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -306,7 +310,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	}
 
 	/**
-	 * @author Junki Class : MakeTravel 여행정보 추가 AsyncTask 여행의 기본 정보들(trip_name,
+	 * @author Junki MakeTravel 여행정보 추가 AsyncTask 여행의 기본 정보들(trip_name,
 	 *         start_date, end_date) DB에 등록하고 travelinfoactivity에서 추가된 친구목록을
 	 *         userInTrips 테이블에 추가한다.
 	 */
@@ -399,11 +403,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			Log.e("MakeTravel_onPostExcute", "INSERT SUCCESS..");
 
-			String friend1 = "mina";
-			String friend2 = "mnsjdj";
+			friendList.add("test");
+			friendList.add("xxx");
 
-			insertUserInTrips = new InsertUserInTrips();
-			insertUserInTrips.execute(friend1, friend2);
+			insertUserInTrips = new InsertUsersInTrip();
+			insertUserInTrips.execute(friendList);
 
 			// makeTravel이 종료되면 PhotoputActivity를 실행시킨다.
 			Log.e("btnPut", "make Travel is finished, go to photoputactivity");
@@ -421,28 +425,39 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 	}
 
-	public class InsertUserInTrips extends AsyncTask<String, String, String> {
+	/**
+	 * 
+	 * @author Junki InsertUsersInTrip 여행에 추가할 친구들이 포함되어있는 ArrayList를 입력으로 받아 userInTrips.php에 인자로
+	 *         전달한다. userInTrips.php는 전달받은 친구 목록을 userInTrips에 등록한다.
+	 * 
+	 */
+	public class InsertUsersInTrip extends
+			AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
 
 		@Override
-		protected String doInBackground(String... arg0) {
+		protected ArrayList<String> doInBackground(ArrayList<String>... arg0) {
 			Log.e("UserInTrips", "insert users into userInTrips");
+
+			// get trip id from session
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
 			map = session.getUserDetails();
 			int TripId = map.get("trip_id");
 			String trip_id = Integer.toString(TripId);
 
-			for (int k = 0; k < arg0.length; k++) {
-				String user_id = null;
+			// get friend nickname list
+			ArrayList<String> passedFriendsList = arg0[0];
+
+			for (int k = 0; k < passedFriendsList.size(); k++) {
 				InputStream is = null;
 				StringBuilder sb = null;
 				String result = null;
 
 				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-				nameValuePairs
-						.add(new BasicNameValuePair("nick_name", arg0[k]));
+				nameValuePairs.add(new BasicNameValuePair("nick_name",
+						passedFriendsList.get(k)));
 				nameValuePairs.add(new BasicNameValuePair("trip_id", trip_id));
 				Log.e("trip_id", trip_id);
-				Log.e("nick_name", arg0[k]);
+				Log.e("nick_name", passedFriendsList.get(k));
 
 				try {
 					HttpClient httpclient = new DefaultHttpClient();
@@ -477,19 +492,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 
 		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(ArrayList<String> result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-
-			if (result != null) {
-				Log.d("ASYNC", "result = " + result);
-			}
 		}
 
 		@Override
