@@ -112,7 +112,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 					.setBackgroundResource(R.drawable.i_emailaddress_put);
 		} else if (v.getId() == R.id.btnFacebook) { // facebook login 占쏙옙 id
 													// 占쏙옙占�
-				Session.openActiveSession(this, true, new Session.StatusCallback() {
+			Session.openActiveSession(this, true, new Session.StatusCallback() {
 
 				// callback when session changes state
 				@Override
@@ -130,7 +130,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 											Response response) {
 										if (user != null) {
 											finish();
-											Intent intent = new Intent(LoginActivity.this, CoverActivity.class);
+											Intent intent = new Intent(
+													LoginActivity.this,
+													CoverActivity.class);
 											startActivity(intent);
 										}
 									}
@@ -183,7 +185,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 
 			try {
-				
+
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(is, "iso-8859-1"), 8);
 				sb = new StringBuilder();
@@ -245,7 +247,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			if (isLoginSuccessful) {
 				Log.e("log_msg", "onPostExecute intent..");
 				int TripId = 0;
-				session.createUserLoginSession(loggedInUser.getUserId(),TripId);
+				session.createUserLoginSession(loggedInUser.getUserId(), TripId);
 
 				// Starting MainActivity
 				Intent intent = new Intent(getApplicationContext(),
