@@ -4,13 +4,11 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -26,11 +24,9 @@ import sgen.session.UserSessionManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -190,12 +186,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		} else if (v.getId() == R.id.btnnextMonth) {
 			cnt++;
 		} else if (v.getId() == R.id.btnPeople1) {// 친구찾기 검색창 부분
-
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.find_friend_popup,
 					null);
-
 			final PopupWindow popupWindow = new PopupWindow(popupView,
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
 			popupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -205,15 +199,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 				public boolean onTouch(View v, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-
 						popupWindow.dismiss();
-
 						return true;
-
 					}
-
 					return false;
-
 				}
 			});
 			ImageButton btnDismiss = (ImageButton) popupView
@@ -221,7 +210,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			ImageButton findfriend = (ImageButton) popupView
 					.findViewById(R.id.findfriend);
 			btnDismiss.setOnClickListener(new ImageButton.OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -233,7 +221,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				}
 
 			});
-
 			popupWindow.showAsDropDown(textCalendarHere, -150, 50);
 
 		} else if (v.getId() == R.id.btnPeople2) {
@@ -427,8 +414,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 	/**
 	 * 
-	 * @author Junki InsertUsersInTrip 여행에 추가할 친구들이 포함되어있는 ArrayList를 입력으로 받아 userInTrips.php에 인자로
-	 *         전달한다. userInTrips.php는 전달받은 친구 목록을 userInTrips에 등록한다.
+	 * @author Junki InsertUsersInTrip 여행에 추가할 친구들이 포함되어있는 ArrayList를 입력으로 받아
+	 *         userInTrips.php에 인자로 전달한다. userInTrips.php는 전달받은 친구 목록을
+	 *         userInTrips에 등록한다.
 	 * 
 	 */
 	public class InsertUsersInTrip extends
