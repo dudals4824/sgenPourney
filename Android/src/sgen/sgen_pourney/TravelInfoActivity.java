@@ -52,7 +52,7 @@ import android.widget.Toast;
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
-	private TextView textTitle, textTitleHere, textCalendarHere,
+	private TextView textTitle,textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ImageButton btnPeople1, btnPeople2, btnPeople3;
@@ -91,6 +91,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
 		textTitle = (TextView) findViewById(R.id.textTitle);
+		textCalendar = (TextView) findViewById(R.id.textCalendar);
 		textTitleHere = (TextView) findViewById(R.id.textTitleHere);
 		textCalendarHere = (TextView) findViewById(R.id.textCalendarHere);
 		textPeopleHere = (TextView) findViewById(R.id.textPeopleHere);
@@ -151,6 +152,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				R.layout.calendar_grid, DayArray, today, startdate, enddate);
 		gridCalendar.setAdapter(calendarAdapter);
 		gridCalendar.setExpanded(true);
+		
 
 	}
 
@@ -239,6 +241,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			String trip_name = editTitle.getText().toString();
 			String start_date = Integer.toString(startdate);
 			String end_date = Integer.toString(enddate);
+
 			UserSessionManager session = new UserSessionManager(
 					getApplicationContext());
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -272,6 +275,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				temp = startdate;
 				startdate = enddate;
 				enddate = temp;
+				
 			}
 		}
 
@@ -287,6 +291,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
 		// TODO Auto-generated method stub
+		String start_date1 = " ";
+		String end_date1 = " ";
 		if (v.getId() == R.id.editTitle && hasFocus) {
 			editTitle.setBackgroundResource(R.drawable.i_titleput_924x98);
 		} else if (v.getId() == R.id.gridDate && hasFocus) {
@@ -294,6 +300,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		} else {
 		}
 		textTitle.setText(editTitle.getText());
+
+		start_date1 = Integer.toString(startdate/10000)+"."+Integer.toString((startdate%10000)/100)+"."+Integer.toString(startdate%100);
+		end_date1 = Integer.toString(enddate/10000)+"."+Integer.toString((enddate%10000)/100)+"."+Integer.toString(enddate%100);
+
+		textCalendar.setText(start_date1+"~"+end_date1);
 	}
 
 	public class TravleInfoPhp extends AsyncTask<String, String, String> {
