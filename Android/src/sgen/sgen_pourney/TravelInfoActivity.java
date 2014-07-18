@@ -328,7 +328,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			nameValuePairs.add(new BasicNameValuePair("user_id", arg0[3]));
 
 			Log.e("MakeTravelTask_nameValuePairs", nameValuePairs.toString());
-			
+
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
@@ -363,7 +363,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				JSONArray jArray = new JSONArray(result);
 				JSONObject json_data = null;
 
+				// get json object
 				json_data = jArray.getJSONObject(0);
+
+				// set selectedtrip information
 				selectedTrip.setTripId(json_data.getInt("trip_id"));
 				selectedTrip.setTriptitle(json_data.getString("trip_name"));
 				selectedTrip.setStartdate(Integer.toString(json_data
@@ -371,6 +374,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				selectedTrip.setEnddate(Integer.toString(json_data
 						.getInt("end_date")));
 				Log.e("MakeTravel_logMsg", selectedTrip.toString());
+				
+				//change saved session
+				//-1 means do not change user_id.
+				session.changeUserSession(-1, selectedTrip.getTripId());
 			} catch (JSONException e1) {
 				Log.e("MakeTravel_logMsg", e1.toString());
 			}
@@ -386,18 +393,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-
 			Log.e("MakeTravel_onPostExcute", "onPostExecute intent.. hererere");
-			// session.createUserLoginSession(loggedInUser.getUserId(),
-			// insertInTrip.getTripId());
 			Log.e("MakeTravel_onPostExcute", loggedInUser.getUserId() + " "
 					+ selectedTrip.getTripId());
 
 			Log.e("MakeTravel_onPostExcute", "INSERT SUCCESS..");
 
-			String friend1 = "test";
+			String friend1 = "mina";
 			String friend2 = "mnsjdj";
-			
+
 			insertUserInTrips = new InsertUserInTrips();
 			insertUserInTrips.execute(friend1, friend2);
 
