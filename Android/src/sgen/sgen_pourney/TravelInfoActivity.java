@@ -59,7 +59,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
 	private int flagselectdate = 0;
-	UserSessionManager session; // 민아
 	private UserDTO loggedInUser;
 	private TripDTO selectedTrip; // 민아
 	int startdate = 0;
@@ -67,6 +66,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	String[] DayArray;
 	Dayadapter dayadapter;
 	CalendarAdapter calendarAdapter;
+	
+	/**
+	 * @author Junki
+	 * user id, trip id의 세션 유지를 위한 세션 매니저.
+	 * userId는 로그인에서 얻어온 userId, tripId는 커버에서 선택한 Id를 유지한다.
+	 * 새로 trip 생성시에는 tripId 초기 값으로 0을 가진다
+	 */
+	UserSessionManager session;
+	
 	// 달력 이동을 위한 변수
 	private int cnt = 0;
 	private String strMonth[] = { "January", "February", "March", "April",
@@ -120,21 +128,17 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
 
-		// session test code
-		UserSessionManager session = new UserSessionManager(
-				getApplicationContext());
+		// session test code, 화면에 토스트로 현재 세선 정보를 보여준다.
+		session = new UserSessionManager(getApplicationContext());
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map = session.getUserDetails();
 		int userId = map.get("user_id");
 		int tripId = map.get("trip_id");
-
 		loggedInUser.setUserId(userId);
 		selectedTrip.setTripId(tripId);
-
 		Toast.makeText(getApplicationContext(), "user id : " + userId + "  trip id : " + tripId,
 				Toast.LENGTH_LONG).show();
-		// ////
-	}
+	}//TravelActivity onCreate();
 
 	private void setFont() {
 		Typeface yoon320 = Typeface.createFromAsset(getAssets(), "yoon320.ttf");
@@ -242,16 +246,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			String trip_name = editTitle.getText().toString();
 			String start_date = Integer.toString(startdate);
 			String end_date = Integer.toString(enddate);
-
-			UserSessionManager session = new UserSessionManager(
-					getApplicationContext());
-			HashMap<String, Integer> map = new HashMap<String, Integer>();
-			map = session.getUserDetails();
-			int UserId = map.get("user_id");
-			String User_Id = Integer.toString(UserId);
-
-			travelInfoPhp = new TravleInfoPhp();
-			travelInfoPhp.execute(trip_name, start_date, end_date, User_Id);
+			
+			//travelInfoPhp = new TravleInfoPhp();
+			//travelInfoPhp.execute(trip_name, start_date, end_date, User_Id);
 
 		}
 		today = new Dayinfo(cnt);
