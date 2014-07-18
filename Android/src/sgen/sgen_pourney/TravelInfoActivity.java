@@ -30,6 +30,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ import android.widget.Toast;
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
-	private TextView textTitle,textCalendar, textTitleHere, textCalendarHere,
+	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ImageButton btnPeople1, btnPeople2, btnPeople3;
@@ -66,22 +67,21 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	String[] DayArray;
 	Dayadapter dayadapter;
 	CalendarAdapter calendarAdapter;
-	
+
 	/**
-	 * @author Junki
-	 * user id, trip id의 세션 유지를 위한 세션 매니저.
-	 * userId는 로그인에서 얻어온 userId, tripId는 커버에서 선택한 Id를 유지한다.
-	 * 새로 trip 생성시에는 tripId 초기 값으로 0을 가진다
+	 * @author Junki user id, trip id의 세션 유지를 위한 세션 매니저. userId는 로그인에서 얻어온
+	 *         userId, tripId는 커버에서 선택한 Id를 유지한다. 새로 trip 생성시에는 tripId 초기 값으로 0을
+	 *         가진다
 	 */
 	UserSessionManager session;
-	
+
 	// 달력 이동을 위한 변수
 	private int cnt = 0;
 	private String strMonth[] = { "January", "February", "March", "April",
 			"May", "June", "July", "August", "September", "October",
 			"November", "December" };
 
-	private TravleInfoPhp travelInfoPhp;// 민아
+	private MakeTravelTask makeTravelTask;// 민아
 	private InsertUserInTrips insertUserInTrips;// 민아
 
 	@Override
@@ -136,9 +136,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		int tripId = map.get("trip_id");
 		loggedInUser.setUserId(userId);
 		selectedTrip.setTripId(tripId);
-		Toast.makeText(getApplicationContext(), "user id : " + userId + "  trip id : " + tripId,
+		Toast.makeText(getApplicationContext(),
+				"user id : " + userId + "  trip id : " + tripId,
 				Toast.LENGTH_LONG).show();
-	}//TravelActivity onCreate();
+	}// TravelActivity onCreate();
 
 	private void setFont() {
 		Typeface yoon320 = Typeface.createFromAsset(getAssets(), "yoon320.ttf");
@@ -157,7 +158,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				R.layout.calendar_grid, DayArray, today, startdate, enddate);
 		gridCalendar.setAdapter(calendarAdapter);
 		gridCalendar.setExpanded(true);
-		
 
 	}
 
@@ -239,17 +239,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 
 		else if (v.getId() == R.id.btnPut) {
-			Intent intent = new Intent(TravelInfoActivity.this,
-					PhotoputActivity.class);
-			startActivity(intent);
-
 			String trip_name = editTitle.getText().toString();
 			String start_date = Integer.toString(startdate);
 			String end_date = Integer.toString(enddate);
-			
-			//travelInfoPhp = new TravleInfoPhp();
-			//travelInfoPhp.execute(trip_name, start_date, end_date, User_Id);
 
+			makeTravelTask = new MakeTravelTask();
+			makeTravelTask.execute(trip_name, start_date, end_date,
+					Integer.toString(loggedInUser.getUserId()));
 		}
 		today = new Dayinfo(cnt);
 		getCalendar(today);
@@ -273,7 +269,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				temp = startdate;
 				startdate = enddate;
 				enddate = temp;
-				
+
 			}
 		}
 
@@ -299,13 +295,22 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 		textTitle.setText(editTitle.getText());
 
-		start_date1 = Integer.toString(startdate/10000)+"."+Integer.toString((startdate%10000)/100)+"."+Integer.toString(startdate%100);
-		end_date1 = Integer.toString(enddate/10000)+"."+Integer.toString((enddate%10000)/100)+"."+Integer.toString(enddate%100);
+		start_date1 = Integer.toString(startdate / 10000) + " "
+				+ Integer.toString((startdate % 10000) / 100) + "."
+				+ Integer.toString(startdate % 100);
+		end_date1 = Integer.toString(enddate / 10000) + " "
+				+ Integer.toString((enddate % 10000) / 100) + "."
+				+ Integer.toString(enddate % 100);
 
-		textCalendar.setText(start_date1+"~"+end_date1);
+		textCalendar.setText(start_date1 + "~" + end_date1);
 	}
 
-	public class TravleInfoPhp extends AsyncTask<String, String, String> {
+	/**
+	 * @author Junki Class : MakeTravel 여행정보 추가 AsyncTask 여행의 기본 정보들(trip_name,
+	 *         start_date, end_date) DB에 등록하고 travelinfoactivity에서 추가된 친구목록을
+	 *         userInTrips 테이블에 추가한다.
+	 */
+	public class MakeTravelTask extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... arg0) {
@@ -322,18 +327,20 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			nameValuePairs.add(new BasicNameValuePair("end_date", arg0[2]));
 			nameValuePairs.add(new BasicNameValuePair("user_id", arg0[3]));
 
+			Log.e("MakeTravelTask_nameValuePairs", nameValuePairs.toString());
+			
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
-						"http://54.178.166.213/travelInformation.php");
+						"http://54.178.166.213/makeTravel.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
 			} catch (Exception e) {
-				Log.e("log_tag", "error in http connection" + e.toString());
+				Log.e("MakeTravel_logMsg",
+						"error in http connection" + e.toString());
 			}
-
 			try {
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(is, "iso-8859-1"), 8);
@@ -344,13 +351,12 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				while ((line = reader.readLine()) != null) {
 					sb.append(line + "\n");
 				}
-
 				is.close();
 				result = sb.toString().trim();
-				Log.e("trips123", result);
-
+				Log.e("MakeTravel_logMsg", result);
 			} catch (Exception e) {
-				Log.e("log_tag", "Error converting result " + e.toString());
+				Log.e("MakeTravel_logMsg",
+						"Error converting result " + e.toString());
 			}
 
 			try {
@@ -364,9 +370,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 						.getInt("start_date")));
 				selectedTrip.setEnddate(Integer.toString(json_data
 						.getInt("end_date")));
-				Log.e("Trip information", selectedTrip.toString());
+				Log.e("MakeTravel_logMsg", selectedTrip.toString());
 			} catch (JSONException e1) {
-				Log.e("log_msg", e1.toString());
+				Log.e("MakeTravel_logMsg", e1.toString());
 			}
 			return null;
 		}
@@ -381,26 +387,24 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 
-			Log.e("log_msg", "onPostExecute intent.. hererere");
+			Log.e("MakeTravel_onPostExcute", "onPostExecute intent.. hererere");
 			// session.createUserLoginSession(loggedInUser.getUserId(),
 			// insertInTrip.getTripId());
-			Log.e("user info",
-					loggedInUser.getUserId() + " " + selectedTrip.getTripId());
+			Log.e("MakeTravel_onPostExcute", loggedInUser.getUserId() + " "
+					+ selectedTrip.getTripId());
 
-			Log.e("log_msg", "INSERT SUCCESS..");
+			Log.e("MakeTravel_onPostExcute", "INSERT SUCCESS..");
 
 			String friend1 = "test";
 			String friend2 = "mnsjdj";
-
+			
 			insertUserInTrips = new InsertUserInTrips();
 			insertUserInTrips.execute(friend1, friend2);
 
-			// Starting MainActivity
+			// makeTravel이 종료되면 PhotoputActivity를 실행시킨다.
+			Log.e("btnPut", "make Travel is finished, go to photoputactivity");
 			Intent intent = new Intent(getApplicationContext(),
-					CoverActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			// Add new Flag to start new Activity
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					PhotoputActivity.class);
 			startActivity(intent);
 			finish();
 		}
@@ -417,11 +421,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 		@Override
 		protected String doInBackground(String... arg0) {
-			// TODO Auto-generated method stub
-
 			Log.e("UserInTrips", "insert users into userInTrips");
-			UserSessionManager session = new UserSessionManager(
-					getApplicationContext());
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
 			map = session.getUserDetails();
 			int TripId = map.get("trip_id");
