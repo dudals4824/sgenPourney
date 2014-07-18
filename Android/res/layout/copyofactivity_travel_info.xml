@@ -137,13 +137,12 @@
                 android:layout_toRightOf="@+id/iconPeople" />
 
             <TextView
-                android:id="@+id/textCalender"
+                android:id="@+id/textCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/iconCalendar"
                 android:layout_alignLeft="@id/textTitle"
-                android:layout_toRightOf="@+id/iconCalendar"
-                android:text="2013 07.22 - 2013 07.27" />
+                android:layout_toRightOf="@+id/iconCalendar" />
 
             <TextView
                 android:id="@+id/textPeople"
