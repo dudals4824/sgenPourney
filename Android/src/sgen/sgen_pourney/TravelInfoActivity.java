@@ -374,9 +374,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				selectedTrip.setEnddate(Integer.toString(json_data
 						.getInt("end_date")));
 				Log.e("MakeTravel_logMsg", selectedTrip.toString());
-				
-				//change saved session
-				//-1 means do not change user_id.
+
+				// change saved session
+				// -1 means do not change user_id.
 				session.changeUserSession(-1, selectedTrip.getTripId());
 			} catch (JSONException e1) {
 				Log.e("MakeTravel_logMsg", e1.toString());
@@ -465,27 +465,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					while ((line = reader.readLine()) != null) {
 						sb.append(line + "\n");
 					}
-
 					is.close();
 					result = sb.toString();
 					Log.e("result_user_id", result);
-
 				} catch (Exception e) {
 					Log.e("log_tag", "Error converting result " + e.toString());
-				}
-
-				try {
-					JSONArray jArray = new JSONArray(result);
-					JSONObject json_data = null;
-
-					json_data = jArray.getJSONObject(0);
-					user_id = json_data.getString("user_id");
-					Log.e("user_id", user_id);
-
-				} catch (JSONException e1) {
-					e1.printStackTrace();
-				} catch (ParseException e1) {
-					e1.printStackTrace();
 				}
 			}
 
