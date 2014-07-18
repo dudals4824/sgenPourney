@@ -61,7 +61,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private int flagselectdate = 0;
 	UserSessionManager session; // 민아
 	private UserDTO loggedInUser;
-	private TripDTO insertInTrip; // 민아
+	private TripDTO selectedTrip; // 민아
 	int startdate = 0;
 	int enddate = 0;
 	String[] DayArray;
@@ -74,13 +74,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			"November", "December" };
 
 	private TravleInfoPhp travelInfoPhp;// 민아
-	private UserInTrips userInTrips;// 민아
+	private InsertUserInTrips insertUserInTrips;// 민아
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		insertInTrip = new TripDTO();
+		selectedTrip = new TripDTO();
 		loggedInUser = new UserDTO();
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -126,10 +126,12 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map = session.getUserDetails();
 		int userId = map.get("user_id");
-		
-		loggedInUser.setUserId(userId);
+		int tripId = map.get("trip_id");
 
-		Toast.makeText(getApplicationContext(), "user id : " + userId,
+		loggedInUser.setUserId(userId);
+		selectedTrip.setTripId(tripId);
+
+		Toast.makeText(getApplicationContext(), "user id : " + userId + "  trip id : " + tripId,
 				Toast.LENGTH_LONG).show();
 		// ////
 	}
@@ -139,7 +141,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		textTitleHere.setTypeface(yoon320);
 		textCalendarHere.setTypeface(yoon320);
 		textPeopleHere.setTypeface(yoon320);
-
 		Typeface yoon330 = Typeface.createFromAsset(getAssets(), "yoon330.ttf");
 		textInputInfo.setTypeface(yoon330);
 	}
@@ -360,13 +361,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				JSONObject json_data = null;
 
 				json_data = jArray.getJSONObject(0);
-				insertInTrip.setTripId(json_data.getInt("trip_id"));
-				insertInTrip.setTriptitle(json_data.getString("trip_name"));
-				insertInTrip.setStartdate(Integer.toString(json_data
+				selectedTrip.setTripId(json_data.getInt("trip_id"));
+				selectedTrip.setTriptitle(json_data.getString("trip_name"));
+				selectedTrip.setStartdate(Integer.toString(json_data
 						.getInt("start_date")));
-				insertInTrip.setEnddate(Integer.toString(json_data
+				selectedTrip.setEnddate(Integer.toString(json_data
 						.getInt("end_date")));
-				Log.e("Trip information", insertInTrip.toString());
+				Log.e("Trip information", selectedTrip.toString());
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
@@ -387,15 +388,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			// session.createUserLoginSession(loggedInUser.getUserId(),
 			// insertInTrip.getTripId());
 			Log.e("user info",
-					loggedInUser.getUserId() + " " + insertInTrip.getTripId());
+					loggedInUser.getUserId() + " " + selectedTrip.getTripId());
 
 			Log.e("log_msg", "INSERT SUCCESS..");
 
 			String friend1 = "test";
 			String friend2 = "mnsjdj";
 
-			userInTrips = new UserInTrips();
-			userInTrips.execute(friend1, friend2);
+			insertUserInTrips = new InsertUserInTrips();
+			insertUserInTrips.execute(friend1, friend2);
 
 			// Starting MainActivity
 			Intent intent = new Intent(getApplicationContext(),
@@ -415,12 +416,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 	}
 
-	public class UserInTrips extends AsyncTask<String, String, String> {
+	public class InsertUserInTrips extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... arg0) {
 			// TODO Auto-generated method stub
 
+			Log.e("UserInTrips", "insert users into userInTrips");
 			UserSessionManager session = new UserSessionManager(
 					getApplicationContext());
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
