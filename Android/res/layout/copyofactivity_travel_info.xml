@@ -175,7 +175,7 @@
                 android:id="@+id/textInputInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="11.67dp"
                 android:layout_toRightOf="@id/iconCalenderFlag"
                 android:text="여행기본정보 입력(필수입력)"
@@ -197,7 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="11.67dp"
+                    android:layout_marginTop="13.67dp"
                     android:text="01 여행의 제목을 입력해주세요"
                     android:textColor="#4d4d4d"
                     android:textSize="9pt" />
@@ -207,6 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/textTitleHere"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginRight="21dp"
                     android:layout_toLeftOf="@id/textTitleHere"
                     android:src="@drawable/ic_write_40x40" />
@@ -220,7 +221,7 @@
                     android:layout_marginTop="12.33dp"
                     android:background="@drawable/i_title_924x98"
                     android:gravity="center_horizontal|center_vertical"
-                    android:hint="VISIT AMERICA WITH POURNEY" />
+                    android:hint="-" />
 
                 <TextView
                     android:id="@+id/textCalendarHere"
@@ -228,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/editTitle"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="29.67dp"
+                    android:layout_marginTop="18.67dp"
                     android:text="02 여행기간을 선택해주세요"
                     android:textColor="#4d4d4d"
                     android:textSize="9pt" />
@@ -240,7 +241,7 @@
                     android:layout_alignLeft="@id/iconWriteBlack"
                     android:layout_below="@id/editTitle"
                     android:layout_marginRight="21dp"
-                    android:layout_marginTop="27.67dp"
+                    android:layout_marginTop="23.67dp"
                     android:src="@drawable/ic_calendar_40x40" />
 
                 <RelativeLayout
@@ -332,10 +333,10 @@
                     android:id="@+id/iconPeopleBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/textPeopleHere"
+                    android:layout_alignTop="@id/textPeopleHere"
                     android:layout_alignLeft="@id/iconWriteBlack"
                     android:layout_marginRight="21dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="3dp"
                     android:src="@drawable/ic_people_42x46" />
 
                 <GridLayout
@@ -418,7 +419,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layoutGrid"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="21.67dp"
+                    android:layout_marginTop="19.67dp"
+                    android:paddingBottom="2dp"
                     android:background="@android:color/transparent"
                     android:fitsSystemWindows="true"
                     android:scaleType="fitXY"
