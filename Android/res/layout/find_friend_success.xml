@@ -67,9 +67,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/peopleName"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="75dp"
             android:layout_toRightOf="@+id/friendProfile"
-            android:text="공민아공민아공공민아공아공공" />
+            android:text="민아공공민아민공아민공즐즐" />
 
         <ImageButton
             android:id="@+id/cancel"

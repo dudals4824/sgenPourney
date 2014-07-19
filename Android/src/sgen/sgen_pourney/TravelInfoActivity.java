@@ -51,6 +51,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private ExpandableHeightGridView gridCalendar, gridDate;
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth;
+
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ImageButton btnPeople1, btnPeople2, btnPeople3;
 	private EditText editTitle, peopleName;
@@ -215,12 +216,77 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					// TODO Auto-generated method stub
 					if (v.getId() == R.id.cancel) {
 						popupWindow.dismiss();
-					} else if (v.getId() == R.id.findfriend) {
-						// 친구찾은 목록 보여주믄 됨
-					}
+					} else;
 				}
 
 			});
+			findfriend.setOnClickListener(new ImageButton.OnClickListener(){
+				
+				@Override
+				public void onClick(View v) {
+					if(v.getId() == R.id.findfriend){
+						//친구 찾기!!!
+						if(1==1){//친구 찾은 경우
+							
+							LayoutInflater layoutInflater1 = (LayoutInflater) getBaseContext()
+									.getSystemService(LAYOUT_INFLATER_SERVICE);
+							View popupView1 = layoutInflater1.inflate(R.layout.find_friend_success,
+									null);
+
+							final PopupWindow popupWindow1 = new PopupWindow(popupView1,
+									LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+							popupWindow1.setBackgroundDrawable(new BitmapDrawable());
+							popupWindow1.setFocusable(true);
+							popupWindow1.setOutsideTouchable(true);
+							
+							popupWindow1.setTouchInterceptor(new OnTouchListener() {
+
+								public boolean onTouch(View v, MotionEvent event) {
+									if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+
+										popupWindow1.dismiss();
+
+										return true;
+
+									}
+
+									return false;
+
+								}
+							});
+							ImageButton btnDismiss = (ImageButton) popupView1
+									.findViewById(R.id.cancel);
+							ImageButton confirm = (ImageButton) popupView1
+									.findViewById(R.id.confirm);
+							btnDismiss.setOnClickListener(new ImageButton.OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									if (v.getId() == R.id.cancel) {
+										popupWindow1.dismiss();
+									} else if (v.getId() == R.id.confirm ) {
+										//친구 찾은거 이름 넘갸주면 됨
+									}
+								}
+
+							});
+							//name = (TextView)findViewById(R.id.foundFriend);
+							//name.setText(text); //text에 사람 이름 넣으면 될겁니다 아마요..
+							
+							popupWindow1.showAsDropDown(textCalendarHere, -150, 50);
+								
+							
+							
+						}else{//못찾은 경우
+							//없는 아이디라고 토스트 부르면 좋을듯
+						}
+					
+					}
+				}
+			});
+			
+
 			popupWindow.showAsDropDown(textCalendarHere, -150, 50);
 
 		} else if (v.getId() == R.id.btnPeople2) {
