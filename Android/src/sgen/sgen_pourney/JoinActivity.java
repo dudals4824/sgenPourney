@@ -57,11 +57,11 @@ public class JoinActivity extends Activity implements OnClickListener {
 		// layout initializing
 		initLayout();
 
-		idDuplicationToast = Toast.makeText(this, "ID가 중복됩니다.",
+		idDuplicationToast = Toast.makeText(this, "닉네임이 중복됩니다.",
 				Toast.LENGTH_SHORT);
 		emailDuplicationToast = Toast.makeText(this, "이메일이 중복됩니다.",
 				Toast.LENGTH_SHORT);
-		duplicationCheckOk = Toast.makeText(this, "중복없음ㅋ", Toast.LENGTH_SHORT);
+		duplicationCheckOk = Toast.makeText(this, "사용가능한 닉네임, 이메일 입니다.", Toast.LENGTH_SHORT);
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
