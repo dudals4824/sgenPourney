@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="42.33dp"
-            android:layout_marginTop="37.33dp"
+            android:layout_marginTop="33.33dp"
             android:text="이메일"
             android:textColor="#ffffff" />
 
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textEmail"
             android:layout_marginLeft="42.33dp"
-            android:layout_marginTop="42.33dp"
+            android:layout_marginTop="34.33dp"
             android:text="닉네임"
             android:textColor="#ffffff" />
 
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/textEmail"
             android:layout_below="@id/textNickName"
-            android:layout_marginTop="85.33dp"
+            android:layout_marginTop="80.33dp"
             android:text="비밀번호"
             android:textColor="#ffffff" />
 
@@ -158,10 +158,12 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/editNickName"
             android:layout_below="@id/btnCheckDuplications"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="21dp"
             android:layout_toRightOf="@id/imgVerticalStroke2"
             android:background="@drawable/i_button"
-            android:gravity="center" />
+            android:gravity="center"
+            android:inputType="textPassword"
+            android:hint="8자 이상" />
 
         <!-- 비밀번호 확인 -->
 
@@ -171,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/textEmail"
             android:layout_below="@id/textPassword"
-            android:layout_marginTop="30.67dp"
+            android:layout_marginTop="36.67dp"
             android:text="비밀번호확인"
             android:textColor="#ffffff" />
 
@@ -195,7 +197,7 @@
             android:layout_toRightOf="@id/imgVerticalStroke4"
             android:background="@drawable/i_button"
             android:gravity="center"
-            android:hint="8자 이상" />
+            android:inputType="textPassword" />
 
         <ImageButton
             android:id="@+id/btnJoin"
@@ -203,12 +205,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/editPasswordConfirm"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/i_register"
+            android:src="@drawable/i_join_register"
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:scaleType="fitXY"
-            android:layout_marginTop="27.67dp" >
+            android:layout_marginTop="20.67dp" >
         </ImageButton>
+        
+        <ImageView 
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/btnJoin"
+            android:background="@drawable/i_logo"
+            android:layout_marginTop="3dp"/>
     </RelativeLayout>
 
 </RelativeLayout>
