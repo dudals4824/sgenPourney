@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -142,10 +143,13 @@ public class JoinActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-
+				
 			if (result != null) {
 				Log.d("ASYNC", "result = " + result);
 			}
+			Intent intent=new Intent(JoinActivity.this, LoginActivity.class);
+			startActivity(intent);
+			finish();
 		}
 
 		@Override
