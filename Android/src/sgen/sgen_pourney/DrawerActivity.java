@@ -19,7 +19,6 @@ public class DrawerActivity extends Activity implements OnClickListener{
     protected void onCreate (Bundle savedInstanceState) {
  
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.left_behind_drawer);
         
         
