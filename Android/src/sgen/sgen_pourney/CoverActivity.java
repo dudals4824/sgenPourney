@@ -1,16 +1,12 @@
 package sgen.sgen_pourney;
 
-import segn.Drawer.AskActivity;
-import segn.Drawer.MainActivity;
-import segn.Drawer.SimpleSideDrawer;
 
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
-import com.facebook.widget.ProfilePictureView; //�섎턿濡쒓릿���꾩슂��
-
+import com.facebook.widget.ProfilePictureView; //占쎌꼶�욘에�볥┸占쏙옙占쎄쑴�귨옙占�
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,8 +27,8 @@ public class CoverActivity extends Activity implements OnClickListener{
 	
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel;
-	private ImageButton btnMenu;
 	private SimpleSideDrawer mDrawer;
+	private Button askButton;
 	long m_startTime;       
 	long m_endTime;
 	boolean m_isPressedBackButton;
@@ -64,15 +60,26 @@ public class CoverActivity extends Activity implements OnClickListener{
 				startActivity(intent);
 			}
 		});
+        
+     /*   findViewById(R.id.log_out_text).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(CoverActivity.this, LoginActivity.class);
+				startActivity(intent);
+				//Session 해제
+			}
+		});*/
 		m_startTime=System.currentTimeMillis();
 		layout_cover  = (GridLayout)findViewById(R.id.layout_cover);
 		layout_cover.addView(new CoverCell(this));
 		layout_cover.addView(new CoverCell(this));
-		layout_cover.addView(new CoverCell(this));//�⑤쾾 媛�닔留뚰겮 �щЦ �뚮━硫����섏쨷��
+		layout_cover.addView(new CoverCell(this));//占썩뫀苡�揶쏉옙�뷂쭕�곌껍 占싼됎�占쎈슢�곻쭖占쏙옙占쏙옙�륁㉦占쏙옙
 		layout_cover.addView(new CoverCellNew(this));
 //		layout_cover_new  = (GridLayout)findViewById(R.id.layout_cover_new);
 //		layout_cover_new.addView(new Cover_cell_new(this));
-//      嫄�洹몃━�붽굅��李멸퀬��mable 		
+//      椰꾬옙域밸챶�곻옙遺쎄탢占쏙옙筌〓㈇�э옙占퐉able 		
 		
 		btn_new_travel=(ImageButton)findViewById(R.id.backcardNew);
 		btn_new_travel.setOnClickListener(this);
@@ -84,6 +91,10 @@ public class CoverActivity extends Activity implements OnClickListener{
 		Intent intent=new Intent(CoverActivity.this, TravelInfoActivity.class);
 		startActivity(intent);
 		}
+		/*else if(v.getId()==R.id.log_out_text){
+			Intent intent = new Intent(CoverActivity.this, LoginActivity.class);
+			startActivity(intent);
+		}*/
 	}
 	public void onBackPressed() {
 	    m_endTime = System.currentTimeMillis();
@@ -96,7 +107,7 @@ public class CoverActivity extends Activity implements OnClickListener{
 	   
 	        m_startTime = System.currentTimeMillis();
 	   
-	        Toast.makeText(this, "'�ㅻ줈'踰꾪듉���쒕쾲 ���꾨Ⅴ�쒕㈃ 醫낅즺�⑸땲��", Toast.LENGTH_SHORT).show();
+	        Toast.makeText(this, "'占썬끇以�甕곌쑵�됵옙占쏙옙�뺤쓰 占쏙옙占쎄쑬�ㅿ옙�뺛늺 �ル굝利븝옙�몃빍占쏙옙", Toast.LENGTH_SHORT).show();
 	    }
 	    else {
 	        finish();

@@ -30,8 +30,13 @@
             android:label="@string/title_activity_travel_info" >
         </activity>
         <activity
+            android:name="sgen.sgen_pourney.AskActivity"
+            android:label="@string/title_activity_ask">
+        </activity>
+        <activity
             android:name="sgen.sgen_pourney.CoverActivity"
-            android:label="@string/title_activity_cover" >
+            android:label="@string/title_activity_cover"
+            android:theme="@android:style/Theme.NoTitleBar"  >
         </activity>
 
         <meta-data
