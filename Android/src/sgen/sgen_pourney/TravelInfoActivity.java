@@ -39,6 +39,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -51,12 +52,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private ExpandableHeightGridView gridCalendar, gridDate;
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth;
-
+	private Button askBtn,logoutBtn,albumBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ImageButton btnPeople1, btnPeople2, btnPeople3;
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
 	private int flagselectdate = 0;
+	private SimpleSideDrawer mDrawer;
 	private UserDTO loggedInUser;
 	private TripDTO selectedTrip; // 민아
 
@@ -96,7 +98,20 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		setContentView(R.layout.copyofactivity_travel_info);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		
+		mDrawer = new SimpleSideDrawer(this);
+		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
+		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				mDrawer.toggleLeftDrawer();
+
+			}
+		});
+		askBtn=(Button)findViewById(R.id.ask_text);
+		logoutBtn=(Button)findViewById(R.id.log_out_text);
+		albumBtn=(Button)findViewById(R.id.last_album_text);
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
 		textTitle = (TextView) findViewById(R.id.textTitle);
@@ -114,9 +129,12 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPeople3 = (ImageButton) findViewById(R.id.btnPeople3);
 		editTitle = (EditText) findViewById(R.id.editTitle);
 		peopleName = (EditText) findViewById(R.id.peopleName);
-
+		
 		setFont();
 
+		askBtn.setOnClickListener(this);
+		logoutBtn.setOnClickListener(this);
+		albumBtn.setOnClickListener(this);
 		today = new Dayinfo();
 		getCalendar(today);
 
@@ -173,14 +191,31 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 		textMonth.setText(strMonth[today.getMonth()]);
 	}
+	
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		// editTitle.clearFocus();
+		
 		InputMethodManager imm = (InputMethodManager) v.getContext()
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		if(v.getId()==R.id.ask_text)
+		{
+			Intent intent = new Intent(this, AskActivity.class);
+			startActivity(intent);
+		}
+		if (v.getId() == R.id.log_out_text) {
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		if (v.getId() == R.id.last_album_text) {
+			Intent intent = new Intent(this, CoverActivity.class);
+			startActivity(intent);
+			finish();
+		}
 		findViewById(R.id.container).requestFocus();
 		if (v.getId() == R.id.btnPrevMonth) {
 			cnt--;
@@ -220,6 +255,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				}
 
 			});
+			
 			findfriend.setOnClickListener(new ImageButton.OnClickListener(){
 				
 				@Override
@@ -307,8 +343,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		today = new Dayinfo(cnt);
 		getCalendar(today);
 		textMonth.setText(strMonth[today.getMonth()] + " " + today.getYear());
+	
+		
 	}
 
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {

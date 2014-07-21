@@ -17,15 +17,19 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class PhotoputActivity extends Activity {
+public class PhotoputActivity extends Activity implements OnClickListener {
 	static final int SELECT_PICTURE = 1;
 	LinearLayout layoutAlbum;
 	private Uri currImageURI;
 	private String imagePath;
-
+	private SimpleSideDrawer mDrawer;
+	private Button askBtn,logoutBtn,albumBtn;
 	private String storagePath=Environment.DIRECTORY_DCIM+"/pic";
 	private File imgFile;
 	private File storageFile;
@@ -40,6 +44,22 @@ public class PhotoputActivity extends Activity {
 		setContentView(R.layout.activity_photoput);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);		
+		mDrawer = new SimpleSideDrawer(this);
+		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
+		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mDrawer.toggleLeftDrawer();
+
+			}
+		});
+		askBtn=(Button)findViewById(R.id.ask_text);
+		askBtn.setOnClickListener(this);
+		albumBtn=(Button)findViewById(R.id.last_album_text);
+		albumBtn.setOnClickListener(this);
+		logoutBtn=(Button)findViewById(R.id.log_out_text);
+		logoutBtn.setOnClickListener(this);
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
@@ -47,6 +67,23 @@ public class PhotoputActivity extends Activity {
 
 	}
 
+	public void onClick(View v){
+		if(v.getId()==R.id.ask_text)
+		{
+			Intent intent = new Intent(this, AskActivity.class);
+			startActivity(intent);
+		}
+		if (v.getId() == R.id.log_out_text) {
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		if (v.getId() == R.id.last_album_text) {
+			Intent intent = new Intent(this, CoverActivity.class);
+			startActivity(intent);
+			finish();
+		}
+	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
