@@ -29,7 +29,7 @@ public class CoverActivity extends Activity implements OnClickListener{
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel;
 	private SimpleSideDrawer mDrawer;
-	//private Button askButton;
+	private Button askButton;
 	long m_startTime;       
 	long m_endTime;
 	boolean m_isPressedBackButton;
@@ -61,17 +61,18 @@ public class CoverActivity extends Activity implements OnClickListener{
 				startActivity(intent);
 			}
 		});
-        
-     /*   findViewById(R.id.log_out_text).setOnClickListener(new OnClickListener() {
+       findViewById(R.id.log_out_text).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				
 				Intent intent = new Intent(CoverActivity.this, LoginActivity.class);
 				startActivity(intent);
+				finish();
 				//Session 해제
 			}
-		});*/
+		});
 		m_startTime=System.currentTimeMillis();
 		layout_cover  = (GridLayout)findViewById(R.id.layout_cover);
 		layout_cover.addView(new CoverCell(this));
@@ -84,6 +85,8 @@ public class CoverActivity extends Activity implements OnClickListener{
 		
 		btn_new_travel=(ImageButton)findViewById(R.id.backcardNew);
 		btn_new_travel.setOnClickListener(this);
+		/*askButton=(Button)findViewById(R.id.ask_text);
+		askButton.setOnClickListener(this);*/
 	}
 
 	@Override
@@ -95,8 +98,9 @@ public class CoverActivity extends Activity implements OnClickListener{
 		/*else if(v.getId()==R.id.log_out_text){
 			Intent intent = new Intent(CoverActivity.this, LoginActivity.class);
 			startActivity(intent);
-		}*/
-	}
+		}
+*/	}
+	
 	public void onBackPressed() {
 	    m_endTime = System.currentTimeMillis();
 	 
