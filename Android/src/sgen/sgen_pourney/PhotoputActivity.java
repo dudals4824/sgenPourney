@@ -55,7 +55,7 @@ public class PhotoputActivity extends Activity {
 		case SELECT_PICTURE:
 			currImageURI = data.getData();
 			Log.d("KJK", "URI : " + currImageURI.toString());
-			// 실제 절대주소를 받아옴
+			// �ㅼ젣 �덈�二쇱냼瑜�諛쏆븘��
 			imagePath = getRealPathFromURI(currImageURI);
 			Log.d("KJK", "URI : " + currImageURI.toString());
 			Log.d("KJK", "Real Path : " + imagePath);
@@ -69,18 +69,17 @@ public class PhotoputActivity extends Activity {
 			
 			ImageResizer.saveToFile(scaledBitmap, storageFile);*/
 			
-			// image path 얻어왔으면 imgFile초기화.
+			// image path �살뼱�붿쑝硫�imgFile珥덇린��
 	
 /*			Log.d("resize","resizing!");*/
 
-			// img file bitmap 변경
+			// img file bitmap 蹂�꼍
 			if (imgFile.exists()) {
 				mBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 				// getCroppedBitmap(mBitmap);
 				
-				Log.e("비트맵 로드", "성공");
-			} else
-				Log.e("비트맵 디코딩", "실패");
+				Log.e("鍮꾪듃留�濡쒕뱶", "�깃났");
+			} 
 			
 			
 			BitmapDrawable bd = (BitmapDrawable) this.getResources()
@@ -88,8 +87,8 @@ public class PhotoputActivity extends Activity {
 			Bitmap coverBitmap = bd.getBitmap();
 
 			// constructor
-			// mBitmap에 찍은 사진 넣기
-			// cover은 그대로
+			// mBitmap��李띿� �ъ쭊 �ｊ린
+			// cover��洹몃�濡�
 
 //			photoEditor photoEdit = new photoEditor(mBitmap, coverBitmap,
 //					photoAreaWidth, photoAreaHeight);
@@ -97,7 +96,7 @@ public class PhotoputActivity extends Activity {
 //			// crop roun
 //			// overay cover
 //
-//			// 이거하면 이미지 셋됨
+//			// �닿굅�섎㈃ �대�吏��뗫맖
 //			mBitmap = photoEdit.editPhotoAuto();
 //			btn_picbtn.setImageBitmap(mBitmap);
 			break;

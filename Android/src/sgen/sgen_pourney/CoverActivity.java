@@ -1,6 +1,7 @@
 package sgen.sgen_pourney;
 
 
+
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -28,7 +29,7 @@ public class CoverActivity extends Activity implements OnClickListener{
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel;
 	private SimpleSideDrawer mDrawer;
-	private Button askButton;
+	//private Button askButton;
 	long m_startTime;       
 	long m_endTime;
 	boolean m_isPressedBackButton;

@@ -22,6 +22,7 @@
     <string name="call">call</string>
     <string name="call_info">010.2974.5350</string>
     <string name="title_activity_ask">ask_activity</string>
+    <string name="title_activity_drawer">drawer_activity</string>
     
 
 </resources>

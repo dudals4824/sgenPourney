@@ -29,16 +29,21 @@
             android:name="sgen.sgen_pourney.TravelInfoActivity"
             android:label="@string/title_activity_travel_info" >
         </activity>
-        <activity
+         <activity
             android:name="sgen.sgen_pourney.AskActivity"
-            android:label="@string/title_activity_ask">
-        </activity>
+            android:label="@string/title_activity_ask"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity> 
         <activity
             android:name="sgen.sgen_pourney.CoverActivity"
-            android:label="@string/title_activity_cover"
-            android:theme="@android:style/Theme.NoTitleBar"  >
+            android:label="@string/title_activity_cover">
         </activity>
-
+		<activity
+		    android:name="sgen.sgen_pourney.DrawerActivity"
+		    android:label="@string/title_activity_drawer"
+		    android:theme="@android:style/Theme.NoTitleBar">
+		    
+		</activity> 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
