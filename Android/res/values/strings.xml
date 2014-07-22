@@ -23,6 +23,13 @@
     <string name="call_info">010.2974.5350</string>
     <string name="title_activity_ask">ask_activity</string>
     <string name="title_activity_drawer">drawer_activity</string>
-    
+
+    <!-- ListDialog를 위한 string -->
+    <string name="photo_change_title">프로필 사진</string>
+
+    <string-array name="photo_change_list_item">
+        <item>사진 앨범</item>
+        <item>카메라</item>
+    </string-array>
 
 </resources>
