@@ -51,7 +51,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class RegisterActivity extends Activity implements OnClickListener {
+public class JoinActivity extends Activity implements OnClickListener {
 
 	private boolean isIdDuplicated = false, isEmailDuplicated = false;
 	private RegistTask registTask;
@@ -190,7 +190,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			if (result != null) {
 				Log.d("ASYNC", "result = " + result);
 			}
-			Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+			Intent intent = new Intent(JoinActivity.this, LoginActivity.class);
 			startActivity(intent);
 			finish();
 		}
@@ -404,7 +404,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		}
 		// check duplication
 		else if (arg0.getId() == R.id.btnCheckDuplications) {
-			Dialog dialog = new Dialog(RegisterActivity.this,
+			Dialog dialog = new Dialog(JoinActivity.this,
 					R.style.CustomDialogTheme);
 			dialog.setTitle("ddd");
 			dialog.setCancelable(true);
