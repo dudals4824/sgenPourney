@@ -25,7 +25,6 @@ import sgen.common.ListViewDialog.ListViewDialogSelectListener;
 import sgen.common.PhotoEditor;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
@@ -102,7 +101,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 		}
 
 		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
-				R.drawable.btn_addbaby_registmask);
+				R.drawable.i_profilephoto);
 
 		// photoAreaWidth = mPictureBtn.getWidth();
 		// photoAreaHeight = mPictureBtn.getHeight();
@@ -505,7 +504,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 			}
 			// mPictureBtn.setImageBitmap(overlayCover(getCroppedBitmap(resizeBitmapToProfileSize(mBitmap))));
 			BitmapDrawable bd = (BitmapDrawable) this.getResources()
-					.getDrawable(R.drawable.btn_addbaby_registmask);
+					.getDrawable(R.drawable.i_profilephoto_cover);
 			Bitmap coverBitmap = bd.getBitmap();
 			// constructor
 			// mBitmap에 찍은 사진 넣기
