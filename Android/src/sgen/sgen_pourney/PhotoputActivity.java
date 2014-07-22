@@ -64,7 +64,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		tevelTerm=3;
-
 	}
 
 	public void onClick(View v){
