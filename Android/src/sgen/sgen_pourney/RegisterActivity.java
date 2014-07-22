@@ -145,7 +145,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
 			Log.e("arrayList -> ", "email:" + params[0] + " nickname:"
 					+ params[1] + " password:" + params[2]);
-
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
