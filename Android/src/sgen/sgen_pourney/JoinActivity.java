@@ -524,7 +524,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 	// load picture - helping method
 	private Bitmap loadPicture() {
 		Log.e("camera", "load");
-		// TODO Auto-generated method stub
 		File file = new File(Environment.getExternalStorageDirectory(),
 				SAMPLEIMG);
 		BitmapFactory.Options option = new BitmapFactory.Options();
