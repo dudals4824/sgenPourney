@@ -143,7 +143,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		} else if (v.getId() == R.id.btnJoin) {
 			System.out.println("Join");
-			Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
+			Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
 			startActivity(intent);
 		}
 	}
