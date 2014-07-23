@@ -41,8 +41,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.Session;
-
 public class LoginActivity extends Activity implements OnClickListener {
 
 	private ImageButton btnLogin;
