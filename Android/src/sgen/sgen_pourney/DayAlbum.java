@@ -32,7 +32,7 @@ public class DayAlbum extends LinearLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	void initMarbleView(Context context) {
+	private void initMarbleView(Context context) {
 
 		mContext = context;
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
