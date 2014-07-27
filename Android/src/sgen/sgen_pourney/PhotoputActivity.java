@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
 public class PhotoputActivity extends Activity implements OnClickListener {
@@ -33,6 +34,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private Bitmap mBitmap;
 	private int tevelTerm;
 	private Bitmap scaledBitmap;
+	private GridLayout layoutGridPhotoAlbum;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
+		layoutGridPhotoAlbum=(GridLayout)findViewById(R.id.layoutGridPhotoAlbum);
 		tevelTerm = 3;
 	}
 
@@ -96,13 +99,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				Log.d("KJK", "Real Path : " + imagePath);
 
 				Log.d("path", imagePath);
-				imgFile = new File(currImageURI.toString());
+				imgFile = new File(imagePath);
 //				Log.d("path", storagePath);
+				//이 부분이 저장될 파일 위치
 				storageFile = new File("/storage/emulated/0/DCIM/Camera", "a.png");
 				Log.d("path", storageFile.toString());
 				scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 
-//				Log.d("storageFile", storageFile+"");
+				Log.d("scaledBitmap", scaledBitmap+"");
 				ImageResizer.saveToFile(scaledBitmap, storageFile);
 				// image path �살뼱�붿쑝硫�imgFile珥덇린��
 
@@ -113,6 +117,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					mBitmap = BitmapFactory.decodeFile(imgFile
 							.getAbsolutePath());
 					// getCroppedBitmap(mBitmap);
+					layoutGridPhotoAlbum.addView(new Button(PhotoputActivity.this));
 
 					Log.e("鍮꾪듃留�濡쒕뱶", "�깃났");
 				}
