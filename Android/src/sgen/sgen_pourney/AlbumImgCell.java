@@ -50,7 +50,7 @@ public class AlbumImgCell extends RelativeLayout{
 				intent.setType("image/*");
 				intent.setAction(Intent.ACTION_GET_CONTENT);
 				((Activity) mContext).startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
-				Log.d("btn", "btnPhotoAdd");
+			
 			
 			}
 		});
