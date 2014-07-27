@@ -13,18 +13,18 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class AlbumImgCell extends RelativeLayout{
+public class AlbumImgBtnCell extends RelativeLayout{
 	private Context mContext = null;
 	private ImageButton btnPhotoAdd, btnMemoWrite;
 	static final int SELECT_PICTURE = 1;
 
-	public AlbumImgCell(Context context, AttributeSet attrs) {
+	public AlbumImgBtnCell(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initMarbleView(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	public AlbumImgCell(Context context) {
+	public AlbumImgBtnCell(Context context) {
 		super(context);
 		initMarbleView(context);
 
@@ -36,7 +36,7 @@ public class AlbumImgCell extends RelativeLayout{
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
-		View v = li.inflate(R.layout.album_img_cell, this, false);
+		View v = li.inflate(R.layout.album_imgbtn_cell, this, false);
 		addView(v);
 		
 		btnMemoWrite=(ImageButton)findViewById(R.id.btnMemoWrite);
