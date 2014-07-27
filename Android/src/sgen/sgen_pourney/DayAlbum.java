@@ -12,13 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DayAlbum extends LinearLayout {
-	private TextView textDay,textPhotoNum ;
+	private TextView textDay, textPhotoNum;
 	private ImageButton btnPhoto;
 	private Context mContext = null;
 	private GridLayout layoutGridPhotoAlbum;
 	static final int SELECT_PICTURE = 1;
 	static final int REQUEST_PICTURE = 2;
-
 
 	public DayAlbum(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -32,7 +31,7 @@ public class DayAlbum extends LinearLayout {
 
 		// TODO Auto-generated constructor stub
 	}
- 
+
 	void initMarbleView(Context context) {
 
 		mContext = context;
@@ -41,13 +40,15 @@ public class DayAlbum extends LinearLayout {
 				infService);
 		View v = li.inflate(R.layout.dayalbum, this, false);
 		addView(v);
-		
-		textDay=(TextView)findViewById(R.id.textDay);
-		textPhotoNum=(TextView)findViewById(R.id.textPhotoNum);
-		layoutGridPhotoAlbum=(GridLayout)findViewById(R.id.layoutGridPhotoAlbum);
-		
-		layoutGridPhotoAlbum.addView(new AlbumImgCell(mContext));
-		
+
+		textDay = (TextView) findViewById(R.id.textDay);
+		textPhotoNum = (TextView) findViewById(R.id.textPhotoNum);
+		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
+
+		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext),
+				layoutGridPhotoAlbum.getChildCount());
+
+
 	}
 
 }
