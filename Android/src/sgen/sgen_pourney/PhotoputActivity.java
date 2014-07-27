@@ -3,9 +3,7 @@ package sgen.sgen_pourney;
 import java.io.File;
 
 import sgen.image.resizer.ImageResizer;
-import sgen.image.resizer.ResizeMode;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,11 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -29,21 +26,21 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private Uri currImageURI;
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
-	private Button askBtn,logoutBtn,albumBtn;
-	private String storagePath=Environment.DIRECTORY_DCIM+"/pic";
+	private Button askBtn, logoutBtn, albumBtn;
+	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
 	private Bitmap mBitmap;
 	private int tevelTerm;
 	private Bitmap scaledBitmap;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_photoput);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-				R.layout.custom_title);		
+				R.layout.custom_title);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
@@ -54,21 +51,20 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 			}
 		});
-		askBtn=(Button)findViewById(R.id.ask_text);
+		askBtn = (Button) findViewById(R.id.ask_text);
 		askBtn.setOnClickListener(this);
-		albumBtn=(Button)findViewById(R.id.last_album_text);
+		albumBtn = (Button) findViewById(R.id.last_album_text);
 		albumBtn.setOnClickListener(this);
-		logoutBtn=(Button)findViewById(R.id.log_out_text);
+		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		logoutBtn.setOnClickListener(this);
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
-		tevelTerm=3;
+		tevelTerm = 3;
 	}
 
-	public void onClick(View v){
-		if(v.getId()==R.id.ask_text)
-		{
+	public void onClick(View v) {
+		if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
 		}
@@ -83,62 +79,63 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			finish();
 		}
 	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		Log.d("ddd", "ddd");
-		switch (resultCode) {
-		case SELECT_PICTURE:
-			currImageURI = data.getData();
-			Log.d("KJK", "URI : " + currImageURI.toString());
-			// �ㅼ젣 �덈�二쇱냼瑜�諛쏆븘��
-			imagePath = getRealPathFromURI(currImageURI);
-			Log.d("KJK", "URI : " + currImageURI.toString());
-			Log.d("KJK", "Real Path : " + imagePath);
+		Log.d("onActivityResult", "onActivityResult");
+		Log.d("onActivityResult", resultCode+"");
+		if (resultCode  == RESULT_OK) {
+			Log.d("onActivityResult", "requestCode==RESULT_OK");
+			if (requestCode == SELECT_PICTURE) {
+				currImageURI = data.getData();
+				Log.d("KJK", "URI : " + currImageURI.toString());
+				// �ㅼ젣 �덈�二쇱냼瑜�諛쏆븘��
+				imagePath = getRealPathFromURI(data.getData());
+				Log.d("KJK", "URI : " + currImageURI.toString());
+				Log.d("KJK", "Real Path : " + imagePath);
 
-			/*Log.d("path",imagePath);
-			imgFile = new File(imagePath);
-			Log.d("path",storagePath);
-			storageFile=new File(storagePath);
+				Log.d("path", imagePath);
+				imgFile = new File(currImageURI.toString());
+//				Log.d("path", storagePath);
+				storageFile = new File("/storage/emulated/0/DCIM/Camera", "a.png");
+				Log.d("path", storageFile.toString());
+				scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 
-			scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
-			
-			ImageResizer.saveToFile(scaledBitmap, storageFile);*/
-			
-			// image path �살뼱�붿쑝硫�imgFile珥덇린��
-	
-/*			Log.d("resize","resizing!");*/
+//				Log.d("storageFile", storageFile+"");
+				ImageResizer.saveToFile(scaledBitmap, storageFile);
+				// image path �살뼱�붿쑝硫�imgFile珥덇린��
 
-			// img file bitmap 蹂�꼍
-			if (imgFile.exists()) {
-				mBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-				// getCroppedBitmap(mBitmap);
-				
-				Log.e("鍮꾪듃留�濡쒕뱶", "�깃났");
-			} 
-			
-			
-			BitmapDrawable bd = (BitmapDrawable) this.getResources()
-					.getDrawable(R.drawable.i_photo_gray_mask318x318);
-			Bitmap coverBitmap = bd.getBitmap();
+				/* Log.d("resize","resizing!"); */
 
-			// constructor
-			// mBitmap��李띿� �ъ쭊 �ｊ린
-			// cover��洹몃�濡�
+				// img file bitmap 蹂�꼍
+				if (imgFile.exists()) {
+					mBitmap = BitmapFactory.decodeFile(imgFile
+							.getAbsolutePath());
+					// getCroppedBitmap(mBitmap);
 
-//			photoEditor photoEdit = new photoEditor(mBitmap, coverBitmap,
-//					photoAreaWidth, photoAreaHeight);
-//			// resize
-//			// crop roun
-//			// overay cover
-//
-//			// �닿굅�섎㈃ �대�吏��뗫맖
-//			mBitmap = photoEdit.editPhotoAuto();
-//			btn_picbtn.setImageBitmap(mBitmap);
-			break;
+					Log.e("鍮꾪듃留�濡쒕뱶", "�깃났");
+				}
 
-		default:
-			break;
+				BitmapDrawable bd = (BitmapDrawable) this.getResources()
+						.getDrawable(R.drawable.i_photo_gray_mask318x318);
+				Bitmap coverBitmap = bd.getBitmap();
+
+				// constructor
+				// mBitmap��李띿� �ъ쭊 �ｊ린
+				// cover��洹몃�濡�
+
+				// photoEditor photoEdit = new photoEditor(mBitmap, coverBitmap,
+				// photoAreaWidth, photoAreaHeight);
+				// // resize
+				// // crop roun
+				// // overay cover
+				//
+				// // �닿굅�섎㈃ �대�吏��뗫맖
+				// mBitmap = photoEdit.editPhotoAuto();
+				// btn_picbtn.setImageBitmap(mBitmap);
+
+			}
 		}
 	}
 
