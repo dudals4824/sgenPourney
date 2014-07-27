@@ -116,9 +116,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				if (imgFile.exists()) {
 					mBitmap = BitmapFactory.decodeFile(imgFile
 							.getAbsolutePath());
+					Log.d("mBitmap", imgFile.getAbsolutePath()+"");
 					// getCroppedBitmap(mBitmap);
-					layoutGridPhotoAlbum.addView(new Button(PhotoputActivity.this));
-
+					layoutGridPhotoAlbum.addView(new AlbumImgCell(PhotoputActivity.this,mBitmap));
 					Log.e("鍮꾪듃留�濡쒕뱶", "�깃났");
 				}
 
