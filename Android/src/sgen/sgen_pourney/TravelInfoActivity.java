@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
+import sgen.android.photoput.PhotoputActivity;
 import sgen.session.UserSessionManager;
 import android.app.Activity;
 import android.content.Context;
