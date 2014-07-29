@@ -219,9 +219,9 @@
                     android:layout_below="@id/textTitleHere"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12.33dp"
-                    android:background="@drawable/i_title_924x98"
+                    android:background="@layout/travelinfo_titleclick_event"
                     android:gravity="center_horizontal|center_vertical"
-                    android:hint="-" />
+                    android:hint="title" />
 
                 <TextView
                     android:id="@+id/textCalendarHere"
