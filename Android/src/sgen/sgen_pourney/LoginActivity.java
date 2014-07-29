@@ -34,14 +34,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends Activity implements OnClickListener{
 
 	private ImageButton btnLogin;
 	private ImageButton btnFacebook, btnJoin;
@@ -105,9 +107,27 @@ public class LoginActivity extends Activity implements OnClickListener {
 						"Please enter username and password", Toast.LENGTH_LONG)
 						.show();
 			}
-		} else if (v.getId() == R.id.editEmailaddress) {
-			editEmailaddress
-					.setBackgroundResource(R.drawable.i_emailaddress_put);
+		} // else if (v.getId() == R.id.editEmailaddress) {
+		// editEmailaddress
+		// .setBackgroundResource(R.drawable.i_emailaddress_put);
+		// }
+		else if (v.getId() == R.id.editPwd) {
+			v.setOnTouchListener(new OnTouchListener() { // 버튼 터치시 이벤트
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) // 버튼을 누르고
+																		// 있을 때
+						editPassword
+								.setBackgroundResource(R.drawable.i_password_put);
+					if (event.getAction() == MotionEvent.ACTION_UP) { // 버튼에서 손을
+																		// 떼었을 때
+						editPassword
+								.setBackgroundResource(R.drawable.i_password);
+					}
+					return false;
+				}
+			});
+			// editPassword
+			// .setBackgroundResource(R.drawable.i_password_put);
 		} else if (v.getId() == R.id.btnFacebook) { // facebook login 占쏙옙 id
 													// 占쏙옙占�
 			Session.openActiveSession(this, true, new Session.StatusCallback() {
@@ -271,5 +291,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
 
 	}
+
 
 }
