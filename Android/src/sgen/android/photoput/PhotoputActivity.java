@@ -1,10 +1,18 @@
-package sgen.sgen_pourney;
+package sgen.android.photoput;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import sgen.image.resizer.ImageResizer;
+import sgen.sgen_pourney.AskActivity;
+import sgen.sgen_pourney.CoverActivity;
+import sgen.sgen_pourney.LoginActivity;
+import sgen.sgen_pourney.R;
+import sgen.sgen_pourney.SimpleSideDrawer;
+import sgen.sgen_pourney.R.drawable;
+import sgen.sgen_pourney.R.id;
+import sgen.sgen_pourney.R.layout;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;

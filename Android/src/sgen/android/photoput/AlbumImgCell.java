@@ -1,9 +1,12 @@
-package sgen.sgen_pourney;
+package sgen.android.photoput;
 
 import java.io.File;
 
 import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ImageResizer;
+import sgen.sgen_pourney.R;
+import sgen.sgen_pourney.R.id;
+import sgen.sgen_pourney.R.layout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
