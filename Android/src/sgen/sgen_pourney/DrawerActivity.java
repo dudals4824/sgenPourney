@@ -31,8 +31,8 @@ public class DrawerActivity extends Activity implements OnClickListener{
 		Intent intent = new Intent(DrawerActivity.this,AskActivity.class);
 		startActivity(intent);
 		}
-		if(v.getId()==R.id.ask_text){
-			Intent intent = new Intent(DrawerActivity.this,LoginActivity.class);
+		if(v.getId()==R.id.last_album_text){
+			Intent intent = new Intent(DrawerActivity.this,CoverActivity.class);
 			startActivity(intent);
 		}
 	}
