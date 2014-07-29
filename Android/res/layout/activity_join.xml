@@ -81,7 +81,7 @@
             android:layout_marginLeft="14.33dp"
             android:layout_marginTop="27dp"
             android:layout_toRightOf="@id/imgVerticalStroke1"
-            android:background="@drawable/i_button"
+            android:background="@layout/join_edittextclick_event"
             android:gravity="center"
             android:hint="E-mail address" 
              />
@@ -114,9 +114,9 @@
             android:layout_marginLeft="14.33dp"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/imgVerticalStroke2"
-            android:background="@drawable/i_button"
+            android:background="@layout/join_edittextclick_event"
             android:gravity="center"
-            android:hint="8자 이상" />
+            android:hint="Nickname" />
 
         <ImageButton
             android:id="@+id/btnCheckDuplications"
@@ -160,7 +160,7 @@
             android:layout_below="@id/btnCheckDuplications"
             android:layout_marginTop="21dp"
             android:layout_toRightOf="@id/imgVerticalStroke2"
-            android:background="@drawable/i_button"
+            android:background="@layout/join_edittextclick_event"
             android:gravity="center"
             android:inputType="textPassword"
             android:hint="8자 이상" />
@@ -195,7 +195,9 @@
             android:layout_below="@id/editPassword"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/imgVerticalStroke4"
-            android:background="@drawable/i_button"
+            android:background="@layout/join_edittextclick_event"
+            
+            android:hint="8자 이상"
             android:gravity="center"
             android:inputType="textPassword" />
 
