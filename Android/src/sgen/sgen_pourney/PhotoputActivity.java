@@ -1,6 +1,8 @@
 package sgen.sgen_pourney;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import sgen.image.resizer.ImageResizer;
 import android.app.Activity;
@@ -62,7 +64,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
-		layoutGridPhotoAlbum=(GridLayout)findViewById(R.id.layoutGridPhotoAlbum);
+		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 		tevelTerm = 3;
 	}
 
@@ -87,8 +89,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		Log.d("onActivityResult", "onActivityResult");
-		Log.d("onActivityResult", resultCode+"");
-		if (resultCode  == RESULT_OK) {
+		Log.d("onActivityResult", resultCode + "");
+		if (resultCode == RESULT_OK) {
 			Log.d("onActivityResult", "requestCode==RESULT_OK");
 			if (requestCode == SELECT_PICTURE) {
 				currImageURI = data.getData();
@@ -98,17 +100,23 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				Log.d("KJK", "URI : " + currImageURI.toString());
 				Log.d("KJK", "Real Path : " + imagePath);
 
-//				Log.d("path", imagePath);
+				// sample bitmaplist
+				ArrayList<Bitmap> bitmapList=new ArrayList<Bitmap>();
+				bitmapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.i_back));
+				bitmapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.i_caledar));
+				bitmapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.i_logo));
+
+				// Log.d("path", imagePath);
 				imgFile = new File(imagePath);
-//				Log.d("path", storagePath);
-				//이 부분이 저장될 파일 위치
-				storageFile = new File("/storage/emulated/0/DCIM/Camera", "a.png");
+				// Log.d("path", storagePath);
+				// 이 부분이 저장될 파일 위치
+				storageFile = new File("/storage/emulated/0/DCIM/Camera",
+						"a.png");
 				Log.d("path", storageFile.toString());
 				scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 
-				Log.d("scaledBitmap", scaledBitmap+"");
+				Log.d("scaledBitmap", scaledBitmap + "");
 				ImageResizer.saveToFile(scaledBitmap, storageFile);
-				// image path �살뼱�붿쑝硫�imgFile珥덇린��
 
 				/* Log.d("resize","resizing!"); */
 
@@ -116,9 +124,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				if (imgFile.exists()) {
 					mBitmap = BitmapFactory.decodeFile(imgFile
 							.getAbsolutePath());
-					Log.d("mBitmap", imgFile.getAbsolutePath()+"");
+					Log.d("mBitmap", imgFile.getAbsolutePath() + "");
 					// getCroppedBitmap(mBitmap);
-					layoutGridPhotoAlbum.addView(new AlbumImgCell(PhotoputActivity.this,mBitmap));
+					for (int i = 0; i < bitmapList.size(); i++) {
+						//리사이징 안할거니까 imgFile없애야함
+						layoutGridPhotoAlbum.addView(new AlbumImgCell(PhotoputActivity.this, bitmapList.get(i), imgFile));
+					}
 					Log.e("鍮꾪듃留�濡쒕뱶", "�깃났");
 				}
 
