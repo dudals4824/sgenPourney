@@ -1,4 +1,4 @@
-package sgen.android.photoput;
+ package sgen.android.photoput;
 
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.R.id;
