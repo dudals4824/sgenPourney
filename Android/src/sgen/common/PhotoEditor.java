@@ -1,13 +1,19 @@
 package sgen.common;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
 
 public class PhotoEditor {
 	private Bitmap photoBitmap;
@@ -56,8 +62,8 @@ public class PhotoEditor {
 	public void setPhotoAreaHeight(int photoAreaHeight) {
 		this.photoAreaHeight = photoAreaHeight;
 	}
-	
-	public Bitmap editPhotoAuto(){
+
+	public Bitmap editPhotoAuto() {
 		resizeBitmapToProfileSize();
 		getCroppedCircle();
 		overlayCover();
@@ -93,11 +99,27 @@ public class PhotoEditor {
 
 	// cover 씌우는애
 	private void overlayCover() {
-		coveredPhoto = Bitmap.createBitmap(photoAreaWidth,
-				photoAreaHeight, photoBitmap.getConfig());
+		coveredPhoto = Bitmap.createBitmap(photoAreaWidth, photoAreaHeight,
+				photoBitmap.getConfig());
 		Canvas canvas = new Canvas(coveredPhoto);
 		canvas.drawBitmap(photoBitmap, new Matrix(), null);
 		canvas.drawBitmap(coverBitmap, new Matrix(), null);
+	}
+
+	private Bitmap ImageurlToBitmapConverter(String src) {
+		try {
+			URL url = new URL(src);
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setDoInput(true);
+			connection.connect();
+			InputStream input = connection.getInputStream();
+			Bitmap myBitmap = BitmapFactory.decodeStream(input);
+			return myBitmap;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
