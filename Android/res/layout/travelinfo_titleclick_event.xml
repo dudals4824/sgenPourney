@@ -1,0 +1,8 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+ 
+    <!--  Pressed Button -->
+    <item android:state_focused="true" android:drawable="@drawable/i_titleput_924x98"/>
+    <!--  UnPressed Button -->
+    <item android:state_focused="false" android:drawable="@drawable/i_title_924x98"/> 
+    </selector>
