@@ -2,7 +2,6 @@ package sgen.android.photoput;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import sgen.image.resizer.ImageResizer;
 import sgen.sgen_pourney.AskActivity;
@@ -10,10 +9,8 @@ import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
-import sgen.sgen_pourney.R.drawable;
-import sgen.sgen_pourney.R.id;
-import sgen.sgen_pourney.R.layout;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -24,12 +21,27 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 public class PhotoputActivity extends Activity implements OnClickListener {
 	static final int SELECT_PICTURE = 1;
@@ -45,6 +57,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private int tevelTerm;
 	private Bitmap scaledBitmap;
 	private GridLayout layoutGridPhotoAlbum;
+	private ArrayList<String> imageUrls;
+    private DisplayImageOptions options;
+    private ImageAdapter imageAdapter;
+    protected ImageLoader imageLoader = ImageLoader.getInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +90,33 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 		tevelTerm = 3;
+		
+		//여기서부터 갤러리 이미지 다중 선택을 위해서
+		final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
+        final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+        Cursor imagecursor = managedQuery(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+                null, orderBy + " DESC");
+ 
+        this.imageUrls = new ArrayList<String>();
+ 
+        for (int i = 0; i < imagecursor.getCount(); i++) {
+            imagecursor.moveToPosition(i);
+            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            imageUrls.add(imagecursor.getString(dataColumnIndex));
+ 
+            System.out.println("=====> Array path => "+imageUrls.get(i));
+        }
+ 
+        options = new DisplayImageOptions.Builder()
+            .showStubImage(R.drawable.i_memo_back)
+            .showImageForEmptyUri(R.drawable.i_memo)
+            .cacheInMemory()
+            .cacheOnDisc()
+            .build();
+ 
+        imageAdapter = new ImageAdapter(this, imageUrls);
+		//여기까지
 	}
 
 	public void onClick(View v) {
@@ -176,5 +219,96 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		cursor.close();
 		return path;
 	}
+//	@Override
+//    protected void onStop() {
+//        imageLoader.stop();
+//        super.onStop();
+//    }
+ 
+    public void btnChoosePhotosClick(View v){
+ 
+        ArrayList<String> selectedItems = imageAdapter.getCheckedItems();
+
+    }
+ 
+    /*private void startImageGalleryActivity(int position) {
+        Intent intent = new Intent(this, ImagePagerActivity.class);
+        intent.putExtra(Extra.IMAGES, imageUrls);
+        intent.putExtra(Extra.IMAGE_POSITION, position);
+        startActivity(intent);
+    }*/
+ 
+    public class ImageAdapter extends BaseAdapter {
+ 
+        ArrayList<String> mList;
+        LayoutInflater mInflater;
+        Context mContext;
+        SparseBooleanArray mSparseBooleanArray;
+ 
+        public ImageAdapter(Context context, ArrayList<String> imageList) {
+            // TODO Auto-generated constructor stub
+            mContext = context;
+            mInflater = LayoutInflater.from(mContext);
+            mSparseBooleanArray = new SparseBooleanArray();
+            mList = new ArrayList<String>();
+            this.mList = imageList;
+ 
+        }
+ 
+        public ArrayList<String> getCheckedItems() {
+            ArrayList<String> mTempArry = new ArrayList<String>();
+ 
+            for(int i=0;i<mList.size();i++) {
+                if(mSparseBooleanArray.get(i)) {
+                    mTempArry.add(mList.get(i));
+                }
+            }
+ 
+            return mTempArry;
+        }
+ 
+        @Override
+        public int getCount() {
+            return imageUrls.size();
+        }
+ 
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+ 
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+ 
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+ 
+            if(convertView == null) {
+                convertView = mInflater.inflate(R.layout.row_multiphoto_item, null);
+            }
+ 
+            CheckBox mCheckBox = (CheckBox) convertView.findViewById(R.id.checkBox1);
+            final ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView1);
+ 
+ 
+ 
+            mCheckBox.setTag(position);
+            mCheckBox.setChecked(mSparseBooleanArray.get(position));
+            mCheckBox.setOnCheckedChangeListener(mCheckedChangeListener);
+ 
+            return convertView;
+        }
+ 
+        OnCheckedChangeListener mCheckedChangeListener = new OnCheckedChangeListener() {
+ 
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO Auto-generated method stub
+                mSparseBooleanArray.put((Integer) buttonView.getTag(), isChecked);
+            }
+        };
+    }
 
 }
