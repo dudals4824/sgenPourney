@@ -57,8 +57,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
 		layout_cover.addView(new CoverCell(this));
 		layout_cover.addView(new CoverCell(this));
-		layout_cover.addView(new CoverCell(this));// 占썩뫀苡�揶쏉옙�뷂쭕�곌껍
-													// 占싼됎�占쎈슢�곻쭖占쏙옙占쏙옙�륁㉦占쏙옙
+		layout_cover.addView(new CoverCell(this));// 커버 수만큼 출력
+													// 맨뒤에 생길거
 		layout_cover.addView(new CoverCellNew(this));
 		// layout_cover_new = (GridLayout)findViewById(R.id.layout_cover_new);
 		// layout_cover_new.addView(new Cover_cell_new(this));
@@ -108,7 +108,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 			m_startTime = System.currentTimeMillis();
 
 			Toast.makeText(this,
-					"'占썬끇以�甕곌쑵�됵옙占쏙옙�뺤쓰 占쏙옙占쎄쑬�ㅿ옙�뺛늺 �ル굝利븝옙�몃빍占쏙옙",
+					"'뒤로'버튼을 한번 더 누르시면 종료됩니다.",
 					Toast.LENGTH_SHORT).show();
 		} else {
 			finish();
