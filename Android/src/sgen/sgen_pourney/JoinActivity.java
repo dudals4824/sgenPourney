@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import sgen.common.ListViewDialog;
 import sgen.common.ListViewDialog.ListViewDialogSelectListener;
 import sgen.common.PhotoEditor;
+import sgen.common.ProfileUploader;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -69,14 +70,21 @@ public class JoinActivity extends Activity implements OnClickListener {
 	static final int REQUEST_PICTURE = 2;
 
 	// for profile phpto
+	private ProfileUploader pfUploader = null;
 	private Uri currImageURI;
-	private String imagePath;
+	private String imagePath = null;
 
 	private File imgFile;
 	private Bitmap mBitmap;
 
 	private int photoAreaWidth;
 	private int photoAreaHeight;
+	
+	//
+	private String email;
+	private String nickname;
+	private String password;
+	private String passwordConfirm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +95,8 @@ public class JoinActivity extends Activity implements OnClickListener {
 				R.layout.custom_title);
 		// layout initializing
 		initLayout();
+
+		pfUploader = new ProfileUploader();
 
 		idDuplicationToast = Toast.makeText(this, "닉네임이 중복됩니다.",
 				Toast.LENGTH_SHORT);
@@ -125,7 +135,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 	}
-
+	
 	// server task - regist
 	public class RegistTask extends AsyncTask<String, String, String> {
 
@@ -152,6 +162,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
+
 			} catch (Exception e) {
 				Log.e("log_tag", "error in http connection" + e.toString());
 			}
@@ -185,6 +196,10 @@ public class JoinActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+
+			// profile upload
+			// ProfileUploader pfUploader = new ProfileUploader();
+			// pfUploader.uploadFile(imagePath, userse, tripId);
 
 			if (result != null) {
 				Log.d("ASYNC", "result = " + result);
@@ -341,11 +356,10 @@ public class JoinActivity extends Activity implements OnClickListener {
 		}
 		// join
 		else if (arg0.getId() == R.id.btnJoin) {
-
-			String email = editEmail.getText().toString();
-			String nickname = editNickname.getText().toString();
-			String password = editPassword.getText().toString();
-			String passwordConfirm = editPasswordConfirm.getText().toString();
+			email = editEmail.getText().toString();
+			nickname = editNickname.getText().toString();
+			password = editPassword.getText().toString();
+			passwordConfirm = editPasswordConfirm.getText().toString();
 
 			boolean isPasswordValid = false;
 
@@ -357,8 +371,21 @@ public class JoinActivity extends Activity implements OnClickListener {
 			if (isDuplicationChecked && isPasswordValid && !isIdDuplicated
 					&& !isEmailDuplicated && password.equals(passwordConfirm)) {
 				// 5개 validation check 모두 했을시 회원가입 task 수행.
-				registTask = new RegistTask();
-				registTask.execute(email, nickname, password);
+				// registTask = new RegistTask();
+				// registTask.execute(email, nickname, password);
+
+				new Thread(new Runnable() {
+					public void run() {
+						// save image with userid=40, tripid=50
+						Log.e("msg_log","imagepath = "+imagePath);
+						pfUploader.uploadFile(imagePath, nickname, email, password);
+					}
+				}).start();
+				
+				Intent intent = new Intent(JoinActivity.this, LoginActivity.class);
+				startActivity(intent);
+				finish();
+
 			}
 			// 예외처리
 			else if (!isDuplicationChecked) {
@@ -386,20 +413,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 						Toast.LENGTH_SHORT);
 				toast.show();
 			}
-
-			/*
-			 * if (!isDuplicationChecked) { Toast toast = Toast.makeText(this,
-			 * "중복체크를 해주세요.", Toast.LENGTH_SHORT); toast.show(); } // password
-			 * confirming and regist else if (password.equals(passwordConfirm)
-			 * && !isIdDuplicated && !isEmailDuplicated) { // execute register
-			 * task when password is same registTask = new RegistTask();
-			 * registTask.execute(email, nickname, password); } else {
-			 * 
-			 * Log.e("register log", "password different"); Toast toast =
-			 * Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT);
-			 * toast.show(); }
-			 */
-
 		}
 		// check duplication
 		else if (arg0.getId() == R.id.btnCheckDuplications) {
