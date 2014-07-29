@@ -98,7 +98,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				Log.d("KJK", "URI : " + currImageURI.toString());
 				Log.d("KJK", "Real Path : " + imagePath);
 
-				Log.d("path", imagePath);
+//				Log.d("path", imagePath);
 				imgFile = new File(imagePath);
 //				Log.d("path", storagePath);
 				//이 부분이 저장될 파일 위치
