@@ -48,6 +48,7 @@ public class AlbumImgBtnCell extends RelativeLayout{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.setType("image/*");
+			//	intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 				intent.setAction(Intent.ACTION_GET_CONTENT);
 				((Activity) mContext).startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
 			
