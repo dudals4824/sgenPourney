@@ -50,7 +50,7 @@ public class CustomGalleryActivity extends Activity implements OnClickListener {
 			arrPath[i] = imagecursor.getString(dataColumnIndex);
 		}
 		GridView gridviewGallery = (GridView) findViewById(R.id.gridviewGallery);
-		imageAdapter = new ImageAdapter(CustomGalleryActivity.this);
+		imageAdapter = new ImageAdapter(CustomGalleryActivity.this,thumbnailsselection,arrPath,thumbnails);
 		gridviewGallery.setAdapter(imageAdapter);
 		imagecursor.close();
 		btnSelectPhotos = (Button) findViewById(R.id.btnSelectPhotos);
