@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="11.33dp" >
+
+        <TextView
+            android:id="@+id/textDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1.67dp"
+            android:background="@drawable/ic_day_180x48"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="07.25"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/textPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textDay"
+            android:layout_marginLeft="20.67dp"
+            android:layout_marginTop="7dp"
+            android:text="photo" />
+
+        <TextView
+            android:id="@+id/textPhotoNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/textPhoto"
+            android:layout_below="@id/textPhoto"
+            android:layout_marginTop="2.67dp"
+            android:text="1" />
+    </RelativeLayout>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <GridView
+            android:id="@+id/gridviewPhotoAlbum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4.33dp"
+            android:rowCount="1" >
+        </GridView>
+    </HorizontalScrollView>
+
+</LinearLayout>
