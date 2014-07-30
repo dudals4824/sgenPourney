@@ -31,5 +31,6 @@
         <item>사진 앨범</item>
         <item>카메라</item>
     </string-array>
+    <string name="title_profile_modi">ProfileModi</string>
 
 </resources>

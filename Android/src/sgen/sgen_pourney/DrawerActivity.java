@@ -35,10 +35,7 @@ public class DrawerActivity extends Activity implements OnClickListener{
 			Intent intent = new Intent(DrawerActivity.this,CoverActivity.class);
 			startActivity(intent);
 		}
-		if(v.getId()==R.id.profile_modifying_text){
-			Intent intent = new Intent(DrawerActivity.this,ProfileModi.class);
-			startActivity(intent);
-		}
+
 		
 	}
 }

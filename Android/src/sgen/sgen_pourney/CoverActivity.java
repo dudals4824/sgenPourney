@@ -29,6 +29,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private Button askBtn;
 	private Button logoutBtn;
 	private Button albumBtn;
+	private Button profileBtn;
 	long m_startTime;
 	long m_endTime;
 	boolean m_isPressedBackButton;
@@ -72,6 +73,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		albumBtn.setOnClickListener(this);
+		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		profileBtn.setOnClickListener(this);
 	}
 
 	@Override
@@ -92,6 +95,10 @@ public class CoverActivity extends Activity implements OnClickListener {
 		}
 		if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
+			startActivity(intent);
+		}
+		if (v.getId() == R.id.profile_modifying_text) {
+			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 		}
 	}
