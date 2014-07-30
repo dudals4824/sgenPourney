@@ -5,7 +5,9 @@ import java.util.Calendar; //나중에 필요
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class VideoMakingActivity extends Activity {
@@ -22,15 +24,28 @@ public class VideoMakingActivity extends Activity {
 	private TextView timer;
 	private final long startTime = 24 * 60 * 60 * 1000; //24시간 밀리세컨 단위임 비교한 값 여기에 넣으면 됨요
 	private final long interval = 100 ;
+	
+	private SimpleSideDrawer mDrawer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_video);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		mDrawer = new SimpleSideDrawer(this);
+		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
+		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mDrawer.toggleLeftDrawer();
+
+			}
+		});
 		
 		timer = (TextView) this.findViewById(R.id.timer);
 		countDownTimer = new MyCountDownTimer(startTime, interval);

@@ -384,12 +384,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		String start_date1 = " ";
 		String end_date1 = " ";
-		if (v.getId() == R.id.editTitle && hasFocus) {
-			editTitle.setBackgroundResource(R.drawable.i_titleput_924x98);
-		} else if (v.getId() == R.id.gridDate && hasFocus) {
-
-		} else {
-		}
+		
 		textTitle.setText(editTitle.getText());
 
 		start_date1 = Integer.toString(startdate / 10000) + " "

@@ -102,7 +102,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		if (m_endTime - m_startTime > 2000)
 			m_isPressedBackButton = false;
 
-		if (m_isPressedBackButton == false) {
+		if (m_isPressedBackButton == false) {	
 			m_isPressedBackButton = true;
 
 			m_startTime = System.currentTimeMillis();
