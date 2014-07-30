@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sgen.sgen_pourney.JoinActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <!-- 상단 -->
+
+    <RelativeLayout
+        android:id="@+id/layoutTopback"
+        android:layout_width="fill_parent"
+        android:layout_height="157.33dp"
+        android:background="#012440" >
+
+        <ImageView
+            android:id="@+id/imgMakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27.33dp"
+            android:src="@drawable/i_makephoto" />
+
+        <ImageButton 
+            android:id="@+id/btnForProfilePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imgMakePhoto"
+            android:layout_alignLeft="@+id/imgMakePhoto"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/i_profilephoto_button"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"/>
+        <ImageView
+            android:id="@+id/imgInfoBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="58.67dp"
+            android:layout_marginTop="18.67dp"
+            android:src="@drawable/i_infobutton" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/layoutTopback"
+        android:background="#67b2ee" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/i_stroke" />
+
+
+
+        
+
+        
+
+        <TextView
+            android:id="@+id/textNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEmail"
+            android:layout_marginLeft="42.33dp"
+            android:layout_marginTop="44.33dp"
+            android:text="닉네임"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/imgVerticalStroke2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgVerticalStroke1"
+            android:layout_marginLeft="14.67dp"
+            android:layout_marginTop="38dp"
+            android:layout_toRightOf="@id/textNickName"
+            android:src="@drawable/i_verticalstroke" />
+
+        <EditText
+            android:id="@+id/editNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editEmail"
+            android:layout_marginLeft="14.33dp"
+            android:layout_marginTop="35dp"
+            android:layout_toRightOf="@id/imgVerticalStroke2"
+            android:background="@layout/join_edittextclick_event"
+            android:gravity="center"
+            android:hint="Nickname" />
+
+        <ImageButton
+            android:id="@+id/btnCheckDuplications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/editNickName"
+            android:layout_below="@id/editNickName"
+            android:layout_marginTop="19.67dp"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_confirm" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/i_logo" />
+
+        <ImageButton
+            android:id="@+id/btnJoin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="26dp"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_join_register" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
