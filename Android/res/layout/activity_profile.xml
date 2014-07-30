@@ -125,7 +125,7 @@
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:scaleType="fitXY"
-            android:src="@drawable/i_modifybutton" />
+            android:src="@drawable/i_join_register" />
 
     </RelativeLayout>
 
