@@ -54,6 +54,7 @@ public class AlbumImgBtnCell extends RelativeLayout{
 			//	intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 				intent.setAction(Intent.ACTION_GET_CONTENT);
 				((Activity) mContext).startActivityForResult(Intent.createChooser(intent,"Select Picture"), SELECT_PICTURE);
+				//여기서 갤러리 액티비티로 넘어가게
 			
 			
 			}

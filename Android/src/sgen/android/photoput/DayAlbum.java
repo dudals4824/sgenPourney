@@ -48,8 +48,7 @@ public class DayAlbum extends LinearLayout {
 		textPhotoNum = (TextView) findViewById(R.id.textPhotoNum);
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 
-		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext),
-				layoutGridPhotoAlbum.getChildCount());
+		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext));
 
 
 	}
