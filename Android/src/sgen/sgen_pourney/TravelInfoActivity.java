@@ -53,7 +53,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private ExpandableHeightGridView gridCalendar, gridDate;
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth;
-	private Button askBtn,logoutBtn,albumBtn;
+	private Button askBtn,logoutBtn,albumBtn,profileBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ImageButton btnPeople1, btnPeople2, btnPeople3;
 	private EditText editTitle, peopleName;
@@ -113,6 +113,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		askBtn=(Button)findViewById(R.id.ask_text);
 		logoutBtn=(Button)findViewById(R.id.log_out_text);
 		albumBtn=(Button)findViewById(R.id.last_album_text);
+		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
 		textTitle = (TextView) findViewById(R.id.textTitle);
@@ -136,6 +137,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		askBtn.setOnClickListener(this);
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
+		profileBtn.setOnClickListener(this);
 		today = new Dayinfo();
 		getCalendar(today);
 
@@ -214,6 +216,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 		if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		if (v.getId() == R.id.profile_modifying_text) {
+			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
 		}
