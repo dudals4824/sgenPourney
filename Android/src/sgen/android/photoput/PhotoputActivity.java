@@ -3,8 +3,6 @@ package sgen.android.photoput;
 import java.io.File;
 import java.util.ArrayList;
 
-import sgen.android.multigallery.ImageAdapter;
-import sgen.android.multigallery.ThumbImageInfo;
 import sgen.image.resizer.ImageResizer;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
@@ -19,7 +17,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -56,8 +53,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	// 갤러리 사용을 위한 변수 선언
 	private ProgressDialog mLoagindDialog;
 	private GridView gridviewPhotoAlbum;
-	private ImageAdapter mListAdapter;
-	private ArrayList<ThumbImageInfo> mThumbImageInfoList;
+//	private ImageAdapter mListAdapter;
+//	private ArrayList<ThumbImageInfo> mThumbImageInfoList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
