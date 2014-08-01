@@ -26,14 +26,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:text="민아공공민아민아공즐" />
+            android:layout_marginTop="120dp" />
 
         <Button
             android:id="@+id/last_album_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="240dp"
+            android:padding="10dp"
             android:background="@android:color/transparent"
             android:text="@string/last_album"
             android:textColor="#FFF" />
@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="300dp"
+            android:padding="10dp"
             android:background="@android:color/transparent"
             android:text="@string/profile_modifying"
             android:textColor="#FFF" />
@@ -52,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="360dp"
+            android:padding="10dp"
             android:background="@android:color/transparent"
             android:text="@string/log_out"
             android:textColor="#FFF" />
@@ -61,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="420dp"
+            android:padding="10dp"
             android:background="@android:color/transparent"
             android:text="@string/ask"
             android:textColor="#FFF" />

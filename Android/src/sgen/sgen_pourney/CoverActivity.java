@@ -27,6 +27,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 	int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
 	private TextView title,date,people;
+    private TextView profileName;
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel;
 	private SimpleSideDrawer mDrawer;
@@ -49,6 +50,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 		// marble=(Cover_cell)findViewById(R.id.box1);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
+        profileName = (TextView)findViewById(R.id.profileName);
+        profileName.setText("공민아입니다?");//여기 ""안에다가 사용자 이름 넣어주세요 
+        
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -57,6 +61,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 			}
 		});
+		
 
 		m_startTime = System.currentTimeMillis();
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
