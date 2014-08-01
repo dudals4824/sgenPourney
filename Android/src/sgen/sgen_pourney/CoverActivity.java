@@ -1,5 +1,8 @@
 package sgen.sgen_pourney;
 
+import sgen.DTO.UserDTO;
+import sgen.application.PourneyApplication;
+
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -10,6 +13,7 @@ import com.facebook.widget.ProfilePictureView; //占쎌꼶�욘에�볥┸占�
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +42,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 	long m_startTime;
 	long m_endTime;
 	boolean m_isPressedBackButton;
+	
+	private UserDTO user;
 
 	// CoverCell marble=null;
 	@Override
@@ -48,6 +54,12 @@ public class CoverActivity extends Activity implements OnClickListener {
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
 		// marble=(Cover_cell)findViewById(R.id.box1);
+		
+		//user 로그인 정보 setting
+		PourneyApplication loggedInUser = (PourneyApplication)getApplication();
+		user = new UserDTO();
+		user = loggedInUser.getLoggedInUser();
+		Log.e("useruser", user.toString());
 
 		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);

@@ -251,7 +251,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 					
 					//유저 정보 전역 객체에 추가
 					loggedInUser.setProfileFilePath( POURNEY_URL + loggedInUser.getProfileFilePath() );
-					PourneyApplication UserInfo = new PourneyApplication();
+					PourneyApplication UserInfo = (PourneyApplication)getApplication();
 					UserInfo.setLoggedInUser(loggedInUser);
 					Log.e("user information", loggedInUser.toString());
 				}
