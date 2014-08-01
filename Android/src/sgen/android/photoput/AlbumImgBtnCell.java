@@ -1,21 +1,15 @@
 package sgen.android.photoput;
 
-import sgen.android.multigallery.CustomGalleryActivity;
+import sgen.android.multigallery.MainActivity;
 import sgen.sgen_pourney.R;
-import sgen.sgen_pourney.R.id;
-import sgen.sgen_pourney.R.layout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class AlbumImgBtnCell extends RelativeLayout {
 	private Context mContext = null;
@@ -51,7 +45,7 @@ public class AlbumImgBtnCell extends RelativeLayout {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(mContext,
-						CustomGalleryActivity.class);
+						MainActivity.class);
 				// intent.setType("image/*");
 				// // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 				// intent.setAction(Intent.ACTION_GET_CONTENT);
