@@ -6,6 +6,7 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView; //占쎌꼶�욘에�볥┸占쏙옙占쎄쑴�귨옙占�
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +19,14 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 public class CoverActivity extends Activity implements OnClickListener {
 
+	int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
+	private TextView title,date,people;
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel;
 	private SimpleSideDrawer mDrawer;
@@ -53,13 +57,19 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 			}
 		});
-		
+
 		m_startTime = System.currentTimeMillis();
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
-		layout_cover.addView(new CoverCell(this));
-		layout_cover.addView(new CoverCell(this));
-		layout_cover.addView(new CoverCell(this));// 커버 수만큼 출력
-													// 맨뒤에 생길거
+		for (int i = 0; i < numberOfCover; i++) {//커버 갯수만큼 나타나게 해주는 거임
+			layout_cover.addView(new CoverCell(this));
+			title = (TextView)findViewById(R.id.travelTitle);//디비에서 해당 번째 앨범의 정보 불러와서 넣어주면 됩니다.
+			title.setText("집에가고싶다.");//갯수만큼 돌리면서 변수 바꿔가면서 해야 할듯..
+//			date = (TextView)findViewById(R.id.dayBack);
+//			date.setText("");
+//			people = (TextView)findViewById(R.id.peopleBack);
+//			people.setText("");
+		}
+		// 맨뒤에 생길거
 		layout_cover.addView(new CoverCellNew(this));
 		// layout_cover_new = (GridLayout)findViewById(R.id.layout_cover_new);
 		// layout_cover_new.addView(new Cover_cell_new(this));
@@ -109,14 +119,13 @@ public class CoverActivity extends Activity implements OnClickListener {
 		if (m_endTime - m_startTime > 2000)
 			m_isPressedBackButton = false;
 
-		if (m_isPressedBackButton == false) {	
+		if (m_isPressedBackButton == false) {
 			m_isPressedBackButton = true;
 
 			m_startTime = System.currentTimeMillis();
 
-			Toast.makeText(this,
-					"'뒤로'버튼을 한번 더 누르시면 종료됩니다.",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT)
+					.show();
 		} else {
 			finish();
 			System.exit(0);
