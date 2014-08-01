@@ -2,30 +2,23 @@ package sgen.sgen_pourney;
 
 import sgen.DTO.UserDTO;
 import sgen.application.PourneyApplication;
-
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.ProfilePictureView; //占쎌꼶�욘에�볥┸占쏙옙占쎄쑴�귨옙占�
-
+import sgen.common.PhotoEditor;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View.OnClickListener;
+
+//占쎌꼶�욘에�볥┸占쏙옙占쎄쑴�귨옙占�
 
 public class CoverActivity extends Activity implements OnClickListener {
 
@@ -33,16 +26,17 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private TextView title, date, people;
 	private TextView profileName;
 	private GridLayout layout_cover;
-	private ImageButton btn_new_travel;
+	private ImageButton btn_new_travel, btnProfilePhoto;
 	private SimpleSideDrawer mDrawer;
-	private Button askBtn;
-	private Button logoutBtn;
-	private Button albumBtn;
-	private Button profileBtn;
+	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	long m_startTime;
 	long m_endTime;
 	boolean m_isPressedBackButton;
-	
+	private Bitmap userProfilePhoto = null;
+
+	private int photoAreaWidth;
+	private int photoAreaHeight;
+
 	private UserDTO user;
 
 	// CoverCell marble=null;
@@ -54,18 +48,27 @@ public class CoverActivity extends Activity implements OnClickListener {
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
 		// marble=(Cover_cell)findViewById(R.id.box1);
-		
-		//user 로그인 정보 setting
-		PourneyApplication loggedInUser = (PourneyApplication)getApplication();
+
+		// user 로그인 정보 setting
+		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
 		user = new UserDTO();
 		user = loggedInUser.getLoggedInUser();
 		Log.e("useruser", user.toString());
+
+		// 사이드 메뉴에 user 정보 셋팅
+
+		new Thread(new Runnable() {
+			public void run() {
+				userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
+						.getProfileFilePath());
+			}
+		}).start();
 
 		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		profileName = (TextView) findViewById(R.id.profileName);
-		profileName.setText("공민아입니다?");// 여기 ""안에다가 사용자 이름 넣어주세요
+		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요
 
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 
@@ -95,42 +98,65 @@ public class CoverActivity extends Activity implements OnClickListener {
 		// layout_cover_new.addView(new Cover_cell_new(this));
 		// 椰꾬옙域밸챶�곻옙遺쎄탢占쏙옙筌〓㈇�э옙占퐉able
 
+		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btn_new_travel = (ImageButton) findViewById(R.id.backcardNew);
-		btn_new_travel.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
-		askBtn.setOnClickListener(this);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
-		logoutBtn.setOnClickListener(this);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
-		albumBtn.setOnClickListener(this);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+
+		btnProfilePhoto.setOnClickListener(this);
+		btn_new_travel.setOnClickListener(this);
+		askBtn.setOnClickListener(this);
+		logoutBtn.setOnClickListener(this);
+		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
+
+		// profile image setting 부분
+		Log.e("00", "00");
+		if (userProfilePhoto != null) {
+			BitmapDrawable bd = (BitmapDrawable) this.getResources()
+					.getDrawable(R.drawable.i_profilephoto_cover);
+			Bitmap coverBitmap = bd.getBitmap();
+			photoAreaWidth = bd.getBitmap().getWidth();
+			photoAreaHeight = bd.getBitmap().getHeight();
+			Log.e("height..width", photoAreaWidth + " " + photoAreaHeight);
+			// constructor
+			// mBitmap에 찍은 사진 넣기
+			// cover은 그대로
+			Log.e("11", "11");
+			PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
+					coverBitmap, photoAreaWidth, photoAreaHeight);
+			// resize
+			// crop roun
+			// overay cover
+			// 이거하면 이미지 셋됨
+			Log.e("22", "22");
+			userProfilePhoto = photoEdit.editPhotoAuto();
+			btnProfilePhoto.setImageBitmap(userProfilePhoto);
+		}
+		Log.e("33", "33");
 	}
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnForProfilePhoto) {
-			
-		}
-		else if (v.getId() == R.id.backcardNew) {
+
+		} else if (v.getId() == R.id.backcardNew) {
 			Intent intent = new Intent(CoverActivity.this,
 					TravelInfoActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.ask_text) {
+		} else if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.log_out_text) {
+		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
 			finish();
-		}
-		else if (v.getId() == R.id.last_album_text) {
+		} else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.profile_modifying_text) {
+		} else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 		}

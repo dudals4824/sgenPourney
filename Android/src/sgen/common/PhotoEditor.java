@@ -106,7 +106,7 @@ public class PhotoEditor {
 		canvas.drawBitmap(coverBitmap, new Matrix(), null);
 	}
 
-	private Bitmap ImageurlToBitmapConverter(String src) {
+	public static Bitmap ImageurlToBitmapConverter(String src) {
 		try {
 			URL url = new URL(src);
 			HttpURLConnection connection = (HttpURLConnection) url
