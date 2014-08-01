@@ -28,6 +28,7 @@ import org.w3c.dom.UserDataHandler;
 
 import sgen.DTO.UserDTO;
 import sgen.session.UserSessionManager;
+import sgen.application.PourneyApplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +51,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private EditText editEmailaddress, editPassword;
 	private boolean isLoginSuccessful;
 	private UserDTO loggedInUser;
+	
+	private final String POURNEY_URL = "http://54.178.166.213";
 
 	// User Session Manager Class
 	UserSessionManager session;
@@ -242,8 +245,14 @@ public class LoginActivity extends Activity implements OnClickListener{
 					loggedInUser.setUserId(json_data.getInt("user_id"));
 					loggedInUser.setNickName(json_data.getString("nick_name"));
 					loggedInUser.setEmail(json_data.getString("email"));
-					loggedInUser.setProfileFilename(json_data
+					loggedInUser.setProfileFilePath(json_data
 							.getString("profile_filename"));
+					//완성된 url 형태로 loggedin user에 저장.
+					
+					//유저 정보 전역 객체에 추가
+					loggedInUser.setProfileFilePath( POURNEY_URL + loggedInUser.getProfileFilePath() );
+					PourneyApplication UserInfo = new PourneyApplication();
+					UserInfo.setLoggedInUser(loggedInUser);
 					Log.e("user information", loggedInUser.toString());
 				}
 			} catch (JSONException e1) {

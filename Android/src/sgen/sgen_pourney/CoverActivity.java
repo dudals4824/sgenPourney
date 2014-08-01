@@ -26,8 +26,8 @@ import android.view.View.OnClickListener;
 public class CoverActivity extends Activity implements OnClickListener {
 
 	int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
-	private TextView title,date,people;
-    private TextView profileName;
+	private TextView title, date, people;
+	private TextView profileName;
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel;
 	private SimpleSideDrawer mDrawer;
@@ -48,11 +48,13 @@ public class CoverActivity extends Activity implements OnClickListener {
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
 		// marble=(Cover_cell)findViewById(R.id.box1);
+
+		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
-        profileName = (TextView)findViewById(R.id.profileName);
-        profileName.setText("공민아입니다?");//여기 ""안에다가 사용자 이름 넣어주세요 
-        
+		profileName = (TextView) findViewById(R.id.profileName);
+		profileName.setText("공민아입니다?");// 여기 ""안에다가 사용자 이름 넣어주세요
+
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -61,18 +63,19 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 			}
 		});
-		
 
 		m_startTime = System.currentTimeMillis();
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
-		for (int i = 0; i < numberOfCover; i++) {//커버 갯수만큼 나타나게 해주는 거임
+		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
 			layout_cover.addView(new CoverCell(this));
-			title = (TextView)findViewById(R.id.travelTitle);//디비에서 해당 번째 앨범의 정보 불러와서 넣어주면 됩니다.
-			title.setText("집에가고싶다.");//갯수만큼 돌리면서 변수 바꿔가면서 해야 할듯..
-//			date = (TextView)findViewById(R.id.dayBack);
-//			date.setText("");
-//			people = (TextView)findViewById(R.id.peopleBack);
-//			people.setText("");
+			title = (TextView) findViewById(R.id.travelTitle);// 디비에서 해당 번째 앨범의
+																// 정보 불러와서 넣어주면
+																// 됩니다.
+			title.setText("집에가고싶다.");// 갯수만큼 돌리면서 변수 바꿔가면서 해야 할듯..
+			// date = (TextView)findViewById(R.id.dayBack);
+			// date.setText("");
+			// people = (TextView)findViewById(R.id.peopleBack);
+			// people.setText("");
 		}
 		// 맨뒤에 생길거
 		layout_cover.addView(new CoverCellNew(this));
@@ -94,25 +97,28 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.backcardNew) {
+		if (v.getId() == R.id.btnForProfilePhoto) {
+			
+		}
+		else if (v.getId() == R.id.backcardNew) {
 			Intent intent = new Intent(CoverActivity.this,
 					TravelInfoActivity.class);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.ask_text) {
+		else if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.log_out_text) {
+		else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
 			finish();
 		}
-		if (v.getId() == R.id.last_album_text) {
+		else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.profile_modifying_text) {
+		else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 		}

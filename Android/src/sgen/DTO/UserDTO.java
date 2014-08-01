@@ -4,19 +4,19 @@ public class UserDTO {
 	private int userId;
 	private String nickName;
 	private String email;
-	private String profileFilename;
+	private String profileFilePath;
 	
 	public UserDTO() {
 		super();
 	}
 
 	public UserDTO(int userId, String nickName, String email,
-			String profileFilename) {
+			String profileFilePath) {
 		super();
 		this.userId = userId;
 		this.nickName = nickName;
 		this.email = email;
-		this.profileFilename = profileFilename;
+		this.profileFilePath = profileFilePath;
 	}
 
 	public int getUserId() {
@@ -43,18 +43,18 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	public String getProfileFilename() {
-		return profileFilename;
+	public String getProfileFilePath() {
+		return profileFilePath;
 	}
 
-	public void setProfileFilename(String profileFilename) {
-		this.profileFilename = profileFilename;
+	public void setProfileFilePath(String profileFilePath) {
+		this.profileFilePath = profileFilePath;
 	}
 
 	@Override
 	public String toString() {
 		return "UserDTO [userId=" + userId + ", nickName=" + nickName
-				+ ", email=" + email + ", profileFilename=" + profileFilename
+				+ ", email=" + email + ", profileFilePath=" + profileFilePath
 				+ "]";
 	}
 }
