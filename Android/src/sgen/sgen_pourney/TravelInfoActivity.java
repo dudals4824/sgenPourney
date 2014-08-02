@@ -23,6 +23,7 @@ import sgen.DTO.UserDTO;
 import sgen.android.photoput.PhotoputActivity;
 import sgen.session.UserSessionManager;
 import android.app.Activity;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -48,11 +49,13 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
-			textPeopleHere, textInputInfo, textMonth;
+			textPeopleHere, textInputInfo, textMonth, name;
 	private Button askBtn,logoutBtn,albumBtn,profileBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ImageButton btnPeople1, btnPeople2, btnPeople3;
@@ -62,6 +65,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private SimpleSideDrawer mDrawer;
 	private UserDTO loggedInUser;
 	private TripDTO selectedTrip; // 민아
+	String nameTrans;
 
 	// array list for add friend junki
 	private ArrayList<String> friendList = new ArrayList<String>();
@@ -130,7 +134,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPeople2 = (ImageButton) findViewById(R.id.btnPeople2);
 		btnPeople3 = (ImageButton) findViewById(R.id.btnPeople3);
 		editTitle = (EditText) findViewById(R.id.editTitle);
-		peopleName = (EditText) findViewById(R.id.peopleName);
+		peopleName = (EditText)findViewById(R.id.peopleName);
 		
 		setFont();
 
@@ -271,7 +275,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					if(v.getId() == R.id.findfriend){
 						//친구 찾기!!!
 						if(1==1){//친구 찾은 경우
-							
+
+							View contentView = popupWindow.getContentView();
+							peopleName = (EditText)contentView.findViewById(R.id.peopleName);
+							nameTrans = peopleName.getText().toString();
 							LayoutInflater layoutInflater1 = (LayoutInflater) getBaseContext()
 									.getSystemService(LAYOUT_INFLATER_SERVICE);
 							View popupView1 = layoutInflater1.inflate(R.layout.find_friend_success,
@@ -315,8 +322,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 								}
 
 							});
-							//name = (TextView)findViewById(R.id.foundFriend);
-							//name.setText(text); //text에 사람 이름 넣으면 될겁니다 아마요..
+							View contentView2 = popupWindow.getContentView();
+							System.out.println(nameTrans);
+							((TextView)popupWindow1.getContentView().findViewById(R.id.foundFriend)).setText(nameTrans);
 							
 							popupWindow1.showAsDropDown(textCalendarHere, -150, 50);
 								
