@@ -101,6 +101,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
 
+		// 프로필이미지 셋팅
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
 	}
@@ -155,25 +156,14 @@ public class CoverActivity extends Activity implements OnClickListener {
 		protected String doInBackground(String... params) {
 			userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
 					.getProfileFilePath());
-			Log.e("00", "00");
 			if (userProfilePhoto != null) {
 				BitmapDrawable bd = (BitmapDrawable) getResources()
 						.getDrawable(R.drawable.i_profilephoto_cover);
 				Bitmap coverBitmap = bd.getBitmap();
 				photoAreaWidth = bd.getBitmap().getWidth();
 				photoAreaHeight = bd.getBitmap().getHeight();
-				Log.e("height..width", photoAreaWidth + " " + photoAreaHeight);
-				// constructor
-				// mBitmap에 찍은 사진 넣기
-				// cover은 그대로
-				Log.e("11", "11");
 				PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
 						coverBitmap, photoAreaWidth, photoAreaHeight);
-				// resize
-				// crop roun
-				// overay cover
-				// 이거하면 이미지 셋됨
-				Log.e("22", "22");
 				userProfilePhoto = photoEdit.editPhotoAuto();
 				btnProfilePhoto.setImageBitmap(userProfilePhoto);
 			}
