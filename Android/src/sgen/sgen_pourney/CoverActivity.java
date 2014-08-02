@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +18,6 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-//占쎌꼶�욘에�볥┸占쏙옙占쎄쑴�귨옙占�
 
 public class CoverActivity extends Activity implements OnClickListener {
 
@@ -55,15 +54,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 		user = loggedInUser.getLoggedInUser();
 		Log.e("useruser", user.toString());
 
-		// 사이드 메뉴에 user 정보 셋팅
-
-		new Thread(new Runnable() {
-			public void run() {
-				userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
-						.getProfileFilePath());
-			}
-		}).start();
-
 		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
@@ -71,7 +61,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요
 
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				mDrawer.toggleLeftDrawer();
@@ -112,30 +101,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
 
-		// profile image setting 부분
-		Log.e("00", "00");
-		if (userProfilePhoto != null) {
-			BitmapDrawable bd = (BitmapDrawable) this.getResources()
-					.getDrawable(R.drawable.i_profilephoto_cover);
-			Bitmap coverBitmap = bd.getBitmap();
-			photoAreaWidth = bd.getBitmap().getWidth();
-			photoAreaHeight = bd.getBitmap().getHeight();
-			Log.e("height..width", photoAreaWidth + " " + photoAreaHeight);
-			// constructor
-			// mBitmap에 찍은 사진 넣기
-			// cover은 그대로
-			Log.e("11", "11");
-			PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
-					coverBitmap, photoAreaWidth, photoAreaHeight);
-			// resize
-			// crop roun
-			// overay cover
-			// 이거하면 이미지 셋됨
-			Log.e("22", "22");
-			userProfilePhoto = photoEdit.editPhotoAuto();
-			btnProfilePhoto.setImageBitmap(userProfilePhoto);
-		}
-		Log.e("33", "33");
+		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
+		profileImageSetter.execute();
 	}
 
 	@Override
@@ -180,5 +147,44 @@ public class CoverActivity extends Activity implements OnClickListener {
 			System.exit(0);
 			android.os.Process.killProcess(android.os.Process.myPid());
 		}
+	}
+
+	public class ProfileImageSetter extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
+					.getProfileFilePath());
+			Log.e("00", "00");
+			if (userProfilePhoto != null) {
+				BitmapDrawable bd = (BitmapDrawable) getResources()
+						.getDrawable(R.drawable.i_profilephoto_cover);
+				Bitmap coverBitmap = bd.getBitmap();
+				photoAreaWidth = bd.getBitmap().getWidth();
+				photoAreaHeight = bd.getBitmap().getHeight();
+				Log.e("height..width", photoAreaWidth + " " + photoAreaHeight);
+				// constructor
+				// mBitmap에 찍은 사진 넣기
+				// cover은 그대로
+				Log.e("11", "11");
+				PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
+						coverBitmap, photoAreaWidth, photoAreaHeight);
+				// resize
+				// crop roun
+				// overay cover
+				// 이거하면 이미지 셋됨
+				Log.e("22", "22");
+				userProfilePhoto = photoEdit.editPhotoAuto();
+				btnProfilePhoto.setImageBitmap(userProfilePhoto);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+		}
+
 	}
 }
