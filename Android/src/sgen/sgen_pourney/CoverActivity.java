@@ -58,7 +58,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		profileName = (TextView) findViewById(R.id.profileName);
-		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요
+		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요 넣어주셔서 감사합니다
 
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 			@Override
