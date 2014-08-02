@@ -70,7 +70,7 @@ public class PhotoEditor {
 		return coveredPhoto;
 	}
 
-	private void getCroppedCircle() {
+	public void getCroppedCircle() {
 		Bitmap output = Bitmap.createBitmap(photoAreaWidth, photoAreaHeight,
 				Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
@@ -90,7 +90,7 @@ public class PhotoEditor {
 	}
 
 	// bitmap을 profile width,height size에 맞게 resize
-	private void resizeBitmapToProfileSize() {
+	public void resizeBitmapToProfileSize() {
 		Bitmap resized;
 		resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
 				photoAreaHeight, true);
@@ -98,7 +98,7 @@ public class PhotoEditor {
 	}
 
 	// cover 씌우는애
-	private void overlayCover() {
+	public void overlayCover() {
 		coveredPhoto = Bitmap.createBitmap(photoAreaWidth, photoAreaHeight,
 				photoBitmap.getConfig());
 		Canvas canvas = new Canvas(coveredPhoto);
