@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.android.photoput.PhotoputActivity;
+import sgen.application.PourneyApplication;
 import sgen.session.UserSessionManager;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -49,14 +50,12 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth, name;
-	private Button askBtn,logoutBtn,albumBtn,profileBtn;
+	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ImageButton btnPeople1, btnPeople2, btnPeople3;
 	private EditText editTitle, peopleName;
@@ -65,13 +64,18 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private SimpleSideDrawer mDrawer;
 	private UserDTO loggedInUser;
 	private TripDTO selectedTrip; // 민아
-	String nameTrans;
+	private String nameTrans;
+	
+	
+	//친구찾기에서 사용할 popup관련 변수들
+	private PopupWindow findFriendPopupWindow;
+	private PopupWindow foundFriendPopupWindow;
 
 	// array list for add friend junki
 	private ArrayList<String> friendList = new ArrayList<String>();
 
-	int startdate = 0;
-	int enddate = 0;
+	private int startdate = 0;
+	private int enddate = 0;
 	String[] DayArray;
 	Dayadapter dayadapter;
 	CalendarAdapter calendarAdapter;
@@ -103,20 +107,19 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		setContentView(R.layout.copyofactivity_travel_info);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		
+
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				mDrawer.toggleLeftDrawer();
 
 			}
 		});
-		askBtn=(Button)findViewById(R.id.ask_text);
-		logoutBtn=(Button)findViewById(R.id.log_out_text);
-		albumBtn=(Button)findViewById(R.id.last_album_text);
+		askBtn = (Button) findViewById(R.id.ask_text);
+		logoutBtn = (Button) findViewById(R.id.log_out_text);
+		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
@@ -134,8 +137,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPeople2 = (ImageButton) findViewById(R.id.btnPeople2);
 		btnPeople3 = (ImageButton) findViewById(R.id.btnPeople3);
 		editTitle = (EditText) findViewById(R.id.editTitle);
-		peopleName = (EditText)findViewById(R.id.peopleName);
-		
+		peopleName = (EditText) findViewById(R.id.peopleName);
+
 		setFont();
 
 		askBtn.setOnClickListener(this);
@@ -198,18 +201,16 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 		textMonth.setText(strMonth[today.getMonth()]);
 	}
-	
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		// editTitle.clearFocus();
-		
+
 		InputMethodManager imm = (InputMethodManager) v.getContext()
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		if(v.getId()==R.id.ask_text)
-		{
+		if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
 		}
@@ -238,16 +239,16 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.find_friend_popup,
 					null);
-			final PopupWindow popupWindow = new PopupWindow(popupView,
+			findFriendPopupWindow = new PopupWindow(popupView,
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
-			popupWindow.setBackgroundDrawable(new BitmapDrawable());
-			popupWindow.setFocusable(true);
-			popupWindow.setOutsideTouchable(true);
-			popupWindow.setTouchInterceptor(new OnTouchListener() {
+			findFriendPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+			findFriendPopupWindow.setFocusable(true);
+			findFriendPopupWindow.setOutsideTouchable(true);
+			findFriendPopupWindow.setTouchInterceptor(new OnTouchListener() {
 
 				public boolean onTouch(View v, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-						popupWindow.dismiss();
+						findFriendPopupWindow.dismiss();
 						return true;
 					}
 					return false;
@@ -262,84 +263,88 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					if (v.getId() == R.id.cancel) {
-						popupWindow.dismiss();
-					} else;
+						findFriendPopupWindow.dismiss();
+					} else
+						;
 				}
 
 			});
-			
-			findfriend.setOnClickListener(new ImageButton.OnClickListener(){
-				
+
+			findfriend.setOnClickListener(new ImageButton.OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
-					if(v.getId() == R.id.findfriend){
-						//친구 찾기!!!
-						if(1==1){//친구 찾은 경우
-
-							View contentView = popupWindow.getContentView();
-							peopleName = (EditText)contentView.findViewById(R.id.peopleName);
+					if (v.getId() == R.id.findfriend) {
+						// 친구 찾기!!!
+						if (1 == 1) {
+							View contentView = findFriendPopupWindow.getContentView();
+							peopleName = (EditText) contentView
+									.findViewById(R.id.peopleName);
 							nameTrans = peopleName.getText().toString();
+
+							// 친구찾기 task 수행.
+							GetFriendList getFriendList = new GetFriendList();
+							getFriendList.execute(nameTrans);
+
+							// 친구 찾은 화면
 							LayoutInflater layoutInflater1 = (LayoutInflater) getBaseContext()
 									.getSystemService(LAYOUT_INFLATER_SERVICE);
-							View popupView1 = layoutInflater1.inflate(R.layout.find_friend_success,
-									null);
+							View popupView1 = layoutInflater1.inflate(
+									R.layout.find_friend_success, null);
 
-							final PopupWindow popupWindow1 = new PopupWindow(popupView1,
-									LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
-							popupWindow1.setBackgroundDrawable(new BitmapDrawable());
-							popupWindow1.setFocusable(true);
-							popupWindow1.setOutsideTouchable(true);
-							
-							popupWindow1.setTouchInterceptor(new OnTouchListener() {
+							final PopupWindow findFriendPopupWindow1 = new PopupWindow(
+									popupView1, LayoutParams.WRAP_CONTENT,
+									LayoutParams.WRAP_CONTENT, true);
+							findFriendPopupWindow1
+									.setBackgroundDrawable(new BitmapDrawable());
+							findFriendPopupWindow1.setFocusable(true);
+							findFriendPopupWindow1.setOutsideTouchable(true);
+							findFriendPopupWindow1
+									.setTouchInterceptor(new OnTouchListener() {
 
-								public boolean onTouch(View v, MotionEvent event) {
-									if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-
-										popupWindow1.dismiss();
-
-										return true;
-
-									}
-
-									return false;
-
-								}
-							});
+										public boolean onTouch(View v,
+												MotionEvent event) {
+											if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+												findFriendPopupWindow1.dismiss();
+												return true;
+											}
+											return false;
+										}
+									});
 							ImageButton btnDismiss = (ImageButton) popupView1
 									.findViewById(R.id.cancel);
 							ImageButton confirm = (ImageButton) popupView1
 									.findViewById(R.id.confirm);
-							btnDismiss.setOnClickListener(new ImageButton.OnClickListener() {
+							btnDismiss
+									.setOnClickListener(new ImageButton.OnClickListener() {
 
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									if (v.getId() == R.id.cancel) {
-										popupWindow1.dismiss();
-									} else if (v.getId() == R.id.confirm ) {
-										//친구 찾은거 이름 넘갸주면 됨
-									}
-								}
-
-							});
-							View contentView2 = popupWindow.getContentView();
+										@Override
+										public void onClick(View v) {
+											// TODO Auto-generated method stub
+											if (v.getId() == R.id.cancel) {
+												findFriendPopupWindow1.dismiss();
+											} else if (v.getId() == R.id.confirm) {
+												// 친구 찾은거 이름 넘갸주면 됨
+											}
+										}
+									});
+							View contentView2 = findFriendPopupWindow.getContentView();
 							System.out.println(nameTrans);
-							((TextView)popupWindow1.getContentView().findViewById(R.id.foundFriend)).setText(nameTrans);
-							
-							popupWindow1.showAsDropDown(textCalendarHere, -150, 50);
-								
-							
-							
-						}else{//못찾은 경우
-							//없는 아이디라고 토스트 부르면 좋을듯
+							((TextView) findFriendPopupWindow1.getContentView()
+									.findViewById(R.id.foundFriend))
+									.setText(nameTrans);
+
+							findFriendPopupWindow1.showAsDropDown(textCalendarHere, -150,
+									50);
+						} else {// 못찾은 경우
+								// 없는 아이디라고 토스트 부르면 좋을듯
 						}
-					
+
 					}
 				}
 			});
-			
 
-			popupWindow.showAsDropDown(textCalendarHere, -150, 50);
+			findFriendPopupWindow.showAsDropDown(textCalendarHere, -150, 50);
 
 		} else if (v.getId() == R.id.btnPeople2) {
 
@@ -359,11 +364,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		today = new Dayinfo(cnt);
 		getCalendar(today);
 		textMonth.setText(strMonth[today.getMonth()] + " " + today.getYear());
-	
-		
+
 	}
 
-	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -399,7 +402,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		String start_date1 = " ";
 		String end_date1 = " ";
-		
+
 		textTitle.setText(editTitle.getText());
 
 		start_date1 = Integer.toString(startdate / 10000) + " "
@@ -550,7 +553,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			// get friend nickname list
 			ArrayList<String> passedFriendsList = arg0[0];
-
 			for (int k = 0; k < passedFriendsList.size(); k++) {
 				InputStream is = null;
 				StringBuilder sb = null;
@@ -608,4 +610,84 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 	}
 
+	/**
+	 * 
+	 * @author Junki 친구 목록 불러오는 asynctask input : nickname , output : friend
+	 *         user 객체
+	 */
+	public class GetFriendList extends AsyncTask<String, String, String> {
+		private UserDTO friend;
+		private boolean isFoundFriend = false;
+
+		@Override
+		protected String doInBackground(String... params) {
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+			friend = new UserDTO();
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("nick_name", params[0]));
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/findFriends.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("log_tag", "get friend list result : " + result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				JSONArray jArray = new JSONArray(result);
+				JSONObject json_data = null;
+				json_data = jArray.getJSONObject(0);
+				isFoundFriend = "1".equals(json_data.getString("isSuccess"));
+				if (isFoundFriend) {
+					friend.setUserId(json_data.getInt("user_id"));
+					friend.setNickName(json_data.getString("nick_name"));
+					friend.setEmail(json_data.getString("email"));
+					friend.setProfileFilePath(json_data
+							.getString("profile_filename"));
+					Log.e("log_msg", "friend information = " + friend.toString());
+				} else {
+					Log.e("log_msg", "no such friend");
+				}
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+			return null;
+		}
+
+		@Override
+		protected void onCancelled() {
+			// TODO Auto-generated method stub
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+		}
+	}
 }

@@ -243,7 +243,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 			} catch (Exception e) {
 				Log.e("log_tag", "error in http connection" + e.toString());
 			}
-
 			try {
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(is, "iso-8859-1"), 8);
