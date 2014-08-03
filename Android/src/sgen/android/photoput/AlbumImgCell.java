@@ -29,16 +29,15 @@ public class AlbumImgCell extends RelativeLayout{
 	private Bitmap mBitmap=null;
 	private ImageView imgPhoto=null;
 	private File mImgFile=null;
-	public AlbumImgCell(Context context, Bitmap bitmap, File imgFile) {
+	public AlbumImgCell(Context context, File imgFile) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		initMarbleView(context,bitmap,imgFile);
+		initMarbleView(context,imgFile);
 	}
-	private void initMarbleView(Context context, Bitmap bitmap, File imgFile) {
+	private void initMarbleView(Context context, File imgFile) {
 		mContext = context;
-		mBitmap=bitmap;
 		mImgFile=imgFile;
-		Log.d("AlbumImgCell", mBitmap.toString());
+//		Log.d("AlbumImgCell", mBitmap.toString());
 		
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
