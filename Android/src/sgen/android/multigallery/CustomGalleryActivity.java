@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -49,9 +50,9 @@ public class CustomGalleryActivity extends Activity {
 		setContentView(R.layout.gallery);
 
 		action = getIntent().getAction();
-		if (action == null) {
-			finish();
-		}
+//		if (action == null) {
+//			finish();
+//		}
 		initImageLoader();
 		init();
 	}
@@ -93,19 +94,20 @@ public class CustomGalleryActivity extends Activity {
 				true, true);
 		gridGallery.setOnScrollListener(listener);
 
-		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
+	//	if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
 
 			findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
 			gridGallery.setOnItemClickListener(mItemMulClickListener);
 			adapter.setMultiplePick(true);
 
-		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
-
-			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
-			gridGallery.setOnItemClickListener(mItemSingleClickListener);
-			adapter.setMultiplePick(false);
-
-		}
+	//	}
+//		else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
+//
+//			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
+//			gridGallery.setOnItemClickListener(mItemSingleClickListener);
+//			adapter.setMultiplePick(false);
+//
+//		}
 
 		gridGallery.setAdapter(adapter);
 		imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
@@ -146,13 +148,21 @@ public class CustomGalleryActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			ArrayList<CustomGallery> selected = adapter.getSelected();
-
 			String[] allPath = new String[selected.size()];
+			
+			ArrayList<PhotoInfo> list = new ArrayList<PhotoInfo>();
+			
+			PhotoInfo[] photoinfo=new PhotoInfo[selected.size()];
+			for (int i = 0; i < photoinfo.length; i++) {
+				photoinfo[i]=new PhotoInfo();
+			}
 			for (int i = 0; i < allPath.length; i++) {
 				allPath[i] = selected.get(i).sdcardPath;
+				photoinfo[i].setPath(selected.get(i).sdcardPath);
+				list.add(photoinfo[i]);
 			}
-
-			Intent data = new Intent().putExtra("all_path", allPath);
+			Log.d("CustomGalleryActivity", "OK btn");
+			Intent data = new Intent().putExtra("list", list);
 			setResult(RESULT_OK, data);
 			finish();
 
@@ -167,16 +177,16 @@ public class CustomGalleryActivity extends Activity {
 		}
 	};
 
-	AdapterView.OnItemClickListener mItemSingleClickListener = new AdapterView.OnItemClickListener() {
-
-		@Override
-		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-			CustomGallery item = adapter.getItem(position);
-			Intent data = new Intent().putExtra("single_path", item.sdcardPath);
-			setResult(RESULT_OK, data);
-			finish();
-		}
-	};
+//	AdapterView.OnItemClickListener mItemSingleClickListener = new AdapterView.OnItemClickListener() {
+//
+//		@Override
+//		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+//			CustomGallery item = adapter.getItem(position);
+//			Intent data = new Intent().putExtra("single_path", item.sdcardPath);
+//			setResult(RESULT_OK, data);
+//			finish();
+//		}
+//	};
 
 	private ArrayList<CustomGallery> getGalleryPhotos() {
 		ArrayList<CustomGallery> galleryList = new ArrayList<CustomGallery>();
