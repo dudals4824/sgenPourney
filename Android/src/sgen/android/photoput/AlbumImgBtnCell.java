@@ -2,7 +2,6 @@ package sgen.android.photoput;
 
 import sgen.android.multigallery.Action;
 import sgen.android.multigallery.CustomGalleryActivity;
-import sgen.android.multigallery.MainActivity;
 import sgen.sgen_pourney.R;
 import android.app.Activity;
 import android.content.Context;
