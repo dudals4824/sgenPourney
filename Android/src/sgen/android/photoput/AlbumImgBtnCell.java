@@ -1,5 +1,6 @@
 package sgen.android.photoput;
 
+import sgen.android.multigallery.Action;
 import sgen.android.multigallery.CustomGalleryActivity;
 import sgen.android.multigallery.MainActivity;
 import sgen.sgen_pourney.R;
@@ -46,7 +47,9 @@ public class AlbumImgBtnCell extends RelativeLayout {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(mContext,
-						MainActivity.class);
+						CustomGalleryActivity.class);
+				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+				((Activity) mContext).startActivityForResult(i, 200);
 				// intent.setType("image/*");
 				// // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 				// intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -54,7 +57,7 @@ public class AlbumImgBtnCell extends RelativeLayout {
 				// mContext).startActivityForResult(Intent.createChooser(intent,"Select Picture"),
 				// SELECT_PICTURE);
 				// //여기서 갤러리 액티비티로 넘어가게
-				((Activity) mContext).startActivity(intent);
+			//	((Activity) mContext).startActivity(intent);
 
 			}
 		});
