@@ -9,6 +9,7 @@ import sgen.android.multigallery.PhotoInfo;
 import sgen.image.resizer.ImageResizer;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
+import sgen.sgen_pourney.CoverCell;
 import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
@@ -63,8 +64,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	// private ImageAdapter imageAdapter;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 
-	//friend list var
+	// friend list var
 	private PopupWindow friendListPopupWindow;
+	private GridLayout layout_friend_cell;
 	// 갤러리 사용을 위한 변수 선언
 	private ProgressDialog mLoagindDialog;
 	private GridView gridviewPhotoAlbum;
@@ -99,9 +101,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
-		friendList = (ImageButton)findViewById(R.id.imgBack);
-		popupLocation = (TextView)findViewById(R.id.textPeople);
-		
+		friendList = (ImageButton) findViewById(R.id.imgBack);
+		popupLocation = (TextView) findViewById(R.id.textPeople);
+
 		friendList.setOnClickListener(this);
 
 	}
@@ -120,7 +122,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
 			finish();
-		}if(v.getId() == R.id.imgBack){
+		}
+		if (v.getId() == R.id.imgBack) {
+
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.friend_list_popup,
@@ -140,9 +144,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					return false;
 				}
 			});
+for(int i=0;i<7;i++){
+			((GridLayout) friendListPopupWindow.getContentView()
+					.findViewById(R.id.friendlistpopupback))
+					.addView(new FriendListCell(this));
 			friendListPopupWindow.showAsDropDown(popupLocation, -475, 27);
-		}
-		
+		}}
+
 	}
 
 	@Override
@@ -218,18 +226,19 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 			// }
 			if (requestCode == 200) {
-				//사진 패스를 받아옴
+				// 사진 패스를 받아옴
 				ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
 						.getExtras().getSerializable("list");
 
 				for (int i = 0; i < all_path.size(); i++) {
-					//받아온 패스로 파일 만든다
-					all_path.get(i).setFile(new File(all_path.get(i).getPath()));
+					// 받아온 패스로 파일 만든다
+					all_path.get(i)
+							.setFile(new File(all_path.get(i).getPath()));
 					imgFile = new File(all_path.get(i).getPath());
 					layoutGridPhotoAlbum.addView(new AlbumImgCell(
 							PhotoputActivity.this, all_path.get(i).getFile()));
 				}
-				//저 for문에서 이미지 뷰에 추가하고 파일 생성하니까 아마 이부분에서 서버 코드 추가하면 될꺼에요~
+				// 저 for문에서 이미지 뷰에 추가하고 파일 생성하니까 아마 이부분에서 서버 코드 추가하면 될꺼에요~
 
 			}
 		}
