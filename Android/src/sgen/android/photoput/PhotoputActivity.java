@@ -25,13 +25,20 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -43,6 +50,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
 	private Button askBtn, logoutBtn, albumBtn;
+	private TextView popupLocation;
+	private ImageButton friendList;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -54,6 +63,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	// private ImageAdapter imageAdapter;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 
+	//friend list var
+	private PopupWindow friendListPopupWindow;
 	// 갤러리 사용을 위한 변수 선언
 	private ProgressDialog mLoagindDialog;
 	private GridView gridviewPhotoAlbum;
@@ -88,6 +99,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
+		friendList = (ImageButton)findViewById(R.id.imgBack);
+		popupLocation = (TextView)findViewById(R.id.textPeople);
+		
+		friendList.setOnClickListener(this);
 
 	}
 
@@ -105,7 +120,29 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
 			finish();
+		}if(v.getId() == R.id.imgBack){
+			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+					.getSystemService(LAYOUT_INFLATER_SERVICE);
+			View popupView = layoutInflater.inflate(R.layout.friend_list_popup,
+					null);
+			friendListPopupWindow = new PopupWindow(popupView,
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+			friendListPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+			friendListPopupWindow.setFocusable(true);
+			friendListPopupWindow.setOutsideTouchable(true);
+			friendListPopupWindow.setTouchInterceptor(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+						friendListPopupWindow.dismiss();
+						return true;
+					}
+					return false;
+				}
+			});
+			friendListPopupWindow.showAsDropDown(popupLocation, -475, 27);
 		}
+		
 	}
 
 	@Override

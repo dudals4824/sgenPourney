@@ -65,14 +65,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp" >
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imgBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10.33dp"
                 android:layout_marginTop="24dp"
-                android:src="@drawable/i_back_1015x275" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/i_back_1015x275"
+                android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/imgBar"
