@@ -65,11 +65,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private UserDTO loggedInUser;
 	private TripDTO selectedTrip; // 민아
 	private String nameTrans;
-	
-	
-	//친구찾기에서 사용할 popup관련 변수들
+
+	// 친구찾기에서 사용할 popup관련 변수들
 	private PopupWindow findFriendPopupWindow;
-	private PopupWindow foundFriendPopupWindow;
+	private PopupWindow FriendListPopupWindow;
 
 	// array list for add friend junki
 	private ArrayList<String> friendList = new ArrayList<String>();
@@ -277,7 +276,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					if (v.getId() == R.id.findfriend) {
 						// 친구 찾기!!!
 						if (1 == 1) {
-							View contentView = findFriendPopupWindow.getContentView();
+							View contentView = findFriendPopupWindow
+									.getContentView();
 							peopleName = (EditText) contentView
 									.findViewById(R.id.peopleName);
 							nameTrans = peopleName.getText().toString();
@@ -286,56 +286,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 							GetFriendList getFriendList = new GetFriendList();
 							getFriendList.execute(nameTrans);
 
-							// 친구 찾은 화면
-							LayoutInflater layoutInflater1 = (LayoutInflater) getBaseContext()
-									.getSystemService(LAYOUT_INFLATER_SERVICE);
-							View popupView1 = layoutInflater1.inflate(
-									R.layout.find_friend_success, null);
-
-							final PopupWindow findFriendPopupWindow1 = new PopupWindow(
-									popupView1, LayoutParams.WRAP_CONTENT,
-									LayoutParams.WRAP_CONTENT, true);
-							findFriendPopupWindow1
-									.setBackgroundDrawable(new BitmapDrawable());
-							findFriendPopupWindow1.setFocusable(true);
-							findFriendPopupWindow1.setOutsideTouchable(true);
-							findFriendPopupWindow1
-									.setTouchInterceptor(new OnTouchListener() {
-
-										public boolean onTouch(View v,
-												MotionEvent event) {
-											if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-												findFriendPopupWindow1.dismiss();
-												return true;
-											}
-											return false;
-										}
-									});
-							ImageButton btnDismiss = (ImageButton) popupView1
-									.findViewById(R.id.cancel);
-							ImageButton confirm = (ImageButton) popupView1
-									.findViewById(R.id.confirm);
-							btnDismiss
-									.setOnClickListener(new ImageButton.OnClickListener() {
-
-										@Override
-										public void onClick(View v) {
-											// TODO Auto-generated method stub
-											if (v.getId() == R.id.cancel) {
-												findFriendPopupWindow1.dismiss();
-											} else if (v.getId() == R.id.confirm) {
-												// 친구 찾은거 이름 넘갸주면 됨
-											}
-										}
-									});
-							View contentView2 = findFriendPopupWindow.getContentView();
-							System.out.println(nameTrans);
-							((TextView) findFriendPopupWindow1.getContentView()
-									.findViewById(R.id.foundFriend))
-									.setText(nameTrans);
-
-							findFriendPopupWindow1.showAsDropDown(textCalendarHere, -150,
-									50);
 						} else {// 못찾은 경우
 								// 없는 아이디라고 토스트 부르면 좋을듯
 						}
@@ -669,7 +619,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					friend.setEmail(json_data.getString("email"));
 					friend.setProfileFilePath(json_data
 							.getString("profile_filename"));
-					Log.e("log_msg", "friend information = " + friend.toString());
+					Log.e("log_msg",
+							"friend information = " + friend.toString());
 				} else {
 					Log.e("log_msg", "no such friend");
 				}
@@ -688,6 +639,66 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			// 친구 찾으면 팝업 띄움
+			if (isFoundFriend) {
+				// 친구 찾은 화면
+				LayoutInflater layoutInflater1 = (LayoutInflater) getBaseContext()
+						.getSystemService(LAYOUT_INFLATER_SERVICE);
+				View popupView1 = layoutInflater1.inflate(
+						R.layout.find_friend_success, null);
+
+				FriendListPopupWindow = new PopupWindow(popupView1,
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+						true);
+				FriendListPopupWindow
+						.setBackgroundDrawable(new BitmapDrawable());
+				FriendListPopupWindow.setFocusable(true);
+				FriendListPopupWindow.setOutsideTouchable(true);
+				FriendListPopupWindow
+						.setTouchInterceptor(new OnTouchListener() {
+
+							public boolean onTouch(View v, MotionEvent event) {
+								if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+									FriendListPopupWindow.dismiss();
+									return true;
+								}
+								return false;
+							}
+						});
+				//취소 버튼
+				ImageButton btnDismiss = (ImageButton) popupView1
+						.findViewById(R.id.cancel);
+				btnDismiss
+						.setOnClickListener(new ImageButton.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								FriendListPopupWindow.dismiss();
+							}
+						});
+				//확인버튼
+				ImageButton confirm = (ImageButton) popupView1
+						.findViewById(R.id.confirm);
+				confirm.setOnClickListener(new ImageButton.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//TODO 이미 친구목록에 있는지 확인하고 추가해야함. 
+						friendList.add(friend.getNickName());
+						FriendListPopupWindow.dismiss();
+						Toast.makeText(getApplicationContext(), friend.getNickName() + "가 친구목록에 추가되었습니다.",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+				((TextView) FriendListPopupWindow.getContentView()
+						.findViewById(R.id.foundFriend)).setText(nameTrans);
+				FriendListPopupWindow
+						.showAsDropDown(textCalendarHere, -150, 50);
+				isFoundFriend = false;
+			}// if
+			else {
+				// 친구 못찾은 toast 띄우기
+				Toast.makeText(getApplicationContext(), "검색된 친구가 없어요!",
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }
