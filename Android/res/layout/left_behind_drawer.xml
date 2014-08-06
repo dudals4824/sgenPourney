@@ -33,9 +33,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="240dp"
             android:padding="10dp"
-            android:background="@android:color/transparent"
+            android:background="@layout/drawer_click_event"
             android:text="@string/last_album"
-            android:textColor="#FFF" />
+            android:textColor="#FFF" 
+            android:focusable="true"/>
 
         <Button
             android:id="@+id/profile_modifying_text"
@@ -43,9 +44,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="300dp"
             android:padding="10dp"
-            android:background="@android:color/transparent"
+            android:background="@layout/drawer_click_event"
             android:text="@string/profile_modifying"
-            android:textColor="#FFF" />
+            android:textColor="#FFF" 
+            android:focusable="true" />
 
         <Button
             android:id="@+id/log_out_text"
@@ -53,9 +55,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="360dp"
             android:padding="10dp"
-            android:background="@android:color/transparent"
+            android:background="@layout/drawer_click_event"
             android:text="@string/log_out"
-            android:textColor="#FFF" />
+            android:textColor="#FFF" 
+            android:focusable="true" />
 
         <Button
             android:id="@+id/ask_text"
@@ -63,9 +66,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="420dp"
             android:padding="10dp"
-            android:background="@android:color/transparent"
+            android:background="@layout/drawer_click_event"
             android:text="@string/ask"
-            android:textColor="#FFF" />
+            android:textColor="#FFF" 
+            android:focusable="true" />
 
         <ImageView
             android:id="@+id/last_album_image"
