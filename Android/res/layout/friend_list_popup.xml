@@ -9,9 +9,10 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/i_friendlistback"
-        android:paddingBottom="15dp"
-        android:paddingTop="15dp"
-        android:scrollbars="vertical" >
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:scrollbars="none"
+         >
 
         <GridLayout
             android:id="@+id/friendlistpopupback"
