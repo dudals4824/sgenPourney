@@ -1,6 +1,7 @@
 package sgen.sgen_pourney;
 
 import sgen.DTO.UserDTO;
+import sgen.android.photoput.PhotoputActivity;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -22,7 +24,6 @@ import android.widget.Toast;
 public class CoverActivity extends Activity implements OnClickListener {
 
 	int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
-	private TextView title, date, people;
 	private TextView profileName;
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel, btnProfilePhoto, albumCover;
@@ -73,11 +74,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
 
 			layout_cover.addView(new CoverCell(this,i));
-			
-			// date = (TextView)findViewById(R.id.dayBack);
-			// date.setText("");
-			// people = (TextView)findViewById(R.id.peopleBack);
-			// people.setText("");
+
 		}
 		// 맨뒤에 생길거
 		
@@ -133,7 +130,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 		} else if (v.getId() == R.id.backcard){
 			Intent intent = new Intent(CoverActivity.this,
-					TravelInfoActivity.class);
+					PhotoputActivity.class);
 			startActivity(intent);
 		}
 	}
