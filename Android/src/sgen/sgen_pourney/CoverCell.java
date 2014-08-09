@@ -9,24 +9,43 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CoverCell extends LinearLayout {
+	private TextView title;
 	Context mContext = null;
 
-	public CoverCell(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initMarbleView(context);
-	}
-
-	public CoverCell(Context context) {
+	public CoverCell(Context context, int attrs) {
 		super(context);
-		initMarbleView(context);
+		initMarbleView(context,attrs);
 	}
 
-	void initMarbleView(Context context) {
+//	public CoverCell(Context context) {
+//		super(context);
+//		initMarbleView(context);
+//	}
+//
+//	void initMarbleView(Context context) {
+////		mContext = context;
+////		String infService = Context.LAYOUT_INFLATER_SERVICE;
+////		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
+////				infService);
+////		View v = li.inflate(R.layout.album_cover, this, false);
+////		addView(v);
+////		title = (TextView) findViewById(R.id.travelTitle);// 디비에서 해당 번째 앨범의
+////		// 정보 불러와서 넣어주면
+////		// 됩니다.
+////		title.setText("집에가고싶다.");// 갯수만큼 돌리면서 변수 바꿔가면서 해야 할듯..
+//	}
+	
+	void initMarbleView(Context context,int attrs) {
+		System.out.println(attrs);
 		mContext = context;
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
 		View v = li.inflate(R.layout.album_cover, this, false);
 		addView(v);
+		title = (TextView) findViewById(R.id.travelTitle);// 디비에서 해당 번째(i) 앨범의
+		// 정보 불러와서 넣어주면
+		// 됩니다.
+		title.setText("집에가고싶다.");// 갯수만큼 돌리면서 변수 바꿔가면서 해야 할듯..
 	}
 }

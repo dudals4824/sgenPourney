@@ -70,12 +70,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 		m_startTime = System.currentTimeMillis();
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
-		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
-			layout_cover.addView(new CoverCell(this));
-			title = (TextView) findViewById(R.id.travelTitle);// 디비에서 해당 번째 앨범의
-																// 정보 불러와서 넣어주면
-																// 됩니다.
-			title.setText("집에가고싶다.");// 갯수만큼 돌리면서 변수 바꿔가면서 해야 할듯..
+		for (int i = 1; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
+			layout_cover.addView(new CoverCell(this,i));
+			
 			// date = (TextView)findViewById(R.id.dayBack);
 			// date.setText("");
 			// people = (TextView)findViewById(R.id.peopleBack);
@@ -93,7 +90,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-		albumCover = (ImageButton) findViewById(R.id.cphoto);
+	//	albumCover = (ImageButton) findViewById(R.id.cphoto);
 		
 		btnProfilePhoto.setOnClickListener(this);
 		btn_new_travel.setOnClickListener(this);
@@ -101,7 +98,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
-		albumCover.setOnClickListener(this);
+	//	albumCover.setOnClickListener(this);
 		
 		// 프로필이미지 셋팅
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
