@@ -71,6 +71,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		m_startTime = System.currentTimeMillis();
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
 		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
+
 			layout_cover.addView(new CoverCell(this,i));
 			
 			// date = (TextView)findViewById(R.id.dayBack);
@@ -79,6 +80,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 			// people.setText("");
 		}
 		// 맨뒤에 생길거
+		
 		layout_cover.addView(new CoverCellNew(this));
 		// layout_cover_new = (GridLayout)findViewById(R.id.layout_cover_new);
 		// layout_cover_new.addView(new Cover_cell_new(this));
@@ -90,7 +92,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-	//	albumCover = (ImageButton) findViewById(R.id.cphoto);
+		albumCover = (ImageButton) findViewById(R.id.backcard);
 		
 		btnProfilePhoto.setOnClickListener(this);
 		btn_new_travel.setOnClickListener(this);
@@ -98,7 +100,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
-	//	albumCover.setOnClickListener(this);
+		albumCover.setOnClickListener(this);
 		
 		// 프로필이미지 셋팅
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
@@ -129,7 +131,11 @@ public class CoverActivity extends Activity implements OnClickListener {
 		} else if (v.getId() == R.id.cphoto) {
 			System.out.println("클릭됨요");
 
-		} 
+		} else if (v.getId() == R.id.backcard){
+			Intent intent = new Intent(CoverActivity.this,
+					TravelInfoActivity.class);
+			startActivity(intent);
+		}
 	}
 
 	public void onBackPressed() {
