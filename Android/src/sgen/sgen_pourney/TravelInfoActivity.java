@@ -701,7 +701,20 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				confirm.setOnClickListener(new ImageButton.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if (lastFriendButtonIndex < 7) {
+						//친구 중복 추가 방지를 위한 friend list 검사
+						boolean isFriendDuplicated = false;
+						for (int i = 0; i < friendList.size(); i++)
+							if (isFriendDuplicated = friend.getNickName()
+									.equals(friendList.get(i)))
+								break;
+
+						//중복 추가 검사
+						if (isFriendDuplicated) {
+							Toast.makeText(getApplicationContext(),
+									"이미 추가된 친구입니다.", Toast.LENGTH_SHORT).show();
+						} 
+						//7명 초과 검사
+						else if (lastFriendButtonIndex < 7) {
 							friendList.add(friend.getNickName());
 							FriendListPopupWindow.dismiss();
 							Toast.makeText(getApplicationContext(),
@@ -716,8 +729,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 									btnFriend.get(lastFriendButtonIndex++));
 						} else {
 							Toast.makeText(getApplicationContext(),
-									"친구 목록이 이미 꽉 찼습니다.",
-									Toast.LENGTH_SHORT).show();
+									"친구 목록이 이미 꽉 찼습니다.", Toast.LENGTH_SHORT)
+									.show();
 						}
 
 					}
@@ -751,7 +764,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	}
 
 	/**
-	 * @author Junki param[0] : 찾은 친구의 userDTO param[1] : image를 setting할
+	 * @author Junki param[0] : 찾은 친구의 userDTO, param[1] : image를 setting할
 	 *         imageView 객체 두개를 각각 전달받아 친구의 프로필 사진을 param[1]의 imageView에
 	 *         setBitmap한다.
 	 */
@@ -775,8 +788,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				BitmapDrawable bd = (BitmapDrawable) getResources()
 						.getDrawable(R.drawable.i_findfriend_profile_cover);
 				Bitmap coverBitmap = bd.getBitmap();
-				photoAreaWidth = bd.getBitmap().getWidth();
-				photoAreaHeight = bd.getBitmap().getHeight();
+				photoAreaWidth = targetImageView.getWidth();
+				photoAreaHeight = targetImageView.getHeight();
 				PhotoEditor photoEdit = new PhotoEditor(friendProfilePhoto,
 						coverBitmap, photoAreaWidth, photoAreaHeight);
 				friendProfilePhoto = photoEdit.editPhotoAuto();
@@ -788,7 +801,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			// 친구 찾은 화면일 경우
-			// friendProfileOnPopupWindow.setImageBitmap(friendProfilePhoto);
 			targetImageView.setImageBitmap(friendProfilePhoto);
 		}
 
