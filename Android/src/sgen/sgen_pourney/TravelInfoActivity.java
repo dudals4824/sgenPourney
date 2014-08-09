@@ -22,11 +22,13 @@ import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.android.photoput.PhotoputActivity;
 import sgen.application.PourneyApplication;
+import sgen.common.PhotoEditor;
 import sgen.session.UserSessionManager;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -45,30 +47,37 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class TravelInfoActivity extends Activity implements OnClickListener,
-		OnItemClickListener, OnFocusChangeListener {
+		OnItemClickListener, OnFocusChangeListener, OnDismissListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth, name;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
-	private ImageButton btnPeople1, btnPeople2, btnPeople3;
+	private ArrayList<ImageButton> btnFriend = new ArrayList<ImageButton>();
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
 	private int flagselectdate = 0;
 	private SimpleSideDrawer mDrawer;
 	private UserDTO loggedInUser;
 	private TripDTO selectedTrip; // 민아
-	private String nameTrans;
+	private String frinedNameToFind;
+
+	// 사진 관련 변수
+	private int photoAreaWidth;
+	private int photoAreaHeight;
 
 	// 친구찾기에서 사용할 popup관련 변수들
 	private PopupWindow findFriendPopupWindow;
 	private PopupWindow FriendListPopupWindow;
+	private ImageView friendProfileOnPopupWindow;
 
 	// array list for add friend junki
 	private ArrayList<String> friendList = new ArrayList<String>();
@@ -95,6 +104,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private MakeTravelTask makeTravelTask;// 민아
 	private InsertUsersInTrip insertUserInTrips;// 민아
 
+	// 친구 목록용 변수
+	private Bitmap friendProfilePhoto = null;
+	int[] ids = { R.id.btnFriend1, R.id.btnFriend2, R.id.btnFriend3,
+			R.id.btnFriend4, R.id.btnFriend5, R.id.btnFriend6, R.id.btnFriend7 };
+	private int lastFriendButtonIndex = 0;
+
+	// 상수
+	private final String POURNEY_URL = "http://54.178.166.213";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,7 +121,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		loggedInUser = new UserDTO();
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.copyofactivity_travel_info);
+		setContentView(R.layout.activity_travel_info);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
 
@@ -132,9 +150,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
-		btnPeople1 = (ImageButton) findViewById(R.id.btnPeople1);
-		btnPeople2 = (ImageButton) findViewById(R.id.btnPeople2);
-		btnPeople3 = (ImageButton) findViewById(R.id.btnPeople3);
+		for (int i = 0; i < 7; i++) {
+			Log.e("numbertest", "" + i);
+			btnFriend.add((ImageButton) findViewById(ids[i]));
+		}
+		for (int i = 0; i < 7; i++) {
+			Log.e("numbertest", "" + i);
+			btnFriend.get(i).setOnClickListener(this);
+		}
+		// last friend button에 0번 버튼 지정
 		editTitle = (EditText) findViewById(R.id.editTitle);
 		peopleName = (EditText) findViewById(R.id.peopleName);
 
@@ -149,9 +173,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 		btnPrevMonth.setOnClickListener(this);
 		btnNextMonth.setOnClickListener(this);
-		btnPeople1.setOnClickListener(this);
-		btnPeople2.setOnClickListener(this);
-		btnPeople3.setOnClickListener(this);
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
@@ -233,12 +254,18 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			cnt--;
 		} else if (v.getId() == R.id.btnnextMonth) {
 			cnt++;
-		} else if (v.getId() == R.id.btnPeople1) {// 친구찾기 검색창 부분
+		} else if ((v.getId() == R.id.btnFriend1)
+				|| (v.getId() == R.id.btnFriend2)
+				|| (v.getId() == R.id.btnFriend3)
+				|| (v.getId() == R.id.btnFriend4)
+				|| (v.getId() == R.id.btnFriend5)
+				|| (v.getId() == R.id.btnFriend6)
+				|| (v.getId() == R.id.btnFriend7)) {// 친구찾기 검색창 부분
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
-			View popupView = layoutInflater.inflate(R.layout.find_friend_popup,
-					null);
-			findFriendPopupWindow = new PopupWindow(popupView,
+			View findFriendPopupView = layoutInflater.inflate(
+					R.layout.find_friend_popup, null);
+			findFriendPopupWindow = new PopupWindow(findFriendPopupView,
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
 			findFriendPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 			findFriendPopupWindow.setFocusable(true);
@@ -253,9 +280,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					return false;
 				}
 			});
-			ImageButton btnDismiss = (ImageButton) popupView
+			findFriendPopupWindow.setOnDismissListener(this);
+			ImageButton btnDismiss = (ImageButton) findFriendPopupView
 					.findViewById(R.id.cancel);
-			ImageButton findfriend = (ImageButton) popupView
+			ImageButton findfriend = (ImageButton) findFriendPopupView
 					.findViewById(R.id.findfriend);
 			btnDismiss.setOnClickListener(new ImageButton.OnClickListener() {
 				@Override
@@ -269,36 +297,28 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			});
 
+			// 친구 찾기 버튼
 			findfriend.setOnClickListener(new ImageButton.OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					if (v.getId() == R.id.findfriend) {
-						// 친구 찾기!!!
-						if (1 == 1) {
-							View contentView = findFriendPopupWindow
-									.getContentView();
-							peopleName = (EditText) contentView
-									.findViewById(R.id.peopleName);
-							nameTrans = peopleName.getText().toString();
-
-							// 친구찾기 task 수행.
-							GetFriendList getFriendList = new GetFriendList();
-							getFriendList.execute(nameTrans);
-
-						} else {// 못찾은 경우
-								// 없는 아이디라고 토스트 부르면 좋을듯
-						}
-
+						View contentView = findFriendPopupWindow
+								.getContentView();
+						peopleName = (EditText) contentView
+								.findViewById(R.id.peopleName);
+						frinedNameToFind = peopleName.getText().toString();
+						// 친구찾기 task 수행.
+						GetFriendList getFriendList = new GetFriendList();
+						getFriendList.execute(frinedNameToFind);
 					}
 				}
 			});
 
 			findFriendPopupWindow.showAsDropDown(textCalendarHere, -150, 50);
 
-		} else if (v.getId() == R.id.btnPeople2) {
+		} else if (v.getId() == R.id.btnFriend2) {
 
-		} else if (v.getId() == R.id.btnPeople3) {
+		} else if (v.getId() == R.id.btnFriend3) {
 
 		}
 
@@ -459,9 +479,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			Log.e("MakeTravel_onPostExcute", "INSERT SUCCESS..");
 
-			friendList.add("test");
-			friendList.add("xxx");
-
 			insertUserInTrips = new InsertUsersInTrip();
 			insertUserInTrips.execute(friendList);
 
@@ -561,7 +578,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	}
 
 	/**
-	 * 
 	 * @author Junki 친구 목록 불러오는 asynctask input : nickname , output : friend
 	 *         user 객체
 	 */
@@ -617,8 +633,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					friend.setUserId(json_data.getInt("user_id"));
 					friend.setNickName(json_data.getString("nick_name"));
 					friend.setEmail(json_data.getString("email"));
-					friend.setProfileFilePath(json_data
-							.getString("profile_filename"));
+					friend.setProfileFilePath(POURNEY_URL
+							+ json_data.getString("profile_filename"));
 					Log.e("log_msg",
 							"friend information = " + friend.toString());
 				} else {
@@ -641,13 +657,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			super.onPostExecute(result);
 			// 친구 찾으면 팝업 띄움
 			if (isFoundFriend) {
-				// 친구 찾은 화면
 				LayoutInflater layoutInflater1 = (LayoutInflater) getBaseContext()
 						.getSystemService(LAYOUT_INFLATER_SERVICE);
-				View popupView1 = layoutInflater1.inflate(
+				View foundFriendPopupView = layoutInflater1.inflate(
 						R.layout.find_friend_success, null);
 
-				FriendListPopupWindow = new PopupWindow(popupView1,
+				friendProfileOnPopupWindow = (ImageView) foundFriendPopupView
+						.findViewById(R.id.friendProfile);
+
+				FriendListPopupWindow = new PopupWindow(foundFriendPopupView,
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
 						true);
 				FriendListPopupWindow
@@ -665,8 +683,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 								return false;
 							}
 						});
-				//취소 버튼
-				ImageButton btnDismiss = (ImageButton) popupView1
+
+				// 취소 버튼
+				ImageButton btnDismiss = (ImageButton) foundFriendPopupView
 						.findViewById(R.id.cancel);
 				btnDismiss
 						.setOnClickListener(new ImageButton.OnClickListener() {
@@ -675,24 +694,45 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 								FriendListPopupWindow.dismiss();
 							}
 						});
-				//확인버튼
-				ImageButton confirm = (ImageButton) popupView1
+
+				// 확인버튼
+				ImageButton confirm = (ImageButton) foundFriendPopupView
 						.findViewById(R.id.confirm);
 				confirm.setOnClickListener(new ImageButton.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//TODO 이미 친구목록에 있는지 확인하고 추가해야함. 
-						friendList.add(friend.getNickName());
-						FriendListPopupWindow.dismiss();
-						Toast.makeText(getApplicationContext(), friend.getNickName() + "가 친구목록에 추가되었습니다.",
-								Toast.LENGTH_SHORT).show();
+						if (lastFriendButtonIndex < 7) {
+							friendList.add(friend.getNickName());
+							FriendListPopupWindow.dismiss();
+							Toast.makeText(getApplicationContext(),
+									friend.getNickName() + "가 친구목록에 추가되었습니다.",
+									Toast.LENGTH_SHORT).show();
+
+							FriendProfileImageSetter imageSetter = new FriendProfileImageSetter();
+							// 친구 추가할때마다 button indicator 한개씩 증가시켜줌. 7번까지만
+							Log.e("log_msg", "button number : "
+									+ lastFriendButtonIndex);
+							imageSetter.execute(friend,
+									btnFriend.get(lastFriendButtonIndex++));
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"친구 목록이 이미 꽉 찼습니다.",
+									Toast.LENGTH_SHORT).show();
+						}
+
 					}
 				});
+
 				((TextView) FriendListPopupWindow.getContentView()
-						.findViewById(R.id.foundFriend)).setText(nameTrans);
+						.findViewById(R.id.foundFriend))
+						.setText(frinedNameToFind);
 				FriendListPopupWindow
 						.showAsDropDown(textCalendarHere, -150, 50);
 				isFoundFriend = false;
+
+				// 친구 찾은 화면
+				FriendProfileImageSetter imageSetter = new FriendProfileImageSetter();
+				imageSetter.execute(friend, friendProfileOnPopupWindow);
 			}// if
 			else {
 				// 친구 못찾은 toast 띄우기
@@ -700,5 +740,57 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 						Toast.LENGTH_SHORT).show();
 			}
 		}
+	}
+
+	/**
+	 * 친구찾기 Popup dismiss 됐을 시 호출.
+	 */
+	@Override
+	public void onDismiss() {
+		Log.e("msg_log", "popup friend windows dismissed");
+	}
+
+	/**
+	 * @author Junki param[0] : 찾은 친구의 userDTO param[1] : image를 setting할
+	 *         imageView 객체 두개를 각각 전달받아 친구의 프로필 사진을 param[1]의 imageView에
+	 *         setBitmap한다.
+	 */
+	public class FriendProfileImageSetter extends
+			AsyncTask<Object, String, String> {
+
+		UserDTO foundFriend = new UserDTO();
+		ImageView targetImageView = null;
+
+		@Override
+		protected String doInBackground(Object... params) {
+			// parameter converting to original object
+			foundFriend = (UserDTO) params[0];
+			targetImageView = (ImageView) params[1];
+
+			// image view setting
+			Log.e("log_msg", "friend profile ->>>" + foundFriend.toString());
+			friendProfilePhoto = PhotoEditor
+					.ImageurlToBitmapConverter(foundFriend.getProfileFilePath());
+			if (friendProfilePhoto != null) {
+				BitmapDrawable bd = (BitmapDrawable) getResources()
+						.getDrawable(R.drawable.i_findfriend_profile_cover);
+				Bitmap coverBitmap = bd.getBitmap();
+				photoAreaWidth = bd.getBitmap().getWidth();
+				photoAreaHeight = bd.getBitmap().getHeight();
+				PhotoEditor photoEdit = new PhotoEditor(friendProfilePhoto,
+						coverBitmap, photoAreaWidth, photoAreaHeight);
+				friendProfilePhoto = photoEdit.editPhotoAuto();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			// 친구 찾은 화면일 경우
+			// friendProfileOnPopupWindow.setImageBitmap(friendProfilePhoto);
+			targetImageView.setImageBitmap(friendProfilePhoto);
+		}
+
 	}
 }

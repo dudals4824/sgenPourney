@@ -1,17 +1,23 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:fillViewport="true">
+    android:layout_height="match_parent"
+    android:background="#EEEEEE"
+    android:fillViewport="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="0dp"
-        android:background="#EEEEEE" >
+        
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical" >
 
         <!-- 상단 단계 부분 -->
+
         <RelativeLayout
             android:id="@+id/layoutStep"
             android:layout_width="fill_parent"
@@ -54,116 +60,114 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/i_travelinfo" />
         </RelativeLayout>
-        
-        <!-- 상단 여행 정보 요약 -->
-        <ImageView
-            android:id="@+id/imgBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/layoutStep"
-            android:layout_marginRight="10.33dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/i_back_1015x275" />
-
-        <ImageView
-            android:id="@+id/imgBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/layoutStep"
-            android:layout_marginRight="52.33dp"
-            android:layout_marginTop="12.67dp"
-            android:src="@drawable/i_bar_544x70" />
-
-        <ImageView
-            android:id="@+id/imgProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layoutStep"
-            android:layout_marginLeft="19.67dp"
-            android:layout_marginTop="30.33dp"
-            android:src="@drawable/i_profile_238x240" />
-
-        <ImageView
-            android:id="@+id/imgProfileColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layoutStep"
-            android:layout_marginLeft="78.33dp"
-            android:layout_marginTop="33.67dp"
-            android:src="@drawable/ic_profilecolor_45x45" />
-
-        <ImageView
-            android:id="@+id/iconWrite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imgBar"
-            android:layout_marginLeft="137.67dp"
-            android:layout_marginTop="9.67dp"
-            android:src="@drawable/ic_write_40x42" />
-
-        <ImageView
-            android:id="@+id/iconCalendar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/iconWrite"
-            android:layout_below="@id/iconWrite"
-            android:layout_marginTop="7.67dp"
-            android:src="@drawable/ic_calendar_40x42" />
-
-        <ImageView
-            android:id="@+id/iconPeople"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/iconWrite"
-            android:layout_below="@id/iconCalendar"
-            android:layout_marginTop="7.33dp"
-            android:src="@drawable/ic_people_42x46" />
-
-        <!-- 상단 여행 정보 요약 텍스트 뷰 -->
-
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/iconWrite"
-            android:layout_marginLeft="18.67dp"
-            android:layout_toRightOf="@+id/iconPeople"
-            android:text="Visit America!!" />
-
-        <TextView
-            android:id="@+id/textCalender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/iconCalendar"
-            android:layout_alignLeft="@id/textTitle"
-            android:layout_toRightOf="@+id/iconCalendar"
-            android:text="2013 07.22 - 2013 07.27" />
-
-        <TextView
-            android:id="@+id/textPeople"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/iconPeople"
-            android:layout_alignLeft="@id/textTitle"
-            android:layout_toRightOf="@+id/iconPeople"
-            android:text="With five People" />
 
         <RelativeLayout
-            android:id="@+id/layoutInputTravel"
+            android:id="@+id/layoutInfoSummary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp" >
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10.33dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/i_back_1015x275" />
+
+            <ImageView
+                android:id="@+id/imgBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="52.33dp"
+                android:layout_marginTop="12.67dp"
+                android:src="@drawable/i_bar_544x70" />
+
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19.67dp"
+                android:layout_marginTop="30.33dp"
+                android:src="@drawable/i_profile_238x240" />
+
+            <ImageView
+                android:id="@+id/imgProfileColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="78.33dp"
+                android:layout_marginTop="33.67dp"
+                android:src="@drawable/ic_profilecolor_45x45" />
+
+            <ImageView
+                android:id="@+id/iconWrite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgBar"
+                android:layout_marginLeft="137.67dp"
+                android:layout_marginTop="9.67dp"
+                android:src="@drawable/ic_write_40x42" />
+
+            <ImageView
+                android:id="@+id/iconCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/iconWrite"
+                android:layout_below="@id/iconWrite"
+                android:layout_marginTop="7.67dp"
+                android:src="@drawable/ic_calendar_40x42" />
+
+            <ImageView
+                android:id="@+id/iconPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/iconWrite"
+                android:layout_below="@id/iconCalendar"
+                android:layout_marginTop="7.33dp"
+                android:src="@drawable/ic_people_42x46" />
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconWrite"
+                android:layout_marginLeft="18.67dp"
+                android:layout_toRightOf="@+id/iconPeople" />
+
+            <TextView
+                android:id="@+id/textCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconCalendar"
+                android:layout_alignLeft="@id/textTitle"
+                android:layout_toRightOf="@+id/iconCalendar" />
+
+            <TextView
+                android:id="@+id/textPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iconPeople"
+                android:layout_alignLeft="@id/textTitle"
+                android:layout_toRightOf="@+id/iconPeople"
+                android:text="With five People" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutInputInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imgBack"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
-            android:background="@drawable/i_back_1042x1866" >
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp"
+            android:background="#ffffff" >
 
             <ImageView
                 android:id="@+id/iconCalenderFlag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="54.33dp"
+                android:layout_marginLeft="30.33dp"
                 android:layout_marginTop="10.67dp"
                 android:src="@drawable/ic_calendar_flag_62x78" />
 
@@ -172,20 +176,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
-                android:layout_marginTop="22.22sp"
+                android:layout_marginTop="11.67dp"
                 android:layout_toRightOf="@id/iconCalenderFlag"
                 android:text="여행기본정보 입력(필수입력)"
                 android:textColor="#005d95"
-                android:textSize="22sp" />
+                android:textSize="10pt" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/textInputInfo"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="6.33dp"
                 android:layout_marginRight="6.33dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="42dp"
                 android:background="#D3EAFA" >
 
                 <TextView
@@ -193,15 +197,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="11.67dp"
+                    android:layout_marginTop="13.67dp"
                     android:text="01 여행의 제목을 입력해주세요"
-                    android:textSize="20sp" />
+                    android:textColor="#4d4d4d"
+                    android:textSize="9pt" />
 
                 <ImageView
                     android:id="@+id/iconWriteBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/textTitleHere"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginRight="21dp"
                     android:layout_toLeftOf="@id/textTitleHere"
                     android:src="@drawable/ic_write_40x40" />
@@ -213,11 +219,9 @@
                     android:layout_below="@id/textTitleHere"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12.33dp"
-                    android:background="@drawable/i_title_924x98"
+                    android:background="@layout/travelinfo_titleclick_event"
                     android:gravity="center_horizontal|center_vertical"
-                    android:hint="VISIT AMERICA WITH POURNEY" />
-
-                <!-- 여행기간선택 -->
+                    android:hint="title" />
 
                 <TextView
                     android:id="@+id/textCalendarHere"
@@ -225,9 +229,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/editTitle"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="29.67dp"
+                    android:layout_marginTop="18.67dp"
                     android:text="02 여행기간을 선택해주세요"
-                    android:textSize="20sp" />
+                    android:textColor="#4d4d4d"
+                    android:textSize="9pt" />
 
                 <ImageView
                     android:id="@+id/iconCalendarBlack"
@@ -236,45 +241,40 @@
                     android:layout_alignLeft="@id/iconWriteBlack"
                     android:layout_below="@id/editTitle"
                     android:layout_marginRight="21dp"
-                    android:layout_marginTop="27.67dp"
+                    android:layout_marginTop="23.67dp"
                     android:src="@drawable/ic_calendar_40x40" />
 
                 <RelativeLayout
-                    android:layout_below="@id/textCalendarHere"
                     android:id="@+id/layoutCalendar"
+                    android:focusableInTouchMode="true"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textCalendarHere"
+                    android:layout_marginLeft="9.33dp"
+                    android:layout_marginRight="9.33dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="18.67dp"
+                    android:background="#ffffff" >
 
-                    <ImageView
-                        android:id="@+id/imgCalendar"
+                    <TextView
+                        android:id="@+id/textMonth"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="13dp"
-                        android:src="@drawable/i_caledar" />
-
-                    <ImageView
-                        android:id="@+id/imgBarCalendar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="29.67dp"
-                        android:src="@drawable/i_bar_calendar_454x78" />
-                    <TextView android:id="@+id/textMonth"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="29.67dp"
-                        android:text="month"
-                        />
+                        android:layout_marginTop="14.33dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@drawable/i_bar_calendar_454x78"
+                        android:text="month" />
 
                     <ImageButton
                         android:id="@+id/btnPrevMonth"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="34dp"
-                        android:layout_toLeftOf="@id/imgBarCalendar"
+                        android:layout_marginTop="19.34dp"
+                        android:layout_toLeftOf="@id/textMonth"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
@@ -282,49 +282,163 @@
 
                     <ImageButton
                         android:id="@+id/btnnextMonth"
+                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/btnPrevMonth"
                         android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@id/imgBarCalendar"
+                        android:layout_toRightOf="@id/textMonth"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
                         android:src="@drawable/i_calendar_nextbutton_52x52" />
 
-                    <GridView
-                        android:id="@+id/gridCalendar"
-                        android:layout_width="310.33dp"
-                        android:layout_height="fill_parent"
-                        android:layout_below="@id/imgCalendar"
-                        android:layout_centerHorizontal="true"
+                    <sgen.sgen_pourney.ExpandableHeightGridView
+                        android:id="@+id/gridDate"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="318.67dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textMonth"
+                        android:layout_marginLeft="9.33dp"
+                        android:layout_marginRight="9.33dp"
                         android:background="#ffffff"
-                        android:numColumns="7"
-                        android:layout_marginBottom="56dp"/>
-                    </RelativeLayout>
+                        android:numColumns="7" />
 
-                    <!-- 사람 선택 -->
-
-                    <TextView
-                        android:id="@+id/textPeopleHere"
-                        android:layout_width="wrap_content"
+                    <sgen.sgen_pourney.ExpandableHeightGridView
+                        android:id="@+id/gridCalendar"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="318.67dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/layoutCalendar"
-                        android:layout_centerHorizontal="true"
-                        android:text="03 함께하는 동행을 추가해주세요"
-                        android:textSize="20sp" />
-
-                    <ImageView
-                        android:id="@+id/iconPeopleBlack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@id/iconWriteBlack"
-                        android:layout_below="@id/layoutCalendar"
-                        android:layout_marginRight="21dp"
-                        android:layout_marginTop="48dp"
-                        android:src="@drawable/ic_people_42x46" />
+                        android:layout_below="@id/gridDate"
+                        android:layout_marginLeft="9.33dp"
+                        android:layout_marginRight="9.33dp"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:numColumns="7" />
                 </RelativeLayout>
+                <!-- end of layoutCalendar -->
+
+                <TextView
+                    android:id="@+id/textPeopleHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layoutCalendar"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:text="03 함께하는 동행을 추가해주세요"
+                    android:textColor="#4d4d4d"
+                    android:textSize="9pt" />
+
+                <ImageView
+                    android:id="@+id/iconPeopleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/textPeopleHere"
+                    android:layout_alignLeft="@id/iconWriteBlack"
+                    android:layout_marginRight="21dp"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/ic_people_42x46" />
+
+                <GridLayout
+                    android:id="@+id/layoutGrid"
+                    android:focusableInTouchMode="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textPeopleHere"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="22dp"
+                    android:columnCount="4"
+                    android:paddingLeft="14.33dp"
+                    android:paddingRight="14.33dp"
+                    android:useDefaultMargins="true" >
+
+                    <ImageButton
+                        android:id="@+id/btnFriend1"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnFriend2"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnFriend3"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnFriend4"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnFriend5"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+
+                    <ImageButton
+                        android:id="@+id/btnFriend6"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+                    
+                    <ImageButton
+                        android:id="@+id/btnFriend7"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_profile_200x200" />
+                </GridLayout>
+
+                <ImageButton
+                    android:id="@+id/btnPut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutGrid"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="19.67dp"
+                    android:paddingBottom="2dp"
+                    android:background="@android:color/transparent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/i_put" />
             </RelativeLayout>
+            <!-- end of inner rect -->
         </RelativeLayout>
+        <!-- - end of input info -->
+    </LinearLayout>
 
 </ScrollView>
