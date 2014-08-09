@@ -16,12 +16,14 @@
                 
                 android:src="@drawable/i_shadow" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/backcard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
                 android:layout_marginLeft="14dp"
+                android:background="@android:color/transparent"
+            android:scaleType="fitXY"
                 android:src="@drawable/i_backcard" />
 
             <ImageButton
@@ -78,4 +80,15 @@
                 android:textSize="10dip"
                 android:gravity="center" 
                 android:background="@drawable/i_peopleback" />
+
+            <TextView
+                android:id="@+id/travelNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/dayBack"
+                android:layout_marginRight="20dp"
+                android:visibility="invisible"
+                android:layout_toLeftOf="@+id/cphoto"
+                android:text="1" />
+
         </RelativeLayout>
