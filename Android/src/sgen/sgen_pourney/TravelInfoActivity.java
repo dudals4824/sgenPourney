@@ -701,19 +701,20 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				confirm.setOnClickListener(new ImageButton.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//친구 중복 추가 방지를 위한 friend list 검사
+						// 친구 중복 추가 방지를 위한 friend list 검사
 						boolean isFriendDuplicated = false;
 						for (int i = 0; i < friendList.size(); i++)
 							if (isFriendDuplicated = friend.getNickName()
 									.equals(friendList.get(i)))
 								break;
 
-						//중복 추가 검사
+						// 중복 추가 검사
 						if (isFriendDuplicated) {
 							Toast.makeText(getApplicationContext(),
 									"이미 추가된 친구입니다.", Toast.LENGTH_SHORT).show();
-						} 
-						//7명 초과 검사
+						}
+						// 7명 초과 검사 및 친구 추가. friend list에 추가 후 비어있는 friend
+						// profile을 사진으로 바꿔준다
 						else if (lastFriendButtonIndex < 7) {
 							friendList.add(friend.getNickName());
 							FriendListPopupWindow.dismiss();
@@ -785,9 +786,17 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			friendProfilePhoto = PhotoEditor
 					.ImageurlToBitmapConverter(foundFriend.getProfileFilePath());
 			if (friendProfilePhoto != null) {
-				BitmapDrawable bd = (BitmapDrawable) getResources()
-						.getDrawable(R.drawable.i_findfriend_profile_cover);
+				// profile 사진 크기에 맞게 cover bitmap 설정
+				BitmapDrawable bd = null;
+				if (targetImageView.equals(friendProfileOnPopupWindow)) {
+					bd = (BitmapDrawable) getResources()
+							.getDrawable(R.drawable.i_findfriend_profile_cover);
+				} else {
+					bd = (BitmapDrawable) getResources()
+							.getDrawable(R.drawable.i_profile_200x200_cover);
+				}
 				Bitmap coverBitmap = bd.getBitmap();
+
 				photoAreaWidth = targetImageView.getWidth();
 				photoAreaHeight = targetImageView.getHeight();
 				PhotoEditor photoEdit = new PhotoEditor(friendProfilePhoto,
