@@ -70,7 +70,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 		m_startTime = System.currentTimeMillis();
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
-		for (int i = 1; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
+		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
 			layout_cover.addView(new CoverCell(this,i));
 			
 			// date = (TextView)findViewById(R.id.dayBack);
