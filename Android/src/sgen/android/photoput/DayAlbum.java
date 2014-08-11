@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
@@ -22,20 +23,13 @@ public class DayAlbum extends LinearLayout {
 	static final int SELECT_PICTURE = 1;
 	static final int REQUEST_PICTURE = 2;
 
-	public DayAlbum(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initMarbleView(context);
-		// TODO Auto-generated constructor stub
-	}
-
-	public DayAlbum(Context context) {
+	public DayAlbum(Context context, int i) {
 		super(context);
-		initMarbleView(context);
-
+		initMarbleView(context,i);
 		// TODO Auto-generated constructor stub
 	}
 
-	private void initMarbleView(Context context) {
+	private void initMarbleView(Context context, int i) {
 
 		mContext = context;
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
@@ -48,9 +42,11 @@ public class DayAlbum extends LinearLayout {
 		textPhotoNum = (TextView) findViewById(R.id.textPhotoNum);
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 
-		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext));
-
-
+		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext,i));
+	}
+	public void addLayoutGridalbum(AlbumImgCell albumImgCell){
+		Log.d("Dayalbum", "addLayoutGridalbum called");
+		layoutGridPhotoAlbum.addView(albumImgCell);
 	}
 
 }
