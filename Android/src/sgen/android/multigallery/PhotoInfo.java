@@ -7,7 +7,8 @@ import android.graphics.Bitmap;
 
 public class PhotoInfo implements Serializable{
 	private String path;
-	private int date=0;
+	private int date;
+	//file지우기
 	private File file;
 	public String getPath() {
 		return path;
