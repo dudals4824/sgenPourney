@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#78C0F2"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/memoback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/i_memo_back"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY" >
+
+        <ImageView
+            android:id="@+id/memotitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/i_memo_title" />
+
+        <EditText
+            android:id="@+id/memo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/memotitle"
+            android:layout_marginTop="14.33dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/i_memo"
+>
+
+            <requestFocus />
+        </EditText>
+
+        
+        
+
+        <ImageButton
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/memo"
+            android:layout_alignTop="@+id/memo"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="194dp"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_cancel" />
+
+        <ImageButton
+            android:id="@+id/findfriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/memo"
+            android:layout_alignTop="@+id/memo"
+            android:layout_marginRight="13dp"
+            android:layout_marginTop="194dp"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_register" />
+    </RelativeLayout>
+
+</LinearLayout>
