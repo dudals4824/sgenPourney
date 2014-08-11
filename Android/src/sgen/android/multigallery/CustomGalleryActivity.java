@@ -42,6 +42,7 @@ public class CustomGalleryActivity extends Activity {
 
 	String action;
 	private ImageLoader imageLoader;
+	private int i_dayalbum;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class CustomGalleryActivity extends Activity {
 		setContentView(R.layout.gallery);
 
 		action = getIntent().getAction();
+		i_dayalbum=getIntent().getIntExtra("i_dayalbum", 200);
+		Log.d("i_dayalbum", i_dayalbum+"");
 //		if (action == null) {
 //			finish();
 //		}
@@ -163,6 +166,7 @@ public class CustomGalleryActivity extends Activity {
 			}
 			Log.d("CustomGalleryActivity", "OK btn");
 			Intent data = new Intent().putExtra("list", list);
+			data.putExtra("i_dayalbum", i_dayalbum);
 			setResult(RESULT_OK, data);
 			finish();
 
@@ -177,16 +181,6 @@ public class CustomGalleryActivity extends Activity {
 		}
 	};
 
-//	AdapterView.OnItemClickListener mItemSingleClickListener = new AdapterView.OnItemClickListener() {
-//
-//		@Override
-//		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-//			CustomGallery item = adapter.getItem(position);
-//			Intent data = new Intent().putExtra("single_path", item.sdcardPath);
-//			setResult(RESULT_OK, data);
-//			finish();
-//		}
-//	};
 
 	private ArrayList<CustomGallery> getGalleryPhotos() {
 		ArrayList<CustomGallery> galleryList = new ArrayList<CustomGallery>();
