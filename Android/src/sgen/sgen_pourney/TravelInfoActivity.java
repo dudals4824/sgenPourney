@@ -804,7 +804,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				friendProfilePhoto = photoEdit.editPhotoAuto();
 			}
 			return null;
-		}
+		}	
 
 		@Override
 		protected void onPostExecute(String result) {

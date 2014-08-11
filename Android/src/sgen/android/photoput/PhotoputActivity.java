@@ -47,7 +47,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
 	private Button askBtn, logoutBtn, albumBtn;
-	private TextView popupLocation;
+	private TextView popupLocation,title,date;
 	private ImageButton friendList;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
@@ -108,8 +108,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 
 		friendList = (ImageButton) findViewById(R.id.imgBack);
-		popupLocation = (TextView) findViewById(R.id.textPeople);
-
+		popupLocation = (TextView) findViewById(R.id.textPeople); //여행 사람 수
+		title = (TextView) findViewById(R.id.textTitle);	//여행 제목
+		date = (TextView) findViewById(R.id.textCalendar);	//여행 날짜
+		
+		popupLocation.setText("왜 너만");//디비에서 사람 수 불러와서 넣어주세요
+		title.setText("지랄이니?");//디비에서 여행 아이디에 맞는 제목 불러와서 넣어주세요
+		date.setText("달력의 스펠링은 calendar");//디비에서 날짜 불러와서 넣어주세요
+		
 		friendList.setOnClickListener(this);
 
 	}
