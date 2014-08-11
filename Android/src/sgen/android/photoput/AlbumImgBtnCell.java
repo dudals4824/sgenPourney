@@ -16,22 +16,23 @@ public class AlbumImgBtnCell extends RelativeLayout {
 	private Context mContext = null;
 	private ImageButton btnPhotoAdd, btnMemoWrite;
 	static final int SELECT_PICTURE = 1;
+	private int i_dayalbum;
 
-	public AlbumImgBtnCell(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initMarbleView(context);
+	public AlbumImgBtnCell(Context context, int i) {
+		super(context);
+		initMarbleView(context,i);
 		// TODO Auto-generated constructor stub
 	}
 
 	public AlbumImgBtnCell(Context context) {
 		super(context);
-		initMarbleView(context);
 
 		// TODO Auto-generated constructor stub
 	}
 
-	void initMarbleView(Context context) {
+	void initMarbleView(Context context, int i) {
 		mContext = context;
+		i_dayalbum=i;
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
@@ -45,18 +46,9 @@ public class AlbumImgBtnCell extends RelativeLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(mContext,
-						CustomGalleryActivity.class);
 				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+				i.putExtra("i_dayalbum",i_dayalbum);
 				((Activity) mContext).startActivityForResult(i, 200);
-				// intent.setType("image/*");
-				// // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-				// intent.setAction(Intent.ACTION_GET_CONTENT);
-				// ((Activity)
-				// mContext).startActivityForResult(Intent.createChooser(intent,"Select Picture"),
-				// SELECT_PICTURE);
-				// //여기서 갤러리 액티비티로 넘어가게
-			//	((Activity) mContext).startActivity(intent);
 
 			}
 		});
