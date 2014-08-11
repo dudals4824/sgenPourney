@@ -1,5 +1,22 @@
 package sgen.sgen_pourney;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import sgen.DTO.UserDTO;
 import sgen.android.photoput.PhotoputActivity;
 import sgen.application.PourneyApplication;
@@ -23,7 +40,7 @@ import android.widget.Toast;
 
 public class CoverActivity extends Activity implements OnClickListener {
 
-	int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
+	private int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
 	private TextView profileName;
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel, btnProfilePhoto, albumCover;
@@ -59,7 +76,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		profileName = (TextView) findViewById(R.id.profileName);
-		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요 넣어주셔서 감사합니다
+		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요 넣어주셔서
+												// 감사합니다
 
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 			@Override
@@ -70,18 +88,20 @@ public class CoverActivity extends Activity implements OnClickListener {
 		});
 
 		m_startTime = System.currentTimeMillis();
+
+		// 커버 갯수 가져오기
+		GetTripCount getTripCount = new GetTripCount();
+		getTripCount.start();
+
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
 		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
-
-			layout_cover.addView(new CoverCell(this,i));
-
+			layout_cover.addView(new CoverCell(this, i));
 		}
 		// 맨뒤에 생길거
-		
+
 		layout_cover.addView(new CoverCellNew(this));
 		// layout_cover_new = (GridLayout)findViewById(R.id.layout_cover_new);
 		// layout_cover_new.addView(new Cover_cell_new(this));
-		// 椰꾬옙域밸챶�곻옙遺쎄탢占쏙옙筌〓㈇�э옙占퐉able
 
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btn_new_travel = (ImageButton) findViewById(R.id.backcardNew);
@@ -90,7 +110,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
 		albumCover = (ImageButton) findViewById(R.id.backcard);
-		
+
 		btnProfilePhoto.setOnClickListener(this);
 		btn_new_travel.setOnClickListener(this);
 		askBtn.setOnClickListener(this);
@@ -98,7 +118,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
 		albumCover.setOnClickListener(this);
-		
+
 		// 프로필이미지 셋팅
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
@@ -128,7 +148,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		} else if (v.getId() == R.id.cphoto) {
 			System.out.println("클릭됨요");
 
-		} else if (v.getId() == R.id.backcard){
+		} else if (v.getId() == R.id.backcard) {
 			Intent intent = new Intent(CoverActivity.this,
 					PhotoputActivity.class);
 			startActivity(intent);
@@ -181,5 +201,116 @@ public class CoverActivity extends Activity implements OnClickListener {
 			super.onPostExecute(result);
 		}
 
+	}
+
+	/*
+	 * user id를 입력으로 받아 user id가 가진 trip 개수 리턴
+	 */
+	public class GetTripCount2 extends AsyncTask<String, String, String> {
+		private int tripCount = 0;
+
+		@Override
+		protected String doInBackground(String... params) {
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("user_id", params[0]));
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/getCoverCount.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("log_tag", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				// JSONArray jArray = new JSONArray(result);
+				JSONObject JsonObject = new JSONObject(result);
+				tripCount = JsonObject.getInt("tripCount");
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			Log.e("log_msg", "" + tripCount);
+			numberOfCover = tripCount;
+		}
+	}
+
+	public class GetTripCount extends Thread {
+
+		@Override
+		public void run() {
+			super.run();
+
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("user_id", String
+					.valueOf(user.getUserId())));
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/getCoverCount.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("log_tag", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				// JSONArray jArray = new JSONArray(result);
+				JSONObject JsonObject = new JSONObject(result);
+				numberOfCover = JsonObject.getInt("tripCount");
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+		}
 	}
 }
