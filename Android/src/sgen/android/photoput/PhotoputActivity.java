@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import sgen.DTO.UserDTO;
 import sgen.android.multigallery.PhotoInfo;
+import sgen.application.PourneyApplication;
+import sgen.common.PhotoEditor;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
+import sgen.sgen_pourney.CoverActivity.ProfileImageSetter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -18,6 +22,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -42,13 +47,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class PhotoputActivity extends Activity implements OnClickListener {
 	static final int SELECT_PICTURE = 1;
+	private TextView profileName;
 	LinearLayout layoutAlbum;
 	private Uri currImageURI;
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
-	private Button askBtn, logoutBtn, albumBtn;
+	private Button askBtn, logoutBtn, albumBtn,profileBtn;
 	private TextView popupLocation,title,date;
-	private ImageButton friendList;
+	private ImageButton friendList,btnProfilePhoto;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -76,6 +82,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	// 선택된 사진들이 몇번째 데이앨범인지
 	private int i_dayalbum;
 
+	// 프로필사진 및 로그인 불러오는 변수
+	private Bitmap userProfilePhoto = null;
+
+	private int photoAreaWidth;
+	private int photoAreaHeight;
+
+	private UserDTO user;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,8 +97,18 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_photoput);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		
+		// user 로그인 정보 setting
+				PourneyApplication loggedInUser = (PourneyApplication) getApplication();
+				user = new UserDTO();
+				user = loggedInUser.getLoggedInUser();
+				Log.e("useruser", user.toString());
+				
+				//드로워임
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
+		profileName = (TextView) findViewById(R.id.profileName);
+		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요 넣어주셔서 감사합니다
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -93,6 +117,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 			}
 		});
+		
+		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
+		btnProfilePhoto.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
 		askBtn.setOnClickListener(this);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
@@ -118,6 +145,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		
 		friendList.setOnClickListener(this);
 
+		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
+		profileImageSetter.execute();
 	}
 
 	private void init() {
@@ -221,5 +250,34 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		cursor.close();
 		String result = java.net.URLDecoder.decode(filePath, "UTF-8");
 		return result;
+	}
+	
+
+	public class ProfileImageSetter extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
+					.getProfileFilePath());
+			if (userProfilePhoto != null) {
+				BitmapDrawable bd = (BitmapDrawable) getResources()
+						.getDrawable(R.drawable.i_profilephoto_cover);
+				Bitmap coverBitmap = bd.getBitmap();
+				photoAreaWidth = bd.getBitmap().getWidth();
+				photoAreaHeight = bd.getBitmap().getHeight();
+				PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
+						coverBitmap, photoAreaWidth, photoAreaHeight);
+				userProfilePhoto = photoEdit.editPhotoAuto();
+				btnProfilePhoto.setImageBitmap(userProfilePhoto);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+		}
+
 	}
 }
