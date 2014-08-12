@@ -105,8 +105,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 			for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
 				layout_cover.addView(new CoverCell(this, tripArray.get(i)));
 			}
-			albumCover = (ImageButton) findViewById(R.id.backcard);
-			albumCover.setOnClickListener(this);
+			//albumCover = (ImageButton) findViewById(R.id.backcard);
+			//albumCover.setOnClickListener(this);
 		}
 		// 맨뒤에 생길 추가용 cover
 		layout_cover.addView(new CoverCellNew(this));
