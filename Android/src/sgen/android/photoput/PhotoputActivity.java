@@ -13,7 +13,11 @@ import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
+
+import sgen.sgen_pourney.VideoMakingActivity;
+
 import sgen.sgen_pourney.CoverActivity.ProfileImageSetter;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -52,7 +56,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private Uri currImageURI;
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
-	private Button askBtn, logoutBtn, albumBtn,profileBtn;
+
+
+
+	private Button askBtn, logoutBtn, albumBtn,profileBtn,makingVideo;
+
 	private TextView popupLocation,title,date;
 	private ImageButton friendList,btnProfilePhoto;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
@@ -126,6 +134,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		albumBtn.setOnClickListener(this);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		logoutBtn.setOnClickListener(this);
+		makingVideo=(Button)findViewById(R.id.making_video);
+		makingVideo.setOnClickListener(this);
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
@@ -174,6 +184,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
 			finish();
+		}
+		if(v.getId()==R.id.making_video){
+			Intent intent= new Intent(this, VideoMakingActivity.class);
+			startActivity(intent);
 		}
 		if (v.getId() == R.id.imgBack) {
 
