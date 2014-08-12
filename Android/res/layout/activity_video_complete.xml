@@ -1,0 +1,37 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#67B2EE"
+    android:fillViewport="true"
+    tools:context="sgen.android.photoput.PhotoputActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:id="@+id/video_container"
+        android:layout_width="fill_parent"
+        android:layout_height="241dp"
+        android:orientation="vertical" >
+
+        <VideoView
+            android:id="@+id/VideoView"
+            android:layout_width="wrap_content"
+            android:layout_height="234dp" />
+
+        <Button
+            android:id="@+id/facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="페이스북 공유!" />
+
+		<MediaController
+		    android:id="@+id/controller"
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:layout_marginTop="243dp"
+		     >
+</MediaController>
+    </LinearLayout>
+
+</ScrollView>
