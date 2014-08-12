@@ -48,6 +48,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -92,6 +93,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	// 프로필사진 및 로그인 불러오는 변수
 	private Bitmap userProfilePhoto = null;
+	
 
 	private int photoAreaWidth;
 	private int photoAreaHeight;
