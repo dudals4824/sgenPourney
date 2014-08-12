@@ -1,7 +1,12 @@
 package sgen.android.photoput;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import sgen.DTO.UserDTO;
@@ -13,11 +18,7 @@ import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
-
 import sgen.sgen_pourney.VideoMakingActivity;
-
-import sgen.sgen_pourney.CoverActivity.ProfileImageSetter;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -45,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -57,12 +59,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
 
+	private Button askBtn, logoutBtn, albumBtn, profileBtn, makingVideo;
 
-
-	private Button askBtn, logoutBtn, albumBtn,profileBtn,makingVideo;
-
-	private TextView popupLocation,title,date;
-	private ImageButton friendList,btnProfilePhoto;
+	private TextView popupLocation, title, date;
+	private ImageButton friendList, btnProfilePhoto;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -97,6 +97,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private int photoAreaHeight;
 
 	private UserDTO user;
+	// 사진 가져오는
+	private int serverResponseCode = 0;
+	private ProgressDialog dialog = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,18 +108,19 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_photoput);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		
+
 		// user 로그인 정보 setting
-				PourneyApplication loggedInUser = (PourneyApplication) getApplication();
-				user = new UserDTO();
-				user = loggedInUser.getLoggedInUser();
-				Log.e("useruser", user.toString());
-				
-				//드로워임
+		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
+		user = new UserDTO();
+		user = loggedInUser.getLoggedInUser();
+		Log.e("useruser", user.toString());
+
+		// 드로워임
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		profileName = (TextView) findViewById(R.id.profileName);
-		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요 넣어주셔서 감사합니다
+		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요 넣어주셔서
+												// 감사합니다
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -125,7 +129,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 			}
 		});
-		
+
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
@@ -134,7 +138,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		albumBtn.setOnClickListener(this);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		logoutBtn.setOnClickListener(this);
-		makingVideo=(Button)findViewById(R.id.making_video);
+		makingVideo = (Button) findViewById(R.id.making_video);
 		makingVideo.setOnClickListener(this);
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 		// for (int i = 0; i < travel; i++) {
@@ -145,14 +149,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 
 		friendList = (ImageButton) findViewById(R.id.imgBack);
-		popupLocation = (TextView) findViewById(R.id.textPeople); //여행 사람 수
-		title = (TextView) findViewById(R.id.textTitle);	//여행 제목
-		date = (TextView) findViewById(R.id.textCalendar);	//여행 날짜
-		
-		popupLocation.setText("왜 너만");//디비에서 사람 수 불러와서 넣어주세요
-		title.setText("지랄이니?");//디비에서 여행 아이디에 맞는 제목 불러와서 넣어주세요
-		date.setText("달력의 스펠링은 calendar");//디비에서 날짜 불러와서 넣어주세요
-		
+		popupLocation = (TextView) findViewById(R.id.textPeople); // 여행 사람 수
+		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
+		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
+
+		popupLocation.setText("왜 너만");// 디비에서 사람 수 불러와서 넣어주세요
+		title.setText("지랄이니?");// 디비에서 여행 아이디에 맞는 제목 불러와서 넣어주세요
+		date.setText("달력의 스펠링은 calendar");// 디비에서 날짜 불러와서 넣어주세요
+
 		friendList.setOnClickListener(this);
 
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
@@ -185,8 +189,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			finish();
 		}
-		if(v.getId()==R.id.making_video){
-			Intent intent= new Intent(this, VideoMakingActivity.class);
+		if (v.getId() == R.id.making_video) {
+			Intent intent = new Intent(this, VideoMakingActivity.class);
 			startActivity(intent);
 		}
 		if (v.getId() == R.id.imgBack) {
@@ -265,7 +269,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		String result = java.net.URLDecoder.decode(filePath, "UTF-8");
 		return result;
 	}
-	
 
 	public class ProfileImageSetter extends AsyncTask<String, String, String> {
 
