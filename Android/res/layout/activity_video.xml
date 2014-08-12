@@ -9,7 +9,7 @@
     tools:ignore="MergeRootFrame" >
 
     <LinearLayout
-        android:id="@+id/container"
+        android:id="@+id/video_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
@@ -64,7 +64,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp" >
-
+			<Button 
+			    android:id="@+id/gogoVideo"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentTop="true"
+			    android:text="영상다만들어짐"/>
             <ImageView
                 android:id="@+id/imgBackVideo"
                 android:layout_width="wrap_content"
