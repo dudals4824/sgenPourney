@@ -80,9 +80,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		// trip id를 가지고 있는 trip array 출력.
-		Log.e("cover activity trip array", "" + tripArray.toString());
-
 		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
