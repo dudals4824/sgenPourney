@@ -2,58 +2,59 @@ package sgen.DTO;
 
 public class TripDTO {
 	private int tripId;
-	private String triptitle;
-	private String startdate;
-	private String enddate;
+	private String tripTitle;
+	private String startDate;
+	private String endDate;
 
 	public TripDTO() {
 		super();
 	}
 
-	public TripDTO(int tripId, String triptitle, String startdate, String enddate) {
+	public TripDTO(int tripId, String tripTitle, String startDate,
+			String endDate) {
 		super();
 		this.tripId = tripId;
-		this.triptitle = triptitle;
-		this.startdate = startdate;
-		this.enddate = enddate;
+		this.tripTitle = tripTitle;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public int getTripId() {
 		return tripId;
 	}
-	
+
 	public void setTripId(int tripId) {
 		this.tripId = tripId;
 	}
 
-	public String getTriptitle() {
-		return triptitle;
+	public String getTripTitle() {
+		return tripTitle;
 	}
 
-	public void setTriptitle(String triptitle) {
-		this.triptitle = triptitle;
+	public void setTripTitle(String tripTitle) {
+		this.tripTitle = tripTitle;
 	}
 
-	public String getStartdate() {
-		return startdate;
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public void setStartdate(String startdate) {
-		this.startdate = startdate;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public String getEnddate() {
-		return enddate;
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setEnddate(String enddate) {
-		this.enddate = enddate;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	@Override
 	public String toString() {
-		return "TripDTO [tripId=" + tripId + ", triptitle=" + triptitle
-				+ ", startdate=" + startdate + ", enddate=" + enddate + "]";
+		return "TripDTO [tripId=" + tripId + ", tripTitle=" + tripTitle
+				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
 
 }
