@@ -18,20 +18,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sgen.DTO.TripDTO;
+import sgen.android.photoput.PhotoputActivity;
 import sgen.application.PourneyApplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CoverCell extends LinearLayout implements View.OnClickListener {
 	private TextView title, date, numberOfPeople, travelNumber;
+	private ImageButton backcard;
 	Context mContext = null;
 	private TripDTO tripDTO = new TripDTO();
 
@@ -43,16 +47,21 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 	void initMarbleView(Context context, int attrs) {
 		// System.out.println(attrs);
 		mContext = context;
+		// view layout 설정
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
 		View v = li.inflate(R.layout.album_cover, this, false);
 		addView(v);
+
+		// view id 설정
 		title = (TextView) findViewById(R.id.travelTitle);
 		date = (TextView) findViewById(R.id.dayBack);
 		numberOfPeople = (TextView) findViewById(R.id.peopleBack);
 		travelNumber = (TextView) findViewById(R.id.travelNumber);
+		backcard = (ImageButton) findViewById(R.id.backcard);
 
+		// 폰트 설정
 		String fontpath = "fonts/WalbaumBook-BoldItalic.otf";
 		Typeface tf = Typeface.createFromAsset(mContext.getAssets(), fontpath);
 		title.setTypeface(tf);
@@ -63,11 +72,13 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 		// trip information setting asynctask
 		GetTripInfo getTripInfo = new GetTripInfo();
 		getTripInfo.execute(String.valueOf(attrs));
-		
+
+		// onclicklistenr 뷰 아무데나 눌러도 다 넘어가게 모든거에 onclicklistner다줌.....ㅠㅠ
 		title.setOnClickListener(this);
 		date.setOnClickListener(this);
 		numberOfPeople.setOnClickListener(this);
 		travelNumber.setOnClickListener(this);
+		backcard.setOnClickListener(this);
 	}
 
 	@Override
@@ -78,6 +89,9 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 		Application.setSelectedTrip(tripDTO);
 		Log.d("CoverCell_LOG", "onclick"
 				+ Application.getSelectedTrip().getTripTitle());
+
+		Intent intent = new Intent(mContext, PhotoputActivity.class);
+		mContext.startActivity(intent);
 	}
 
 	public class GetTripInfo extends AsyncTask<String, String, String> {
@@ -140,7 +154,6 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 			date.setText(tripDTO.getStartDate() + "~" + tripDTO.getEndDate());
 			numberOfPeople.setText("With N people");
 			travelNumber.setText(String.valueOf(tripDTO.getTripId()));
-
 		}
 	}
 
