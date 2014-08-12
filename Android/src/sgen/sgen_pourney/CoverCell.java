@@ -18,8 +18,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sgen.DTO.TripDTO;
+import sgen.DTO.UserDTO;
+import sgen.application.PourneyApplication;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -39,24 +43,6 @@ public class CoverCell extends LinearLayout {
 		initMarbleView(context, attrs);
 	}
 
-	// public CoverCell(Context context) {
-	// super(context);
-	// initMarbleView(context);
-	// }
-	//
-	// void initMarbleView(Context context) {
-	// // mContext = context;
-	// // String infService = Context.LAYOUT_INFLATER_SERVICE;
-	// // LayoutInflater li = (LayoutInflater) getContext().getSystemService(
-	// // infService);
-	// // View v = li.inflate(R.layout.album_cover, this, false);
-	// // addView(v);
-	// // title = (TextView) findViewById(R.id.travelTitle);// 디비에서 해당 번째 앨범의
-	// // // 정보 불러와서 넣어주면
-	// // // 됩니다.
-	// // title.setText("집에가고싶다.");// 갯수만큼 돌리면서 변수 바꿔가면서 해야 할듯..
-	// }
-
 	void initMarbleView(Context context, int attrs) {
 		// System.out.println(attrs);
 		mContext = context;
@@ -70,9 +56,31 @@ public class CoverCell extends LinearLayout {
 		numberOfPeople = (TextView) findViewById(R.id.peopleBack);
 		travelNumber = (TextView) findViewById(R.id.travelNumber);
 		
+		String fontpath="fonts/WalbaumBook-BoldItalic.otf";
+        Typeface tf=Typeface.createFromAsset(mContext.getAssets(),fontpath);
+        title.setTypeface(tf);
+        date.setTypeface(tf);
+        numberOfPeople.setTypeface(tf);
+        travelNumber.setTypeface(tf);
+		
+		
+
 		// trip information setting asynctask
 		GetTripInfo getTripInfo = new GetTripInfo();
 		getTripInfo.execute(String.valueOf(attrs));
+
+		setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// trip 정보 setting
+				Log.d("CoverCell_LOG", "onclick~~~");
+				PourneyApplication Application = (PourneyApplication) ((Activity) mContext)
+						.getApplication();
+				Application.setSelectedTrip(tripDTO);
+
+			}
+		});
+
 	}
 
 	public class GetTripInfo extends AsyncTask<String, String, String> {
@@ -85,7 +93,7 @@ public class CoverCell extends LinearLayout {
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
-			Log.d("trip_Id", "trip id : "+ params[0]);
+			Log.d("trip_Id", "trip id : " + params[0]);
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
@@ -120,7 +128,6 @@ public class CoverCell extends LinearLayout {
 				tripDTO.setTripTitle(JsonObject.getString("trip_name"));
 				tripDTO.setStartDate(JsonObject.getInt("start_date"));
 				tripDTO.setEndDate(JsonObject.getInt("end_date"));
-
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
@@ -130,12 +137,13 @@ public class CoverCell extends LinearLayout {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			//travel information setting
+			// travel information setting
 			Log.d("settext", tripDTO.toString());
 			title.setText(tripDTO.getTripTitle());
-			date.setText(tripDTO.getStartDate()+"~"+tripDTO.getEndDate());
+			date.setText(tripDTO.getStartDate() + "~" + tripDTO.getEndDate());
 			numberOfPeople.setText("With N people");
 			travelNumber.setText(String.valueOf(tripDTO.getTripId()));
+
 		}
 	}
 

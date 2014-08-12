@@ -18,7 +18,7 @@ public class TripDTO {
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
-
+	
 	public int getTripId() {
 		return tripId;
 	}
