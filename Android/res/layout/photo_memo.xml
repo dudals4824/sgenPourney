@@ -2,24 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#78C0F2"
+    android:background="@drawable/i_blackback"
     android:orientation="vertical" >
-    
+
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="280dp"
-        android:gravity="center_horizontal|center_vertical">
-    <ImageView
-        android:id="@+id/selectedphoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal|center_vertical"
-        android:background="@drawable/testforminha"/>
-</RelativeLayout>
+        android:layout_width="348.5dp"
+        android:layout_height="300dp"
+        android:layout_marginLeft="5.5dp"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        android:gravity="center_horizontal|center_vertical" >
+
+        <ImageView
+            android:id="@+id/selectedphoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/testforminha"
+            android:gravity="center_horizontal|center_vertical" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/memoback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        
+        android:layout_marginTop="-6dp"
         android:background="@drawable/i_memo_back"
         android:fitsSystemWindows="true"
         android:scaleType="fitXY" >
@@ -38,16 +49,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/memotitle"
-            android:layout_marginTop="14.33dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/i_memo"
->
+            android:layout_marginTop="14.33dp"
+            android:background="@drawable/i_memo" >
 
             <requestFocus />
         </EditText>
-
-        
-        
 
         <ImageButton
             android:id="@+id/findfriend"
@@ -55,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/memo"
             android:layout_alignTop="@+id/memo"
-            android:layout_marginLeft="33dp"
+            android:layout_marginLeft="43dp"
             android:layout_marginTop="79dp"
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
@@ -68,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/memo"
             android:layout_alignTop="@+id/memo"
-            android:layout_marginRight="13dp"
+            android:layout_marginRight="18dp"
             android:layout_marginTop="79dp"
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
