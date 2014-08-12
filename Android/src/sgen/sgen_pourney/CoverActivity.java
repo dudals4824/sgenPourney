@@ -37,7 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CoverActivity extends Activity implements OnClickListener {
-	private int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
+	private int numberOfCover = 0; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
 	private TextView profileName;
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel, btnProfilePhoto, albumCover;
@@ -96,15 +96,21 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 		m_startTime = System.currentTimeMillis();
 
-		Log.e("log_msg", "num of trip" + numberOfCover);
+		Log.e("log_msg", "num of trip : " + numberOfCover);
 
+		// cover 셋팅
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
-		if (tripArray.size() > 0)
+		Log.e("cover activity", "trip array size : " + tripArray.size());
+		if (tripArray.size() > 0) {
 			for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
 				layout_cover.addView(new CoverCell(this, tripArray.get(i)));
 			}
-		// 맨뒤에 생길거
+			albumCover = (ImageButton) findViewById(R.id.backcard);
+			albumCover.setOnClickListener(this);
+		}
+		// 맨뒤에 생길 추가용 cover
 		layout_cover.addView(new CoverCellNew(this));
+
 		// layout_cover_new = (GridLayout)findViewById(R.id.layout_cover_new);
 		// layout_cover_new.addView(new Cover_cell_new(this));
 
@@ -114,7 +120,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-		albumCover = (ImageButton) findViewById(R.id.backcard);
 
 		btnProfilePhoto.setOnClickListener(this);
 		btn_new_travel.setOnClickListener(this);
@@ -122,7 +127,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
-		albumCover.setOnClickListener(this);
 
 		// 프로필이미지 셋팅
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
