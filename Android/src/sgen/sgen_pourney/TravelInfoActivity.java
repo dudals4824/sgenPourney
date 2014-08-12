@@ -191,11 +191,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	}// TravelActivity onCreate();
 
 	private void setFont() {
-		Typeface yoon320 = Typeface.createFromAsset(getAssets(), "yoon320.ttf");
+		Typeface yoon320 = Typeface.createFromAsset(getAssets(), "fonts/yoon320.ttf");
 		textTitleHere.setTypeface(yoon320);
 		textCalendarHere.setTypeface(yoon320);
 		textPeopleHere.setTypeface(yoon320);
-		Typeface yoon330 = Typeface.createFromAsset(getAssets(), "yoon330.ttf");
+		Typeface yoon330 = Typeface.createFromAsset(getAssets(), "fonts/yoon330.ttf");
 		textInputInfo.setTypeface(yoon330);
 	}
 
