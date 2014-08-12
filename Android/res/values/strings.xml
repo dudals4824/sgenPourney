@@ -32,5 +32,6 @@
         <item>카메라</item>
     </string-array>
     <string name="title_profile_modi">ProfileModi</string>
+    <string name="title_activity_videoview">title_activtiy_videoview</string>
 
 </resources>
