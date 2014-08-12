@@ -60,6 +60,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
 
+
+	private ImageButton btnForTest;
+
+	private PopupWindow memoPopupWindow;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn, makingVideo;
 
 	private TextView popupLocation, title, date;
@@ -132,6 +136,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		});
 
+		
+		btnForTest = (ImageButton) findViewById(R.id.btnMakeVideo);
+		btnForTest.setOnClickListener(this);
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
@@ -222,6 +229,29 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						.addView(new FriendListCell(this));
 				friendListPopupWindow.showAsDropDown(popupLocation, -475, 27);
 			}
+		}else if (v.getId() == R.id.btnMakeVideo) {
+
+			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+					.getSystemService(LAYOUT_INFLATER_SERVICE);
+			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
+			memoPopupWindow = new PopupWindow(popupView,
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+			memoPopupWindow.setFocusable(true);
+			memoPopupWindow.setOutsideTouchable(true);
+			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+						memoPopupWindow.dismiss();
+						return true;
+					}
+					return false;
+				}
+			});
+
+			memoPopupWindow.showAtLocation(date, 0, 0, 218);
+
 		}
 
 	}
