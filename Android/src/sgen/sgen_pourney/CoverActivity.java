@@ -84,7 +84,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		profileName = (TextView) findViewById(R.id.profileName);
-		profileName.setText(user.getNickName());// 여기 ""안에다가 사용자 이름 넣어주세요 넣어주셔서
+		profileName.setText(user.getNickName());// 여기 "" 안에다가 사용자 이름 넣어주세요 넣어주셔서
 												// 감사합니다
 
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
@@ -156,7 +156,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 		} else if (v.getId() == R.id.cphoto) {
 			System.out.println("클릭됨요");
-
 		} else if (v.getId() == R.id.backcard) {
 			Intent intent = new Intent(CoverActivity.this,
 					PhotoputActivity.class);
@@ -209,68 +208,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	/*
-	 * user id를 입력으로 받아 user id가 가진 trip 개수 리턴
-	 */
-	public class GetTripCount2 extends AsyncTask<String, String, String> {
-		private int tripCount = 0;
-
-		@Override
-		protected String doInBackground(String... params) {
-			InputStream is = null;
-			StringBuilder sb = null;
-			String result = null;
-
-			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("user_id", params[0]));
-
-			try {
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(
-						"http://54.178.166.213/getCoverCount.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				HttpResponse response = httpclient.execute(httppost);
-				HttpEntity entity = response.getEntity();
-				is = entity.getContent();
-			} catch (Exception e) {
-				Log.e("log_tag", "error in http connection" + e.toString());
-			}
-			try {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
-				sb = new StringBuilder();
-				sb.append(reader.readLine() + "\n");
-				String line = "0";
-				while ((line = reader.readLine()) != null) {
-					sb.append(line + "\n");
-				}
-				is.close();
-				result = sb.toString().trim();
-				Log.e("log_tag", result);
-
-			} catch (Exception e) {
-				Log.e("log_tag", "Error converting result " + e.toString());
-			}
-			try {
-				// JSONArray jArray = new JSONArray(result);
-				JSONObject JsonObject = new JSONObject(result);
-				tripCount = JsonObject.getInt("tripCount");
-			} catch (JSONException e1) {
-				Log.e("log_msg", e1.toString());
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			Log.e("log_msg", "" + tripCount);
-			numberOfCover = tripCount;
-		}
-	}
-
 	public class GetTripCount extends Thread {
-
 		@Override
 		public void run() {
 			super.run();
@@ -313,7 +251,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 				Log.e("log_tag", "Error converting result " + e.toString());
 			}
 			try {
-				// JSONArray jArray = new JSONArray(result);
 				JSONObject JsonObject = new JSONObject(result);
 				numberOfCover = JsonObject.getInt("tripCount");
 				for (int i = 0; i < JsonObject.length() - 1; i++) {

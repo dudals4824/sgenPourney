@@ -3,15 +3,15 @@ package sgen.DTO;
 public class TripDTO {
 	private int tripId;
 	private String tripTitle;
-	private String startDate;
-	private String endDate;
+	private int startDate;
+	private int endDate;
 
 	public TripDTO() {
 		super();
 	}
 
-	public TripDTO(int tripId, String tripTitle, String startDate,
-			String endDate) {
+	public TripDTO(int tripId, String tripTitle, int startDate,
+			int endDate) {
 		super();
 		this.tripId = tripId;
 		this.tripTitle = tripTitle;
@@ -35,19 +35,19 @@ public class TripDTO {
 		this.tripTitle = tripTitle;
 	}
 
-	public String getStartDate() {
+	public int getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(int startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public int getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(int endDate) {
 		this.endDate = endDate;
 	}
 

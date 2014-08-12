@@ -445,14 +445,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 				// get json object
 				json_data = jArray.getJSONObject(0);
-
 				// set selectedtrip information
 				selectedTrip.setTripId(json_data.getInt("trip_id"));
 				selectedTrip.setTripTitle(json_data.getString("trip_name"));
-				selectedTrip.setStartDate(Integer.toString(json_data
-						.getInt("start_date")));
-				selectedTrip.setEndDate(Integer.toString(json_data
-						.getInt("end_date")));
+				selectedTrip.setStartDate(json_data.getInt("start_date"));
+				selectedTrip.setEndDate(json_data.getInt("end_date"));
 				Log.e("MakeTravel_logMsg", selectedTrip.toString());
 
 				// change saved session
