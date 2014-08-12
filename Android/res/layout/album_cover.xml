@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/dayBack"
                 android:layout_marginRight="20dp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_toLeftOf="@+id/cphoto"
                 android:text="1" />
 
