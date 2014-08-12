@@ -53,7 +53,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 	private UserDTO user;
 
-	//trip id 저장용 array list
+	// trip id 저장용 array list
 	private ArrayList<Integer> tripArray = new ArrayList<Integer>();
 
 	// CoverCell marble=null;
@@ -80,8 +80,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//trip id를 가지고 있는 trip array 출력.
-		Log.e("cover activity trip array", ""+tripArray.toString());
+		// trip id를 가지고 있는 trip array 출력.
+		Log.e("cover activity trip array", "" + tripArray.toString());
 
 		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);
@@ -102,9 +102,10 @@ public class CoverActivity extends Activity implements OnClickListener {
 		Log.e("log_msg", "num of trip" + numberOfCover);
 
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
-		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
-			layout_cover.addView(new CoverCell(this, tripArray.get(i)));
-		}
+		if (tripArray.size() > 0)
+			for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
+				layout_cover.addView(new CoverCell(this, tripArray.get(i)));
+			}
 		// 맨뒤에 생길거
 		layout_cover.addView(new CoverCellNew(this));
 		// layout_cover_new = (GridLayout)findViewById(R.id.layout_cover_new);
