@@ -39,7 +39,7 @@
         
 
         <ImageButton
-            android:id="@+id/cancel"
+            android:id="@+id/findfriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/memo"
@@ -49,10 +49,10 @@
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:scaleType="fitXY"
-            android:src="@drawable/i_cancel" />
+            android:src="@drawable/i_register" />
 
         <ImageButton
-            android:id="@+id/findfriend"
+            android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/memo"
@@ -62,7 +62,7 @@
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:scaleType="fitXY"
-            android:src="@drawable/i_register" />
+            android:src="@drawable/i_memocancelput" />
     </RelativeLayout>
 
 </LinearLayout>
