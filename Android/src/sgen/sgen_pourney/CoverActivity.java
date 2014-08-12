@@ -72,6 +72,15 @@ public class CoverActivity extends Activity implements OnClickListener {
 		user = loggedInUser.getLoggedInUser();
 		Log.e("useruser", user.toString());
 
+		// 커버 갯수 가져오기
+		GetTripCount getTripCount = new GetTripCount();
+		getTripCount.start();
+		try {
+			getTripCount.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
@@ -89,16 +98,13 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 		m_startTime = System.currentTimeMillis();
 
-		// 커버 갯수 가져오기
-		GetTripCount getTripCount = new GetTripCount();
-		getTripCount.start();
+		Log.e("log_msg", "num of trip" + numberOfCover);
 
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
 		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
 			layout_cover.addView(new CoverCell(this, i));
 		}
 		// 맨뒤에 생길거
-
 		layout_cover.addView(new CoverCellNew(this));
 		// layout_cover_new = (GridLayout)findViewById(R.id.layout_cover_new);
 		// layout_cover_new.addView(new Cover_cell_new(this));
@@ -269,6 +275,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		public void run() {
 			super.run();
 
+			Log.e("log_GetTripCount", "get trip count thread start");
+
 			InputStream is = null;
 			StringBuilder sb = null;
 			String result = null;
@@ -308,6 +316,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 				// JSONArray jArray = new JSONArray(result);
 				JSONObject JsonObject = new JSONObject(result);
 				numberOfCover = JsonObject.getInt("tripCount");
+
+				Log.e("log_GetTripCount", "get trip count thread end");
+
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
