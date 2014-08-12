@@ -1,6 +1,7 @@
 package sgen.application;
 
 import android.app.Application;
+import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 /** 
  * @author Junki
@@ -10,6 +11,15 @@ import sgen.DTO.UserDTO;
 public class PourneyApplication extends Application {
 
 	private UserDTO loggedInUser;
+	private TripDTO selectedTrip;
+	
+	public TripDTO getSelectedTrip() {
+		return selectedTrip;
+	}
+
+	public void setSelectedTrip(TripDTO selectedTrip) {
+		this.selectedTrip = selectedTrip;
+	}
 
 	public UserDTO getLoggedInUser() {
 		return loggedInUser;
