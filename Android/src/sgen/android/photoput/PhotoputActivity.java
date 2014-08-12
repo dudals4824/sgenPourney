@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
@@ -103,6 +104,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private int photoAreaHeight;
 
 	private UserDTO user;
+	private TripDTO trip;
+	
 	// 사진 가져오는
 	private int serverResponseCode = 0;
 	private ProgressDialog dialog = null;
@@ -116,10 +119,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				R.layout.custom_title);
 
 		// user 로그인 정보 setting
-		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
+		PourneyApplication Application = (PourneyApplication) getApplication();
 		user = new UserDTO();
-		user = loggedInUser.getLoggedInUser();
-		Log.e("useruser", user.toString());
+		trip = new TripDTO();
+		user = Application.getLoggedInUser();
+		trip = Application.getSelectedTrip();
+		Log.d("PhotoputActivity_log", user.toString()+" , "+trip.toString());
 
 		// 드로워임
 		mDrawer = new SimpleSideDrawer(this);
@@ -163,11 +168,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
 
 		popupLocation.setText("왜 너만");// 디비에서 사람 수 불러와서 넣어주세요
-		title.setText("지랄이니?");// 디비에서 여행 아이디에 맞는 제목 불러와서 넣어주세요
-		date.setText("달력의 스펠링은 calendar");// 디비에서 날짜 불러와서 넣어주세요
+		title.setText(trip.getTripTitle());// 디비에서 여행 아이디에 맞는 제목 불러와서 넣어주세요
+		date.setText(trip.getStartDate()+"~"+trip.getEndDate());// 디비에서 날짜 불러와서 넣어주세요
 
+		//friendlist 표시
 		friendList.setOnClickListener(this);
-
+		
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
 	}
