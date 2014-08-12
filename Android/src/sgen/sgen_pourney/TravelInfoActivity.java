@@ -448,10 +448,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 				// set selectedtrip information
 				selectedTrip.setTripId(json_data.getInt("trip_id"));
-				selectedTrip.setTriptitle(json_data.getString("trip_name"));
-				selectedTrip.setStartdate(Integer.toString(json_data
+				selectedTrip.setTripTitle(json_data.getString("trip_name"));
+				selectedTrip.setStartDate(Integer.toString(json_data
 						.getInt("start_date")));
-				selectedTrip.setEnddate(Integer.toString(json_data
+				selectedTrip.setEndDate(Integer.toString(json_data
 						.getInt("end_date")));
 				Log.e("MakeTravel_logMsg", selectedTrip.toString());
 
