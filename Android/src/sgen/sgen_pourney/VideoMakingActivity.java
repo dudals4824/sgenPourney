@@ -3,15 +3,16 @@ package sgen.sgen_pourney;
 import java.util.Calendar; //나중에 필요
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class VideoMakingActivity extends Activity {
-
+public class VideoMakingActivity extends Activity implements OnClickListener{
 //	final Calendar c = Calendar.getInstance();
 //
 //	int Hour = c.get(Calendar.HOUR_OF_DAY); // HOUR는 12시간, HOUR_OF_DAY는 24시간
@@ -24,7 +25,7 @@ public class VideoMakingActivity extends Activity {
 	private TextView timer;
 	private final long startTime = 24 * 60 * 60 * 1000; //24시간 밀리세컨 단위임 비교한 값 여기에 넣으면 됨요
 	private final long interval = 100 ;
-	
+	private Button gogoVideo;
 	private SimpleSideDrawer mDrawer;
 
 	@Override
@@ -36,6 +37,8 @@ public class VideoMakingActivity extends Activity {
 		setContentView(R.layout.activity_video);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		gogoVideo=(Button)findViewById(R.id.gogoVideo);
+		gogoVideo.setOnClickListener(this);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
@@ -81,6 +84,16 @@ public class VideoMakingActivity extends Activity {
 
 		}
 
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if(v.getId()==R.id.gogoVideo)
+		{
+			Intent intent = new Intent(this, VideoViewActivity.class);
+			startActivity(intent);
+		}
 	}
 
 }
