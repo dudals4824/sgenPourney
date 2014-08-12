@@ -13,7 +13,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +30,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -39,22 +37,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CoverActivity extends Activity implements OnClickListener {
-
 	private int numberOfCover = 3; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
 	private TextView profileName;
 	private GridLayout layout_cover;
 	private ImageButton btn_new_travel, btnProfilePhoto, albumCover;
 	private SimpleSideDrawer mDrawer;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
-	long m_startTime;
-	long m_endTime;
-	boolean m_isPressedBackButton;
+	private long m_startTime;
+	private long m_endTime;
+	private boolean m_isPressedBackButton;
 	private Bitmap userProfilePhoto = null;
 
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 
 	private UserDTO user;
+
+	//trip id 저장용 array list
+	private ArrayList<Integer> tripArray = new ArrayList<Integer>();
 
 	// CoverCell marble=null;
 	@Override
@@ -80,6 +80,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		//trip id를 가지고 있는 trip array 출력.
+		Log.e("cover activity trip array", ""+tripArray.toString());
 
 		// 여기부터 drawer
 		mDrawer = new SimpleSideDrawer(this);
@@ -92,7 +94,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				mDrawer.toggleLeftDrawer();
-
 			}
 		});
 
@@ -102,7 +103,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 		layout_cover = (GridLayout) findViewById(R.id.layout_cover);
 		for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
-			layout_cover.addView(new CoverCell(this, i));
+			layout_cover.addView(new CoverCell(this, tripArray.get(i)));
 		}
 		// 맨뒤에 생길거
 		layout_cover.addView(new CoverCellNew(this));
@@ -182,7 +183,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 	}
 
 	public class ProfileImageSetter extends AsyncTask<String, String, String> {
-
 		@Override
 		protected String doInBackground(String... params) {
 			userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
@@ -203,10 +203,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 		}
-
 	}
 
 	/*
@@ -316,9 +314,11 @@ public class CoverActivity extends Activity implements OnClickListener {
 				// JSONArray jArray = new JSONArray(result);
 				JSONObject JsonObject = new JSONObject(result);
 				numberOfCover = JsonObject.getInt("tripCount");
-
+				for (int i = 0; i < JsonObject.length() - 1; i++) {
+					tripArray.add(JsonObject.getJSONObject(String.valueOf(i))
+							.getInt("trip_id"));
+				}
 				Log.e("log_GetTripCount", "get trip count thread end");
-
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}

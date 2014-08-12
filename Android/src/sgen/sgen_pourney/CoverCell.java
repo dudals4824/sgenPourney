@@ -56,6 +56,5 @@ public class CoverCell extends LinearLayout {
 		numberOfPeople.setText("With N people");
 		travelNum = Integer.toString(attrs);
 		travelNumber.setText(travelNum);
-		
 	}
 }
