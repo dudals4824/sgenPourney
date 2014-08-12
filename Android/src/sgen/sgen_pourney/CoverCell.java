@@ -18,22 +18,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sgen.DTO.TripDTO;
-import sgen.DTO.UserDTO;
 import sgen.application.PourneyApplication;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class CoverCell extends LinearLayout {
+public class CoverCell extends LinearLayout implements View.OnClickListener {
 	private TextView title, date, numberOfPeople, travelNumber;
 	Context mContext = null;
 	private TripDTO tripDTO = new TripDTO();
@@ -55,32 +52,32 @@ public class CoverCell extends LinearLayout {
 		date = (TextView) findViewById(R.id.dayBack);
 		numberOfPeople = (TextView) findViewById(R.id.peopleBack);
 		travelNumber = (TextView) findViewById(R.id.travelNumber);
-		
-		String fontpath="fonts/WalbaumBook-BoldItalic.otf";
-        Typeface tf=Typeface.createFromAsset(mContext.getAssets(),fontpath);
-        title.setTypeface(tf);
-        date.setTypeface(tf);
-        numberOfPeople.setTypeface(tf);
-        travelNumber.setTypeface(tf);
-		
-		
+
+		String fontpath = "fonts/WalbaumBook-BoldItalic.otf";
+		Typeface tf = Typeface.createFromAsset(mContext.getAssets(), fontpath);
+		title.setTypeface(tf);
+		date.setTypeface(tf);
+		numberOfPeople.setTypeface(tf);
+		travelNumber.setTypeface(tf);
 
 		// trip information setting asynctask
 		GetTripInfo getTripInfo = new GetTripInfo();
 		getTripInfo.execute(String.valueOf(attrs));
+		
+		title.setOnClickListener(this);
+		date.setOnClickListener(this);
+		numberOfPeople.setOnClickListener(this);
+		travelNumber.setOnClickListener(this);
+	}
 
-		setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// trip 정보 setting
-				Log.d("CoverCell_LOG", "onclick~~~");
-				PourneyApplication Application = (PourneyApplication) ((Activity) mContext)
-						.getApplication();
-				Application.setSelectedTrip(tripDTO);
-
-			}
-		});
-
+	@Override
+	public void onClick(View v) {
+		// trip 정보 setting
+		PourneyApplication Application = (PourneyApplication) ((Activity) mContext)
+				.getApplication();
+		Application.setSelectedTrip(tripDTO);
+		Log.d("CoverCell_LOG", "onclick"
+				+ Application.getSelectedTrip().getTripTitle());
 	}
 
 	public class GetTripInfo extends AsyncTask<String, String, String> {
