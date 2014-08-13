@@ -35,6 +35,7 @@ import sgen.common.PhotoEditor;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
+import sgen.sgen_pourney.ProfileModi;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
 import sgen.sgen_pourney.VideoMakingActivity;
@@ -67,6 +68,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -182,6 +184,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		albumBtn.setOnClickListener(this);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		logoutBtn.setOnClickListener(this);
+		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		profileBtn.setOnClickListener(this);
 		makingVideo = (Button) findViewById(R.id.making_video);
 		makingVideo.setOnClickListener(this);
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
@@ -224,21 +228,26 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.log_out_text) {
+		else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
 			finish();
 		}
-		if (v.getId() == R.id.last_album_text) {
+		else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
 			finish();
 		}
-		if (v.getId() == R.id.making_video) {
+		else if (v.getId() == R.id.making_video) {
 			Intent intent = new Intent(this, VideoMakingActivity.class);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.imgBack) {
+		else if (v.getId() == R.id.profile_modifying_text) {
+			Intent intent = new Intent(this, ProfileModi.class);
+			startActivity(intent);
+			finish();
+		}
+		else if (v.getId() == R.id.imgBack) {
 
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
