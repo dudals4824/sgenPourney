@@ -46,6 +46,9 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity implements OnClickListener{
 
+	private long m_startTime;
+	private long m_endTime;
+	private boolean m_isPressedBackButton;
 	private ImageButton btnLogin;
 	private ImageButton btnFacebook, btnJoin;
 	private EditText editEmailaddress, editPassword;
@@ -301,5 +304,25 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 	}
 
+
+	public void onBackPressed() {
+		m_endTime = System.currentTimeMillis();
+
+		if (m_endTime - m_startTime > 2000)
+			m_isPressedBackButton = false;
+
+		if (m_isPressedBackButton == false) {
+			m_isPressedBackButton = true;
+
+			m_startTime = System.currentTimeMillis();
+
+			Toast.makeText(this, "'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT)
+					.show();
+		} else {
+			finish();
+			System.exit(0);
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}
+	}
 
 }
