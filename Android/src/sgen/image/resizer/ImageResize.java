@@ -37,7 +37,7 @@ public class ImageResize {
 		return resize(sampledSrcBitmap, width, height, mode);
 	}
 	
-	protected static Bitmap resize(Bitmap sampledSrcBitmap, int width, int height, ResizeMode mode) {
+	public static Bitmap resize(Bitmap sampledSrcBitmap, int width, int height, ResizeMode mode) {
 		int sourceWidth = sampledSrcBitmap.getWidth();
 		int sourceHeight = sampledSrcBitmap.getHeight();
 		
