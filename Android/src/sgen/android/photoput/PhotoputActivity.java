@@ -329,7 +329,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				upload=new ImageUploader[all_path.size()];
 				for (int i = 0; i < all_path.size(); i++) {
 					upload[i] = new ImageUploader();
-					upload[i].execute(imagepath[i]);
+					upload[i].execute(all_path.get(i).getPath());
 				}
 
 			}
