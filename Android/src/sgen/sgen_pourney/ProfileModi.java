@@ -94,10 +94,12 @@ public class ProfileModi extends Activity implements OnClickListener {
 		if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
+			finish();
 		}
 		if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
+			finish();
 		}
 	}
 

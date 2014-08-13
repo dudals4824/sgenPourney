@@ -151,9 +151,11 @@ public class CoverActivity extends Activity implements OnClickListener {
 		} else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
+			finish();
 		} else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
+			finish();
 		} else if (v.getId() == R.id.cphoto) {
 			System.out.println("클릭됨요");
 		} else if (v.getId() == R.id.backcard) {
