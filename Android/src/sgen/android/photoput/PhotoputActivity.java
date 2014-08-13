@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -14,10 +17,12 @@ import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -25,13 +30,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import sgen.DTO.TripDTO;
-
 import sgen.DTO.UserDTO;
 import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
+import sgen.image.resizer.ImageResize;
+import sgen.image.resizer.ImageResizer;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
@@ -45,6 +50,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -69,7 +75,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -80,7 +85,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private Uri currImageURI;
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
-
 
 	private ImageButton btnForTest;
 
@@ -118,14 +122,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	// 프로필사진 및 로그인 불러오는 변수
 	private Bitmap userProfilePhoto = null;
-	
 
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 
 	private UserDTO user;
 	private TripDTO trip;
-	
+
 	// 사진 가져오는
 	private int serverResponseCode = 0;
 	private ProgressDialog dialog = null;
@@ -156,7 +159,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		trip = new TripDTO();
 		user = Application.getLoggedInUser();
 		trip = Application.getSelectedTrip();
-		Log.d("PhotoputActivity_log", user.toString()+" , "+trip.toString());
+		Log.d("PhotoputActivity_log", user.toString() + " , " + trip.toString());
 
 		// 드로워임
 		mDrawer = new SimpleSideDrawer(this);
@@ -173,7 +176,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		
 		btnForTest = (ImageButton) findViewById(R.id.btnMakeVideo);
 		btnForTest.setOnClickListener(this);
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
@@ -203,11 +205,15 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		popupLocation.setText("왜 너만");// 디비에서 사람 수 불러와서 넣어주세요
 		title.setText(trip.getTripTitle());// 디비에서 여행 아이디에 맞는 제목 불러와서 넣어주세요
-		date.setText(trip.getStartDate()+"~"+trip.getEndDate());// 디비에서 날짜 불러와서 넣어주세요
+		date.setText(trip.getStartDate() + "~" + trip.getEndDate());// 디비에서 날짜
+																	// 불러와서
+																	// 넣어주세요
 
-		//friendlist 표시
-		friendList.setOnClickListener(this);
+		upLoadServerUri = "http://54.178.166.213/androidPixUploadToPhp.php";
 		
+		// friendlist 표시
+		friendList.setOnClickListener(this);
+
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
 	}
@@ -227,31 +233,24 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.log_out_text) {
+		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-			finish();
-		}
-		else if (v.getId() == R.id.last_album_text) {
+		} else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
+			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-			finish();
-		}
-		else if (v.getId() == R.id.making_video) {
+		} else if (v.getId() == R.id.making_video) {
 			Intent intent = new Intent(this, VideoMakingActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.profile_modifying_text) {
+		} else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
-		}
-		else if (v.getId() == R.id.imgBack) {
+		} else if (v.getId() == R.id.imgBack) {
 
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -278,7 +277,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						.addView(new FriendListCell(this));
 				friendListPopupWindow.showAsDropDown(popupLocation, -475, 27);
 			}
-		}else if (v.getId() == R.id.btnMakeVideo) {
+		} else if (v.getId() == R.id.btnMakeVideo) {
 
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -322,16 +321,19 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 				for (int i = 0; i < all_path.size(); i++) {
 					// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
+					//아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
+					//선택된 사진만 들어가는데 서버에서 사진 가져오는 부분에는 저 밑에
+					//dayalbumList.get(i_dayalbum).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this,파일타입));
+					//넣으면 될 것 같아요.
 					all_path.get(i)
 							.setFile(new File(all_path.get(i).getPath()));
-					dayalbumList.get(i_dayalbum).addLayoutGridalbum(
-							new AlbumImgCell(PhotoputActivity.this, all_path
-									.get(i).getFile()));
 				}
+				//서버에 사진 업로드
 				dialog = ProgressDialog.show(PhotoputActivity.this, "",
 						"Uploading file...", true);
-				upload=new ImageUploader[all_path.size()];
+				upload = new ImageUploader[all_path.size()];
 				for (int i = 0; i < all_path.size(); i++) {
+					Log.d("photoput", "upload("+i+")");
 					upload[i] = new ImageUploader();
 					upload[i].execute(all_path.get(i).getPath());
 				}
@@ -383,10 +385,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			super.onPostExecute(result);
 		}
 
-	}//end of ProfileImageSetter
-	
-	public class ImageUploader extends AsyncTask<String, String, Integer>{
+	}// end of ProfileImageSetter
 
+	public class ImageUploader extends AsyncTask<String, String, Integer> {
 
 		@Override
 		protected void onPostExecute(Integer result) {
@@ -417,10 +418,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		// pre-background-post
 		@Override
-		protected Integer doInBackground(String... arg0) {
+		protected Integer doInBackground(String... params) {
 			// TODO Auto-generated method stub
 
-			String sourceFileUri = arg0[0];
+			String sourceFileUri = params[0];
 			HttpURLConnection conn = null;
 			DataOutputStream dos = null;
 			String lineEnd = "\r\n";
@@ -431,7 +432,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			int maxBufferSize = 1 * 1024 * 1024;
 			File sourceFile = new File(sourceFileUri);
 			if (!sourceFile.isFile()) {
-				Log.d("uploadFile", "Source File Does not exist");
+				Log.e("uploadFile", "Source File Does not exist");
 				return null;
 			}
 			try { // open a URL connection to the <span id="IL_AD7"
@@ -503,11 +504,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			} catch (MalformedURLException ex) {
 				dialog.dismiss();
 				ex.printStackTrace();
-				Log.d("Upload file to server", "error: " + ex.getMessage(), ex);
+				Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
 			} catch (Exception e) {
 				dialog.dismiss();
 				e.printStackTrace();
-				Log.d("Upload file to server Exception",
+				Log.e("Upload file to server Exception",
 						"Exception : " + e.getMessage(), e);
 			}
 			dialog.dismiss();
@@ -516,8 +517,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		}
 
-	}//end of ImageUploader
-	public class GetFilename extends AsyncTask<String, String, String>{
+	}// end of ImageUploader
+
+	public class GetFilename extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onCancelled() {
@@ -542,7 +544,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 
 		@Override
-		protected String doInBackground(String... arg0) {
+		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 
 			InputStream is = null;
@@ -551,7 +553,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("trip_id", arg0[0]));
+			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
 
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
@@ -563,7 +565,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				is = entity.getContent();
 
 			} catch (Exception e) {
-				Log.d("log_tag", "error in http connection" + e.toString());
+				Log.e("log_tag", "error in http connection" + e.toString());
 			}
 
 			try {
@@ -582,7 +584,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				Log.d("getFile_logMsg", result); // result 가 null이지???
 
 			} catch (Exception e) {
-				Log.d("getFile_log_tag",
+				Log.e("getFile_log_tag",
 						"Error converting result " + e.toString());
 			}
 
@@ -620,119 +622,120 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			return null;
 		}
 
-	}//end of GetfileName
-	public class ImageDownloader extends AsyncTask<String[], String, Bitmap>{
+	}// end of GetfileName
+
+	public class ImageDownloader extends AsyncTask<String[], String, Bitmap> {
 
 		@Override
-		protected void onCancelled() {
+		protected Bitmap doInBackground(String[]... param) {
 			// TODO Auto-generated method stub
-			super.onCancelled();
+			Log.d("param length", Integer.toString(param[0].length));
+
+			// param[0]에 url list들이 들어있으므로
+			// 이미지 다운을 위해 downloadBitmap 함수 호출!
+			return downloadBitmap(param[0]);
 		}
-
-
-
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-
-			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
-			imagedown = new ImageDownloader();
-			imagedown.execute(urllist);
-		
-		}
-
-
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
+			Log.i("Async-Example", "onPreExecute Called");
+			simpleWaitDialog = ProgressDialog.show(PhotoputActivity.this,
+					"Wait", "Downloading Image");
 
-		protected String doInBackground(String... arg0) {
-			// TODO Auto-generated method stub
-
-			InputStream is = null;
-			StringBuilder sb = null;
-			String filename = null;
-			String result = null;
-
-			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("trip_id", arg0[0]));
-
-			try {
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(
-						"http://54.178.166.213/getPhotoFilename.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				HttpResponse response = httpclient.execute(httppost);
-				HttpEntity entity = response.getEntity();
-				is = entity.getContent();
-
-			} catch (Exception e) {
-				Log.d("log_tag", "error in http connection" + e.toString());
-			}
-
-			try {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
-				sb = new StringBuilder();
-				sb.append(reader.readLine() + "\n");
-				String line = "0";
-
-				while ((line = reader.readLine()) != null) {
-					sb.append(line + "\n");
-				}
-
-				is.close();
-				result = sb.toString();
-				Log.d("getFile_logMsg", result); // result 가 null이지???
-
-			} catch (Exception e) {
-				Log.d("getFile_log_tag",
-						"Error converting result " + e.toString());
-			}
-
-			// 이미지 url list 받아오는 부분
-			try {
-				JSONArray jArray = new JSONArray(result);
-				JSONObject json_data = null;
-
-				pixNum = jArray.length();
-				Log.d("pixNum", Integer.toString(pixNum));
-				urllist = new String[pixNum];
-				for (int i = 0; i < jArray.length(); i++) {
-					json_data = jArray.getJSONObject(i);
-					filename = json_data.getString("photo_filename");
-					Log.d("filename", filename);
-
-					// file이름 받아온 후,
-					// 사진파일들이 저장되어있는 폴더 url에
-					// 파일이름 string을 합쳐서 url list에 넣음
-					addUrl = filename;
-					addUrl = downloadUrl + addUrl;
-					urllist[i] = addUrl;
-
-					Log.d("urlList" + i, urllist[i]);
-					// list에 다 넣은 후 post에서 다운로드 이미지 함수 호출
-
-				}
-
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			} catch (ParseException e1) {
-				e1.printStackTrace();
-			}
-
-			return null;
 		}
 
 		@Override
-		protected Bitmap doInBackground(String[]... params) {
-			// TODO Auto-generated method stub
-			return null;
+		protected void onPostExecute(Bitmap result) {
+			Log.i("Async-Example", "onPostExecute Called");
+			simpleWaitDialog.dismiss();
+
+			// asyncTask가 재호출이 되지 않기 때문에,
+			// 서버에 저장되어있는 사진갯수보다,
+			// 서버에서 안드로이드로 하나씩 보여주고 있는 사진 갯수가 적은 경우에만
+			// ImageDownloader함수(현재 함수)를 또 호출해주기 위한 부분입니다!
+			// 따라서 다 다운로드가 되면 더이상 imageDownloader가 호출되지 않음!
+			if (endNum < pixNum) {
+				// } else if (endNum < pixNum) {
+				imagedown = new ImageDownloader();
+				imagedown.execute(urllist);
+			}
+
+			// }
+
 		}
 
+		private Bitmap downloadBitmap(String[] url) {
+			// initilize the default HTTP client object
+
+			final DefaultHttpClient client = new DefaultHttpClient();
+
+			// addview
+			// forming a HttoGet request
+			final HttpGet getRequest = new HttpGet(url[endNum++]);
+			try {
+
+				HttpResponse response = client.execute(getRequest);
+
+				// check 200 OK for success
+				final int statusCode = response.getStatusLine().getStatusCode();
+
+				if (statusCode != HttpStatus.SC_OK) {
+					Log.w("ImageDownloader", "Error " + statusCode
+							+ " while retrieving bitmap from " + url);
+					return null;
+
+				}
+
+				final HttpEntity entity = response.getEntity();
+				if (entity != null) {
+					InputStream inputStream = null;
+					try {
+						// getting contents from the stream
+						inputStream = entity.getContent();
+						
+						
+						// decoding stream data back into image Bitmap that
+						// android understands
+						final Bitmap bitmap = BitmapFactory
+								.decodeStream(inputStream);
+							
+
+						// addview가 activity에서 실행되어야 하는데,
+						// asyncTask가 쓰레드 형식이라서
+						// addview를 함수로 빼서
+						// 쓰레드로 함수를 실행시키고
+						// addview는 main class로 빼서 함수로 만들어버림.
+						new Thread(new Runnable() {
+							public void run() {
+								runOnUiThread(new Runnable() {
+									public void run() {
+										dayalbumList.get(i_dayalbum).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this,bitmap));
+//										addImageView(inHorizontalScrollView,
+//												bitmap);
+									}
+								});
+							}
+						}).start();
+						// return bitmap;
+					} finally {
+						if (inputStream != null) {
+							inputStream.close();
+						}
+						entity.consumeContent();
+					}
+				}
+			} catch (Exception e) {
+				// You Could provide a more explicit error message for
+				// IOException
+				getRequest.abort();
+				Log.d("ImageDownloader", "Something went wrong while"
+						+ " retrieving bitmap from " + url + e.toString());
+			}
+			Log.d("endNum", Integer.toString(endNum));
+			Log.d("pixNum", Integer.toString(pixNum));
+
+			return null;
+		}
 	}
+
 }
