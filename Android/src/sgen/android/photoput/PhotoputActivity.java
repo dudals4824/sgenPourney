@@ -208,11 +208,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
 
+		//여행 정보 setting
 		popupLocation.setText("왜 너만");// 디비에서 사람 수 불러와서 넣어주세요
-		title.setText(trip.getTripTitle());// 디비에서 여행 아이디에 맞는 제목 불러와서 넣어주세요
-		date.setText(trip.getStartDate() + "~" + trip.getEndDate());// 디비에서 날짜
-																	// 불러와서
-																	// 넣어주세요
+		title.setText(trip.getTripTitle());
+		date.setText(trip.getStartDateInDateFormat() + "~" + trip.getEndDateInDateFormat());
 
 		upLoadServerUri = "http://54.178.166.213/androidPixUploadToPhp.php";
 
