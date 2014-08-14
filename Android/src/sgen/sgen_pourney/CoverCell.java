@@ -137,8 +137,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 				JSONObject JsonObject = JsonArray.getJSONObject(0);
 				tripDTO.setTripId(JsonObject.getInt("trip_id"));
 				tripDTO.setTripTitle(JsonObject.getString("trip_name"));
-				tripDTO.setStartDate(JsonObject.getInt("start_date"));
-				tripDTO.setEndDate(JsonObject.getInt("end_date"));
+				tripDTO.setStartDate(JsonObject.getLong("start_date"));
+				tripDTO.setEndDate(JsonObject.getLong("end_date"));
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
@@ -151,7 +151,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 			// travel information setting
 			Log.d("settext", tripDTO.toString());
 			title.setText(tripDTO.getTripTitle());
-			date.setText(tripDTO.getStartDate() + "~" + tripDTO.getEndDate());
+			date.setText(tripDTO.getStartDateInDateFormat() + "~" + tripDTO.getEndDateInDateFormat());
 			numberOfPeople.setText("With N people");
 			travelNumber.setText(String.valueOf(tripDTO.getTripId()));
 		}

@@ -489,8 +489,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				// set selectedtrip information
 				selectedTrip.setTripId(json_data.getInt("trip_id"));
 				selectedTrip.setTripTitle(json_data.getString("trip_name"));
-				selectedTrip.setStartDate(json_data.getInt("start_date"));
-				selectedTrip.setEndDate(json_data.getInt("end_date"));
+				selectedTrip.setStartDate(json_data.getLong("start_date"));
+				selectedTrip.setEndDate(json_data.getLong("end_date"));
 
 				PourneyApplication Application = (PourneyApplication) getApplication();
 				Application.setSelectedTrip(selectedTrip);
