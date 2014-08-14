@@ -60,7 +60,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth, name;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
-	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
+	private ImageButton btnPrevMonth, btnNextMonth, btnPut, btnMakeVideo, btnInputPhoto;
 	private ArrayList<ImageButton> btnFriend = new ArrayList<ImageButton>();
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
@@ -70,6 +70,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private TripDTO selectedTrip; // 민아
 	private String frinedNameToFind;
 
+	
 	// 사진 관련 변수
 	private int photoAreaWidth;
 	private int photoAreaHeight;
@@ -150,6 +151,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
+		btnInputPhoto=(ImageButton)findViewById(R.id.btnInputPhoto);
+		btnMakeVideo=(ImageButton)findViewById(R.id.btnMakeVideo);
+		
+
 		for (int i = 0; i < 7; i++) {
 			Log.e("numbertest", "" + i);
 			btnFriend.add((ImageButton) findViewById(ids[i]));
@@ -173,6 +178,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 		btnPrevMonth.setOnClickListener(this);
 		btnNextMonth.setOnClickListener(this);
+		btnInputPhoto.setOnClickListener(this);
+		btnMakeVideo.setOnClickListener(this);
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
@@ -240,6 +247,17 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
+		}
+		if(v.getId()==R.id.btnInputPhoto){
+			Intent intent = new Intent(TravelInfoActivity.this, PhotoputActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		
+		if(v.getId()==R.id.btnMakeVideo){
+			Intent intent = new Intent(TravelInfoActivity.this, VideoMakingActivity.class);
+			startActivity(intent);
+			finish();
 		}
 		if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
@@ -789,11 +807,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				// profile 사진 크기에 맞게 cover bitmap 설정
 				BitmapDrawable bd = null;
 				if (targetImageView.equals(friendProfileOnPopupWindow)) {
-					bd = (BitmapDrawable) getResources()
-							.getDrawable(R.drawable.i_findfriend_profile_cover);
+					bd = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.i_findfriend_profile_cover);
 				} else {
-					bd = (BitmapDrawable) getResources()
-							.getDrawable(R.drawable.i_profile_200x200_cover);
+					bd = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.i_profile_200x200_cover);
 				}
 				Bitmap coverBitmap = bd.getBitmap();
 
@@ -804,7 +822,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				friendProfilePhoto = photoEdit.editPhotoAuto();
 			}
 			return null;
-		}	
+		}
 
 		@Override
 		protected void onPostExecute(String result) {
