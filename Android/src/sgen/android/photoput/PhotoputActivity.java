@@ -43,6 +43,7 @@ import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.ProfileModi;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
+import sgen.sgen_pourney.TravelInfoActivity;
 import sgen.sgen_pourney.VideoMakingActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -89,10 +90,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private ImageButton btnForTest;
 
 	private PopupWindow memoPopupWindow;
-	private Button askBtn, logoutBtn, albumBtn, profileBtn, makingVideo;
+	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 
 	private TextView popupLocation, title, date;
-	private ImageButton friendList, btnProfilePhoto;
+	private ImageButton friendList, btnProfilePhoto,btnMakeVideo, btnTravelInfo;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -188,9 +189,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
 		profileBtn.setOnClickListener(this);
-		makingVideo = (Button) findViewById(R.id.making_video);
-		makingVideo.setOnClickListener(this);
+		
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
+		btnMakeVideo=(ImageButton)findViewById(R.id.btnMakeVideo);
+		btnTravelInfo=(ImageButton)findViewById(R.id.btnTravelInfo);
+		btnMakeVideo.setOnClickListener(this);
+		btnTravelInfo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		// }
@@ -238,15 +242,30 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		} else if (v.getId() == R.id.last_album_text) {
+			finish();
+		}
+		else if(v.getId()==R.id.btnMakeVideo)
+		{
+			Intent intent= new Intent(PhotoputActivity.this, VideoMakingActivity.class);
+			startActivity(intent);
+			finish();
+		}else if(v.getId()==R.id.btnTravelInfo)
+		{
+			Intent intent= new Intent(PhotoputActivity.this, TravelInfoActivity.class);
+			startActivity(intent);
+			finish();
+		}
+	
+		 else if (v.getId() == R.id.last_album_text) {
+
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		} else if (v.getId() == R.id.making_video) {
-			Intent intent = new Intent(this, VideoMakingActivity.class);
-			startActivity(intent);
-		} else if (v.getId() == R.id.profile_modifying_text) {
+
+		} 
+		 else if (v.getId() == R.id.profile_modifying_text) {
+
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
