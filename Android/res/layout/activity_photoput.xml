@@ -162,12 +162,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/making_video"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="making Video!" />
-
         </LinearLayout>
     </LinearLayout>
 
