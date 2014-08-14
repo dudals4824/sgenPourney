@@ -93,7 +93,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 
 	private TextView popupLocation, title, date;
-	private ImageButton friendList, btnProfilePhoto,btnMakeVideo, btnTravelInfo;
+	private ImageButton friendList, btnProfilePhoto, btnMakeVideo,
+			btnTravelInfo;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -160,7 +161,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		trip = new TripDTO();
 		user = Application.getLoggedInUser();
 		trip = Application.getSelectedTrip();
-		Log.d("PhotoputActivity_log", user.toString() + " , " + trip.toString());
+		Log.d("PhotoputActivity_log", user.toString() + " , " +trip.toString());
 
 		// 드로워임
 		mDrawer = new SimpleSideDrawer(this);
@@ -189,10 +190,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
 		profileBtn.setOnClickListener(this);
-		
+
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
-		btnMakeVideo=(ImageButton)findViewById(R.id.btnMakeVideo);
-		btnTravelInfo=(ImageButton)findViewById(R.id.btnTravelInfo);
+		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
+		btnTravelInfo = (ImageButton) findViewById(R.id.btnTravelInfo);
 		btnMakeVideo.setOnClickListener(this);
 		btnTravelInfo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
@@ -214,7 +215,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 																	// 넣어주세요
 
 		upLoadServerUri = "http://54.178.166.213/androidPixUploadToPhp.php";
-		
+
 		// friendlist 표시
 		friendList.setOnClickListener(this);
 
@@ -243,28 +244,26 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			finish();
-		}
-		else if(v.getId()==R.id.btnMakeVideo)
-		{
-			Intent intent= new Intent(PhotoputActivity.this, VideoMakingActivity.class);
+		} else if (v.getId() == R.id.btnMakeVideo) {
+			Intent intent = new Intent(PhotoputActivity.this,
+					VideoMakingActivity.class);
 			startActivity(intent);
 			finish();
-		}else if(v.getId()==R.id.btnTravelInfo)
-		{
-			Intent intent= new Intent(PhotoputActivity.this, TravelInfoActivity.class);
+		} else if (v.getId() == R.id.btnTravelInfo) {
+			Intent intent = new Intent(PhotoputActivity.this,
+					TravelInfoActivity.class);
 			startActivity(intent);
 			finish();
 		}
-	
-		 else if (v.getId() == R.id.last_album_text) {
+
+		else if (v.getId() == R.id.last_album_text) {
 
 			Intent intent = new Intent(this, CoverActivity.class);
 			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		} 
-		 else if (v.getId() == R.id.profile_modifying_text) {
+		} else if (v.getId() == R.id.profile_modifying_text) {
 
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
@@ -340,19 +339,20 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 				for (int i = 0; i < all_path.size(); i++) {
 					// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
-					//아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
-					//선택된 사진만 들어가는데 서버에서 사진 가져오는 부분에는 저 밑에
-					//dayalbumList.get(i_dayalbum).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this,파일타입));
-					//넣으면 될 것 같아요.
+					// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
+					// 선택된 사진만 들어가는데 서버에서 사진 가져오는 부분에는 저 밑에
+					// dayalbumList.get(i_dayalbum).addLayoutGridalbum(new
+					// AlbumImgCell(PhotoputActivity.this,파일타입));
+					// 넣으면 될 것 같아요.
 					all_path.get(i)
 							.setFile(new File(all_path.get(i).getPath()));
 				}
-				//서버에 사진 업로드
+				// 서버에 사진 업로드
 				dialog = ProgressDialog.show(PhotoputActivity.this, "",
 						"Uploading file...", true);
 				upload = new ImageUploader[all_path.size()];
 				for (int i = 0; i < all_path.size(); i++) {
-					Log.d("photoput", "upload("+i+")");
+					Log.d("photoput", "upload(" + i + ")");
 					upload[i] = new ImageUploader();
 					upload[i].execute(all_path.get(i).getPath());
 				}
@@ -711,13 +711,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					try {
 						// getting contents from the stream
 						inputStream = entity.getContent();
-						
-						
+
 						// decoding stream data back into image Bitmap that
 						// android understands
 						final Bitmap bitmap = BitmapFactory
 								.decodeStream(inputStream);
-							
 
 						// addview가 activity에서 실행되어야 하는데,
 						// asyncTask가 쓰레드 형식이라서
@@ -728,9 +726,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList.get(i_dayalbum).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this,bitmap));
-//										addImageView(inHorizontalScrollView,
-//												bitmap);
+										dayalbumList
+												.get(i_dayalbum)
+												.addLayoutGridalbum(
+														new AlbumImgCell(
+																PhotoputActivity.this,
+																bitmap));
+										// addImageView(inHorizontalScrollView,
+										// bitmap);
 									}
 								});
 							}

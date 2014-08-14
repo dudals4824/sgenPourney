@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
@@ -347,6 +348,19 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			String trip_name = editTitle.getText().toString();
 			String start_date = Integer.toString(startdate);
 			String end_date = Integer.toString(enddate);
+			
+			String str_startdate = Integer.toString(startdate);
+			int year;
+			int month;
+			int day;
+			Log.d("GregorianCalendar", Integer.toString(startdate)+"");
+			year = Integer.parseInt(str_startdate.substring(0, 4));
+			month = Integer.parseInt(str_startdate.substring(4, 6));
+			day = Integer.parseInt(str_startdate.substring(6));
+
+			GregorianCalendar gregorianCalendar = new GregorianCalendar(year,
+					month, day);
+			Log.d("GregorianCalendar", gregorianCalendar+"");
 
 			makeTravelTask = new MakeTravelTask();
 			makeTravelTask.execute(trip_name, start_date, end_date,

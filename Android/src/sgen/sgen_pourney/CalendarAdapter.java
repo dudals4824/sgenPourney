@@ -2,6 +2,7 @@ package sgen.sgen_pourney;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -96,32 +97,19 @@ public class CalendarAdapter extends BaseAdapter {
 		textview.setText(DayArray[position]);
 		if (startdate > 0) {
 			// Log.d("getItemId", getItemId(position) + "");
-			
-			if (startdate <= getItemId(position) && getItemId(position) <= enddate) {
+
+			if (startdate <= getItemId(position)
+					&& getItemId(position) <= enddate) {
 				Log.d("getItemId", getItemId(position) + "");
-				if (getItemId(position) == startdate || getItemId(position) == enddate)
-					convertView.setBackgroundResource(R.drawable.ic_numberput_84x84);
+				if (getItemId(position) == startdate
+						|| getItemId(position) == enddate)
+					convertView
+							.setBackgroundResource(R.drawable.ic_numberput_84x84);
 				convertView.setBackgroundColor(Color.rgb(120, 192, 242));
-				
+
 			}
 		}
-		// if (DayArray[position] != null){
-		// numberFormat.setMinimumIntegerDigits(2);
-		// month = numberFormat.format((today.month+1));
-		// year = today.year + "";
-		// if ((position - today.firstdayofthismonth + 2) < 0)
-		// date = "00";
-		// else{
-		// date=numberFormat.format(position - today.firstdayofthismonth + 2);
-		// }
-		// id = year + month + date;
-		// info=dbhandler.select(Integer.parseInt(id));
-		// if(info!=null){
-		// gridflag.setVisibility(1);
-		// }
-		// }
-		// left top right bottom
-		// textview.setTextColor(Color.rgb(153, 153, 153));
+		
 		textview.setGravity(Gravity.CENTER);
 		convertView.setPadding(5, 5, 5, 5);
 		return convertView;
