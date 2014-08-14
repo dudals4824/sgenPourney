@@ -61,7 +61,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth, name;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
-	private ImageButton btnPrevMonth, btnNextMonth, btnPut, btnMakeVideo, btnInputPhoto;
+	private ImageButton btnPrevMonth, btnNextMonth, btnPut, btnMakeVideo,
+			btnInputPhoto;
 	private ArrayList<ImageButton> btnFriend = new ArrayList<ImageButton>();
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
@@ -71,7 +72,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private TripDTO selectedTrip; // 민아
 	private String frinedNameToFind;
 
-	
 	// 사진 관련 변수
 	private int photoAreaWidth;
 	private int photoAreaHeight;
@@ -152,9 +152,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
-		btnInputPhoto=(ImageButton)findViewById(R.id.btnInputPhoto);
-		btnMakeVideo=(ImageButton)findViewById(R.id.btnMakeVideo);
-		
+		btnInputPhoto = (ImageButton) findViewById(R.id.btnInputPhoto);
+		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
 
 		for (int i = 0; i < 7; i++) {
 			Log.e("numbertest", "" + i);
@@ -199,11 +198,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	}// TravelActivity onCreate();
 
 	private void setFont() {
-		Typeface yoon320 = Typeface.createFromAsset(getAssets(), "fonts/yoon320.ttf");
+		Typeface yoon320 = Typeface.createFromAsset(getAssets(),
+				"fonts/yoon320.ttf");
 		textTitleHere.setTypeface(yoon320);
 		textCalendarHere.setTypeface(yoon320);
 		textPeopleHere.setTypeface(yoon320);
-		Typeface yoon330 = Typeface.createFromAsset(getAssets(), "fonts/yoon330.ttf");
+		Typeface yoon330 = Typeface.createFromAsset(getAssets(),
+				"fonts/yoon330.ttf");
 		textInputInfo.setTypeface(yoon330);
 	}
 
@@ -249,14 +250,16 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		}
-		if(v.getId()==R.id.btnInputPhoto){
-			Intent intent = new Intent(TravelInfoActivity.this, PhotoputActivity.class);
+		if (v.getId() == R.id.btnInputPhoto) {
+			Intent intent = new Intent(TravelInfoActivity.this,
+					PhotoputActivity.class);
 			startActivity(intent);
 			finish();
 		}
-		
-		if(v.getId()==R.id.btnMakeVideo){
-			Intent intent = new Intent(TravelInfoActivity.this, VideoMakingActivity.class);
+
+		if (v.getId() == R.id.btnMakeVideo) {
+			Intent intent = new Intent(TravelInfoActivity.this,
+					VideoMakingActivity.class);
 			startActivity(intent);
 			finish();
 		}
@@ -346,24 +349,27 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 		else if (v.getId() == R.id.btnPut) {
 			String trip_name = editTitle.getText().toString();
-			String start_date = Integer.toString(startdate);
-			String end_date = Integer.toString(enddate);
-			
-			String str_startdate = Integer.toString(startdate);
-			int year;
-			int month;
-			int day;
-			Log.d("GregorianCalendar", Integer.toString(startdate)+"");
-			year = Integer.parseInt(str_startdate.substring(0, 4));
-			month = Integer.parseInt(str_startdate.substring(4, 6));
-			day = Integer.parseInt(str_startdate.substring(6));
 
-			GregorianCalendar gregorianCalendar = new GregorianCalendar(year,
-					month, day);
-			Log.d("GregorianCalendar", gregorianCalendar+"");
+			// 20140411 같은 형식의 int형 날짜를 gregorian time in millis로 변경
+			String startDateString = Integer.toString(startdate);
+			String endDateString = Integer.toString(enddate);
+			
+			GregorianCalendar startDayCalendar = new GregorianCalendar(
+					Integer.parseInt(startDateString.substring(0, 4)), //년
+					Integer.parseInt(startDateString.substring(4, 6)), //월
+					Integer.parseInt(startDateString.substring(6))); //일
+
+			GregorianCalendar endDayCalendar = new GregorianCalendar(
+					Integer.parseInt(endDateString.substring(0, 4)),
+					Integer.parseInt(endDateString.substring(4, 6)),
+					Integer.parseInt(endDateString.substring(6)));
+
+			String startDate = Long
+					.toString(startDayCalendar.getTimeInMillis());
+			String endDate = Long.toString(endDayCalendar.getTimeInMillis());
 
 			makeTravelTask = new MakeTravelTask();
-			makeTravelTask.execute(trip_name, start_date, end_date,
+			makeTravelTask.execute(trip_name, startDate, endDate,
 					Integer.toString(loggedInUser.getUserId()));
 		}
 		today = new Dayinfo(cnt);
@@ -485,8 +491,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				selectedTrip.setTripTitle(json_data.getString("trip_name"));
 				selectedTrip.setStartDate(json_data.getInt("start_date"));
 				selectedTrip.setEndDate(json_data.getInt("end_date"));
-				
-				PourneyApplication Application = (PourneyApplication)getApplication();
+
+				PourneyApplication Application = (PourneyApplication) getApplication();
 				Application.setSelectedTrip(selectedTrip);
 				Log.e("MakeTravel_logMsg", selectedTrip.toString());
 
@@ -552,12 +558,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			map = session.getUserDetails();
 			int TripId = map.get("trip_id");
 			String trip_id = Integer.toString(TripId);
-			
-			
 
 			// get friend nickname list
 			ArrayList<String> passedFriendsList = arg0[0];
-			
+
 			for (int k = 0; k < passedFriendsList.size(); k++) {
 				InputStream is = null;
 				StringBuilder sb = null;
