@@ -211,7 +211,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		//여행 정보 setting
 		popupLocation.setText("왜 너만");// 디비에서 사람 수 불러와서 넣어주세요
 		title.setText(trip.getTripTitle());
-		date.setText(trip.getStartDateInDateFormat() + "~" + trip.getEndDateInDateFormat());
+		date.setText(trip.getStartDateInDateFormat() + " ~ " + trip.getEndDateInDateFormat());
 
 		upLoadServerUri = "http://54.178.166.213/androidPixUploadToPhp.php";
 
