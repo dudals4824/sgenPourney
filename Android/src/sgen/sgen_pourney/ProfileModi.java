@@ -29,7 +29,7 @@ public class ProfileModi extends Activity implements OnClickListener {
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private int photoAreaWidth;
 	private int photoAreaHeight;
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -81,24 +81,21 @@ public class ProfileModi extends Activity implements OnClickListener {
 			Intent intent = new Intent(ProfileModi.this,
 					TravelInfoActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.ask_text) {
+		} else if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.log_out_text) {
+		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
-			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 		} else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
-			startActivity(intent);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		}
-		else if (v.getId() == R.id.profile_modifying_text) {
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+
+		} else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
