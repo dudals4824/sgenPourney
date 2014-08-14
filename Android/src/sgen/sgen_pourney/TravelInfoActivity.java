@@ -471,6 +471,9 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				selectedTrip.setTripTitle(json_data.getString("trip_name"));
 				selectedTrip.setStartDate(json_data.getInt("start_date"));
 				selectedTrip.setEndDate(json_data.getInt("end_date"));
+				
+				PourneyApplication Application = (PourneyApplication)getApplication();
+				Application.setSelectedTrip(selectedTrip);
 				Log.e("MakeTravel_logMsg", selectedTrip.toString());
 
 				// change saved session
@@ -535,9 +538,12 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			map = session.getUserDetails();
 			int TripId = map.get("trip_id");
 			String trip_id = Integer.toString(TripId);
+			
+			
 
 			// get friend nickname list
 			ArrayList<String> passedFriendsList = arg0[0];
+			
 			for (int k = 0; k < passedFriendsList.size(); k++) {
 				InputStream is = null;
 				StringBuilder sb = null;
