@@ -43,6 +43,7 @@ public class TripDTO {
 
 	public long getStartDate() {
 		return startDate;
+		//밀리세컨드로 가져옴 그레고리안에 넣어서 사용하면됨
 	}
 
 	public void setStartDate(long startDate) {
