@@ -382,7 +382,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					upload[i] = new ImageUploader();
 					upload[i].execute(all_path.get(i).getPath());
 				}
-
+				
+				updatephotodate = new UpdatePhotodate();
+				updatephotodate.execute(trip);
 			}
 		}
 	}
@@ -440,8 +442,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(Integer result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			updatephotodate = new UpdatePhotodate();
-			updatephotodate.execute(trip);
+			
 			// updatephotodate.execute(트립아이디,날짜넣기)
 			// 트립아이디는 세션에서 불러오기
 
