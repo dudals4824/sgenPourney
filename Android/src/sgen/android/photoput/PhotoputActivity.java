@@ -316,7 +316,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				((GridLayout) friendListPopupWindow.getContentView()
 						.findViewById(R.id.friendlistpopupback))
 						.addView(new FriendListCell(this));
-				friendListPopupWindow.showAsDropDown(popupLocation, -475, 27);
+				friendListPopupWindow.showAtLocation(popupLocation, 0, 0, 218);
+				//friendListPopupWindow.showAsDropDown(popupLocation, -475, 27);
 			}
 		} else if (v.getId() == R.id.btnMakeVideo) {
 
