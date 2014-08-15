@@ -36,7 +36,6 @@ import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import sgen.common.PhotoUploader;
-import sgen.common.ProfileUploader;
 import sgen.image.resizer.ImageResizer;
 import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.AskActivity;
@@ -139,7 +138,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private ProgressDialog dialog = null;
 	private GetFilename get;
 	private ImageDownloader imagedown;
-	private ImageUploader[] upload;
 	private String[] imagepath;
 	private int endNum = 0;
 	private int pixNum = 0;
@@ -151,10 +149,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String upLoadServerUri = null;
 	// 여기
 	private UpdatePhotodate updatephotodate;
-	ArrayList<PhotoInfo> all_path = null;
-
-	// 사진업로드용 객체
-	private PhotoUploader photoUploader = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -358,14 +352,18 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		Log.d("PhotoputActivity", "onActivityResult");
 		Log.d("PhotoputActivity", resultCode + "");
+		
+		PhotoUploader photoUploader = null;
+
 		if (resultCode == RESULT_OK) {
 			if (requestCode == 200) {
 				// 선택된 데이앨범의 i값을 받아온다
 				i_dayalbum = data.getIntExtra("i_dayalbum", 300);
 				Log.d("Photoput : i_dayalbum ", i_dayalbum + "");
 				// 사진 패스를 받아옴
-				all_path = (ArrayList<PhotoInfo>) data.getExtras()
-						.getSerializable("list");
+				ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
+						.getExtras().getSerializable("list");
+
 				for (int i = 0; i < all_path.size(); i++) {
 					// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
 					// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
@@ -379,26 +377,24 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// 서버에 사진 업로드
 				dialog = ProgressDialog.show(PhotoputActivity.this, "",
 						"Uploading file...", true);
-				upload = new ImageUploader[all_path.size()];
 				// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
 				for (int i = 0; i < all_path.size(); i++) {
 					Log.d("photoput", "upload(" + i + ")");
-					// upload[i] = new ImageUploader();
-					// upload[i].execute(all_path.get(i).getPath());
-					new Thread(new Runnable() {
-						public void run() {
-							for (int i = 0; i < all_path.size(); i++) {
-								Log.d("PhotoputActivity.OnActivityResults",
-										i+"th Thread is running");
-								photoUploader.uploadFile(all_path.get(i)
-										.getPath(), Integer.toString(user.getUserId()), Integer.toString(trip.getTripId()), 12123);
-							}
-						}
-					}).start();
-
-					updatephotodate = new UpdatePhotodate();
-					updatephotodate.execute(trip);
+					//upload[i] = new ImageUploader();
+					//upload[i].execute(all_path.get(i).getPath());
+					photoUploader = new PhotoUploader(all_path.get(i).getPath(), user.getUserId(), trip.getTripId(), i);
+					photoUploader.start();
+					try {
+						photoUploader.join();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
+				dialog.dismiss();
+				
+				//updatephotodate = new UpdatePhotodate();
+				//updatephotodate.execute(trip);
+
 			}
 		}
 	}
@@ -447,148 +443,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 
 	}// end of ProfileImageSetter
-
-	public class ImageUploader extends AsyncTask<String, String, Integer> {
-		/*
-		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-		 */
-		@Override
-		protected void onPostExecute(Integer result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-
-			// updatephotodate.execute(트립아이디,날짜넣기)
-			// 트립아이디는 세션에서 불러오기
-
-			// 사진을 서버로 업로드 완료한 후에
-			// 서버에 있는 사진을 다시 안드로이드에 뿌려주기위해
-			// 방금 업로드한 사진파일이름 받아오는 부분
-			// 같이 여행을 하는 사람들이 볼 수 있어야 하므로 trip_id를 파라미터로 전송
-			// 아래 트립아이디는 임의로 해논것입니다!
-
-			// String trip_id = "101";
-			// get = new GetFilename();
-			// get.execute(trip_id);
-			// get.execute(trip_id,photo_date);
-		}
-
-		// pre-background-post
-		@Override
-		protected Integer doInBackground(String... params) {
-			// TODO Auto-generated method stub
-
-			String sourceFileUri = params[0];
-			HttpURLConnection conn = null;
-			DataOutputStream dos = null;
-			String lineEnd = "\r\n";
-			String twoHyphens = "--";
-			String boundary = "*****";
-			int bytesRead, bytesAvailable, bufferSize;
-			byte[] buffer;
-			int maxBufferSize = 1 * 1024 * 1024;
-			// 파일을 비트맵으로 바꿔서 사진 크기 리사이징 후 바이트어레이로 변환
-			File sourceFile = new File(sourceFileUri);
-
-			if (!sourceFile.isFile()) {
-				Log.e("uploadFile", "Source File Does not exist");
-				return null;
-			}
-			try { // open a URL connection to the <span id="IL_AD7"
-					// class="IL_AD">Servlet</span>
-				FileInputStream fileInputStream = new FileInputStream(
-						sourceFile);
-				URL url = new URL(upLoadServerUri);
-				conn = (HttpURLConnection) url.openConnection(); // Open a HTTP
-				// connection to
-				// the URL
-				conn.setDoInput(true); // Allow Inputs
-				conn.setDoOutput(true); // Allow Outputs
-				conn.setUseCaches(false); // Don't use a Cached Copy
-				conn.setRequestMethod("POST");
-				conn.setRequestProperty("Connection", "Keep-Alive");
-				conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-				conn.setRequestProperty("Content-Type",
-						"multipart/form-data;boundary=" + boundary);
-				conn.setRequestProperty("uploaded_file", sourceFileUri);
-				dos = new DataOutputStream(conn.getOutputStream());
-
-				dos.writeBytes(twoHyphens + boundary + lineEnd);
-				dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-						+ sourceFileUri + "\"" + lineEnd);
-				dos.writeBytes(lineEnd);
-
-				// create a buffer of maximum size
-				bytesAvailable = fileInputStream.available();
-				bufferSize = Math.max(bytesAvailable, maxBufferSize);
-				buffer = new byte[bufferSize];
-
-				// read file and write it into form...
-				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-				// byte array to bitmap..
-				BitmapFactory.Options option = new BitmapFactory.Options();
-				option.inSampleSize = 8;
-				Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0,
-						buffer.length, option);
-				Log.e("bitmap validation",
-						bitmap.getWidth() + " " + bitmap.getHeight());
-				// resize bitmap
-				// bitmap = getResizedBitmap(bitmap, 200, 200);
-				ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-				buffer = stream.toByteArray();
-				bufferSize = stream.toByteArray().length;
-				// bitmap to byte array
-
-				while (bytesRead > 0) {
-					dos.write(buffer, 0, bufferSize);
-					bytesAvailable = fileInputStream.available();
-					bufferSize = Math.min(bytesAvailable, maxBufferSize);
-					bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-				}
-
-				// send multipart form data necesssary after file data...
-				dos.writeBytes(lineEnd);
-				dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-				// Responses from the server (code and message)
-				serverResponseCode = conn.getResponseCode();
-				String serverResponseMessage = conn.getResponseMessage();
-
-				Log.i("uploadFile", "HTTP Response is : "
-						+ serverResponseMessage + ": " + serverResponseCode);
-				if (serverResponseCode == 200) {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							Toast.makeText(PhotoputActivity.this,
-									"File Upload Complete.", Toast.LENGTH_SHORT)
-									.show();
-						}
-					});
-				}
-
-				// close the streams //
-				fileInputStream.close();
-				dos.flush();
-				dos.close();
-
-			} catch (MalformedURLException ex) {
-				dialog.dismiss();
-				ex.printStackTrace();
-				Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
-			} catch (Exception e) {
-				dialog.dismiss();
-				e.printStackTrace();
-				Log.e("Upload file to server Exception",
-						"Exception : " + e.getMessage(), e);
-			}
-			dialog.dismiss();
-
-			return serverResponseCode;
-
-		}
-
-	}// end of ImageUploader
 
 	/**
 	 * 날짜별로 사진 받아오는거
@@ -867,12 +721,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList
-												.get(i_dayalbum)
-												.addLayoutGridalbum(
-														new AlbumImgCell(
-																PhotoputActivity.this,
-																bitmap));
+										dayalbumList.get(i_dayalbum).addLayoutGridalbum
+										(new AlbumImgCell(PhotoputActivity.this,bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}

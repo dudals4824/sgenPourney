@@ -17,13 +17,28 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 
-public class PhotoUploader {
-	InputStream is;
-	String stringResponse = null;
+public class PhotoUploader extends Thread{
 	private final String upLoadServerUri = "http://54.178.166.213/photoUpload.php";
+	private String sourceFileUri;
+	private String user_id;
+	private String trip_id;
+	long photo_date;
 
-	// 여기 고칠부분!!
-	public String uploadFile(String sourceFileUri, String user_id, String trip_id, long photo_date) {
+	public PhotoUploader(String sourceFileUri, int user_id, int trip_id,
+			long photo_date) {
+		super();
+		this.sourceFileUri = sourceFileUri;
+		this.user_id = Integer.toString(user_id);
+		this.trip_id = Integer.toString(trip_id);
+		this.photo_date = photo_date;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+		InputStream is;
+		String stringResponse = null;
 		HttpURLConnection conn = null;
 		DataOutputStream dos = null;
 		String lineEnd = "\r\n";
@@ -33,10 +48,8 @@ public class PhotoUploader {
 		byte[] buffer;
 		int maxBufferSize = 1 * 1024 * 1024;
 		File sourceFile = new File(sourceFileUri);
-
 		if (!sourceFile.isFile()) {
 			Log.e("uploadFile", "Source File Does not exist");
-			return null;
 		}
 		try { // open a URL connection to the <span id="IL_AD7"
 				// class="IL_AD">Servlet</span>
@@ -126,7 +139,7 @@ public class PhotoUploader {
 				sb.append(line + "\n");
 			}
 			is.close();
-			String stringResponse = sb.toString();
+			stringResponse = sb.toString();
 			Log.d("response string:", stringResponse);
 
 			// close the streams //
@@ -142,7 +155,5 @@ public class PhotoUploader {
 			Log.e("Upload file to server Exception",
 					"Exception : " + e.getMessage(), e);
 		}
-		return stringResponse;
 	}
-
 }
