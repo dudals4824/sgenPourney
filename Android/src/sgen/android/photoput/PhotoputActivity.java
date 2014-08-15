@@ -229,7 +229,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
 		for (int i = 0; i < travel; i++) {
-			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i));
+			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i,trip.getStartDateInDateFormat()));
 		}
 		for (int i = 0; i < travel; i++) {
 			layoutAlbum.addView(dayalbumList.get(i));
@@ -410,12 +410,15 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	}// end of ProfileImageSetter
 
 	public class ImageUploader extends AsyncTask<String, String, Integer> {
-
+/*
+ * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+ */
 		@Override
 		protected void onPostExecute(Integer result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			updatephotodate=new UpdatePhotodate();
+			updatephotodate.execute(trip);
 	//		updatephotodate.execute(트립아이디,날짜넣기)
 			//트립아이디는 세션에서 불러오기 
 
@@ -547,19 +550,25 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	}// end of ImageUploader
 
-	public class UpdatePhotodate extends AsyncTask<String, String, String>{
+	public class UpdatePhotodate extends AsyncTask<Object, String, String>{
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected String doInBackground(Object... params) {
 			// TODO Auto-generated method stub
 
+			//전달 받은 object tripDto로 캐스팅
+			TripDTO td = new TripDTO();
+			td = (TripDTO)params[0];
+			
 			InputStream is = null;
 			StringBuilder sb = null;
 			String filename = null;
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer.toString(td.getTripId())));
+			nameValuePairs.add(new BasicNameValuePair("start_date", Long.toString(td.getStartDate())));
+			
 			//여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
 			//저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
 			//arg0[1] 이게 포토 데이트 여기서도 마찬가지로 보내주면 됨
@@ -628,7 +637,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		
 	}
 	
-	public class GetFilename extends AsyncTask<String, String, String> {
+	public class GetFilename extends AsyncTask<Object, String, String> {
 
 		@Override
 		protected void onCancelled() {
@@ -653,8 +662,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected String doInBackground(Object... params) {
 			// TODO Auto-generated method stub
+			
+			TripDTO td = new TripDTO();
+			td = (TripDTO)params[0];
 
 			InputStream is = null;
 			StringBuilder sb = null;
@@ -662,7 +674,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer.toString(td.getTripId())));
+			nameValuePairs.add(new BasicNameValuePair("start_date", Long.toString(td.getStartDate())));
 			//여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
 			//저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
 			//arg0[1] 이게 포토 데이트
@@ -820,12 +833,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList
-												.get(i_dayalbum)
-												.addLayoutGridalbum(
-														new AlbumImgCell(
-																PhotoputActivity.this,
-																bitmap));
+										dayalbumList.get(i_dayalbum).addLayoutGridalbum(
+														new AlbumImgCell(PhotoputActivity.this,bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}
