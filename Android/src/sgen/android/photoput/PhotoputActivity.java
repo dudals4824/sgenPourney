@@ -1,16 +1,11 @@
 package sgen.android.photoput;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -36,8 +31,6 @@ import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import sgen.common.PhotoUploader;
-import sgen.image.resizer.ImageResizer;
-import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
@@ -75,7 +68,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -147,8 +139,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String[] urllist = null;
 	private String addUrl = null;
 	private String upLoadServerUri = null;
+
+	//
+	private PhotoUploader photoUploader;
+	private String intent_date;
 	// 여기
 	private UpdatePhotodate updatephotodate;
+
+	private ArrayList<Integer> intent_dateList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +227,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private void init() {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
+		intent_dateList = new ArrayList<Integer>();
 
 		// 날짜계산
 		GregorianCalendar gregorianStart = new GregorianCalendar();
@@ -241,19 +240,29 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			travel = (gregorianEnd.get(Calendar.DATE) - gregorianStart
 					.get(Calendar.DATE)) + 1;
 		else {// 여행이 시작하는 날과 끝나는 날이 다른 경우
-			Log.d("start month", (gregorianStart.get(Calendar.MONTH) + 1) + "");
 			travel = (gregorianStart.getMaximum(Calendar.DAY_OF_MONTH) - gregorianStart
 					.get(Calendar.DATE)) + gregorianEnd.get(Calendar.DATE) + 1;
 			Log.d("travel", travel + "");
 		}
 		for (int i = 0; i < travel; i++) {
-			Log.d("gre", gregorianStart.get(Calendar.MONTH) + "."
-					+ gregorianStart.get(Calendar.DATE) + "");
-			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i,
+			//날짜 쪼개기
+			String month = (gregorianStart.get(Calendar.MONTH) + 1) + "";
+			String date = (gregorianStart.get(Calendar.DATE)) + "";
+			String year = gregorianStart.get(Calendar.YEAR) + "";
+			if (month.length() == 1)
+				month = "0" + month;
+			Log.d("month", month);
+			if (date.length() == 1)
+				date = "0" + date;
+			intent_date = year + month + date;
+			
+			dayalbumList.add(new DayAlbum(PhotoputActivity.this, Integer.parseInt(intent_date),
 					(gregorianStart.get(Calendar.MONTH) + 1) + "."
 							+ gregorianStart.get(Calendar.DATE) + ""));
 			layoutAlbum.addView(dayalbumList.get(i));
+			
 			gregorianStart.add(Calendar.DATE, 1);
+
 		}
 	}
 
@@ -349,31 +358,47 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 200) {
+			// 선택된 데이앨범의 i값을 받아온다
+			i_dayalbum = data.getIntExtra("intent_date", 300);
+			Log.d("Photoput : i_dayalbum ", i_dayalbum + "");
+			// 사진 패스를 받아옴
+			ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
+					.getExtras().getSerializable("list");
 		// TODO Auto-generated method stub
 		Log.d("PhotoputActivity", "onActivityResult");
 		Log.d("PhotoputActivity", resultCode + "");
 
 		PhotoUploader photoUploader = null;
 
-		if (resultCode == RESULT_OK) {
-			if (requestCode == 200) {
-				// 선택된 데이앨범의 i값을 받아온다
-				i_dayalbum = data.getIntExtra("i_dayalbum", 300);
-				Log.d("Photoput : i_dayalbum ", i_dayalbum + "");
-				// 사진 패스를 받아옴
-				ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
-						.getExtras().getSerializable("list");
-
-				for (int i = 0; i < all_path.size(); i++) {
-					// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
-					// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
-					// 선택된 사진만 들어가는데 서버에서 사진 가져오는 부분에는 저 밑에
-					// dayalbumList.get(i_dayalbum).addLayoutGridalbum(new
-					// AlbumImgCell(PhotoputActivity.this,파일타입));
-					// 넣으면 될 것 같아요.
-					all_path.get(i)
-							.setFile(new File(all_path.get(i).getPath()));
+			for (int i = 0; i < all_path.size(); i++) {
+				// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
+				// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
+				// 선택된 사진만 들어가는데 서버에서 사진 가져오는 부분에는 저 밑에
+				// dayalbumList.get(i_dayalbum).addLayoutGridalbum(new
+				// AlbumImgCell(PhotoputActivity.this,파일타입));
+				// 넣으면 될 것 같아요.
+				all_path.get(i).setFile(new File(all_path.get(i).getPath()));
+			}
+			// 서버에 사진 업로드
+			dialog = ProgressDialog.show(PhotoputActivity.this, "",
+					"Uploading file...", true);
+			// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
+			for (int i = 0; i < all_path.size(); i++) {
+				Log.d("photoput", "upload(" + i + ")");
+				// upload[i] = new ImageUploader();
+				// upload[i].execute(all_path.get(i).getPath());
+				photoUploader = new PhotoUploader(all_path.get(i).getPath(),
+						user.getUserId(), trip.getTripId(), i);
+				photoUploader.start();
+				try {
+					photoUploader.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
+			}
+			dialog.dismiss();
+
 				// 서버에 사진 업로드
 				dialog = ProgressDialog.show(PhotoputActivity.this, "",
 						"Uploading file...", true);
@@ -394,12 +419,15 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				}
 				dialog.dismiss();
 
+			// updatephotodate = new UpdatePhotodate();
+			// updatephotodate.execute(trip);
+
 				// updatephotodate = new UpdatePhotodate();
 				// updatephotodate.execute(trip);
 
 			}
 		}
-	}
+
 
 	private String getRealPathFromURI(Uri selectedVideoUri,
 			ContentResolver contentResolver)

@@ -32,7 +32,7 @@ public class DayAlbum extends LinearLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	private void initMarbleView(int i) {
+	private void initMarbleView(int intent_date) {
 
 		
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
@@ -47,7 +47,7 @@ public class DayAlbum extends LinearLayout {
 
 		textDay.setText(mDate);
 		
-		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext,i));
+		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext,intent_date));
 	}
 	public void addLayoutGridalbum(AlbumImgCell albumImgCell){
 		Log.d("Dayalbum", "addLayoutGridalbum called");

@@ -16,11 +16,11 @@ public class AlbumImgBtnCell extends RelativeLayout {
 	private Context mContext = null;
 	private ImageButton btnPhotoAdd, btnMemoWrite;
 	static final int SELECT_PICTURE = 1;
-	private int i_dayalbum;
+	private int mIntent_date;
 
-	public AlbumImgBtnCell(Context context, int i) {
+	public AlbumImgBtnCell(Context context, int intent_date) {
 		super(context);
-		initMarbleView(context,i);
+		initMarbleView(context,intent_date);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -30,9 +30,9 @@ public class AlbumImgBtnCell extends RelativeLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	void initMarbleView(Context context, int i) {
+	void initMarbleView(Context context, int intent_date) {
 		mContext = context;
-		i_dayalbum=i;
+		mIntent_date=intent_date;
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
@@ -47,7 +47,7 @@ public class AlbumImgBtnCell extends RelativeLayout {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-				i.putExtra("i_dayalbum",i_dayalbum);
+				i.putExtra("i_dayalbum",mIntent_date);
 				((Activity) mContext).startActivityForResult(i, 200);
 
 			}
