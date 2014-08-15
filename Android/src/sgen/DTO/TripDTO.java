@@ -1,8 +1,12 @@
 package sgen.DTO;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
+import android.util.Log;
 
 public class TripDTO {
 	private int tripId;
@@ -56,13 +60,19 @@ public class TripDTO {
 	}
 
 	public String getStartDateInDateFormat() {
+		GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
+		date.setTimeInMillis(startDate);
+		date.add(Calendar.MONTH, -1);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 		return dateFormat.format(startDate);
 	}
 	
 	public String getEndDateInDateFormat() {
+		GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
+		date.setTimeInMillis(endDate);
+		date.add(Calendar.MONTH, -1);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-		return dateFormat.format(endDate);
+		return dateFormat.format(date.getTimeInMillis());
 	}
 	
 
