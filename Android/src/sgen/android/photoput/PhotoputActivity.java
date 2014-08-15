@@ -90,7 +90,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private SimpleSideDrawer mDrawer;
 
 	private ImageButton btnForTest;
- 
+
 	private PopupWindow memoPopupWindow;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 
@@ -131,7 +131,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private int photoAreaHeight;
 
 	private UserDTO user;
-	//트립아이디랑 스타트 데이트 등등
+	// 트립아이디랑 스타트 데이트 등등
 	private TripDTO trip;
 
 	// 사진 가져오는
@@ -149,7 +149,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String[] urllist = null;
 	private String addUrl = null;
 	private String upLoadServerUri = null;
-	//여기
+	// 여기
 	private UpdatePhotodate updatephotodate;
 
 	@Override
@@ -166,7 +166,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		trip = new TripDTO();
 		user = Application.getLoggedInUser();
 		trip = Application.getSelectedTrip();
-		Log.d("PhotoputActivity_log", user.toString() + " , " +trip.toString());
+		Log.d("PhotoputActivity_log", user.toString() + " , " + trip.toString());
 
 		// 드로워임
 		mDrawer = new SimpleSideDrawer(this);
@@ -213,10 +213,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
 
-		//여행 정보 setting
+		// 여행 정보 setting
 		popupLocation.setText("왜 너만");// 디비에서 사람 수 불러와서 넣어주세요
 		title.setText(trip.getTripTitle());
-		date.setText(trip.getStartDateInDateFormat() + " ~ " + trip.getEndDateInDateFormat());
+		date.setText(trip.getStartDateInDateFormat() + " ~ "
+				+ trip.getEndDateInDateFormat());
 
 		upLoadServerUri = "http://54.178.166.213/androidPixUploadToPhp.php";
 
@@ -230,30 +231,31 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private void init() {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
-		
-		//날짜계산
-		GregorianCalendar gregorianStart=new GregorianCalendar();
-		GregorianCalendar gregorianEnd=new GregorianCalendar();
+
+		// 날짜계산
+		GregorianCalendar gregorianStart = new GregorianCalendar();
+		GregorianCalendar gregorianEnd = new GregorianCalendar();
 		gregorianStart.setTimeInMillis(trip.getStartDate());
 		gregorianEnd.setTimeInMillis(trip.getEndDate());
 		ArrayList<GregorianCalendar> gregorianArrayList = new ArrayList<GregorianCalendar>();
-		if(gregorianStart.get(Calendar.MONTH)==gregorianEnd.get(Calendar.MONTH))
-			travel=(gregorianEnd.get(Calendar.DATE)-gregorianStart.get(Calendar.DATE))+1;
-		else{//여행이 시작하는 날과 끝나는 날이 다른 경우
-			travel=(gregorianStart.getActualMaximum(Calendar.DAY_OF_MONTH)-gregorianStart.get(Calendar.DATE))
-					+ gregorianEnd.get(Calendar.DATE)+1;
-		}
-		
-		for (int i = 0; i < travel; i++) {
-			if(i!=0){
-				gregorianStart.add(Calendar.DATE, 1);
-				Log.d("gre", gregorianStart.get(Calendar.MONTH)+"."+gregorianStart.get(Calendar.DATE)+"");
-			}
-			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i,gregorianStart.get(Calendar.MONTH)+"."+gregorianStart.get(Calendar.DATE)+""));
+		if (gregorianStart.get(Calendar.MONTH) == gregorianEnd
+				.get(Calendar.MONTH))
+			travel = (gregorianEnd.get(Calendar.DATE) - gregorianStart
+					.get(Calendar.DATE)) + 1;
+		else {// 여행이 시작하는 날과 끝나는 날이 다른 경우
+			Log.d("start month", (gregorianStart.get(Calendar.MONTH)+1)+"");
+			travel = (gregorianStart.getMaximum(Calendar.DAY_OF_MONTH) - gregorianStart
+					.get(Calendar.DATE)) + gregorianEnd.get(Calendar.DATE)+1;
+			Log.d("travel", travel + "");
 		}
 		for (int i = 0; i < travel; i++) {
+			Log.d("gre", gregorianStart.get(Calendar.MONTH) + "."
+					+ gregorianStart.get(Calendar.DATE) + "");
+			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i,
+					(gregorianStart.get(Calendar.MONTH)+1)+ "."
+							+ gregorianStart.get(Calendar.DATE) + ""));
 			layoutAlbum.addView(dayalbumList.get(i));
-			
+			gregorianStart.add(Calendar.DATE, 1);
 		}
 	}
 
@@ -375,7 +377,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				dialog = ProgressDialog.show(PhotoputActivity.this, "",
 						"Uploading file...", true);
 				upload = new ImageUploader[all_path.size()];
-				//한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서 
+				// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
 				for (int i = 0; i < all_path.size(); i++) {
 					Log.d("photoput", "upload(" + i + ")");
 					upload[i] = new ImageUploader();
@@ -432,29 +434,29 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	}// end of ProfileImageSetter
 
 	public class ImageUploader extends AsyncTask<String, String, Integer> {
-/*
- * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
- */
+		/*
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@Override
 		protected void onPostExecute(Integer result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			updatephotodate=new UpdatePhotodate();
+			updatephotodate = new UpdatePhotodate();
 			updatephotodate.execute(trip);
-	//		updatephotodate.execute(트립아이디,날짜넣기)
-			//트립아이디는 세션에서 불러오기 
+			// updatephotodate.execute(트립아이디,날짜넣기)
+			// 트립아이디는 세션에서 불러오기
 
 			// 사진을 서버로 업로드 완료한 후에
 			// 서버에 있는 사진을 다시 안드로이드에 뿌려주기위해
 			// 방금 업로드한 사진파일이름 받아오는 부분
 			// 같이 여행을 하는 사람들이 볼 수 있어야 하므로 trip_id를 파라미터로 전송
 			// 아래 트립아이디는 임의로 해논것입니다!
-			
-//			String trip_id = "101";
-//			get = new GetFilename();
-//			get.execute(trip_id);
-			//get.execute(trip_id,photo_date);
-			
+
+			// String trip_id = "101";
+			// get = new GetFilename();
+			// get.execute(trip_id);
+			// get.execute(trip_id,photo_date);
+
 		}
 
 		@Override
@@ -572,29 +574,30 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	}// end of ImageUploader
 
-	public class UpdatePhotodate extends AsyncTask<Object, String, String>{
+	public class UpdatePhotodate extends AsyncTask<Object, String, String> {
 
 		@Override
 		protected String doInBackground(Object... params) {
 			// TODO Auto-generated method stub
 
-			//전달 받은 object tripDto로 캐스팅
+			// 전달 받은 object tripDto로 캐스팅
 			TripDTO td = new TripDTO();
-			td = (TripDTO)params[0];
-			
+			td = (TripDTO) params[0];
+
 			InputStream is = null;
 			StringBuilder sb = null;
 			String filename = null;
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer.toString(td.getTripId())));
-			nameValuePairs.add(new BasicNameValuePair("start_date", Long.toString(td.getStartDate())));
-			
-			//여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
-			//저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
-			//arg0[1] 이게 포토 데이트 여기서도 마찬가지로 보내주면 됨
-			
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
+					.toString(td.getTripId())));
+			nameValuePairs.add(new BasicNameValuePair("start_date", Long
+					.toString(td.getStartDate())));
+
+			// 여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
+			// 저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
+			// arg0[1] 이게 포토 데이트 여기서도 마찬가지로 보내주면 됨
 
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
@@ -642,13 +645,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			
+
 			String trip_id = "101";
 			get = new GetFilename();
 			get.execute(trip);
-			//get.execute(trip_id,photo_date)
-			//사진을 서버에 업로드시킨 다음에 업데이트 포토 데이트를 호출해서 사진 날짜를 디비에 업데이트
-			
+			// get.execute(trip_id,photo_date)
+			// 사진을 서버에 업로드시킨 다음에 업데이트 포토 데이트를 호출해서 사진 날짜를 디비에 업데이트
+
 		}
 
 		@Override
@@ -656,11 +659,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated method stub
 			super.onCancelled();
 		}
-		
+
 	}
-	
+
 	public class GetFilename extends AsyncTask<Object, String, String> {
 		TripDTO td = new TripDTO();
+
 		@Override
 		protected void onCancelled() {
 			// TODO Auto-generated method stub
@@ -671,8 +675,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			
-			
 
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
 			imagedown = new ImageDownloader();
@@ -688,7 +690,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		@Override
 		protected String doInBackground(Object... params) {
 			// TODO Auto-generated method stub
-			td = (TripDTO)params[0];
+			td = (TripDTO) params[0];
 
 			InputStream is = null;
 			StringBuilder sb = null;
@@ -696,12 +698,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			String result = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer.toString(td.getTripId())));
-			nameValuePairs.add(new BasicNameValuePair("start_date", Long.toString(td.getStartDate())));
-			//여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
-			//저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
-			//arg0[1] 이게 포토 데이트
-			
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
+					.toString(td.getTripId())));
+			nameValuePairs.add(new BasicNameValuePair("start_date", Long
+					.toString(td.getStartDate())));
+			// 여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
+			// 저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
+			// arg0[1] 이게 포토 데이트
 
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
@@ -855,8 +858,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList.get(i_dayalbum).addLayoutGridalbum(
-														new AlbumImgCell(PhotoputActivity.this,bitmap));
+										dayalbumList
+												.get(i_dayalbum)
+												.addLayoutGridalbum(
+														new AlbumImgCell(
+																PhotoputActivity.this,
+																bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}
