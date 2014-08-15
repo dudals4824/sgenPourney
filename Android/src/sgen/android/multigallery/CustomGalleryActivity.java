@@ -42,7 +42,7 @@ public class CustomGalleryActivity extends Activity {
 
 	String action;
 	private ImageLoader imageLoader;
-	private int i_dayalbum;
+	private int intent_date;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,8 @@ public class CustomGalleryActivity extends Activity {
 		setContentView(R.layout.gallery);
 
 		action = getIntent().getAction();
-		i_dayalbum=getIntent().getIntExtra("i_dayalbum", 200);
-		Log.d("i_dayalbum", i_dayalbum+"");
+		intent_date=getIntent().getIntExtra("mIntent_date", 200);
+		Log.d("intent_date", intent_date+"");
 //		if (action == null) {
 //			finish();
 //		}
@@ -166,7 +166,7 @@ public class CustomGalleryActivity extends Activity {
 			}
 			Log.d("CustomGalleryActivity", "OK btn");
 			Intent data = new Intent().putExtra("list", list);
-			data.putExtra("i_dayalbum", i_dayalbum);
+			data.putExtra("i_dayalbum", intent_date);
 			setResult(RESULT_OK, data);
 			finish();
 
