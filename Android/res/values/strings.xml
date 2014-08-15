@@ -8,6 +8,7 @@
     <string name="app_id">246845782189659</string>
     <string name="title_activity_cover">CoverActivity</string>
     <string name="title_activity_join">JoinActivity</string>
+    <string name="title_activity_coverCell">CoverCell</string>
     <string name="title_activity_photoput">PhotoputActivity</string>
     <string name="title_activity_album_cell">AlbumCellActivity</string>
     <string name="title_activity_video">VideoMakingActivity</string>
@@ -33,5 +34,9 @@
     </string-array>
     <string name="title_profile_modi">ProfileModi</string>
     <string name="title_activity_videoview">title_activtiy_videoview</string>
+    <string-array name="cover_change_list_item">
+        <item>사진 앨범</item>
+        <item>카메라</item>
+    </string-array>
 
 </resources>
