@@ -1,14 +1,12 @@
 package sgen.android.photoput;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -37,8 +35,8 @@ import sgen.DTO.UserDTO;
 import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
-import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ImageResizer;
+import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
@@ -485,7 +483,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			int bytesRead, bytesAvailable, bufferSize;
 			byte[] buffer;
 			int maxBufferSize = 1 * 1024 * 1024;
+			//파일을 비트맵으로 바꿔서 사진 크기 리사이징 후 바이트어레이로 변환
 			File sourceFile = new File(sourceFileUri);
+			Bitmap bitmap=ImageResizer.resize(sourceFile, 300, 300, ResizeMode.AUTOMATIC);
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+			byte[] bitmapbyteArray = stream.toByteArray();
+
+			
 			if (!sourceFile.isFile()) {
 				Log.e("uploadFile", "Source File Does not exist");
 				return null;
@@ -514,7 +519,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						+ sourceFileUri + "\"" + lineEnd);
 				dos.writeBytes(lineEnd);
 
-				bytesAvailable = fileInputStream.available(); // create a buffer
+				//비트맵 바이트 어레이의 크기만큼 바꿈
+				bytesAvailable = bitmapbyteArray.length; // create a buffer
 																// of
 				// maximum size
 
@@ -858,12 +864,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList
-												.get(i_dayalbum)
-												.addLayoutGridalbum(
-														new AlbumImgCell(
-																PhotoputActivity.this,
-																bitmap));
+										dayalbumList.get(i_dayalbum).addLayoutGridalbum
+										(new AlbumImgCell(PhotoputActivity.this,bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}
