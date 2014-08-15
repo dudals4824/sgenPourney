@@ -64,7 +64,7 @@ public class TripDTO {
 		date.setTimeInMillis(startDate);
 		date.add(Calendar.MONTH, -1);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-		return dateFormat.format(startDate);
+		return dateFormat.format(date.getTimeInMillis());
 	}
 	
 	public String getEndDateInDateFormat() {
