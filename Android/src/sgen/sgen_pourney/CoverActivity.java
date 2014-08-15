@@ -1,9 +1,12 @@
 package sgen.sgen_pourney;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,13 +22,24 @@ import org.json.JSONObject;
 import sgen.DTO.UserDTO;
 import sgen.android.photoput.PhotoputActivity;
 import sgen.application.PourneyApplication;
+import sgen.common.ListViewDialog;
 import sgen.common.PhotoEditor;
+import sgen.common.ProfileUploader;
+import sgen.common.ListViewDialog.ListViewDialogSelectListener;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,11 +61,19 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private long m_endTime;
 	private boolean m_isPressedBackButton;
 	private Bitmap userProfilePhoto = null;
+	
+	static final int REQUEST_ALBUM = 1;
+	static final int REQUEST_PICTURE = 2;
+
+	static String SAMPLEIMG = "profile.png";
+	
+	private Context context;
 
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 
 	private UserDTO user;
+	
 
 	// trip id 저장용 array list
 	private ArrayList<Integer> tripArray = new ArrayList<Integer>();
@@ -120,6 +142,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+
 
 		btnProfilePhoto.setOnClickListener(this);
 		btn_new_travel.setOnClickListener(this);
@@ -274,4 +297,24 @@ public class CoverActivity extends Activity implements OnClickListener {
 			}
 		}
 	}
+
+//	public void requestAlbum() {
+//		// TODO Auto-generated method stub
+//		Intent intent = new Intent();
+//		intent.setType("image/*");
+//		intent.setAction(Intent.ACTION_GET_CONTENT);
+////		startActivityForResult(
+////				Intent.createChooser(intent, "Select Picture"),
+////				REQUEST_ALBUM);
+//	}
+//
+//	public void requestPicture() {
+//		// TODO Auto-generated method stub
+//		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//		File file = new File(Environment
+//				.getExternalStorageDirectory(), SAMPLEIMG);
+//		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+//		startActivityForResult(intent, REQUEST_PICTURE);
+//	}
+
 }
