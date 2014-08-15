@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 
 public class PhotoInfo implements Serializable{
 	private String path;
-	private int date;
+	private long date;
 	//file지우기
 	private File file;
 	public String getPath() {
@@ -16,10 +16,10 @@ public class PhotoInfo implements Serializable{
 	public void setPath(String path) {
 		this.path = path;
 	}
-	public int getDate() {
+	public long getDate() {
 		return date;
 	}
-	public void setDate(int date) {
+	public void setDate(long date) {
 		this.date = date;
 	}
 	public File getFile() {
