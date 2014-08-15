@@ -363,13 +363,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					Integer.parseInt(startDateString.substring(4, 6)), // 월
 					Integer.parseInt(startDateString.substring(6))); // 일
 			
-			startDayCalendar.add(Calendar.MONTH, -1);
+			//startDayCalendar.add(Calendar.MONTH, -1);
 
 			GregorianCalendar endDayCalendar = new GregorianCalendar(
 					Integer.parseInt(endDateString.substring(0, 4)),
 					Integer.parseInt(endDateString.substring(4, 6)),
 					Integer.parseInt(endDateString.substring(6)));
-			endDayCalendar.add(Calendar.MONTH, -1);
+			//endDayCalendar.add(Calendar.MONTH, -1);
 
 			String startDate = Long
 					.toString(startDayCalendar.getTimeInMillis());
