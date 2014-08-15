@@ -357,28 +357,30 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			// 20140411 같은 형식의 int형 날짜를 gregorian time in millis로 변경
 			String startDateString = Integer.toString(startdate);
 			String endDateString = Integer.toString(enddate);
-			
-			Log.d("TravelInfoActivity11", "start date : " + startdate + "  end date : " + enddate);
+
+			Log.d("TravelInfoActivity11", "start date : " + startdate
+					+ "  end date : " + enddate);
 
 			GregorianCalendar startDayCalendar = new GregorianCalendar(
 					Integer.parseInt(startDateString.substring(0, 4)), // 년
-					Integer.parseInt(startDateString.substring(4, 6))-1, // 월
+					Integer.parseInt(startDateString.substring(4, 6)) - 1, // 월
 					Integer.parseInt(startDateString.substring(6))); // 일
-			
-			//startDayCalendar.add(Calendar.MONTH, -1);
+
+			// startDayCalendar.add(Calendar.MONTH, -1);
 
 			GregorianCalendar endDayCalendar = new GregorianCalendar(
 					Integer.parseInt(endDateString.substring(0, 4)),
-					Integer.parseInt(endDateString.substring(4, 6))-1,
+					Integer.parseInt(endDateString.substring(4, 6)) - 1,
 					Integer.parseInt(endDateString.substring(6)));
-			//endDayCalendar.add(Calendar.MONTH, -1);
+			// endDayCalendar.add(Calendar.MONTH, -1);
 
 			String startDate = Long
 					.toString(startDayCalendar.getTimeInMillis());
 			String endDate = Long.toString(endDayCalendar.getTimeInMillis());
 
-			Log.d("TravelInfoActivity22", "start date : " + startDate + "  end date : " + endDate);
-			
+			Log.d("TravelInfoActivity22", "start date : " + startDate
+					+ "  end date : " + endDate);
+
 			makeTravelTask = new MakeTravelTask();
 			makeTravelTask.execute(trip_name, startDate, endDate,
 					Integer.toString(loggedInUser.getUserId()));

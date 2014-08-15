@@ -60,19 +60,16 @@ public class TripDTO {
 	}
 
 	public String getStartDateInDateFormat() {
-		GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
-		date.setTimeInMillis(startDate);
-		date.add(Calendar.MONTH, -1);
+		//GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
+		//date.setTimeInMillis(startDate);
+		//date.add(Calendar.MONTH, -1);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-		return dateFormat.format(date.getTimeInMillis());
+		return dateFormat.format(startDate);
 	}
 	
 	public String getEndDateInDateFormat() {
-		GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
-		date.setTimeInMillis(endDate);
-		date.add(Calendar.MONTH, -1);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-		return dateFormat.format(date.getTimeInMillis());
+		return dateFormat.format(endDate);
 	}
 	
 
