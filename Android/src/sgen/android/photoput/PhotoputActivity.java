@@ -241,16 +241,16 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			travel = (gregorianEnd.get(Calendar.DATE) - gregorianStart
 					.get(Calendar.DATE)) + 1;
 		else {// 여행이 시작하는 날과 끝나는 날이 다른 경우
-			Log.d("start month", (gregorianStart.get(Calendar.MONTH)+1)+"");
+			Log.d("start month", (gregorianStart.get(Calendar.MONTH) + 1) + "");
 			travel = (gregorianStart.getMaximum(Calendar.DAY_OF_MONTH) - gregorianStart
-					.get(Calendar.DATE)) + gregorianEnd.get(Calendar.DATE)+1;
+					.get(Calendar.DATE)) + gregorianEnd.get(Calendar.DATE) + 1;
 			Log.d("travel", travel + "");
 		}
 		for (int i = 0; i < travel; i++) {
 			Log.d("gre", gregorianStart.get(Calendar.MONTH) + "."
 					+ gregorianStart.get(Calendar.DATE) + "");
 			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i,
-					(gregorianStart.get(Calendar.MONTH)+1)+ "."
+					(gregorianStart.get(Calendar.MONTH) + 1) + "."
 							+ gregorianStart.get(Calendar.DATE) + ""));
 			layoutAlbum.addView(dayalbumList.get(i));
 			gregorianStart.add(Calendar.DATE, 1);
@@ -317,7 +317,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						.findViewById(R.id.friendlistpopupback))
 						.addView(new FriendListCell(this));
 				friendListPopupWindow.showAtLocation(popupLocation, 0, 0, 218);
-				//friendListPopupWindow.showAsDropDown(popupLocation, -475, 27);
+				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
+				// 27);
 			}
 		} else if (v.getId() == R.id.btnMakeVideo) {
 
@@ -580,6 +581,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	}// end of ImageUploader
 
+	/**
+	 * 날짜별로 사진 받아오는거
+	 */
 	public class UpdatePhotodate extends AsyncTask<Object, String, String> {
 
 		@Override
@@ -598,7 +602,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
 					.toString(td.getTripId())));
-			nameValuePairs.add(new BasicNameValuePair("start_date", Long
+			nameValuePairs.add(new BasicNameValuePair("photo_date", Long
 					.toString(td.getStartDate())));
 
 			// 여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
@@ -668,36 +672,16 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	}
 
+	/**
+	 * 사진 이름 리스트 받아오기
+	 */
 	public class GetFilename extends AsyncTask<Object, String, String> {
 		TripDTO td = new TripDTO();
-
-		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-
-			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
-			imagedown = new ImageDownloader();
-			imagedown.execute(urllist);
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
 
 		@Override
 		protected String doInBackground(Object... params) {
 			// TODO Auto-generated method stub
 			td = (TripDTO) params[0];
-
 			InputStream is = null;
 			StringBuilder sb = null;
 			String filename = null;
@@ -779,6 +763,16 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			return null;
 		}
 
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			Log.d("getfileName onpost", urllist.toString());
+			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
+			// imagedown = new ImageDownloader();
+			// imagedown.execute(urllist);
+		}
+
 	}// end of GetfileName
 
 	public class ImageDownloader extends AsyncTask<String[], String, Bitmap> {
@@ -813,8 +807,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// 따라서 다 다운로드가 되면 더이상 imageDownloader가 호출되지 않음!
 			if (endNum < pixNum) {
 				// } else if (endNum < pixNum) {
-				imagedown = new ImageDownloader();
-				imagedown.execute(urllist);
+				Log.d("urlist", urllist.toString());
+				// imagedown = new ImageDownloader();
+				// imagedown.execute(urllist);
 			}
 
 			// }
