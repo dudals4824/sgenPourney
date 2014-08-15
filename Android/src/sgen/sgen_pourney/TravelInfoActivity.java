@@ -29,7 +29,9 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -228,7 +230,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		for (int i = today.firstdayofthismonth - 1, j = 1; j <= today.lastdayofthismonth; i++, j++) {
 			DayArray[i] = Integer.toString(j);
 		}
-		textMonth.setText(strMonth[today.getMonth()]);
+		textMonth.setTextColor(Color.WHITE);
+		textMonth.setText(strMonth[today.getMonth()]+" "+today.getYear());
 	}
 
 	@Override
@@ -382,7 +385,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stube
-		Log.d("id", id + "");
 		flagselectdate++;
 		int temp;
 		if (flagselectdate == 1)
@@ -402,9 +404,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		calendarAdapter = new CalendarAdapter(TravelInfoActivity.this,
 				R.layout.calendar_grid, DayArray, today, startdate, enddate);
 		gridCalendar.setAdapter(calendarAdapter);
-		Log.d("flagselectdate", flagselectdate + "");
-		Log.d("startdate", startdate + "");
-		Log.d("enddate", enddate + "");
 
 	}
 
