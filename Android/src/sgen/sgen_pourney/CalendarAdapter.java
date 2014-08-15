@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -96,23 +97,18 @@ public class CalendarAdapter extends BaseAdapter {
 		textview = (TextView) convertView.findViewById(R.id.textview_grid);
 		textview.setText(DayArray[position]);
 		if (startdate > 0) {
-			// Log.d("getItemId", getItemId(position) + "");
-
-			if (startdate <= getItemId(position)
-					&& getItemId(position) <= enddate) {
-				Log.d("getItemId", getItemId(position) + "");
-				if (getItemId(position) == startdate
-						|| getItemId(position) == enddate)
-					convertView
-							.setBackgroundResource(R.drawable.ic_numberput_84x84);
+			if (startdate <= getItemId(position) && getItemId(position) <= enddate) {
 				convertView.setBackgroundColor(Color.rgb(120, 192, 242));
-
+				textview.setTextColor(Color.WHITE);
 			}
 		}
-		
+		String str_startdate = startdate + "";
 		textview.setGravity(Gravity.CENTER);
 		convertView.setPadding(5, 5, 5, 5);
+		if (today.lastdayofthismonth >= getItemId(position)) {
+			Log.d("getItemId(position) : ", getItemId(position) + "");
+			convertView.setClickable(false);
+		}
 		return convertView;
 	}
-
 }
