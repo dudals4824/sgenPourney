@@ -102,7 +102,6 @@ public class CalendarAdapter extends BaseAdapter {
 				textview.setTextColor(Color.WHITE);
 			}
 		}
-		String str_startdate = startdate + "";
 		textview.setGravity(Gravity.CENTER);
 		convertView.setPadding(5, 5, 5, 5);
 		if (today.lastdayofthismonth >= getItemId(position)) {
