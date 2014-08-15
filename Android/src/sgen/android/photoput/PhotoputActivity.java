@@ -455,19 +455,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// get = new GetFilename();
 			// get.execute(trip_id);
 			// get.execute(trip_id,photo_date);
-
-		}
-
-		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
 		}
 
 		// pre-background-post
@@ -486,10 +473,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			int maxBufferSize = 1 * 1024 * 1024;
 			//파일을 비트맵으로 바꿔서 사진 크기 리사이징 후 바이트어레이로 변환
 			File sourceFile = new File(sourceFileUri);
-			Bitmap bitmap=ImageResizer.resize(sourceFile, 300, 300, ResizeMode.AUTOMATIC);
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-			byte[] bitmapbyteArray = stream.toByteArray();
 
 			
 			if (!sourceFile.isFile()) {
@@ -520,17 +503,29 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						+ sourceFileUri + "\"" + lineEnd);
 				dos.writeBytes(lineEnd);
 
-				//비트맵 바이트 어레이의 크기만큼 바꿈
-				bytesAvailable = bitmapbyteArray.length; // create a buffer
-																// of
-				// maximum size
-
-				bufferSize = Math.min(bytesAvailable, maxBufferSize);
+				// create a buffer of maximum size
+				bytesAvailable = fileInputStream.available();
+				bufferSize = Math.max(bytesAvailable, maxBufferSize);
 				buffer = new byte[bufferSize];
 
 				// read file and write it into form...
 				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 
+				// byte array to bitmap..
+				BitmapFactory.Options option = new BitmapFactory.Options();
+				option.inSampleSize = 8;
+				Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0,
+						buffer.length, option);
+				Log.e("bitmap validation",
+						bitmap.getWidth() + " " + bitmap.getHeight());
+				// resize bitmap
+				// bitmap = getResizedBitmap(bitmap, 200, 200);
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+				buffer = stream.toByteArray();
+				bufferSize = stream.toByteArray().length;
+				// bitmap to byte array
+				
 				while (bytesRead > 0) {
 					dos.write(buffer, 0, bufferSize);
 					bytesAvailable = fileInputStream.available();
@@ -767,7 +762,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			Log.d("getfileName onpost", urllist.toString());
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
 			// imagedown = new ImageDownloader();
 			// imagedown.execute(urllist);
