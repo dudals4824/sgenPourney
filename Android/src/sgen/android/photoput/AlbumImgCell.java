@@ -33,11 +33,12 @@ public class AlbumImgCell extends RelativeLayout{
 	public AlbumImgCell(Context context, Bitmap bitmap) {
 		super(context);
 		// TODO Auto-generated constructor stub
+		mContext = context;
+		mBitmap=bitmap;
 		initMarbleView(context,bitmap);
 	}
 	private void initMarbleView(Context context, Bitmap bitmap) {
-		mContext = context;
-		mBitmap=bitmap;
+		
 //		Log.d("AlbumImgCell", mBitmap.toString());
 		
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
