@@ -22,16 +22,19 @@ public class DayAlbum extends LinearLayout {
 	private GridLayout layoutGridPhotoAlbum;
 	static final int SELECT_PICTURE = 1;
 	static final int REQUEST_PICTURE = 2;
+	private String mDate;
 
-	public DayAlbum(Context context, int i) {
+	public DayAlbum(Context context, int i, String date) {
 		super(context);
-		initMarbleView(context,i);
+		mDate=date;
+		mContext = context;
+		initMarbleView(i);
 		// TODO Auto-generated constructor stub
 	}
 
-	private void initMarbleView(Context context, int i) {
+	private void initMarbleView(int i) {
 
-		mContext = context;
+		
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
@@ -42,6 +45,8 @@ public class DayAlbum extends LinearLayout {
 		textPhotoNum = (TextView) findViewById(R.id.textPhotoNum);
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 
+		textDay.setText(mDate);
+		
 		layoutGridPhotoAlbum.addView(new AlbumImgBtnCell(mContext,i));
 	}
 	public void addLayoutGridalbum(AlbumImgCell albumImgCell){
