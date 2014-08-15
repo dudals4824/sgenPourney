@@ -170,16 +170,15 @@
             android:layout_marginTop="13.67dp"
             android:src="@drawable/i_bar_photoplus" />
 
-        <ImageButton
-            android:id="@+id/btnPhotoPlus"
+        <TextView
+            android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/i_photoplus_582x100" />
+            android:text="필터 선택"
+            android:color="@color/light_black" />
 
         <LinearLayout
             android:id="@+id/shell_filter_selection"
@@ -191,44 +190,63 @@
                 android:id="@+id/filter_selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:layout_marginTop="5dp"
                 android:columnCount="4"
                 android:columnOrderPreserved="true"
-                android:rowCount="1" >
+                android:rowCount="1"
+                android:color="@android:color/transparent" >
 
                 <ImageButton
                     android:id="@+id/Original_btn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:background="@android:color/transparent"
                     android:scaleType="fitXY"
                     android:src="@drawable/i_original" />
 
                 <ImageButton
                     android:id="@+id/Cloudy_btn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:background="@android:color/transparent"
                     android:scaleType="fitXY"
                     android:src="@drawable/i_cloudy" />
 
                 <ImageButton
                     android:id="@+id/Sunny_btn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:background="@android:color/transparent"
                     android:scaleType="fitXY"
                     android:src="@drawable/i_sunnyday" />
 
                 <ImageButton
                     android:id="@+id/Dramatic_btn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:background="@android:color/transparent"
                     android:scaleType="fitXY"
                     android:src="@drawable/i_dramatic" />
             </GridLayout>
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="13.67dp"
+            android:src="@drawable/i_bar_photoplus" />
+
+        <ImageButton
+            android:id="@+id/btnPhotoPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/i_photoplus_582x100" />
     </LinearLayout>
 
 </ScrollView>
