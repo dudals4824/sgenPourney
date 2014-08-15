@@ -14,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -228,11 +230,30 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private void init() {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
+		
+		//날짜계산
+		GregorianCalendar gregorianStart=new GregorianCalendar();
+		GregorianCalendar gregorianEnd=new GregorianCalendar();
+		gregorianStart.setTimeInMillis(trip.getStartDate());
+		gregorianEnd.setTimeInMillis(trip.getEndDate());
+		ArrayList<GregorianCalendar> gregorianArrayList = new ArrayList<GregorianCalendar>();
+		if(gregorianStart.get(Calendar.MONTH)==gregorianEnd.get(Calendar.MONTH))
+			travel=(gregorianEnd.get(Calendar.DATE)-gregorianStart.get(Calendar.DATE))+1;
+		else{//여행이 시작하는 날과 끝나는 날이 다른 경우
+			travel=(gregorianStart.getActualMaximum(Calendar.DAY_OF_MONTH)-gregorianStart.get(Calendar.DATE))
+					+ gregorianEnd.get(Calendar.DATE)+1;
+		}
+		
 		for (int i = 0; i < travel; i++) {
-			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i,trip.getStartDateInDateFormat()));
+			if(i!=0){
+				gregorianStart.add(Calendar.DATE, 1);
+				Log.d("gre", gregorianStart.get(Calendar.MONTH)+"."+gregorianStart.get(Calendar.DATE)+"");
+			}
+			dayalbumList.add(new DayAlbum(PhotoputActivity.this, i,gregorianStart.get(Calendar.MONTH)+"."+gregorianStart.get(Calendar.DATE)+""));
 		}
 		for (int i = 0; i < travel; i++) {
 			layoutAlbum.addView(dayalbumList.get(i));
+			
 		}
 	}
 
@@ -623,7 +644,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			
 			String trip_id = "101";
 			get = new GetFilename();
-			get.execute(trip_id);
+			get.execute(trip);
 			//get.execute(trip_id,photo_date)
 			//사진을 서버에 업로드시킨 다음에 업데이트 포토 데이트를 호출해서 사진 날짜를 디비에 업데이트
 			
@@ -638,7 +659,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	}
 	
 	public class GetFilename extends AsyncTask<Object, String, String> {
-
+		TripDTO td = new TripDTO();
 		@Override
 		protected void onCancelled() {
 			// TODO Auto-generated method stub
@@ -649,6 +670,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			
+			
 
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
 			imagedown = new ImageDownloader();
@@ -664,8 +687,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		@Override
 		protected String doInBackground(Object... params) {
 			// TODO Auto-generated method stub
-			
-			TripDTO td = new TripDTO();
 			td = (TripDTO)params[0];
 
 			InputStream is = null;
