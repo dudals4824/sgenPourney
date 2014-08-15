@@ -352,7 +352,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		Log.d("PhotoputActivity", "onActivityResult");
 		Log.d("PhotoputActivity", resultCode + "");
-		
+
 		PhotoUploader photoUploader = null;
 
 		if (resultCode == RESULT_OK) {
@@ -380,9 +380,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
 				for (int i = 0; i < all_path.size(); i++) {
 					Log.d("photoput", "upload(" + i + ")");
-					//upload[i] = new ImageUploader();
-					//upload[i].execute(all_path.get(i).getPath());
-					photoUploader = new PhotoUploader(all_path.get(i).getPath(), user.getUserId(), trip.getTripId(), i);
+					// upload[i] = new ImageUploader();
+					// upload[i].execute(all_path.get(i).getPath());
+					photoUploader = new PhotoUploader(
+							all_path.get(i).getPath(), user.getUserId(),
+							trip.getTripId(), i);
 					photoUploader.start();
 					try {
 						photoUploader.join();
@@ -391,9 +393,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					}
 				}
 				dialog.dismiss();
-				
-				//updatephotodate = new UpdatePhotodate();
-				//updatephotodate.execute(trip);
+
+				// updatephotodate = new UpdatePhotodate();
+				// updatephotodate.execute(trip);
 
 			}
 		}
@@ -721,8 +723,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList.get(i_dayalbum).addLayoutGridalbum
-										(new AlbumImgCell(PhotoputActivity.this,bitmap));
+										dayalbumList
+												.get(i_dayalbum)
+												.addLayoutGridalbum(
+														new AlbumImgCell(
+																PhotoputActivity.this,
+																bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}
