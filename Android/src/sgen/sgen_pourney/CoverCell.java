@@ -151,7 +151,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 			// travel information setting
 			Log.d("settext", tripDTO.toString());
 			title.setText(tripDTO.getTripTitle());
-			date.setText(tripDTO.getStartDateInDateFormat() + "~" + tripDTO.getEndDateInDateFormat());
+			date.setText(tripDTO.getStartDateInDateFormat() + " ~ " + tripDTO.getEndDateInDateFormat());
 			numberOfPeople.setText("With N people");
 			travelNumber.setText(String.valueOf(tripDTO.getTripId()));
 		}
