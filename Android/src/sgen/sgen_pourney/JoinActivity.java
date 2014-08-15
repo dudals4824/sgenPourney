@@ -79,7 +79,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 
 	private int photoAreaWidth;
 	private int photoAreaHeight;
-	
+
 	//
 	private String email;
 	private String nickname;
@@ -135,7 +135,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 	}
-	
+
 	// server task - regist
 	public class RegistTask extends AsyncTask<String, String, String> {
 
@@ -196,10 +196,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-
-			// profile upload
-			// ProfileUploader pfUploader = new ProfileUploader();
-			// pfUploader.uploadFile(imagePath, userse, tripId);
 
 			if (result != null) {
 				Log.d("ASYNC", "result = " + result);
@@ -370,18 +366,21 @@ public class JoinActivity extends Activity implements OnClickListener {
 			if (isDuplicationChecked && isPasswordValid && !isIdDuplicated
 					&& !isEmailDuplicated && password.equals(passwordConfirm)) {
 				// 5개 validation check 모두 했을시 회원가입 task 수행.
-				// registTask = new RegistTask();
-				// registTask.execute(email, nickname, password);
-
-				new Thread(new Runnable() {
-					public void run() {
-						// save image with userid=40, tripid=50
-						Log.e("msg_log","imagepath = "+imagePath);
-						pfUploader.uploadFile(imagePath, nickname, email, password);
-					}
-				}).start();
-				
-				Intent intent = new Intent(JoinActivity.this, LoginActivity.class);
+				if (imagePath == null) {
+					Log.d("Join Activity.btnJoin", "join without profile image");
+					registTask = new RegistTask();
+					registTask.execute(email, nickname, password);
+				} else {
+					new Thread(new Runnable() {
+						public void run() {
+							Log.d("Join Activity.btnJoin", "join with profile image");
+							pfUploader.uploadFile(imagePath, nickname, email,
+									password);
+						}
+					}).start();
+				}
+				Intent intent = new Intent(JoinActivity.this,
+						LoginActivity.class);
 				startActivity(intent);
 				finish();
 
