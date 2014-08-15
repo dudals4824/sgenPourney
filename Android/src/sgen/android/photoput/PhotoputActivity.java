@@ -35,6 +35,8 @@ import sgen.DTO.UserDTO;
 import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
+import sgen.common.PhotoUploader;
+import sgen.common.ProfileUploader;
 import sgen.image.resizer.ImageResizer;
 import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.AskActivity;
@@ -149,6 +151,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String upLoadServerUri = null;
 	// 여기
 	private UpdatePhotodate updatephotodate;
+	ArrayList<PhotoInfo> all_path = null;
+
+	// 사진업로드용 객체
+	private PhotoUploader photoUploader = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -352,16 +358,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		Log.d("PhotoputActivity", "onActivityResult");
 		Log.d("PhotoputActivity", resultCode + "");
-
 		if (resultCode == RESULT_OK) {
 			if (requestCode == 200) {
 				// 선택된 데이앨범의 i값을 받아온다
 				i_dayalbum = data.getIntExtra("i_dayalbum", 300);
 				Log.d("Photoput : i_dayalbum ", i_dayalbum + "");
 				// 사진 패스를 받아옴
-				ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
-						.getExtras().getSerializable("list");
-
+				all_path = (ArrayList<PhotoInfo>) data.getExtras()
+						.getSerializable("list");
 				for (int i = 0; i < all_path.size(); i++) {
 					// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
 					// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
@@ -379,12 +383,22 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
 				for (int i = 0; i < all_path.size(); i++) {
 					Log.d("photoput", "upload(" + i + ")");
-					upload[i] = new ImageUploader();
-					upload[i].execute(all_path.get(i).getPath());
+					// upload[i] = new ImageUploader();
+					// upload[i].execute(all_path.get(i).getPath());
+					new Thread(new Runnable() {
+						public void run() {
+							for (int i = 0; i < all_path.size(); i++) {
+								Log.d("PhotoputActivity.OnActivityResults",
+										i+"th Thread is running");
+								photoUploader.uploadFile(all_path.get(i)
+										.getPath(), Integer.toString(user.getUserId()), Integer.toString(trip.getTripId()), 12123);
+							}
+						}
+					}).start();
+
+					updatephotodate = new UpdatePhotodate();
+					updatephotodate.execute(trip);
 				}
-				
-				updatephotodate = new UpdatePhotodate();
-				updatephotodate.execute(trip);
 			}
 		}
 	}
@@ -442,7 +456,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(Integer result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			
+
 			// updatephotodate.execute(트립아이디,날짜넣기)
 			// 트립아이디는 세션에서 불러오기
 
@@ -472,10 +486,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			int bytesRead, bytesAvailable, bufferSize;
 			byte[] buffer;
 			int maxBufferSize = 1 * 1024 * 1024;
-			//파일을 비트맵으로 바꿔서 사진 크기 리사이징 후 바이트어레이로 변환
+			// 파일을 비트맵으로 바꿔서 사진 크기 리사이징 후 바이트어레이로 변환
 			File sourceFile = new File(sourceFileUri);
 
-			
 			if (!sourceFile.isFile()) {
 				Log.e("uploadFile", "Source File Does not exist");
 				return null;
@@ -526,7 +539,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				buffer = stream.toByteArray();
 				bufferSize = stream.toByteArray().length;
 				// bitmap to byte array
-				
+
 				while (bytesRead > 0) {
 					dos.write(buffer, 0, bufferSize);
 					bytesAvailable = fileInputStream.available();
@@ -854,8 +867,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList.get(i_dayalbum).addLayoutGridalbum
-										(new AlbumImgCell(PhotoputActivity.this,bitmap));
+										dayalbumList
+												.get(i_dayalbum)
+												.addLayoutGridalbum(
+														new AlbumImgCell(
+																PhotoputActivity.this,
+																bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}
