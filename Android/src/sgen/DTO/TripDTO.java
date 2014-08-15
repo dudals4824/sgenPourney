@@ -1,12 +1,8 @@
 package sgen.DTO;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
-import android.util.Log;
 
 public class TripDTO {
 	private int tripId;
