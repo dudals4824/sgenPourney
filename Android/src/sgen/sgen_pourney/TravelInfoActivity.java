@@ -231,7 +231,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			DayArray[i] = Integer.toString(j);
 		}
 		textMonth.setTextColor(Color.WHITE);
-		textMonth.setText(strMonth[today.getMonth()]+" "+today.getYear());
+		textMonth.setText(strMonth[today.getMonth()] + " " + today.getYear());
 	}
 
 	@Override
@@ -356,15 +356,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			// 20140411 같은 형식의 int형 날짜를 gregorian time in millis로 변경
 			String startDateString = Integer.toString(startdate);
 			String endDateString = Integer.toString(enddate);
-			
+
 			GregorianCalendar startDayCalendar = new GregorianCalendar(
-					Integer.parseInt(startDateString.substring(0, 4)), //년
-					Integer.parseInt(startDateString.substring(4, 6)), //월
-					Integer.parseInt(startDateString.substring(6))); //일
+					Integer.parseInt(startDateString.substring(0, 4)), // 년
+					Integer.parseInt(startDateString.substring(4, 6)) - 1, // 월
+					Integer.parseInt(startDateString.substring(6))); // 일
 
 			GregorianCalendar endDayCalendar = new GregorianCalendar(
 					Integer.parseInt(endDateString.substring(0, 4)),
-					Integer.parseInt(endDateString.substring(4, 6)),
+					Integer.parseInt(endDateString.substring(4, 6)) - 1,
 					Integer.parseInt(endDateString.substring(6)));
 
 			String startDate = Long
