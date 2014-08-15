@@ -359,12 +359,12 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			GregorianCalendar startDayCalendar = new GregorianCalendar(
 					Integer.parseInt(startDateString.substring(0, 4)), // 년
-					Integer.parseInt(startDateString.substring(4, 6)) - 1, // 월
+					Integer.parseInt(startDateString.substring(4, 6)), // 월
 					Integer.parseInt(startDateString.substring(6))); // 일
 
 			GregorianCalendar endDayCalendar = new GregorianCalendar(
 					Integer.parseInt(endDateString.substring(0, 4)),
-					Integer.parseInt(endDateString.substring(4, 6)) - 1,
+					Integer.parseInt(endDateString.substring(4, 6)),
 					Integer.parseInt(endDateString.substring(6)));
 
 			String startDate = Long
