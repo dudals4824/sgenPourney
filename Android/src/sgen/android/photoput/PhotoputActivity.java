@@ -141,7 +141,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String addUrl = null;
 	private String upLoadServerUri = null;
 
-	List<List<Bitmap>> listOfPhotoBtmapLists = new ArrayList<List<Bitmap>>();
+	List<List<Bitmap>> listOfPhotoBitmapLists = new ArrayList<List<Bitmap>>();
 
 	//
 	private PhotoUploader photoUploader;
@@ -646,7 +646,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 								.ImageurlToBitmapConverter(urllist.get(k)));
 					}
 				}
-				listOfPhotoBtmapLists.add(photoBitmapListInOneDay);
+				listOfPhotoBitmapLists.add(photoBitmapListInOneDay);
 				
 			}
 
