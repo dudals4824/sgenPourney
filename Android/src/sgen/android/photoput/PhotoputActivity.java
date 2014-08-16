@@ -142,7 +142,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String upLoadServerUri = null;
 
 	List<List<String>> listOfPhotoURLLists = new ArrayList<List<String>>();
-	
+
 	//
 	private PhotoUploader photoUploader;
 	private String intent_date;
@@ -225,7 +225,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
-		
+
 		get = new GetFilename();
 		get.execute(trip, intent_dateList);
 	}
@@ -251,7 +251,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Log.d("travel", travel + "");
 		}
 		for (int i = 0; i < travel; i++) {
-			//날짜 쪼개기
+			// 날짜 쪼개기
 			String month = (gregorianStart.get(Calendar.MONTH) + 1) + "";
 			String date = (gregorianStart.get(Calendar.DATE)) + "";
 			String year = gregorianStart.get(Calendar.YEAR) + "";
@@ -261,8 +261,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			if (date.length() == 1)
 				date = "0" + date;
 			intent_date = year + month + date;
-			
-			dayalbumList.add(new DayAlbum(PhotoputActivity.this, Integer.parseInt(intent_date),
+
+			dayalbumList.add(new DayAlbum(PhotoputActivity.this, Integer
+					.parseInt(intent_date),
 					(gregorianStart.get(Calendar.MONTH) + 1) + "."
 							+ gregorianStart.get(Calendar.DATE) + ""));
 			layoutAlbum.addView(dayalbumList.get(i));
@@ -370,10 +371,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// 사진 패스를 받아옴
 			ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
 					.getExtras().getSerializable("list");
-		// TODO Auto-generated method stub
-		Log.d("all_path.length", all_path.size()+"");
+			// TODO Auto-generated method stub
+			Log.d("all_path.length", all_path.size() + "");
 
-		PhotoUploader photoUploader = null;
+			PhotoUploader photoUploader = null;
 
 			for (int i = 0; i < all_path.size(); i++) {
 				// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
@@ -404,9 +405,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			dialog.dismiss();
 			// updatephotodate = new UpdatePhotodate();
 			// updatephotodate.execute(trip);
-			}
 		}
-
+	}
 
 	private String getRealPathFromURI(Uri selectedVideoUri,
 			ContentResolver contentResolver)
@@ -550,9 +550,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	public class GetFilename extends AsyncTask<Object, String, String> {
 		TripDTO td = new TripDTO();
 		ArrayList<Integer> dateList = new ArrayList<Integer>();
+
 		@Override
 		protected String doInBackground(Object... params) {
-			//convert object into tripDTO
+			// convert object into tripDTO
 			td = (TripDTO) params[0];
 			dateList = (ArrayList<Integer>) params[1];
 			InputStream is = null;
@@ -616,7 +617,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					// 사진파일들이 저장되어있는 폴더 url에
 					// 파일이름 string을 합쳐서 url list에 넣음
 					urllist.add(addUrl = SERVERURI + filename);
-					getDateFromImageUrl(addUrl);
 				}
 				// list에 다 넣은 후 post에서 다운로드 이미지 함수 호출
 				Log.d("url List", urllist.toString());
@@ -634,30 +634,38 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			//urllist, datelist
-			//listOfPhotoURLLists;
-			
-			
+			// urllist, datelist
+			// listOfPhotoURLLists;
+			//url list에 있는 주소들의 날짜가 date리스트에 일치하는게 있으면.. 거기에 넣음
+			Log.d("list size", "dateList : " + dateList.size() + "urllist : " + urllist.size());
+			for (int i = 0; i < dateList.size() ; i++) {
+				ArrayList<String> photoListInOneDay = new ArrayList<String>();
+				for (int k = 0; k < urllist.size() ; k++) {
+					if (getDateFromImageUrl(urllist.get(k)) == dateList.get(i)) {
+						photoListInOneDay.add(urllist.get(k));
+					}
+				}
+				listOfPhotoURLLists.add(photoListInOneDay);
+			}
+
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
 			// imagedown = new ImageDownloader();
 			// imagedown.execute(urllist);
 		}
 
-		//helper method of GetFilename
-		private String getDateFromImageUrl(String url)
-		{
-			int i=0;
+		// helper method of GetFilename
+		private int getDateFromImageUrl(String url) {
+			int i = 0;
 			StringTokenizer stk = new StringTokenizer(url, "_");
-            while(stk.hasMoreElements())
-            {
-                    System.out.println(stk.nextToken()+i++);
-            }
-			return null;
+			while (stk.hasMoreElements()) {
+				stk.nextToken();
+				if (i++ == 2)
+					return Integer.parseInt(stk.nextToken());
+			}
+			return -1;
 		}
-		
+
 	}// end of GetfileName
-	
-	
 
 	public class ImageDownloader extends AsyncTask<String[], String, Bitmap> {
 
