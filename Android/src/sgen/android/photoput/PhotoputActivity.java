@@ -356,12 +356,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		} else if (v.getId() == R.id.btnMakeVideo) {
 			// 체크가 선택된 이미지들 가져오기
+			// 체크된 애는 2갠데 view는 3개라서 3번 돌아서 죽음
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
-				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
-					Log.d("가능?", dayalbumList.get(i).getCheckedImageArray()
-							.get(k)
-							+ "");
-				}
+				Log.d("checked array", dayalbumList.get(i)
+						.getCheckedImageArray().toString());
 			}
 		}
 		// else if (v.getId() == R.id.btnMakeVideo) {

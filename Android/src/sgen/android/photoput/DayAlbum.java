@@ -69,7 +69,9 @@ public class DayAlbum extends LinearLayout {
 				CheckBox checked;
 				checked = (CheckBox) v.findViewById(R.id.checkImage);
 				if (isCheckedImage(checked))
-					checkedList.add(i + "");
+					checkedList.add(1 + "");
+				else
+					checkedList.add(0+"");
 		}
 		return checkedList;
 	}
@@ -79,6 +81,10 @@ public class DayAlbum extends LinearLayout {
 			return true;
 		else
 			return false;
+	}
+	
+	public int getSizeOfDayAlbum(){
+		return layoutGridPhotoAlbum.getChildCount()-1;
 	}
 
 }
