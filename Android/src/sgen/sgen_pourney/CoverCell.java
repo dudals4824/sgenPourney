@@ -53,7 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CoverCell extends LinearLayout implements View.OnClickListener {
+public class CoverCell extends LinearLayout implements View.OnClickListener,View.OnLongClickListener {
 	private TextView title, date, numberOfPeople, travelNumber;
 	private ImageButton backcard, btnCoverPhoto;
 	Context mContext = null;
@@ -132,6 +132,11 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 		numberOfPeople.setOnClickListener(this);
 		travelNumber.setOnClickListener(this);
 		backcard.setOnClickListener(this);
+		title.setOnLongClickListener(this);
+		date.setOnLongClickListener(this);
+		numberOfPeople.setOnLongClickListener(this);
+		travelNumber.setOnLongClickListener(this);
+		backcard.setOnLongClickListener(this);
 		btnCoverPhoto.setOnClickListener(this);
 	}
 
@@ -152,6 +157,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 			mContext.startActivity(intent);
 		}
 	}
+	
 
 	public class GetTripInfo extends AsyncTask<String, String, String> {
 
@@ -368,6 +374,51 @@ public class CoverCell extends LinearLayout implements View.OnClickListener {
 		return path;
 	}
 
+	@Override
+	public boolean onLongClick(View v) {
+		// TODO Auto-generated method stub
+		showDeleteDialog();
+		
+		return false;
+	}
+	void showDeleteDialog() {
+		/**
+		 * 
+		 * ListDialog를 보여주는 함수..
+		 */
+	//	this.context = context;
+		
+		String item = mContext.getResources().getString(R.string.delete_text);
+		// array를 ArrayList로 변경을 하는 방법
+
+		List<String> listItem = Arrays.asList(item);
+
+		ArrayList<String> itemArrayList = new ArrayList<String>(listItem);
+
+		mDialog = new ListViewDialog(mContext,"해당 여행에서 나가시겠습니까?",itemArrayList);
+		mDialog.onOnSetItemClickListener(new ListViewDialogSelectListener() {
+
+			@Override
+			public void onSetOnItemClickListener(int position) {
+				// TODO Auto-generated method stub
+				if (position == 0) {
+					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
+					// open gallery browser
+					
+//					CoverActivity covercells = new CoverActivity();
+//					covercells.requestAlbum();
+//					startActivityForResult(
+//							Intent.createChooser(intent, "Select Picture"),
+//							REQUEST_ALBUM);
+				}
+				mDialog.dismiss();
+			}
+			
+			
+		});
+		mDialog.show();
+
+	}
 	
 }
 

@@ -38,5 +38,6 @@
         <item>사진 앨범</item>
         <item>카메라</item>
     </string-array>
+    <string name="delete_text">나가기</string>
 
 </resources>
