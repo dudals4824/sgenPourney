@@ -74,12 +74,6 @@ public class AlbumImgCell extends RelativeLayout implements
 		imgPhoto.setOnClickListener(this);
 
 	}
-	public Boolean isCheckedImage(){
-		if(checkImage.isChecked())
-			return true;
-		else
-			return false;
-	}
 
 	@Override
 	public void onClick(View v) {
