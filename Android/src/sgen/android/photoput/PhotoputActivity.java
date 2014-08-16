@@ -141,7 +141,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String addUrl = null;
 	private String upLoadServerUri = null;
 
-	List<List<String>> listOfPhotoURLLists = new ArrayList<List<String>>();
+	List<List<Bitmap>> listOfPhotoBtmapLists = new ArrayList<List<Bitmap>>();
 
 	//
 	private PhotoUploader photoUploader;
@@ -639,13 +639,15 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			//url list에 있는 주소들의 날짜가 date리스트에 일치하는게 있으면.. 거기에 넣음
 			Log.d("list size", "dateList : " + dateList.size() + "urllist : " + urllist.size());
 			for (int i = 0; i < dateList.size() ; i++) {
-				ArrayList<String> photoListInOneDay = new ArrayList<String>();
+				ArrayList<Bitmap> photoBitmapListInOneDay = new ArrayList<Bitmap>();
 				for (int k = 0; k < urllist.size() ; k++) {
 					if (getDateFromImageUrl(urllist.get(k)) == dateList.get(i)) {
-						photoListInOneDay.add(urllist.get(k));
+						photoBitmapListInOneDay.add(PhotoEditor
+								.ImageurlToBitmapConverter(urllist.get(k)));
 					}
 				}
-				listOfPhotoURLLists.add(photoListInOneDay);
+				listOfPhotoBtmapLists.add(photoBitmapListInOneDay);
+				
 			}
 
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
