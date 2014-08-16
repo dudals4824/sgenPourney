@@ -312,7 +312,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			//체크가 선택된 이미지들 가져오기
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
 				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
-					Log.d("dayalbumList.get(i).getCheckedImageArray().get(k)",dayalbumList.get(i).getCheckedImageArray().get(k));
+					Log.d("가능?",dayalbumList.get(i).getCheckedImageArray().get(k)+"");
 				}
 //				for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
 //
