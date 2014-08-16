@@ -2,22 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="200dp"
     android:background="@drawable/i_blackback"
-    
-        android:gravity="center_horizontal|center_vertical"
-    android:layout_marginBottom="200dp" >
+    android:fadingEdge="none"
+    android:gravity="center_horizontal|center_vertical" >
 
     <ScrollView
         android:id="@+id/friendlistpupup"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:background="@drawable/i_friendlistback"
-        android:layout_marginTop="0dp"
         android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/i_friendlistback"
+        android:fadingEdge="none"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:scrollbars="none"
-         >
+        android:scrollbars="none" >
 
         <GridLayout
             android:id="@+id/friendlistpopupback"
