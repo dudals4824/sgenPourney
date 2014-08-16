@@ -63,6 +63,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -83,6 +84,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String imagePath;
 	private SimpleSideDrawer mDrawer;
 
+	private int checkedNum = 0;
+	private CheckBox imgCheckBox;
 	private ImageButton btnForTest;
 
 	private PopupWindow memoPopupWindow;
@@ -99,6 +102,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private GridLayout layoutGridPhotoAlbum;
 	private ArrayList<String> imageUrls;
 	private DisplayImageOptions options;
+	private TextView photoNum;
 	// private ImageAdapter imageAdapter;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 
@@ -184,8 +188,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		});
 
-//		btnForTest = (ImageButton) findViewById(R.id.btnMakeVideo);
-//		btnForTest.setOnClickListener(this);
+		photoNum = (TextView) findViewById(R.id.textPhotoNum);
+		imgCheckBox = (CheckBox) findViewById(R.id.video_image_selection);
+		
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
@@ -677,10 +682,18 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// ArrayList<ArrayList<Bitmap>> imageList = new
 			// ArrayList<ArrayList<Bitmap>>();
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+
+				checkedNum = 0;
 				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
 					dayalbumList.get(i).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this,
 									listOfPhotoBitmapLists.get(i).get(k)));
+					if (imgCheckBox.isChecked() == true) {
+						checkedNum++;
+
+					}
+
+					photoNum.setText(checkedNum);
 				}
 			}
 
