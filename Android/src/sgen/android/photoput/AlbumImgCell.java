@@ -36,18 +36,21 @@ public class AlbumImgCell extends RelativeLayout implements
 	private File mImgFile = null;
 	private PopupWindow memoPopupWindow;
 	private TextView date;
+	private int mi, mk;
 	public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
 
 	private CheckBox checkImage;
-	public AlbumImgCell(Context context, Bitmap bitmap) {
+	public AlbumImgCell(Context context, Bitmap bitmap, int i, int k) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		mBitmap = bitmap;
-		initMarbleView(context, bitmap);
+		mi = i;
+		mk = k;
+		initMarbleView(context, bitmap, i, k);
 	}
 
-	private void initMarbleView(Context context, Bitmap bitmap) {
+	private void initMarbleView(Context context, Bitmap bitmap, int i, int k) {
 
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
 
@@ -80,9 +83,9 @@ public class AlbumImgCell extends RelativeLayout implements
 		}
 		else if(v.getId() == R.id.checkImage){
 			if(checkImage.isChecked())
-				Log.d("checked", "checked");
+				Log.d("checked", "checked : " + mi + " " +mk);
 			else
-				Log.d("unchecked", "unchecked");
+				Log.d("unchecked", "unchecked : " + mi + " " +mk);
 			
 		}
 		// 메모 불러와야 될 건 photoput activity 에 memooutput 으로 검색 ㄱㄱ

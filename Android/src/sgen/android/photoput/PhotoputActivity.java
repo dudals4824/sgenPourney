@@ -418,7 +418,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(), 300,
 						300, ResizeMode.FIT_TO_HEIGHT);
 				dayalbumList.get(day).addLayoutGridalbum(
-						new AlbumImgCell(PhotoputActivity.this, bm));
+						new AlbumImgCell(PhotoputActivity.this, bm, 0, 0));
 			}
 			// 서버에 사진 업로드
 			dialog = ProgressDialog.show(PhotoputActivity.this, "",
@@ -471,14 +471,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	}// end of ProfileImageSetter
 
 	/**
-	 * 해당 trip id에 해당하는 모든 사진을 받아와서 사진의 정보를 tripDTO에 저장한다.
-	 * tripDTO들은 photoList에 저장된다.
+	 * 해당 trip id에 해당하는 모든 사진을 받아와서 사진의 정보를 tripDTO에 저장한다. tripDTO들은 photoList에
+	 * 저장된다.
 	 */
 	public class GetAllPhotoByTripId extends AsyncTask<Object, String, String> {
 		TripDTO td = new TripDTO();
 		ArrayList<Integer> dateList = new ArrayList<Integer>();
 		ArrayList<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
-		
+
 		@Override
 		protected void onPreExecute() {
 			Log.i("Async-Example", "onPreExecute Called");
@@ -552,7 +552,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					photoDTO.setTripId(json_data.getInt("trip_id"));
 					photoDTO.setPhoto_date(json_data.getInt("photo_date"));
 					photoDTO.setLikes(json_data.getInt("likes"));
-					photoDTO.setPhotoFilename(SERVERURI + json_data.getString("photo_filename"));
+					photoDTO.setPhotoFilename(SERVERURI
+							+ json_data.getString("photo_filename"));
 					// file이름 받아온 후,
 					// 사진파일들이 저장되어있는 폴더 url에
 					// 파일이름 string을 합쳐서 url list에 넣음
@@ -574,9 +575,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			for (int i = 0; i < dateList.size(); i++) {
 				ArrayList<Bitmap> photoBitmapListInOneDay = new ArrayList<Bitmap>();
 				for (int k = 0; k < photoList.size(); k++) {
-					if (getDateFromImageUrl(photoList.get(k).getPhotoFilename()) == dateList.get(i)) {
+					if (getDateFromImageUrl(photoList.get(k).getPhotoFilename()) == dateList
+							.get(i)) {
 						photoBitmapListInOneDay.add(PhotoEditor
-								.ImageurlToBitmapConverter(photoList.get(k).getPhotoFilename()));
+								.ImageurlToBitmapConverter(photoList.get(k)
+										.getPhotoFilename()));
 					}
 				}
 				listOfPhotoBitmapLists.add(photoBitmapListInOneDay);
@@ -609,9 +612,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
 
 				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
-					dayalbumList.get(i).addLayoutGridalbum(
-							new AlbumImgCell(PhotoputActivity.this,
-									listOfPhotoBitmapLists.get(i).get(k)));
+					dayalbumList.get(i)
+							.addLayoutGridalbum(
+									new AlbumImgCell(PhotoputActivity.this,
+											listOfPhotoBitmapLists.get(i)
+													.get(k), i, k));
 				}
 			}
 		}
