@@ -5,10 +5,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -86,7 +87,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 
 	private TextView popupLocation, title, date;
-	private ImageButton friendList, btnProfilePhoto, btnMakeVideo;
+	private ImageButton friendList, btnProfilePhoto, btnMakeVideo,
+			btnTravelInfo;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -134,11 +136,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private int pixNum = 0;
 	private ImageView downloadedImg;
 	private ProgressDialog simpleWaitDialog;
-	private String downloadUrl = "http://54.178.166.213/test/";
-	private String[] urllist = null;
+	private String SERVERURI = "http://54.178.166.213";
+	private ArrayList<String> urllist = null;
 	private String addUrl = null;
 	private String upLoadServerUri = null;
 
+	List<List<String>> listOfPhotoURLLists = new ArrayList<List<String>>();
+	
 	//
 	private PhotoUploader photoUploader;
 	private String intent_date;
@@ -178,8 +182,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		//btnForTest = (ImageButton) findViewById(R.id.btnMakeVideo); //메모 불러오는 부분
-		//btnForTest.setOnClickListener(this);
+		btnForTest = (ImageButton) findViewById(R.id.btnMakeVideo);
+		btnForTest.setOnClickListener(this);
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
@@ -192,8 +196,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileBtn.setOnClickListener(this);
 
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
-		btnMakeVideo = (ImageButton) findViewById(R.id.btnPhotoPlus);
+		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
+		btnTravelInfo = (ImageButton) findViewById(R.id.btnTravelInfo);
 		btnMakeVideo.setOnClickListener(this);
+		btnTravelInfo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		// }
@@ -219,23 +225,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
-	}
-
-	
-	private void getImages() {
-		// TODO Auto-generated method stub
-		//dayalbumlist에 인덱스로 접근해서 addLayoutGridalbum으로 이미지를 한장씩 추가함
-		ArrayList<ArrayList<Bitmap>> imageList=new ArrayList<ArrayList<Bitmap>>();
-		for (int i = 0; i < imageList.size(); i++) {
-			for(int k=0;i<imageList.get(i).size();k++){
-				dayalbumList.get(i).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this, imageList.get(i).get(k)));
-			}
-		}
 		
+		get = new GetFilename();
+		get.execute(trip, intent_dateList);
 	}
 
-
-	//여행일정만큼 dayalbum 추가하는 함수
 	private void init() {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
@@ -272,9 +266,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					(gregorianStart.get(Calendar.MONTH) + 1) + "."
 							+ gregorianStart.get(Calendar.DATE) + ""));
 			layoutAlbum.addView(dayalbumList.get(i));
-			
+			intent_dateList.add(Integer.parseInt(intent_date));
 			gregorianStart.add(Calendar.DATE, 1);
-
 		}
 	}
 
@@ -284,27 +277,30 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			finish();
+		} else if (v.getId() == R.id.btnMakeVideo) {
+			Intent intent = new Intent(PhotoputActivity.this,
+					VideoMakingActivity.class);
 			startActivity(intent);
+			finish();
+		} else if (v.getId() == R.id.btnTravelInfo) {
+			Intent intent = new Intent(PhotoputActivity.this,
+					TravelInfoActivity.class);
+			startActivity(intent);
+			finish();
 		}
 
 		else if (v.getId() == R.id.last_album_text) {
 
 			Intent intent = new Intent(this, CoverActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		}else if (v.getId() == R.id.btnPhotoPlus) {
-	         Intent intent = new Intent(PhotoputActivity.this,
-	                 VideoMakingActivity.class);
-	           startActivity(intent);
-	           finish();
-		}
-		
-		
-		
-		else if (v.getId() == R.id.profile_modifying_text) {
+		} else if (v.getId() == R.id.profile_modifying_text) {
 
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
@@ -338,33 +334,30 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
 				// 27);
 			}
-		} 
+		} else if (v.getId() == R.id.btnMakeVideo) {
 
-		//메모 올리는 화면 부르는 곳
-		//		else if (v.getId() == R.id.btnMakeVideo) {
-//
-//			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-//					.getSystemService(LAYOUT_INFLATER_SERVICE);
-//			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
-//			memoPopupWindow = new PopupWindow(popupView,
-//					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
-//			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-//			memoPopupWindow.setFocusable(true);
-//			memoPopupWindow.setOutsideTouchable(true);
-//			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
-//
-//				public boolean onTouch(View v, MotionEvent event) {
-//					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-//						memoPopupWindow.dismiss();
-//						return true;
-//					}
-//					return false;
-//				}
-//			});
-//
-//			memoPopupWindow.showAtLocation(date, 0, 0, 218);
-//
-//		}
+			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+					.getSystemService(LAYOUT_INFLATER_SERVICE);
+			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
+			memoPopupWindow = new PopupWindow(popupView,
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+			memoPopupWindow.setFocusable(true);
+			memoPopupWindow.setOutsideTouchable(true);
+			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+						memoPopupWindow.dismiss();
+						return true;
+					}
+					return false;
+				}
+			});
+
+			memoPopupWindow.showAtLocation(date, 0, 0, 218);
+
+		}
 
 	}
 
@@ -447,13 +440,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
 						coverBitmap, photoAreaWidth, photoAreaHeight);
 				userProfilePhoto = photoEdit.editPhotoAuto();
-				btnProfilePhoto.setImageBitmap(userProfilePhoto);
 			}
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
+			btnProfilePhoto.setImageBitmap(userProfilePhoto);
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 		}
@@ -537,7 +530,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 			String trip_id = "101";
 			get = new GetFilename();
-			get.execute(trip);
+			get.execute(trip, intent_dateList);
 			// get.execute(trip_id,photo_date)
 			// 사진을 서버에 업로드시킨 다음에 업데이트 포토 데이트를 호출해서 사진 날짜를 디비에 업데이트
 
@@ -556,11 +549,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	 */
 	public class GetFilename extends AsyncTask<Object, String, String> {
 		TripDTO td = new TripDTO();
-
+		ArrayList<Integer> dateList = new ArrayList<Integer>();
 		@Override
 		protected String doInBackground(Object... params) {
-			// TODO Auto-generated method stub
+			//convert object into tripDTO
 			td = (TripDTO) params[0];
+			dateList = (ArrayList<Integer>) params[1];
 			InputStream is = null;
 			StringBuilder sb = null;
 			String filename = null;
@@ -569,8 +563,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
 					.toString(td.getTripId())));
-			nameValuePairs.add(new BasicNameValuePair("start_date", Long
-					.toString(td.getStartDate())));
 			// 여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
 			// 저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
 			// arg0[1] 이게 포토 데이트
@@ -615,23 +607,20 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 				pixNum = jArray.length();
 				Log.d("pixNum", Integer.toString(pixNum));
-				urllist = new String[pixNum];
+				urllist = new ArrayList<String>();
 				for (int i = 0; i < jArray.length(); i++) {
 					json_data = jArray.getJSONObject(i);
 					filename = json_data.getString("photo_filename");
 					Log.d("filename", filename);
-
 					// file이름 받아온 후,
 					// 사진파일들이 저장되어있는 폴더 url에
 					// 파일이름 string을 합쳐서 url list에 넣음
-					addUrl = filename;
-					addUrl = downloadUrl + addUrl;
-					urllist[i] = addUrl;
-
-					Log.d("urlList" + i, urllist[i]);
-					// list에 다 넣은 후 post에서 다운로드 이미지 함수 호출
-
+					urllist.add(addUrl = SERVERURI + filename);
+					getDateFromImageUrl(addUrl);
 				}
+				// list에 다 넣은 후 post에서 다운로드 이미지 함수 호출
+				Log.d("url List", urllist.toString());
+				Log.d("date List", dateList.toString());
 
 			} catch (JSONException e1) {
 				e1.printStackTrace();
@@ -644,14 +633,31 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			//urllist, datelist
+			//listOfPhotoURLLists;
+			
+			
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
 			// imagedown = new ImageDownloader();
 			// imagedown.execute(urllist);
 		}
 
+		//helper method of GetFilename
+		private String getDateFromImageUrl(String url)
+		{
+			int i=0;
+			StringTokenizer stk = new StringTokenizer(url, "_");
+            while(stk.hasMoreElements())
+            {
+                    System.out.println(stk.nextToken()+i++);
+            }
+			return null;
+		}
+		
 	}// end of GetfileName
+	
+	
 
 	public class ImageDownloader extends AsyncTask<String[], String, Bitmap> {
 
