@@ -209,6 +209,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 				tripDTO.setTripTitle(JsonObject.getString("trip_name"));
 				tripDTO.setStartDate(JsonObject.getLong("start_date"));
 				tripDTO.setEndDate(JsonObject.getLong("end_date"));
+				tripDTO.setPhotoCnt(JsonObject.getInt("photo_count"));
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}

@@ -13,6 +13,7 @@ public class TripDTO {
 	private String tripTitle;
 	private long startDate;
 	private long endDate;
+	private int photoCnt;
 
 	public TripDTO() {
 		super();
@@ -44,7 +45,7 @@ public class TripDTO {
 
 	public long getStartDate() {
 		return startDate;
-		//밀리세컨드로 가져옴 그레고리안에 넣어서 사용하면됨
+		// 밀리세컨드로 가져옴 그레고리안에 넣어서 사용하면됨
 	}
 
 	public void setStartDate(long startDate) {
@@ -60,24 +61,33 @@ public class TripDTO {
 	}
 
 	public String getStartDateInDateFormat() {
-		//GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
-		//date.setTimeInMillis(startDate);
-		//date.add(Calendar.MONTH, -1);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+		// GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
+		// date.setTimeInMillis(startDate);
+		// date.add(Calendar.MONTH, -1);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",
+				Locale.KOREA);
 		return dateFormat.format(startDate);
 	}
-	
+
 	public String getEndDateInDateFormat() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",
+				Locale.KOREA);
 		return dateFormat.format(endDate);
 	}
-	
+
+	public int getPhotoCnt() {
+		return photoCnt;
+	}
+
+	public void setPhotoCnt(int photoCnt) {
+		this.photoCnt = photoCnt;
+	}
 
 	@Override
 	public String toString() {
-		
 		return "TripDTO [tripId=" + tripId + ", tripTitle=" + tripTitle
-				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
+				+ ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", photoCnt=" + photoCnt + "]";
 	}
 
 }

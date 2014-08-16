@@ -231,8 +231,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
 
-		get = new GetFilename();
-		get.execute(trip, intent_dateList);
+		if (trip.getPhotoCnt() > 0) {
+			get = new GetFilename();
+			get.execute(trip, intent_dateList);
+		}
 	}
 
 	private void init() {
@@ -276,27 +278,23 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 			gregorianStart.add(Calendar.DATE, 1);
 		}
-		//setPhotoNum();
+		// setPhotoNum();
 	}
-/*
-	public void setPhotoNum() {
 
-		for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
-			checkedNum=0;
-			layoutAlbum.getContext().set(Integer.toString(checkedNum));
-			for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
-				if (imgCheckBox.isChecked() == true) {
-					checkedNum++;
-				}
-				else
-					checkedNum--;
-				
-				photoNum.setText(Integer.toString(checkedNum));
-
-			}
-		}
-
-	}*/
+	/*
+	 * public void setPhotoNum() {
+	 * 
+	 * for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) { checkedNum=0;
+	 * layoutAlbum.getContext().set(Integer.toString(checkedNum)); for (int k =
+	 * 0; k < listOfPhotoBitmapLists.get(i).size(); k++) { if
+	 * (imgCheckBox.isChecked() == true) { checkedNum++; } else checkedNum--;
+	 * 
+	 * photoNum.setText(Integer.toString(checkedNum));
+	 * 
+	 * } }
+	 * 
+	 * }
+	 */
 
 	public void onClick(View v) {
 		if (v.getId() == R.id.ask_text) {
@@ -582,6 +580,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		ArrayList<Integer> dateList = new ArrayList<Integer>();
 
 		@Override
+		protected void onPreExecute() {
+			Log.i("Async-Example", "onPreExecute Called");
+			simpleWaitDialog = ProgressDialog.show(PhotoputActivity.this, "",
+					"사진을 받아오는 중입니다.");
+
+		}
+
+		@Override
 		protected String doInBackground(Object... params) {
 			// convert object into tripDTO
 			td = (TripDTO) params[0];
@@ -681,6 +687,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			super.onPostExecute(result);
 			// 앨범에 listofPhotobitmaplist 보여주기
 			getImages();
+			simpleWaitDialog.dismiss();
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
 			// imagedown = new ImageDownloader();
 			// imagedown.execute(urllist);
