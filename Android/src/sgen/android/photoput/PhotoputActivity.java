@@ -136,7 +136,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private int serverResponseCode = 0;
 	private ProgressDialog dialog = null;
 	private GetFilename get;
-	private ImageDownloader imagedown;
 	private String[] imagepath;
 	private int endNum = 0;
 	private int pixNum = 0;
@@ -152,8 +151,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	//
 	private PhotoUploader photoUploader;
 	private String intent_date;
-	// 여기
-	private UpdatePhotodate updatephotodate;
 
 	private ArrayList<Integer> intent_dateList;
 
@@ -249,7 +246,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		GregorianCalendar gregorianEnd = new GregorianCalendar();
 		gregorianStart.setTimeInMillis(trip.getStartDate());
 		gregorianEnd.setTimeInMillis(trip.getEndDate());
-		ArrayList<GregorianCalendar> gregorianArrayList = new ArrayList<GregorianCalendar>();
 		if (gregorianStart.get(Calendar.MONTH) == gregorianEnd
 				.get(Calendar.MONTH))
 			travel = (gregorianEnd.get(Calendar.DATE) - gregorianStart
@@ -447,23 +443,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private String getRealPathFromURI(Uri selectedVideoUri,
-			ContentResolver contentResolver)
-			throws UnsupportedEncodingException {
-		String filePath;
-		String[] filePathColumn = { MediaStore.MediaColumns.DATA };
-
-		Cursor cursor = contentResolver.query(selectedVideoUri, filePathColumn,
-				null, null, null);
-		cursor.moveToFirst();
-
-		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-		filePath = cursor.getString(columnIndex);
-		cursor.close();
-		String result = java.net.URLDecoder.decode(filePath, "UTF-8");
-		return result;
-	}
-
 	public class ProfileImageSetter extends AsyncTask<String, String, String> {
 
 		@Override
@@ -486,102 +465,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(String result) {
 			btnProfilePhoto.setImageBitmap(userProfilePhoto);
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 		}
-
 	}// end of ProfileImageSetter
-
-	/**
-	 * 날짜별로 사진 받아오는거
-	 */
-	public class UpdatePhotodate extends AsyncTask<Object, String, String> {
-
-		@Override
-		protected String doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-
-			// 전달 받은 object tripDto로 캐스팅
-			TripDTO td = new TripDTO();
-			td = (TripDTO) params[0];
-
-			InputStream is = null;
-			StringBuilder sb = null;
-			String filename = null;
-			String result = null;
-
-			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
-					.toString(td.getTripId())));
-			nameValuePairs.add(new BasicNameValuePair("photo_date", Long
-					.toString(td.getStartDate())));
-
-			// 여행의 아이디가 들어와줘야한다. param[0] 세션에 저장되어 있는거 가져와서 넣어주면 됨
-			// 저거 하나더 추가해서 trip_id photo_date라고 해서 string으로 변환해서 보내주면 됨
-			// arg0[1] 이게 포토 데이트 여기서도 마찬가지로 보내주면 됨
-
-			try {
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(
-						"http://54.178.166.213/updatePhotoDate.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				HttpResponse response = httpclient.execute(httppost);
-				HttpEntity entity = response.getEntity();
-				is = entity.getContent();
-
-			} catch (Exception e) {
-				Log.e("log_tag", "error in http connection" + e.toString());
-			}
-
-			try {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
-				sb = new StringBuilder();
-				sb.append(reader.readLine() + "\n");
-				String line = "0";
-
-				while ((line = reader.readLine()) != null) {
-					sb.append(line + "\n");
-				}
-
-				is.close();
-				result = sb.toString();
-				Log.d("getFile_logMsg", result); // result 가 null이지???
-
-			} catch (Exception e) {
-				Log.e("getFile_log_tag",
-						"Error converting result " + e.toString());
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-
-			String trip_id = "101";
-			get = new GetFilename();
-			get.execute(trip, intent_dateList);
-			// get.execute(trip_id,photo_date)
-			// 사진을 서버에 업로드시킨 다음에 업데이트 포토 데이트를 호출해서 사진 날짜를 디비에 업데이트
-
-		}
-
-		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
-		}
-
-	}
 
 	/**
 	 * 사진 이름 리스트 받아오기
@@ -595,9 +481,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Log.i("Async-Example", "onPreExecute Called");
 			simpleWaitDialog = ProgressDialog.show(PhotoputActivity.this, "",
 					"사진을 받아오는 중입니다.");
-
 		}
-
+		
 		@Override
 		protected String doInBackground(Object... params) {
 			// convert object into tripDTO
@@ -699,9 +584,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// 앨범에 listofPhotobitmaplist 보여주기
 			getImages();
 			simpleWaitDialog.dismiss();
-			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
-			// imagedown = new ImageDownloader();
-			// imagedown.execute(urllist);
 		}
 
 		// helper method of GetFilename
@@ -734,123 +616,5 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 
 	}// end of GetfileName
-
-	public class ImageDownloader extends AsyncTask<String[], String, Bitmap> {
-
-		@Override
-		protected Bitmap doInBackground(String[]... param) {
-			// TODO Auto-generated method stub
-			Log.d("param length", Integer.toString(param[0].length));
-
-			// param[0]에 url list들이 들어있으므로
-			// 이미지 다운을 위해 downloadBitmap 함수 호출!
-			return downloadBitmap(param[0]);
-		}
-
-		@Override
-		protected void onPreExecute() {
-			Log.i("Async-Example", "onPreExecute Called");
-			simpleWaitDialog = ProgressDialog.show(PhotoputActivity.this,
-					"Wait", "Downloading Image");
-
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			Log.i("Async-Example", "onPostExecute Called");
-			simpleWaitDialog.dismiss();
-
-			// asyncTask가 재호출이 되지 않기 때문에,
-			// 서버에 저장되어있는 사진갯수보다,
-			// 서버에서 안드로이드로 하나씩 보여주고 있는 사진 갯수가 적은 경우에만
-			// ImageDownloader함수(현재 함수)를 또 호출해주기 위한 부분입니다!
-			// 따라서 다 다운로드가 되면 더이상 imageDownloader가 호출되지 않음!
-			if (endNum < pixNum) {
-				// } else if (endNum < pixNum) {
-				Log.d("urlist", urllist.toString());
-				// imagedown = new ImageDownloader();
-				// imagedown.execute(urllist);
-			}
-
-			// }
-
-		}
-
-		private Bitmap downloadBitmap(String[] url) {
-			// initilize the default HTTP client object
-
-			final DefaultHttpClient client = new DefaultHttpClient();
-
-			// addview
-			// forming a HttoGet request
-			final HttpGet getRequest = new HttpGet(url[endNum++]);
-			try {
-
-				HttpResponse response = client.execute(getRequest);
-
-				// check 200 OK for success
-				final int statusCode = response.getStatusLine().getStatusCode();
-
-				if (statusCode != HttpStatus.SC_OK) {
-					Log.w("ImageDownloader", "Error " + statusCode
-							+ " while retrieving bitmap from " + url);
-					return null;
-
-				}
-
-				final HttpEntity entity = response.getEntity();
-				if (entity != null) {
-					InputStream inputStream = null;
-					try {
-						// getting contents from the stream
-						inputStream = entity.getContent();
-
-						// decoding stream data back into image Bitmap that
-						// android understands
-						final Bitmap bitmap = BitmapFactory
-								.decodeStream(inputStream);
-
-						// addview가 activity에서 실행되어야 하는데,
-						// asyncTask가 쓰레드 형식이라서
-						// addview를 함수로 빼서
-						// 쓰레드로 함수를 실행시키고
-						// addview는 main class로 빼서 함수로 만들어버림.
-						new Thread(new Runnable() {
-							public void run() {
-								runOnUiThread(new Runnable() {
-									public void run() {
-										dayalbumList
-												.get(i_dayalbum)
-												.addLayoutGridalbum(
-														new AlbumImgCell(
-																PhotoputActivity.this,
-																bitmap));
-										// addImageView(inHorizontalScrollView,
-										// bitmap);
-									}
-								});
-							}
-						}).start();
-						// return bitmap;
-					} finally {
-						if (inputStream != null) {
-							inputStream.close();
-						}
-						entity.consumeContent();
-					}
-				}
-			} catch (Exception e) {
-				// You Could provide a more explicit error message for
-				// IOException
-				getRequest.abort();
-				Log.d("ImageDownloader", "Something went wrong while"
-						+ " retrieving bitmap from " + url + e.toString());
-			}
-			Log.d("endNum", Integer.toString(endNum));
-			Log.d("pixNum", Integer.toString(pixNum));
-
-			return null;
-		}
-	}
 
 }
