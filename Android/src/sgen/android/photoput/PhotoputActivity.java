@@ -418,7 +418,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(), 300,
 						300, ResizeMode.FIT_TO_HEIGHT);
 				dayalbumList.get(day).addLayoutGridalbum(
-						new AlbumImgCell(PhotoputActivity.this, bm, new PhotoDTO()));
+						new AlbumImgCell(PhotoputActivity.this, bm, new PhotoDTO(), user.getUserId()));
 			}
 			// 서버에 사진 업로드
 			dialog = ProgressDialog.show(PhotoputActivity.this, "",
@@ -610,7 +610,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		private void getImages() {
 			// dayalbumlist에 인덱스로 접근해서 addLayoutGridalbum으로 이미지를 한장씩 추가함\
 			//사진을 추가할때 해당 view에 위치하는 photoDTO를 같이 전달한다.
-			//view에서 이 photoDTO를 받아 좋아요를 처리한다.
+			//view에서 이 photoDTO를 받아 좋아요를 처리한다. 좋아요 처리시 user아이디가 같이 필요하므로 같이 넘겨줌
+			int y=0;
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
 
 				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
@@ -618,7 +619,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							.addLayoutGridalbum(
 									new AlbumImgCell(PhotoputActivity.this,
 											listOfPhotoBitmapLists.get(i)
-													.get(k), photoList.get(i+k)));
+													.get(k), photoList.get(y++), user.getUserId()));
 				}
 			}
 		}
