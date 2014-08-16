@@ -210,6 +210,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 				tripDTO.setStartDate(JsonObject.getLong("start_date"));
 				tripDTO.setEndDate(JsonObject.getLong("end_date"));
 				tripDTO.setPhotoCnt(JsonObject.getInt("photo_count"));
+				tripDTO.setPeopleCnt(JsonObject.getInt("people_count"));
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
@@ -224,7 +225,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 			title.setText(tripDTO.getTripTitle());
 			date.setText(tripDTO.getStartDateInDateFormat() + " ~ "
 					+ tripDTO.getEndDateInDateFormat());
-			numberOfPeople.setText("With N people");
+			numberOfPeople.setText("With " + tripDTO.getPeopleCnt() + " people");
 			travelNumber.setText(String.valueOf(tripDTO.getTripId()));
 		}
 	}
