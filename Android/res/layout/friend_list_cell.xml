@@ -3,32 +3,32 @@
     android:layout_width="150dp"
     android:layout_height="75dp"
     android:layout_marginLeft="12dp"
-    android:orientation="vertical"
     android:background="@android:color/transparent"
-                android:fitsSystemWindows="true"
-                android:scaleType="fitXY" >
+    android:fadingEdge="none"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:scaleType="fitXY" >
 
     <ImageView
         android:id="@+id/friendcell"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <ImageView
         android:id="@+id/friendprofile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:src="@drawable/i_profile_238x240"
-        />
+        android:layout_marginTop="5dp"
+        android:src="@drawable/i_profile_238x240" />
+
     <TextView
         android:id="@+id/friendname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/friendprofile"
-        android:layout_marginTop="35dp"
         android:layout_marginLeft="85dp"
-        android:text="공민아즐"
-        
-        />
+        android:layout_marginTop="35dp"
+        android:text="공민아즐" />
 
 </RelativeLayout>
