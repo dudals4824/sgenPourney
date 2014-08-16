@@ -214,9 +214,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
 
 		// 여행 정보 setting
-		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));// 디비에서 사람 수
-																	// 불러와서
-																	// 넣어주세요
+		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));// 디비에서 사람
+																		// 수
+																		// 불러와서
+																		// 넣어주세요
 		title.setText(trip.getTripTitle());
 		date.setText(trip.getStartDateInDateFormat() + " ~ "
 				+ trip.getEndDateInDateFormat());
@@ -482,7 +483,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			simpleWaitDialog = ProgressDialog.show(PhotoputActivity.this, "",
 					"사진을 받아오는 중입니다.");
 		}
-		
+
 		@Override
 		protected String doInBackground(Object... params) {
 			// convert object into tripDTO
@@ -599,22 +600,16 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 
 		private void getImages() {
-			// TODO Auto-generated method stub
 			// dayalbumlist에 인덱스로 접근해서 addLayoutGridalbum으로 이미지를 한장씩 추가함
-			// ArrayList<ArrayList<Bitmap>> imageList = new
-			// ArrayList<ArrayList<Bitmap>>();
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
 
 				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
 					dayalbumList.get(i).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this,
 									listOfPhotoBitmapLists.get(i).get(k)));
-
 				}
 			}
-
 		}
-
 	}// end of GetfileName
 
 }
