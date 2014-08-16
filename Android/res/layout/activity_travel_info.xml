@@ -155,7 +155,7 @@
 
         <RelativeLayout
             android:id="@+id/layoutInputInfo"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="9dp"
@@ -179,7 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/textInputInfo"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_toLeftOf="@id/textInputInfo"
                 android:src="@drawable/ic_calendar_flag_62x78" />
@@ -210,7 +210,6 @@
                     android:layout_alignBottom="@id/textTitleHere"
                     android:layout_marginBottom="5dp"
                     android:layout_marginRight="10dp"
-                    
                     android:layout_toLeftOf="@id/textTitleHere"
                     android:src="@drawable/ic_write_40x40" />
 
