@@ -132,12 +132,17 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 		numberOfPeople.setOnClickListener(this);
 		travelNumber.setOnClickListener(this);
 		backcard.setOnClickListener(this);
+		
+		btnCoverPhoto.setOnClickListener(this);
+		
 		title.setOnLongClickListener(this);
 		date.setOnLongClickListener(this);
 		numberOfPeople.setOnLongClickListener(this);
 		travelNumber.setOnLongClickListener(this);
 		backcard.setOnLongClickListener(this);
-		btnCoverPhoto.setOnClickListener(this);
+		
+		
+		
 	}
 
 	@Override
