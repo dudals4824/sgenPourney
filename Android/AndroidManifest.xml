@@ -68,6 +68,10 @@
             android:label="@string/title_activity_video" >
         </activity>
         <activity
+            android:name="sgen.sgen_pourney.VideoViewActivity"
+            android:label="@string/video_view_title" >
+        </activity>
+        <activity
             android:name="sgen.sgen_pourney.ProfileModi"
             android:label="@string/title_profile_modi" >
         </activity>
