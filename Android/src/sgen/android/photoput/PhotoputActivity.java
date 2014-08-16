@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import sgen.DTO.PhotoDTO;
 import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.android.multigallery.PhotoInfo;
@@ -135,14 +136,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	// 사진 가져오는
 	private int serverResponseCode = 0;
 	private ProgressDialog dialog = null;
-	private GetFilename get;
+	private GetAllPhotoByTripId getPhoto;
 	private String[] imagepath;
 	private int endNum = 0;
 	private int pixNum = 0;
 	private ImageView downloadedImg;
 	private ProgressDialog simpleWaitDialog;
 	private String SERVERURI = "http://54.178.166.213";
-	private ArrayList<String> urllist = null;
 	private String addUrl = null;
 	private String upLoadServerUri = null;
 
@@ -232,8 +232,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		if (trip.getPhotoCnt() > 0) {
 			Log.d("PhotoputActivity", "" + trip.getPhotoCnt());
-			get = new GetFilename();
-			get.execute(trip, intent_dateList);
+			getPhoto = new GetAllPhotoByTripId();
+			getPhoto.execute(trip, intent_dateList);
 		}
 	}
 
@@ -471,12 +471,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	}// end of ProfileImageSetter
 
 	/**
-	 * 사진 이름 리스트 받아오기
+	 * 해당 trip id에 해당하는 모든 사진을 받아와서 사진의 정보를 tripDTO에 저장한다.
+	 * tripDTO들은 photoList에 저장된다.
 	 */
-	public class GetFilename extends AsyncTask<Object, String, String> {
+	public class GetAllPhotoByTripId extends AsyncTask<Object, String, String> {
 		TripDTO td = new TripDTO();
 		ArrayList<Integer> dateList = new ArrayList<Integer>();
-
+		ArrayList<PhotoDTO> photoList = new ArrayList<PhotoDTO>();
+		
 		@Override
 		protected void onPreExecute() {
 			Log.i("Async-Example", "onPreExecute Called");
@@ -541,19 +543,23 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 				pixNum = jArray.length();
 				Log.d("pixNum", Integer.toString(pixNum));
-				urllist = new ArrayList<String>();
+				photoList = new ArrayList<PhotoDTO>();
 				for (int i = 0; i < jArray.length(); i++) {
+					PhotoDTO photoDTO = new PhotoDTO();
 					json_data = jArray.getJSONObject(i);
-					filename = json_data.getString("photo_filename");
-					Log.d("filename", filename);
+					photoDTO.setPhotoId(json_data.getInt("photo_id"));
+					photoDTO.setUserId(json_data.getInt("user_id"));
+					photoDTO.setTripId(json_data.getInt("trip_id"));
+					photoDTO.setPhoto_date(json_data.getInt("photo_date"));
+					photoDTO.setLikes(json_data.getInt("likes"));
+					photoDTO.setPhotoFilename(SERVERURI + json_data.getString("photo_filename"));
 					// file이름 받아온 후,
 					// 사진파일들이 저장되어있는 폴더 url에
 					// 파일이름 string을 합쳐서 url list에 넣음
-					urllist.add(addUrl = SERVERURI + filename);
+					photoList.add(photoDTO);
 				}
 				// list에 다 넣은 후 post에서 다운로드 이미지 함수 호출
-				Log.d("url List", urllist.toString());
-				Log.d("date List", dateList.toString());
+				Log.d("photo information", photoList.toString());
 
 			} catch (JSONException e1) {
 				e1.printStackTrace();
@@ -561,17 +567,16 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				e1.printStackTrace();
 			}
 
-			// urllist, datelist
 			// listOfPhotoURLLists;
 			// url list에 있는 주소들의 날짜가 date리스트에 일치하는게 있으면.. 거기에 넣음
-			Log.d("list size", "dateList : " + dateList.size() + "urllist : "
-					+ urllist.size());
+			Log.d("list size", "dateList : " + dateList.size() + "photoList : "
+					+ photoList.size());
 			for (int i = 0; i < dateList.size(); i++) {
 				ArrayList<Bitmap> photoBitmapListInOneDay = new ArrayList<Bitmap>();
-				for (int k = 0; k < urllist.size(); k++) {
-					if (getDateFromImageUrl(urllist.get(k)) == dateList.get(i)) {
+				for (int k = 0; k < photoList.size(); k++) {
+					if (getDateFromImageUrl(photoList.get(k).getPhotoFilename()) == dateList.get(i)) {
 						photoBitmapListInOneDay.add(PhotoEditor
-								.ImageurlToBitmapConverter(urllist.get(k)));
+								.ImageurlToBitmapConverter(photoList.get(k).getPhotoFilename()));
 					}
 				}
 				listOfPhotoBitmapLists.add(photoBitmapListInOneDay);
