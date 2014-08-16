@@ -51,7 +51,7 @@ public class CustomGalleryActivity extends Activity {
 		setContentView(R.layout.gallery);
 
 		action = getIntent().getAction();
-		intent_date=getIntent().getIntExtra("mIntent_date", 200);
+		intent_date=getIntent().getIntExtra("intent_date", 200);
 		Log.d("intent_date", intent_date+"");
 //		if (action == null) {
 //			finish();
@@ -166,7 +166,7 @@ public class CustomGalleryActivity extends Activity {
 			}
 			Log.d("CustomGalleryActivity", "OK btn");
 			Intent data = new Intent().putExtra("list", list);
-			data.putExtra("i_dayalbum", intent_date);
+			data.putExtra("intent_date", intent_date);
 			setResult(RESULT_OK, data);
 			finish();
 
