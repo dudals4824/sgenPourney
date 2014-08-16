@@ -189,7 +189,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		});
 
 		photoNum = (TextView) findViewById(R.id.textPhotoNum);
-		imgCheckBox = (CheckBox) findViewById(R.id.video_image_selection);
 
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
@@ -310,6 +309,22 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(PhotoputActivity.this,
 					VideoMakingActivity.class);
 			startActivity(intent);
+			//체크가 선택된 이미지들 가져오기
+			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+					Log.d("dayalbumList.get(i).getCheckedImageArray().get(k)",dayalbumList.get(i).getCheckedImageArray().get(k));
+				}
+//				for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+//
+//					for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+//						dayalbumList.get(i).addLayoutGridalbum(
+//								new AlbumImgCell(PhotoputActivity.this,
+//										listOfPhotoBitmapLists.get(i).get(k)));
+//
+//					}
+//				}
+			}
+			
 			finish();
 		} else if (v.getId() == R.id.last_album_text) {
 
