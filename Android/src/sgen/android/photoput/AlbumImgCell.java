@@ -2,6 +2,7 @@ package sgen.android.photoput;
 
 import java.io.File;
 
+import sgen.DTO.PhotoDTO;
 import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ImageResizer;
 import sgen.image.resizer.ResizeMode;
@@ -36,21 +37,20 @@ public class AlbumImgCell extends RelativeLayout implements
 	private File mImgFile = null;
 	private PopupWindow memoPopupWindow;
 	private TextView date;
-	private int mi, mk;
+	PhotoDTO mPhoto;
 	public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
 
 	private CheckBox checkImage;
-	public AlbumImgCell(Context context, Bitmap bitmap, int i, int k) {
+	public AlbumImgCell(Context context, Bitmap bitmap, PhotoDTO photo) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		mBitmap = bitmap;
-		mi = i;
-		mk = k;
-		initMarbleView(context, bitmap, i, k);
+		mPhoto = photo;
+		initMarbleView(context, bitmap, photo);
 	}
 
-	private void initMarbleView(Context context, Bitmap bitmap, int i, int k) {
+	private void initMarbleView(Context context, Bitmap bitmap, PhotoDTO photo) {
 
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
 
@@ -83,9 +83,9 @@ public class AlbumImgCell extends RelativeLayout implements
 		}
 		else if(v.getId() == R.id.checkImage){
 			if(checkImage.isChecked())
-				Log.d("checked", "checked : " + mi + " " +mk);
+				Log.d("checked", "checked : " + mPhoto.getPhotoId() + " " + mPhoto.getPhoto_date());
 			else
-				Log.d("unchecked", "unchecked : " + mi + " " +mk);
+				Log.d("unchecked", "unchecked : " + mPhoto.getPhotoId() + " " + mPhoto.getPhoto_date());
 			
 		}
 		// 메모 불러와야 될 건 photoput activity 에 memooutput 으로 검색 ㄱㄱ
