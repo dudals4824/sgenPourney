@@ -64,8 +64,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth, name;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
-	private ImageButton btnPrevMonth, btnNextMonth, btnPut, btnMakeVideo,
-			btnInputPhoto;
+	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
 	private ArrayList<ImageButton> btnFriend = new ArrayList<ImageButton>();
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
@@ -181,8 +180,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 		btnPrevMonth.setOnClickListener(this);
 		btnNextMonth.setOnClickListener(this);
-		btnInputPhoto.setOnClickListener(this);
-		btnMakeVideo.setOnClickListener(this);
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
@@ -247,39 +244,26 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.log_out_text) {
+		else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
 
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.btnInputPhoto) {
-			Intent intent = new Intent(TravelInfoActivity.this,
-					PhotoputActivity.class);
-			startActivity(intent);
-			finish();
-		}
-
-		if (v.getId() == R.id.btnMakeVideo) {
-			Intent intent = new Intent(TravelInfoActivity.this,
-					VideoMakingActivity.class);
-			startActivity(intent);
-			finish();
-		}
-		if (v.getId() == R.id.last_album_text) {
+		else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		}
-		if (v.getId() == R.id.profile_modifying_text) {
+		else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
 		}
-		findViewById(R.id.container).requestFocus();
-		if (v.getId() == R.id.btnPrevMonth) {
+		//findViewById(R.id.container).requestFocus();
+		else if (v.getId() == R.id.btnPrevMonth) {
 			cnt--;
 		} else if (v.getId() == R.id.btnnextMonth) {
 			cnt++;
