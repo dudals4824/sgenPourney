@@ -202,7 +202,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileBtn.setOnClickListener(this);
 
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
-		btnMakeVideo = (ImageButton) findViewById(R.id.btnPhotoPlus);
+		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
 		btnMakeVideo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
@@ -217,7 +217,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
 
 		// 여행 정보 setting
-		popupLocation.setText(Integer.toString(trip.getPhotoCnt()));// 디비에서 사람 수 불러와서 넣어주세요
+		popupLocation.setText(Integer.toString(trip.getPhotoCnt()));// 디비에서 사람 수
+																	// 불러와서
+																	// 넣어주세요
 		title.setText(trip.getTripTitle());
 		date.setText(trip.getStartDateInDateFormat() + " ~ "
 				+ trip.getEndDateInDateFormat());
@@ -231,7 +233,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileImageSetter.execute();
 
 		if (trip.getPhotoCnt() > 0) {
-			Log.d("PhotoputActivity", ""+trip.getPhotoCnt());
+			Log.d("PhotoputActivity", "" + trip.getPhotoCnt());
 			get = new GetFilename();
 			get.execute(trip, intent_dateList);
 		}
@@ -309,22 +311,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(PhotoputActivity.this,
 					VideoMakingActivity.class);
 			startActivity(intent);
-			//체크가 선택된 이미지들 가져오기
-			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
-				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
-					Log.d("가능?",dayalbumList.get(i).getCheckedImageArray().get(k)+"");
-				}
-//				for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
-//
-//					for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
-//						dayalbumList.get(i).addLayoutGridalbum(
-//								new AlbumImgCell(PhotoputActivity.this,
-//										listOfPhotoBitmapLists.get(i).get(k)));
-//
-//					}
-//				}
-			}
-			
+
 			finish();
 		} else if (v.getId() == R.id.last_album_text) {
 
@@ -366,6 +353,15 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
 				// 27);
+			}
+		} else if (v.getId() == R.id.btnMakeVideo) {
+			// 체크가 선택된 이미지들 가져오기
+			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+					Log.d("가능?", dayalbumList.get(i).getCheckedImageArray()
+							.get(k)
+							+ "");
+				}
 			}
 		}
 		// else if (v.getId() == R.id.btnMakeVideo) {
@@ -435,7 +431,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
 			for (int i = 0; i < all_path.size(); i++) {
 				Log.d("photoput", "upload(" + i + ")");
-				trip.setPhotoCnt(trip.getPhotoCnt()+1);
+				trip.setPhotoCnt(trip.getPhotoCnt() + 1);
 				// upload[i] = new ImageUploader();
 				// upload[i].execute(all_path.get(i).getPath());
 				photoUploader = new PhotoUploader(all_path.get(i).getPath(),
@@ -825,8 +821,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList.get(i_dayalbum)
-												.addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this,bitmap));
+										dayalbumList
+												.get(i_dayalbum)
+												.addLayoutGridalbum(
+														new AlbumImgCell(
+																PhotoputActivity.this,
+																bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}
