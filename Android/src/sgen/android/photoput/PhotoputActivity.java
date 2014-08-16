@@ -198,8 +198,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileBtn.setOnClickListener(this);
 
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
-		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
-		btnTravelInfo = (ImageButton) findViewById(R.id.btnTravelInfo);
+		btnMakeVideo = (ImageButton) findViewById(R.id.btnPhotoPlus);
 		btnMakeVideo.setOnClickListener(this);
 		btnTravelInfo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
@@ -281,28 +280,19 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
-			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			finish();
-		} else if (v.getId() == R.id.btnMakeVideo) {
+			startActivity(intent);
+		} else if (v.getId() == R.id.btnPhotoPlus) {
 			Intent intent = new Intent(PhotoputActivity.this,
 					VideoMakingActivity.class);
 			startActivity(intent);
 			finish();
-		} else if (v.getId() == R.id.btnTravelInfo) {
-			Intent intent = new Intent(PhotoputActivity.this,
-					TravelInfoActivity.class);
-			startActivity(intent);
-			finish();
-		}
-
-		else if (v.getId() == R.id.last_album_text) {
+		} else if (v.getId() == R.id.last_album_text) {
 
 			Intent intent = new Intent(this, CoverActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		} else if (v.getId() == R.id.profile_modifying_text) {
 
