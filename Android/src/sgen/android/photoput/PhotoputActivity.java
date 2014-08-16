@@ -42,7 +42,6 @@ import sgen.sgen_pourney.VideoMakingActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -198,11 +197,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		btnTravelInfo = (ImageButton) findViewById(R.id.btnTravelInfo);
 		btnMakeVideo.setOnClickListener(this);
 		btnTravelInfo.setOnClickListener(this);
-
-		//여행일정만큼 dayalbum 추가하는 함수
+		// for (int i = 0; i < travel; i++) {
+		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
+		// }
 		init();
-		getImages();
-		
 		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 
@@ -226,25 +224,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileImageSetter.execute();
 	}
 
-	
-	private void getImages() {
-		// TODO Auto-generated method stub
-		//dayalbumlist에 인덱스로 접근해서 addLayoutGridalbum으로 이미지를 한장씩 추가함
-		ArrayList<Integer> int_arrayList=new ArrayList<Integer>();
-		ArrayList<Bitmap> bimapList=new ArrayList<Bitmap>();
-		bimapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.btn_hover));
-		bimapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.btn_hover));
-		bimapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.btn_hover));
-		bimapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.btn_hover));
-		bimapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.btn_hover));
-		for (int i = 0; i < intent_dateList.size(); i++) {
-			dayalbumList.get(i).addLayoutGridalbum(bitma);
-		}
-		
-	}
-
-
-	//여행일정만큼 dayalbum 추가하는 함수
 	private void init() {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
@@ -283,9 +262,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			layoutAlbum.addView(dayalbumList.get(i));
 			
 			gregorianStart.add(Calendar.DATE, 1);
-		}
-		
 
+		}
 	}
 
 	public void onClick(View v) {
@@ -294,28 +272,16 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
-			startActivity(intent);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			finish();
-		} else if (v.getId() == R.id.btnMakeVideo) {
-			Intent intent = new Intent(PhotoputActivity.this,
-					VideoMakingActivity.class);
 			startActivity(intent);
-			finish();
-		} else if (v.getId() == R.id.btnTravelInfo) {
-			Intent intent = new Intent(PhotoputActivity.this,
-					TravelInfoActivity.class);
-			startActivity(intent);
-			finish();
 		}
 
 		else if (v.getId() == R.id.last_album_text) {
 
 			Intent intent = new Intent(this, CoverActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		} else if (v.getId() == R.id.profile_modifying_text) {
 
@@ -418,10 +384,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					e.printStackTrace();
 				}
 			}
-			//트립에 있는 사진 수 만큼 추가시켜야..
 			dialog.dismiss();
-			
-			
 			// updatephotodate = new UpdatePhotodate();
 			// updatephotodate.execute(trip);
 			}
