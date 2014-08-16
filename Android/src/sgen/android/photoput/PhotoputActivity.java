@@ -420,6 +420,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
 			for (int i = 0; i < all_path.size(); i++) {
 				Log.d("photoput", "upload(" + i + ")");
+				trip.setPhotoCnt(trip.getPhotoCnt()+1);
 				// upload[i] = new ImageUploader();
 				// upload[i].execute(all_path.get(i).getPath());
 				photoUploader = new PhotoUploader(all_path.get(i).getPath(),
