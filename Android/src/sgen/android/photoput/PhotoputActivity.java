@@ -86,8 +86,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 
 	private TextView popupLocation, title, date;
-	private ImageButton friendList, btnProfilePhoto, btnMakeVideo,
-			btnTravelInfo;
+	private ImageButton friendList, btnProfilePhoto, btnMakeVideo;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -179,8 +178,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		});
 
-		btnForTest = (ImageButton) findViewById(R.id.btnMakeVideo);
-		btnForTest.setOnClickListener(this);
+		//btnForTest = (ImageButton) findViewById(R.id.btnMakeVideo); //메모 불러오는 부분
+		//btnForTest.setOnClickListener(this);
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
@@ -193,10 +192,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileBtn.setOnClickListener(this);
 
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
-		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
-		btnTravelInfo = (ImageButton) findViewById(R.id.btnTravelInfo);
+		btnMakeVideo = (ImageButton) findViewById(R.id.btnPhotoPlus);
 		btnMakeVideo.setOnClickListener(this);
-		btnTravelInfo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		// }
@@ -298,7 +295,16 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 
-		} else if (v.getId() == R.id.profile_modifying_text) {
+		}else if (v.getId() == R.id.btnPhotoPlus) {
+	         Intent intent = new Intent(PhotoputActivity.this,
+	                 VideoMakingActivity.class);
+	           startActivity(intent);
+	           finish();
+		}
+		
+		
+		
+		else if (v.getId() == R.id.profile_modifying_text) {
 
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
@@ -332,30 +338,33 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
 				// 27);
 			}
-		} else if (v.getId() == R.id.btnMakeVideo) {
+		} 
 
-			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-					.getSystemService(LAYOUT_INFLATER_SERVICE);
-			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
-			memoPopupWindow = new PopupWindow(popupView,
-					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
-			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-			memoPopupWindow.setFocusable(true);
-			memoPopupWindow.setOutsideTouchable(true);
-			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
-
-				public boolean onTouch(View v, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-						memoPopupWindow.dismiss();
-						return true;
-					}
-					return false;
-				}
-			});
-
-			memoPopupWindow.showAtLocation(date, 0, 0, 218);
-
-		}
+		//메모 올리는 화면 부르는 곳
+		//		else if (v.getId() == R.id.btnMakeVideo) {
+//
+//			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+//					.getSystemService(LAYOUT_INFLATER_SERVICE);
+//			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
+//			memoPopupWindow = new PopupWindow(popupView,
+//					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+//			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+//			memoPopupWindow.setFocusable(true);
+//			memoPopupWindow.setOutsideTouchable(true);
+//			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
+//
+//				public boolean onTouch(View v, MotionEvent event) {
+//					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+//						memoPopupWindow.dismiss();
+//						return true;
+//					}
+//					return false;
+//				}
+//			});
+//
+//			memoPopupWindow.showAtLocation(date, 0, 0, 218);
+//
+//		}
 
 	}
 
