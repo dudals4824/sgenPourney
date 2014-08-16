@@ -196,80 +196,97 @@
                 android:rowCount="1"
                 android:color="@android:color/transparent" >
 
-                <ImageButton
-                    android:id="@+id/Original_btn"
-                    android:layout_width="250px"
-                    android:layout_height="250px"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/i_original" />
-
-                <ImageButton
-                    android:id="@+id/Cloudy_btn"
-                    android:layout_width="250px"
-                    android:layout_height="250px"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/i_cloudy" />
-
-                <ImageButton
-                    android:id="@+id/Sunny_btn"
-                    android:layout_width="250px"
-                    android:layout_height="250px"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/i_sunnyday" />
-
-                <ImageButton
-                    android:id="@+id/Dramatic_btn"
-                    android:layout_width="250px"
-                    android:layout_height="250px"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/i_dramatic" />
-
-                <CheckBox
-                    android:id="@+id/Original_checkbox"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/filterRadioGroup"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
+                    android:layout_gravity="left|center_vertical"
                     android:layout_row="0"
-                    android:button="@layout/checkboxtheme"
-                    android:paddingBottom="50dp"
-                    android:paddingRight="40dp" />
+                    android:orientation="horizontal" >
 
-                <CheckBox
-                    android:id="@+id/SunnyDay_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_gravity="left|top"
-                    android:layout_row="0"
-                    android:button="@layout/checkboxtheme"
-                    android:paddingBottom="50dp"
-                    android:paddingRight="40dp" />
+                    <ImageButton
+                        android:id="@+id/Original_btn"
+                        android:layout_width="250px"
+                        android:layout_height="250px"
+                        android:layout_marginLeft="0dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_original" />
 
-                <CheckBox
-                    android:id="@+id/Cloudy_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_gravity="left|top"
-                    android:layout_row="0"
-                    android:button="@layout/checkboxtheme"
-                    android:paddingBottom="50dp"
-                    android:paddingRight="40dp" />
+                    <RadioButton
+                        android:id="@+id/Original_radiobtn"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="-70dp"
+                        android:background="@drawable/radiobtnback"
+                        android:button="@android:color/transparent"
+                        android:paddingBottom="50dp"
+                        android:paddingRight="40dp" />
 
-                <CheckBox
-                    android:id="@+id/Dramatic_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="3"
-                    android:layout_gravity="left|top"
-                    android:layout_row="0"
-                    android:button="@layout/checkboxtheme"
-                    android:paddingBottom="50dp"
-                    android:paddingRight="40dp" />
+                    <ImageView
+                        android:id="@+id/Sunny_btn"
+                        android:layout_width="250px"
+                        android:layout_height="250px"
+                        android:layout_marginLeft="25dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_sunnyday" />
+
+                    <RadioButton
+                        android:id="@+id/SunnyDay_radiobtn"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="-70dp"
+                        android:background="@drawable/radiobtnback"
+                        android:button="@android:color/transparent"
+                        android:paddingBottom="50dp"
+                        android:paddingRight="40dp" />
+
+                    <ImageView
+                        android:id="@+id/Dramatic_btn"
+                        android:layout_width="250px"
+                        android:layout_height="250px"
+                        android:layout_marginLeft="25dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_dramatic" />
+
+                    <RadioButton
+                        android:id="@+id/Dramatic_radiobtn"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="-70dp"
+                        android:background="@drawable/radiobtnback"
+                        android:button="@android:color/transparent"
+                        android:paddingBottom="50dp"
+                        android:paddingRight="40dp" />
+
+                    <ImageView
+                        android:id="@+id/Cloudy_btn"
+                        android:layout_width="250px"
+                        android:layout_height="250px"
+                        android:layout_marginLeft="25dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i_cloudy" />
+
+                    <RadioButton
+                        android:id="@+id/Cloudy_radiobtn"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="-70dp"
+                        android:background="@drawable/radiobtnback"
+                        android:button="@android:color/transparent"
+                  
+                        android:paddingBottom="50dp"
+/>
+                 
+                </RadioGroup>
             </GridLayout>
         </LinearLayout>
 
