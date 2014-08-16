@@ -232,6 +232,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileImageSetter.execute();
 
 		if (trip.getPhotoCnt() > 0) {
+			Log.d("PhotoputActivity", ""+trip.getPhotoCnt());
 			get = new GetFilename();
 			get.execute(trip, intent_dateList);
 		}
