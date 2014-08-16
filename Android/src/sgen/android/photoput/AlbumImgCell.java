@@ -28,7 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class AlbumImgCell extends RelativeLayout implements
-		View.OnClickListener {
+		View.OnClickListener{
 
 	private Context mContext = null;
 	private Bitmap mBitmap = null;
@@ -70,12 +70,20 @@ public class AlbumImgCell extends RelativeLayout implements
 		imgPhoto.setImageBitmap(mBitmap);
 
 		imgPhoto.setOnClickListener(this);		
+		checkImage.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.imgPhoto) {
 			System.out.println("아오 짜증나");
+		}
+		else if(v.getId() == R.id.checkImage){
+			if(checkImage.isChecked())
+				Log.d("checked", "checked");
+			else
+				Log.d("unchecked", "unchecked");
+			
 		}
 		// 메모 불러와야 될 건 photoput activity 에 memooutput 으로 검색 ㄱㄱ
 	}

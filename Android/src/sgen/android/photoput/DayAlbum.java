@@ -51,7 +51,7 @@ public class DayAlbum extends LinearLayout {
 		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
 
 		textDay.setText(mDate);
-
+		
 		layoutGridPhotoAlbum
 				.addView(new AlbumImgBtnCell(mContext, intent_date));
 	}
