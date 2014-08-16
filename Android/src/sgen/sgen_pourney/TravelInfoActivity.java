@@ -154,8 +154,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
-		btnInputPhoto = (ImageButton) findViewById(R.id.btnInputPhoto);
-		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
+
 
 		for (int i = 0; i < 7; i++) {
 			Log.e("numbertest", "" + i);
