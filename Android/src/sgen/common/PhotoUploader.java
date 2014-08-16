@@ -11,13 +11,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import sgen.image.resizer.ImageResize;
+import sgen.image.resizer.ImageResizer;
+import sgen.image.resizer.ResizeMode;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 
-public class PhotoUploader extends Thread{
+public class PhotoUploader extends Thread {
 	private final String upLoadServerUri = "http://54.178.166.213/photoUpload.php";
 	private String sourceFileUri;
 	private String user_id;
@@ -80,13 +83,13 @@ public class PhotoUploader extends Thread{
 			dos.writeBytes("Content-Disposition: form-data; name=\"trip_id\""
 					+ lineEnd + lineEnd);
 			dos.writeBytes(trip_id + lineEnd);
-			
+
 			// Send parameter #3
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
 			dos.writeBytes("Content-Disposition: form-data; name=\"photo_date\""
 					+ lineEnd + lineEnd);
 			dos.writeBytes(photo_date + lineEnd);
-			
+
 			// Send a binary file
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
 			dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
@@ -105,9 +108,10 @@ public class PhotoUploader extends Thread{
 
 			// byte array to bitmap..
 			BitmapFactory.Options option = new BitmapFactory.Options();
-			option.inSampleSize = 8;
+			option.inSampleSize = 1;
 			Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0,
 					buffer.length, option);
+			ImageResize.resize(bitmap, 300, 300, ResizeMode.FIT_TO_HEIGHT);
 			Log.e("bitmap validation",
 					bitmap.getWidth() + " " + bitmap.getHeight());
 			// resize bitmap
