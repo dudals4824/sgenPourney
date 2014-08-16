@@ -1,5 +1,7 @@
 package sgen.android.photoput;
 
+import java.util.ArrayList;
+
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.R.id;
 import sgen.sgen_pourney.R.layout;
@@ -52,6 +54,15 @@ public class DayAlbum extends LinearLayout {
 	public void addLayoutGridalbum(AlbumImgCell albumImgCell){
 		Log.d("Dayalbum", "addLayoutGridalbum called");
 		layoutGridPhotoAlbum.addView(albumImgCell);
+	}
+	public ArrayList<String> getCheckedImageArray(){
+		ArrayList<String> checkedList= new ArrayList<String>();
+		for (int i = 0; i < layoutGridPhotoAlbum.getChildCount(); i++) {
+			AlbumImgCell aic=(AlbumImgCell)layoutGridPhotoAlbum.getChildAt(i);
+			if(aic.isCheckedImage())
+				checkedList.add("i");
+		}
+		return checkedList;
 	}
 
 }
