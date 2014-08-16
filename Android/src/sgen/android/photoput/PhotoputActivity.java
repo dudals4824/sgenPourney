@@ -224,6 +224,21 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		profileImageSetter.execute();
 	}
 
+	
+	private void getImages() {
+		// TODO Auto-generated method stub
+		//dayalbumlist에 인덱스로 접근해서 addLayoutGridalbum으로 이미지를 한장씩 추가함
+		ArrayList<ArrayList<Bitmap>> imageList=new ArrayList<ArrayList<Bitmap>>();
+		for (int i = 0; i < imageList.size(); i++) {
+			for(int k=0;i<imageList.get(i).size();k++){
+				dayalbumList.get(i).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this, imageList.get(i).get(k)));
+			}
+		}
+		
+	}
+
+
+	//여행일정만큼 dayalbum 추가하는 함수
 	private void init() {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
