@@ -200,7 +200,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 		btnMakeVideo = (ImageButton) findViewById(R.id.btnPhotoPlus);
 		btnMakeVideo.setOnClickListener(this);
-		btnTravelInfo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
 		// }
