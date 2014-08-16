@@ -39,5 +39,6 @@
         <item>카메라</item>
     </string-array>
     <string name="delete_text">나가기</string>
+    <string name="video_view_title">VideoViewActivity</string>
 
 </resources>
