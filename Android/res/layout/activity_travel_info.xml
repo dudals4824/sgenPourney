@@ -161,6 +161,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="9dp"
             android:layout_marginRight="9dp"
+            android:layout_marginBottom="11.67dp"
             android:background="#ffffff" >
 
             <ImageView
@@ -186,7 +187,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="6.33dp"
                 android:layout_marginRight="6.33dp"
                 android:layout_marginTop="42dp"
@@ -198,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="13.67dp"
-                    android:text="01 여행의 제목을 입력해주세요"
+                    android:text="여행의 제목을 입력해주세요"
                     android:textColor="#4d4d4d"
                     android:textSize="9pt" />
 
@@ -208,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/textTitleHere"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginRight="21dp"
+                    android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@id/textTitleHere"
                     android:src="@drawable/ic_write_40x40" />
 
@@ -230,7 +230,7 @@
                     android:layout_below="@id/editTitle"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="18.67dp"
-                    android:text="02 여행기간을 선택해주세요"
+                    android:text="여행기간을 선택해주세요"
                     android:textColor="#4d4d4d"
                     android:textSize="9pt" />
 
@@ -238,10 +238,10 @@
                     android:id="@+id/iconCalendarBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/iconWriteBlack"
-                    android:layout_below="@id/editTitle"
-                    android:layout_marginRight="21dp"
-                    android:layout_marginTop="23.67dp"
+                    android:layout_alignBottom="@id/textCalendarHere"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@id/textCalendarHere"
                     android:src="@drawable/ic_calendar_40x40" />
 
                 <RelativeLayout
@@ -325,7 +325,7 @@
                     android:layout_below="@id/layoutCalendar"
                     android:layout_gravity="center_horizontal"
                     android:layout_centerHorizontal="true"
-                    android:text="03 함께하는 동행을 추가해주세요"
+                    android:text="함께하는 동행을 추가해주세요"
                     android:textColor="#4d4d4d"
                     android:textSize="9pt" />
 
@@ -333,10 +333,10 @@
                     android:id="@+id/iconPeopleBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/textPeopleHere"
-                    android:layout_alignLeft="@id/iconWriteBlack"
-                    android:layout_marginRight="21dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_alignBottom="@id/textPeopleHere"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@id/textPeopleHere"
                     android:src="@drawable/ic_people_42x46" />
 
                 <GridLayout
@@ -430,11 +430,12 @@
                     android:layout_below="@+id/layoutGrid"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="19.67dp"
-                    android:paddingBottom="2dp"
+                    android:paddingBottom="20dp"
                     android:background="@android:color/transparent"
                     android:fitsSystemWindows="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/i_put" />
+                    android:src="@drawable/i_put"
+                    />
             </RelativeLayout>
             <!-- end of inner rect -->
         </RelativeLayout>
