@@ -32,6 +32,8 @@ import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import sgen.common.PhotoUploader;
+import sgen.image.resizer.ImageResizer;
+import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.AskActivity;
 import sgen.sgen_pourney.CoverActivity;
 import sgen.sgen_pourney.LoginActivity;
@@ -268,6 +270,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							+ gregorianStart.get(Calendar.DATE) + ""));
 			layoutAlbum.addView(dayalbumList.get(i));
 			intent_dateList.add(Integer.parseInt(intent_date));
+			
 			gregorianStart.add(Calendar.DATE, 1);
 		}
 	}
@@ -332,6 +335,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						.findViewById(R.id.friendlistpopupback))
 						.addView(new FriendListCell(this));
 				friendListPopupWindow.showAtLocation(popupLocation, 0, 0, 218);
+				
 				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
 				// 27);
 			}
@@ -375,7 +379,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Log.d("all_path.length", all_path.size() + "");
 
 			PhotoUploader photoUploader = null;
-
+			
+			int day=0;
+			for(int i=0;i<intent_dateList.size();i++){
+				if(intent_dateList.get(i)==i_dayalbum){
+					day=i;
+				}
+			}
+			Log.d("day", day+"");
 			for (int i = 0; i < all_path.size(); i++) {
 				// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
 				// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
@@ -384,6 +395,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// AlbumImgCell(PhotoputActivity.this,파일타입));
 				// 넣으면 될 것 같아요.
 				all_path.get(i).setFile(new File(all_path.get(i).getPath()));
+				Bitmap bm=ImageResizer.resize(all_path.get(i).getFile(), 300, 300, ResizeMode.FIT_TO_HEIGHT);
+				dayalbumList.get(day).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this, bm));
 			}
 			// 서버에 사진 업로드
 			dialog = ProgressDialog.show(PhotoputActivity.this, "",
