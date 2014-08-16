@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ public class AlbumImgCell extends RelativeLayout implements
 	private TextView date;
 	public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
 
+	private CheckBox checkImage;
 	public AlbumImgCell(Context context, Bitmap bitmap) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -56,15 +58,27 @@ public class AlbumImgCell extends RelativeLayout implements
 				infService);
 		View v = li.inflate(R.layout.album_img_cell, this, false);
 		addView(v);
+		
+		checkImage=(CheckBox) v.findViewById(R.id.checkImage);
+		
+		mBitmap=ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
 		// scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
+
 
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
 		// 이미지를 비트맵으로 받아와서 이미지뷰에 추가 리사이징 해야함
 		imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
 		imgPhoto.setImageBitmap(mBitmap);
+
 		imgPhoto.setOnClickListener(this);
 
+	}
+	public Boolean isCheckedImage(){
+		if(checkImage.isChecked())
+			return true;
+		else
+			return false;
 	}
 
 	@Override
