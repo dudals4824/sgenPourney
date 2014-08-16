@@ -14,6 +14,7 @@ public class TripDTO {
 	private long startDate;
 	private long endDate;
 	private int photoCnt;
+	private int peopleCnt;
 
 	public TripDTO() {
 		super();
@@ -61,9 +62,6 @@ public class TripDTO {
 	}
 
 	public String getStartDateInDateFormat() {
-		// GregorianCalendar date = new GregorianCalendar(Locale.KOREA);
-		// date.setTimeInMillis(startDate);
-		// date.add(Calendar.MONTH, -1);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",
 				Locale.KOREA);
 		return dateFormat.format(startDate);
@@ -83,11 +81,19 @@ public class TripDTO {
 		this.photoCnt = photoCnt;
 	}
 
+	public int getPeopleCnt() {
+		return peopleCnt;
+	}
+
+	public void setPeopleCnt(int peopleCnt) {
+		this.peopleCnt = peopleCnt;
+	}
+
 	@Override
 	public String toString() {
 		return "TripDTO [tripId=" + tripId + ", tripTitle=" + tripTitle
 				+ ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", photoCnt=" + photoCnt + "]";
+				+ ", photoCnt=" + photoCnt + ", peopleCnt=" + peopleCnt + "]";
 	}
 
 }
