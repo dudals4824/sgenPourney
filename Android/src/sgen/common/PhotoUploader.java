@@ -107,17 +107,19 @@ public class PhotoUploader extends Thread {
 			Log.e("log_msg", "bytes read = " + bytesRead);
 
 			// byte array to bitmap..
-			BitmapFactory.Options option = new BitmapFactory.Options();
-			option.inSampleSize = 1;
-			Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0,
-					buffer.length, option);
-			ImageResize.resize(bitmap, 300, 300, ResizeMode.FIT_TO_HEIGHT);
+//			BitmapFactory.Options option = new BitmapFactory.Options();
+//			option.inSampleSize = 1;
+//			Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0,
+//					buffer.length, option);
+			Bitmap bitmap;
+			bitmap=ImageResize.resize(buffer, 300, 300, ResizeMode.AUTOMATIC);
+			//ImageResize.resize(bitmap, 300, 300, ResizeMode.FIT_EXACT);
 			Log.e("bitmap validation",
 					bitmap.getWidth() + " " + bitmap.getHeight());
 			// resize bitmap
 			// bitmap = getResizedBitmap(bitmap, 200, 200);
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
 			buffer = stream.toByteArray();
 			bufferSize = stream.toByteArray().length;
 			// bitmap to byte array
