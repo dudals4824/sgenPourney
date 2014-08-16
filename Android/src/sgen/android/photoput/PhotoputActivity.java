@@ -825,12 +825,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							public void run() {
 								runOnUiThread(new Runnable() {
 									public void run() {
-										dayalbumList
-												.get(i_dayalbum)
-												.addLayoutGridalbum(
-														new AlbumImgCell(
-																PhotoputActivity.this,
-																bitmap));
+										dayalbumList.get(i_dayalbum)
+												.addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this,bitmap));
 										// addImageView(inHorizontalScrollView,
 										// bitmap);
 									}
