@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import sgen.image.resizer.ImageResize;
+import sgen.image.resizer.ResizeMode;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -92,8 +94,9 @@ public class PhotoEditor {
 	// bitmap을 profile width,height size에 맞게 resize
 	public void resizeBitmapToProfileSize() {
 		Bitmap resized;
-		resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
-				photoAreaHeight, true);
+		resized=ImageResize.resize(photoBitmap, photoAreaWidth, photoAreaHeight, ResizeMode.AUTOMATIC);
+//		resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
+//				photoAreaHeight, true);
 		photoBitmap = resized;
 	}
 
