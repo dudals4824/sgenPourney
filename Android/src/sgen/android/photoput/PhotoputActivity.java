@@ -628,28 +628,29 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				e1.printStackTrace();
 			}
 
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
 			// urllist, datelist
 			// listOfPhotoURLLists;
-			//url list에 있는 주소들의 날짜가 date리스트에 일치하는게 있으면.. 거기에 넣음
-			Log.d("list size", "dateList : " + dateList.size() + "urllist : " + urllist.size());
-			for (int i = 0; i < dateList.size() ; i++) {
+			// url list에 있는 주소들의 날짜가 date리스트에 일치하는게 있으면.. 거기에 넣음
+			Log.d("list size", "dateList : " + dateList.size() + "urllist : "
+					+ urllist.size());
+			for (int i = 0; i < dateList.size(); i++) {
 				ArrayList<Bitmap> photoBitmapListInOneDay = new ArrayList<Bitmap>();
-				for (int k = 0; k < urllist.size() ; k++) {
+				for (int k = 0; k < urllist.size(); k++) {
 					if (getDateFromImageUrl(urllist.get(k)) == dateList.get(i)) {
 						photoBitmapListInOneDay.add(PhotoEditor
 								.ImageurlToBitmapConverter(urllist.get(k)));
 					}
 				}
 				listOfPhotoBitmapLists.add(photoBitmapListInOneDay);
-				
 			}
+			return null;
+		}
 
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			// 앨범에 listofPhotobitmaplist 보여주기
+			getImages();
 			// 이미지 여러개 다운받을 때 이미지 url들이 적힌 리스트를 파라미터로 전송
 			// imagedown = new ImageDownloader();
 			// imagedown.execute(urllist);
@@ -665,6 +666,21 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					return Integer.parseInt(stk.nextToken());
 			}
 			return -1;
+		}
+
+		private void getImages() {
+			// TODO Auto-generated method stub
+			// dayalbumlist에 인덱스로 접근해서 addLayoutGridalbum으로 이미지를 한장씩 추가함
+			// ArrayList<ArrayList<Bitmap>> imageList = new
+			// ArrayList<ArrayList<Bitmap>>();
+			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+					dayalbumList.get(i).addLayoutGridalbum(
+							new AlbumImgCell(PhotoputActivity.this,
+									listOfPhotoBitmapLists.get(i).get(k)));
+				}
+			}
+
 		}
 
 	}// end of GetfileName
