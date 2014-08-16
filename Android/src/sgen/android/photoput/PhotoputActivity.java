@@ -190,7 +190,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		photoNum = (TextView) findViewById(R.id.textPhotoNum);
 		imgCheckBox = (CheckBox) findViewById(R.id.video_image_selection);
-		
+
 		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		btnProfilePhoto.setOnClickListener(this);
 		askBtn = (Button) findViewById(R.id.ask_text);
@@ -273,10 +273,30 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 							+ gregorianStart.get(Calendar.DATE) + ""));
 			layoutAlbum.addView(dayalbumList.get(i));
 			intent_dateList.add(Integer.parseInt(intent_date));
-			
+
 			gregorianStart.add(Calendar.DATE, 1);
 		}
+		//setPhotoNum();
 	}
+/*
+	public void setPhotoNum() {
+
+		for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+			checkedNum=0;
+			layoutAlbum.getContext().set(Integer.toString(checkedNum));
+			for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+				if (imgCheckBox.isChecked() == true) {
+					checkedNum++;
+				}
+				else
+					checkedNum--;
+				
+				photoNum.setText(Integer.toString(checkedNum));
+
+			}
+		}
+
+	}*/
 
 	public void onClick(View v) {
 		if (v.getId() == R.id.ask_text) {
@@ -329,35 +349,35 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						.findViewById(R.id.friendlistpopupback))
 						.addView(new FriendListCell(this));
 				friendListPopupWindow.showAtLocation(popupLocation, 0, 0, 218);
-				
+
 				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
 				// 27);
 			}
-		} 
-//		else if (v.getId() == R.id.btnMakeVideo) {
-//
-//			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-//					.getSystemService(LAYOUT_INFLATER_SERVICE);
-//			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
-//			memoPopupWindow = new PopupWindow(popupView,
-//					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
-//			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-//			memoPopupWindow.setFocusable(true);
-//			memoPopupWindow.setOutsideTouchable(true);
-//			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
-//
-//				public boolean onTouch(View v, MotionEvent event) {
-//					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-//						memoPopupWindow.dismiss();
-//						return true;
-//					}
-//					return false;
-//				}
-//			});
-//
-//			memoPopupWindow.showAtLocation(date, 0, 0, 218);
-//
-//		}
+		}
+		// else if (v.getId() == R.id.btnMakeVideo) {
+		//
+		// LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+		// .getSystemService(LAYOUT_INFLATER_SERVICE);
+		// View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
+		// memoPopupWindow = new PopupWindow(popupView,
+		// LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+		// memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+		// memoPopupWindow.setFocusable(true);
+		// memoPopupWindow.setOutsideTouchable(true);
+		// memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
+		//
+		// public boolean onTouch(View v, MotionEvent event) {
+		// if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+		// memoPopupWindow.dismiss();
+		// return true;
+		// }
+		// return false;
+		// }
+		// });
+		//
+		// memoPopupWindow.showAtLocation(date, 0, 0, 218);
+		//
+		// }
 
 	}
 
@@ -374,14 +394,14 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Log.d("all_path.length", all_path.size() + "");
 
 			PhotoUploader photoUploader = null;
-			
-			int day=0;
-			for(int i=0;i<intent_dateList.size();i++){
-				if(intent_dateList.get(i)==i_dayalbum){
-					day=i;
+
+			int day = 0;
+			for (int i = 0; i < intent_dateList.size(); i++) {
+				if (intent_dateList.get(i) == i_dayalbum) {
+					day = i;
 				}
 			}
-			Log.d("day", day+"");
+			Log.d("day", day + "");
 			for (int i = 0; i < all_path.size(); i++) {
 				// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
 				// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
@@ -390,8 +410,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// AlbumImgCell(PhotoputActivity.this,파일타입));
 				// 넣으면 될 것 같아요.
 				all_path.get(i).setFile(new File(all_path.get(i).getPath()));
-				Bitmap bm=ImageResizer.resize(all_path.get(i).getFile(), 300, 300, ResizeMode.FIT_TO_HEIGHT);
-				dayalbumList.get(day).addLayoutGridalbum(new AlbumImgCell(PhotoputActivity.this, bm));
+				Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(), 300,
+						300, ResizeMode.FIT_TO_HEIGHT);
+				dayalbumList.get(day).addLayoutGridalbum(
+						new AlbumImgCell(PhotoputActivity.this, bm));
 			}
 			// 서버에 사진 업로드
 			dialog = ProgressDialog.show(PhotoputActivity.this, "",
@@ -683,17 +705,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// ArrayList<ArrayList<Bitmap>>();
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
 
-				checkedNum = 0;
 				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
 					dayalbumList.get(i).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this,
 									listOfPhotoBitmapLists.get(i).get(k)));
-					if (imgCheckBox.isChecked() == true) {
-						checkedNum++;
 
-					}
-
-					photoNum.setText(checkedNum);
 				}
 			}
 
