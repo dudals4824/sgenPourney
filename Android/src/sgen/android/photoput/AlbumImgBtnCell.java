@@ -47,7 +47,7 @@ public class AlbumImgBtnCell extends RelativeLayout {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-				i.putExtra("i_dayalbum",mIntent_date);
+				i.putExtra("intent_date",mIntent_date);
 				((Activity) mContext).startActivityForResult(i, 200);
 
 			}

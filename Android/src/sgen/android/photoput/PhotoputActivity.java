@@ -366,8 +366,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
 					.getExtras().getSerializable("list");
 		// TODO Auto-generated method stub
-		Log.d("PhotoputActivity", "onActivityResult");
-		Log.d("PhotoputActivity", resultCode + "");
+		Log.d("all_path.length", all_path.size()+"");
 
 		PhotoUploader photoUploader = null;
 
@@ -389,7 +388,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				// upload[i] = new ImageUploader();
 				// upload[i].execute(all_path.get(i).getPath());
 				photoUploader = new PhotoUploader(all_path.get(i).getPath(),
-						user.getUserId(), trip.getTripId(), i);
+						user.getUserId(), trip.getTripId(), i_dayalbum);
 				photoUploader.start();
 				try {
 					photoUploader.join();
@@ -398,24 +397,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				}
 			}
 			dialog.dismiss();
-				// 서버에 사진 업로드
-				dialog = ProgressDialog.show(PhotoputActivity.this, "",
-						"Uploading file...", true);
-				// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
-				for (int i = 0; i < all_path.size(); i++) {
-					Log.d("photoput", "upload(" + i + ")");
-					photoUploader = new PhotoUploader(
-							all_path.get(i).getPath(), user.getUserId(),
-							trip.getTripId(), i);
-					photoUploader.start();
-					try {
-						photoUploader.join();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				dialog.dismiss();
-
 			// updatephotodate = new UpdatePhotodate();
 			// updatephotodate.execute(trip);
 			}
