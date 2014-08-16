@@ -220,7 +220,8 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="-85dp"
                         android:background="@drawable/radiobtnback"
-                        android:button="@android:color/transparent" />
+                        android:button="@android:color/transparent"
+                        android:checked="true" />
 
                     <ImageView
                         android:id="@+id/Sunny_btn"
