@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -57,12 +58,23 @@ public class DayAlbum extends LinearLayout {
 	}
 	public ArrayList<String> getCheckedImageArray(){
 		ArrayList<String> checkedList= new ArrayList<String>();
-		for (int i = 0; i < layoutGridPhotoAlbum.getChildCount(); i++) {
-			AlbumImgCell aic=(AlbumImgCell)layoutGridPhotoAlbum.getChildAt(i);
-			if(aic.isCheckedImage())
-				checkedList.add("i");
+		Log.d("layoutGridPhotoAlbum.getChildCount()", layoutGridPhotoAlbum.getChildCount()+"");
+		for (int i = 1; i <= layoutGridPhotoAlbum.getChildCount(); i++) {
+			View v=layoutGridPhotoAlbum.getChildAt(i);
+			CheckBox checked;
+			checked=(CheckBox)v.findViewById(R.id.checkImage);
+			if(isCheckedImage(checked))
+				checkedList.add(i+"");
+			
 		}
 		return checkedList;
+	}
+	
+	public Boolean isCheckedImage(CheckBox checked){
+		if(checked.isChecked())
+			return true;
+		else
+			return false;
 	}
 
 }
