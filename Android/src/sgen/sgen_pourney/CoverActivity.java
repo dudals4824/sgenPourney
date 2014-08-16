@@ -26,6 +26,7 @@ import sgen.common.ListViewDialog;
 import sgen.common.PhotoEditor;
 import sgen.common.ProfileUploader;
 import sgen.common.ListViewDialog.ListViewDialogSelectListener;
+import sgen.session.UserSessionManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -61,19 +62,19 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private long m_endTime;
 	private boolean m_isPressedBackButton;
 	private Bitmap userProfilePhoto = null;
-	
+
 	static final int REQUEST_ALBUM = 1;
 	static final int REQUEST_PICTURE = 2;
 
 	static String SAMPLEIMG = "profile.png";
-	
+
 	private Context context;
 
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 
+	UserSessionManager session;
 	private UserDTO user;
-	
 
 	// trip id 저장용 array list
 	private ArrayList<Integer> tripArray = new ArrayList<Integer>();
@@ -93,6 +94,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 		user = new UserDTO();
 		user = loggedInUser.getLoggedInUser();
 		Log.e("useruser", user.toString());
+
+		// logout을 위한 session 정보 settting
+		session = new UserSessionManager(getApplicationContext());
 
 		// 커버 갯수 가져오기
 		GetTripCount getTripCount = new GetTripCount();
@@ -127,8 +131,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 			for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
 				layout_cover.addView(new CoverCell(this, tripArray.get(i)));
 			}
-			//albumCover = (ImageButton) findViewById(R.id.backcard);
-			//albumCover.setOnClickListener(this);
+			// albumCover = (ImageButton) findViewById(R.id.backcard);
+			// albumCover.setOnClickListener(this);
 		}
 		// 맨뒤에 생길 추가용 cover
 		layout_cover.addView(new CoverCellNew(this));
@@ -142,7 +146,6 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-
 
 		btnProfilePhoto.setOnClickListener(this);
 		btn_new_travel.setOnClickListener(this);
@@ -168,8 +171,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
 		} else if (v.getId() == R.id.log_out_text) {
+			Log.d("logout", "logout");
+			session.logoutUser();
 			Intent intent = new Intent(this, LoginActivity.class);
-
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
@@ -178,11 +182,10 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 
-			//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			//intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			
+			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		} else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
@@ -298,23 +301,23 @@ public class CoverActivity extends Activity implements OnClickListener {
 		}
 	}
 
-//	public void requestAlbum() {
-//		// TODO Auto-generated method stub
-//		Intent intent = new Intent();
-//		intent.setType("image/*");
-//		intent.setAction(Intent.ACTION_GET_CONTENT);
-////		startActivityForResult(
-////				Intent.createChooser(intent, "Select Picture"),
-////				REQUEST_ALBUM);
-//	}
-//
-//	public void requestPicture() {
-//		// TODO Auto-generated method stub
-//		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//		File file = new File(Environment
-//				.getExternalStorageDirectory(), SAMPLEIMG);
-//		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-//		startActivityForResult(intent, REQUEST_PICTURE);
-//	}
+	// public void requestAlbum() {
+	// // TODO Auto-generated method stub
+	// Intent intent = new Intent();
+	// intent.setType("image/*");
+	// intent.setAction(Intent.ACTION_GET_CONTENT);
+	// // startActivityForResult(
+	// // Intent.createChooser(intent, "Select Picture"),
+	// // REQUEST_ALBUM);
+	// }
+	//
+	// public void requestPicture() {
+	// // TODO Auto-generated method stub
+	// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	// File file = new File(Environment
+	// .getExternalStorageDirectory(), SAMPLEIMG);
+	// intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+	// startActivityForResult(intent, REQUEST_PICTURE);
+	// }
 
 }

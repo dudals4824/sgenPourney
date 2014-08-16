@@ -87,6 +87,14 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 		// User Session Manager
 		session = new UserSessionManager(getApplicationContext());
+		
+		//자동 로그인
+		if(session.isUserLoggedIn())
+		{
+			Log.d("Login Activity", "auto login");
+			LoginTask loginTask = new LoginTask();
+			loginTask.execute(Integer.toString(session.getUserDetails().get("user_id")), "1");
+		}
 		Log.e("log_msg", "Initializing done...");
 	}
 
@@ -191,6 +199,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 			StringBuilder sb = null;
 			String result = null;
 
+			Log.d("LoginTask", "email : "+params[0] + "    password : " + params[1]);
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("email", params[0]));
 			nameValuePairs.add(new BasicNameValuePair("password", params[1]));
