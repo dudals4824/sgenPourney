@@ -59,7 +59,7 @@
         android:layout_below="@id/btnLogin"
         android:layout_marginLeft="50.33dp"
         android:layout_marginRight="32dp"
-        android:layout_marginTop="31.67dp"
+        android:layout_marginTop="36dp"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true"
         android:scaleType="fitXY"
