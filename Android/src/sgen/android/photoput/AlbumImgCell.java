@@ -60,8 +60,6 @@ public class AlbumImgCell extends RelativeLayout implements
 		addView(v);
 		
 		checkImage=(CheckBox) v.findViewById(R.id.checkImage);
-		
-		mBitmap=ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
 		// scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
 
@@ -71,8 +69,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
 		imgPhoto.setImageBitmap(mBitmap);
 
-		imgPhoto.setOnClickListener(this);
-
+		imgPhoto.setOnClickListener(this);		
 	}
 
 	@Override
