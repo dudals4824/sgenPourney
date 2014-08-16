@@ -47,7 +47,8 @@ public class AlbumImgCell extends RelativeLayout{
 		View v = li.inflate(R.layout.album_img_cell, this, false);
 		addView(v);
 		//scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
-		mBitmap=ImageResize.resize(mBitmap, 300, 300, ResizeMode.FIT_TO_HEIGHT);
+		mBitmap=ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
+
 		//mBitmap=ImageResizer.resize(mImgFile, 300, 300);
 		//이미지를 비트맵으로 받아와서 이미지뷰에 추가 리사이징 해야함
 		imgPhoto=(ImageView)findViewById(R.id.imgPhoto);
