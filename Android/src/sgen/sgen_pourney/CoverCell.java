@@ -127,18 +127,18 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 		getTripInfo.execute(String.valueOf(attrs));
 
 		// onclicklistenr 뷰 아무데나 눌러도 다 넘어가게 모든거에 onclicklistner다줌.....ㅠㅠ
-		title.setOnClickListener(this);
-		date.setOnClickListener(this);
-		numberOfPeople.setOnClickListener(this);
-		travelNumber.setOnClickListener(this);
+//		title.setOnClickListener(this);
+//		date.setOnClickListener(this);
+//		numberOfPeople.setOnClickListener(this);
+//		travelNumber.setOnClickListener(this);
 		backcard.setOnClickListener(this);
 		
 		btnCoverPhoto.setOnClickListener(this);
 		
-		title.setOnLongClickListener(this);
-		date.setOnLongClickListener(this);
-		numberOfPeople.setOnLongClickListener(this);
-		travelNumber.setOnLongClickListener(this);
+//		title.setOnLongClickListener(this);
+//		date.setOnLongClickListener(this);
+//		numberOfPeople.setOnLongClickListener(this);
+//		travelNumber.setOnLongClickListener(this);
 		backcard.setOnLongClickListener(this);
 		
 		
