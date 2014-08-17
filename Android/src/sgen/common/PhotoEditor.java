@@ -16,11 +16,13 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class PhotoEditor {
 	private Bitmap photoBitmap;
 	private Bitmap coverBitmap;
 	private Bitmap coveredPhoto;
+	private Bitmap originalBitmap;
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 
@@ -28,6 +30,7 @@ public class PhotoEditor {
 			int photoAreaWidth, int photoAreaHeight) {
 		super();
 		this.photoBitmap = photoBitmap;
+		originalBitmap=photoBitmap;
 		this.coverBitmap = coverBitmap;
 		this.photoAreaWidth = photoAreaWidth;
 		this.photoAreaHeight = photoAreaHeight;
@@ -71,7 +74,7 @@ public class PhotoEditor {
 		overlayCover();
 		return coveredPhoto;
 	}
-	
+
 	public Bitmap editPhotoAutoRectangle() {
 		resizeBitmapToProfileSize();
 		getCroppedRect();
@@ -94,10 +97,11 @@ public class PhotoEditor {
 		canvas.drawCircle(photoAreaWidth / 2, photoAreaHeight / 2,
 				photoAreaWidth / 2, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		// 위치 결정... rect
 		canvas.drawBitmap(photoBitmap, rect, rect, paint);
 		photoBitmap = output;
 	}
-	
+
 	public void getCroppedRect() {
 		Bitmap output = Bitmap.createBitmap(photoAreaWidth, photoAreaHeight,
 				Config.ARGB_8888);
@@ -105,23 +109,32 @@ public class PhotoEditor {
 
 		final int color = 0xff424242;
 		final Paint paint = new Paint();
-		final Rect rect = new Rect(0, 0, photoAreaWidth, photoAreaHeight);
+		// 사진이 그려질 사각형의 크기
+		final Rect rect = new Rect(0, 0, 300, photoAreaHeight);
 
 		paint.setAntiAlias(true);
-		canvas.drawARGB(0, 0, 0, 0);
+		// canvas.drawARGB(0, 0, 0, 0);
 		paint.setColor(color);
+
 		canvas.drawRect(rect, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-		canvas.drawBitmap(photoBitmap, rect, rect, paint);
+		// left top
+		Log.d("width", originalBitmap.getWidth()+"");
+		Log.d("height", originalBitmap.getHeight()+"");
+		if (originalBitmap.getWidth() >= originalBitmap.getHeight())
+			canvas.drawBitmap(photoBitmap, 0, 300-output.getHeight()/2, paint);
+		else
+			canvas.drawBitmap(photoBitmap, rect, rect, paint);
 		photoBitmap = output;
 	}
 
 	// bitmap을 profile width,height size에 맞게 resize
 	public void resizeBitmapToProfileSize() {
 		Bitmap resized;
-		resized=ImageResize.resize(photoBitmap, photoAreaWidth, photoAreaHeight, ResizeMode.FIT_TO_WIDTH);
-//		resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
-//				photoAreaHeight, true);
+		resized = ImageResize.resize(photoBitmap, photoAreaWidth,
+				photoAreaHeight, ResizeMode.FIT_TO_WIDTH);
+		// resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
+		// photAreaHeight, true);
 		photoBitmap = resized;
 	}
 
