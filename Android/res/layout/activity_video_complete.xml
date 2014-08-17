@@ -1,9 +1,9 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:id="@+id/controller"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#67B2EE"
+    android:background="#EEEEEE"
     android:fillViewport="true"
     tools:context="sgen.android.photoput.PhotoputActivity"
     tools:ignore="MergeRootFrame" >
@@ -11,27 +11,76 @@
     <LinearLayout
         android:id="@+id/video_container"
         android:layout_width="fill_parent"
-        android:layout_height="241dp"
+        android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <VideoView
-            android:id="@+id/VideoView"
-            android:layout_width="match_parent"
-            android:layout_height="234dp" />
+        <!-- 상단 단계 부분 -->
 
-        <Button
-            android:id="@+id/facebook"
+        <RelativeLayout
+            android:id="@+id/layoutStep"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="#003558" >
+
+            <!-- 글씨체 바꿔야됩니다. -->
+            <TextView
+                android:id="@+id/VideoView_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Your Memory"
+                android:textSize="16pt" >
+                
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutMakingMovie"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            >
+
+            <ImageView
+                android:id="@+id/imgBackVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/i_back_video" />
+
+              <VideoView
+                  android:id="@+id/VideoView"
+                  android:layout_width="match_parent"
+                  android:layout_height="243dp"
+                  android:layout_alignBottom="@+id/imgBackVideo"
+                  android:layout_alignParentLeft="true"
+                  android:layout_marginBottom="50dp" />
+
+              <ImageView
+                  android:id="@+id/video_view_logo"
+                  android:layout_width="300px"
+                  android:layout_height="300px"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:src="@drawable/i_logoimage" />
+
+        </RelativeLayout>
+       
+        <RelativeLayout 
+            android:id="@+id/util_btns"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="페이스북 공유!" />
-
-		<MediaController
-		    android:id="@+id/controller"
-		    android:layout_width="wrap_content"
-		    android:layout_height="match_parent"
-		    android:layout_marginTop="243dp"
-		     >
-</MediaController>
+            >
+            <Button
+                android:id="@+id/facebook_share_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FaceBook"></Button>
+        </RelativeLayout>
+            
+            "
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>
