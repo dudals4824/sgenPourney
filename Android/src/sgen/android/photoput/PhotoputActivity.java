@@ -95,7 +95,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	private TextView popupLocation, title, date;
 	private ImageButton friendList, btnProfilePhoto, btnMakeVideo,
-			btnTravelInfo;
+			btnTravelInfo,btnPhotoPlus;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -202,6 +202,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
+		btnPhotoPlus = (ImageButton) findViewById(R.id.btnPhotoPlus);
+		btnPhotoPlus.setOnClickListener(this);
+		
 		btnMakeVideo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
@@ -310,7 +313,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(PhotoputActivity.this,
 					VideoMakingActivity.class);
 			startActivity(intent);
-
 			finish();
 		} else if (v.getId() == R.id.last_album_text) {
 
@@ -361,6 +363,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						.getCheckedImageArray().toString());
 			}
 		}
+			
 		// else if (v.getId() == R.id.btnMakeVideo) {
 		//
 		// LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
