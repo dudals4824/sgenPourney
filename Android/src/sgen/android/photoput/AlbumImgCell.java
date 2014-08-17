@@ -25,10 +25,14 @@ import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.R;
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -41,13 +45,15 @@ public class AlbumImgCell extends RelativeLayout implements
 
 	private Context mContext = null;
 	private Bitmap mBitmap = null;
+	private Bitmap mBitmapMemo = null;
+	private Drawable sPhoto = null;
 	private ImageView imgPhoto = null;
 	private File mImgFile = null;
 	private PopupWindow memoPopupWindow;
 	private TextView date;
 	private PhotoDTO mPhoto;
 	private int mUserId;
-	public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
+	//public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
 	private PhotoLike photoLike;
 	private CheckAlreadyLiked checkLike;
 	private CheckBox checkImage;
@@ -79,6 +85,10 @@ public class AlbumImgCell extends RelativeLayout implements
 
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
 		// scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
+
+
+		mBitmapMemo = ImageResize.resize(mBitmap, 600, 600, ResizeMode.AUTOMATIC);
+		sPhoto = new BitmapDrawable(getResources(),mBitmapMemo);
 		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
 
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
@@ -96,7 +106,31 @@ public class AlbumImgCell extends RelativeLayout implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.imgPhoto) {
-			System.out.println("아오 짜증나");
+			ImageView selectedPhoto;
+			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext).getBaseContext()
+					.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
+			memoPopupWindow = new PopupWindow(popupView,
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+			memoPopupWindow.setFocusable(true);
+			memoPopupWindow.setOutsideTouchable(true);
+			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+						memoPopupWindow.dismiss();
+						return true;
+					}
+					return false;
+				}
+			});
+
+			View contentView = memoPopupWindow.getContentView();
+			
+			memoPopupWindow.showAtLocation(imgPhoto, 0, 0, 218);
+			selectedPhoto = (ImageView) contentView.findViewById(R.id.selectedphoto);
+			selectedPhoto.setBackground(sPhoto);
 		} else if (v.getId() == R.id.checkImage) {
 			photoLike = new PhotoLike();
 			if (checkImage.isChecked()) {
@@ -113,12 +147,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		// 메모 불러와야 될 건 photoput activity 에 memooutput 으로 검색 ㄱㄱ
 	}
 
-	// TODO Auto-generated method stub
-	private Activity getBaseContext() {
-		Context mBase = null;
-		return (Activity) mBase;
 
-	}
 
 	public class PhotoLike extends AsyncTask<Object, String, String> {
 		private PhotoDTO photo = new PhotoDTO();
