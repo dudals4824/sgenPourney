@@ -25,6 +25,7 @@ public class PhotoEditor {
 	private Bitmap originalBitmap;
 	private int photoAreaWidth;
 	private int photoAreaHeight;
+	private Bitmap proportionBitmap;
 
 	public PhotoEditor(Bitmap photoBitmap, Bitmap coverBitmap,
 			int photoAreaWidth, int photoAreaHeight) {
@@ -98,7 +99,10 @@ public class PhotoEditor {
 				photoAreaWidth / 2, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		// 위치 결정... rect
-		canvas.drawBitmap(photoBitmap, rect, rect, paint);
+		if (originalBitmap.getWidth() >= originalBitmap.getHeight())
+			canvas.drawBitmap(photoBitmap, 0, (300-proportionBitmap.getHeight())/2, paint);
+		else
+			canvas.drawBitmap(photoBitmap, (300-proportionBitmap.getWidth())/2,0, paint);
 		photoBitmap = output;
 	}
 
@@ -121,10 +125,11 @@ public class PhotoEditor {
 		// left top
 		Log.d("width", originalBitmap.getWidth()+"");
 		Log.d("height", originalBitmap.getHeight()+"");
+		//리사이즈된 비율을 알아야...하는데..
 		if (originalBitmap.getWidth() >= originalBitmap.getHeight())
-			canvas.drawBitmap(photoBitmap, 0, 300-output.getHeight()/2, paint);
+			canvas.drawBitmap(photoBitmap, 0, (300-proportionBitmap.getHeight())/2, paint);
 		else
-			canvas.drawBitmap(photoBitmap, rect, rect, paint);
+			canvas.drawBitmap(photoBitmap, (300-proportionBitmap.getWidth())/2,0, paint);
 		photoBitmap = output;
 	}
 
@@ -136,6 +141,7 @@ public class PhotoEditor {
 		// resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
 		// photAreaHeight, true);
 		photoBitmap = resized;
+		proportionBitmap=resized;
 	}
 
 	// cover 씌우는애
