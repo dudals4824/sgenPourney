@@ -65,6 +65,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			textPeopleHere, textInputInfo, textMonth, name;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
+	private ImageButton btn1,btn2,btn3,btn4,btn5,btn6,btn7;
 	private ArrayList<ImageButton> btnFriend = new ArrayList<ImageButton>();
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
@@ -153,6 +154,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		textMonth = (TextView) findViewById(R.id.textMonth);
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
+		btn1 = (ImageButton) findViewById(R.id.btnFriend1);
+		btn2 = (ImageButton) findViewById(R.id.btnFriend2);
+		btn3 = (ImageButton) findViewById(R.id.btnFriend3);
+		btn4 = (ImageButton) findViewById(R.id.btnFriend4);
+		btn5 = (ImageButton) findViewById(R.id.btnFriend5);
+		btn6 = (ImageButton) findViewById(R.id.btnFriend6);
+		btn7 = (ImageButton) findViewById(R.id.btnFriend7);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
 
 		for (int i = 0; i < 7; i++) {
@@ -181,6 +189,14 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 		editTitle.setOnFocusChangeListener(this);
+
+		btn1.setOnClickListener(this);
+		btn2.setOnClickListener(this);
+		btn3.setOnClickListener(this);
+		btn4.setOnClickListener(this);
+		btn5.setOnClickListener(this);
+		btn6.setOnClickListener(this);
+		btn7.setOnClickListener(this);
 
 		// session test code, 화면에 토스트로 현재 세선 정보를 보여준다.
 		session = new UserSessionManager(getApplicationContext());
@@ -324,11 +340,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			findFriendPopupWindow.showAsDropDown(textCalendarHere, -150, 50);
 
-		} else if (v.getId() == R.id.btnFriend2) {
-
-		} else if (v.getId() == R.id.btnFriend3) {
-
-		}
+		} 
 
 		else if (v.getId() == R.id.btnPut) {
 			String trip_name = editTitle.getText().toString();
