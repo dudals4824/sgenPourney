@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -13,12 +12,10 @@ import java.util.StringTokenizer;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -41,22 +38,18 @@ import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.ProfileModi;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
-import sgen.sgen_pourney.TravelInfoActivity;
-import sgen.sgen_pourney.VideoMakingActivity;
+import sgen.sgen_pourney.VideoViewActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -72,8 +65,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -95,7 +90,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	private TextView popupLocation, title, date;
 	private ImageButton friendList, btnProfilePhoto, btnMakeVideo,
-			btnTravelInfo,btnPhotoPlus;
+			btnTravelInfo, btnPhotoPlus;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
 	private File imgFile;
 	private File storageFile;
@@ -202,9 +197,26 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
 		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
+
+		// 비디오 만들기 버튼 초기화
 		btnPhotoPlus = (ImageButton) findViewById(R.id.btnPhotoPlus);
 		btnPhotoPlus.setOnClickListener(this);
-		
+		// video 만들기 버튼 tripDTO확인해서 현재 영상을 만들어졌는지, 만들기를 눌렀는지, 안눌렀는지에 따라서 버튼 모양이
+		// 바뀐다
+		if (trip.isVideoMade()) {
+			// 비디오가 만들어진 경우
+			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
+			Drawable res = getResources().getDrawable(
+					R.drawable.i_video_making_go_582x100);
+			btnPhotoPlus.setImageDrawable(res);
+		} else {
+			// 비디오 안만들어진경우
+			// 지금 user가 비디오 만든앤지 체크.. 체크해서 onpost에서 버튼을 바꾼다.
+			Log.d("비디오 안 만들어져있엉", "체크하자");
+			CheckMakeVideo checkMakeVideo = new CheckMakeVideo();
+			checkMakeVideo.execute(user, trip);
+		}
+
 		btnMakeVideo.setOnClickListener(this);
 		// for (int i = 0; i < travel; i++) {
 		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
@@ -285,7 +297,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// setPhotoNum();
 	}
 
-
 	public void onClick(View v) {
 		if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
@@ -296,8 +307,10 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		} else if (v.getId() == R.id.btnPhotoPlus) {
+			// 이미 영상 보러가기 그림 뜬 상태
+			// 영상 페이지로 넘어가기
 			Intent intent = new Intent(PhotoputActivity.this,
-					VideoMakingActivity.class);
+					VideoViewActivity.class);
 			startActivity(intent);
 		} else if (v.getId() == R.id.last_album_text) {
 
@@ -348,7 +361,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 						.getCheckedImageArray().toString());
 			}
 		}
-			
+
 		// else if (v.getId() == R.id.btnMakeVideo) {
 		//
 		// LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
@@ -615,5 +628,186 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		}
 	}// end of GetfileName
+
+	/**
+	 * 
+	 * @author Junki 비디오 만들기. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 등록한다.
+	 */
+	public class ConfirmMakeVideo extends AsyncTask<Object, String, String> {
+		private UserDTO mUserDTO;
+		private TripDTO mTripDTO;
+
+		@Override
+		protected String doInBackground(Object... params) {
+			// convert object into photoDTO
+			mUserDTO = (UserDTO) params[0];
+			mTripDTO = (TripDTO) params[1];
+
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
+					.toString(mTripDTO.getTripId())));
+			nameValuePairs.add(new BasicNameValuePair("user_id", Integer
+					.toString(mUserDTO.getUserId())));
+			nameValuePairs.add(new BasicNameValuePair("like", "1"));
+			Log.d("nameValuePairs", nameValuePairs.toString());
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/confirmMakeVideo.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+
+				is.close();
+				result = sb.toString();
+				Log.d("confirm_video_logMsg", result); // result 가 null이지???
+
+			} catch (Exception e) {
+				Log.e("confirm_video_logMsg",
+						"Error converting result " + e.toString());
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+		}
+
+	}// end of photoLike
+
+	public class CheckMakeVideo extends AsyncTask<Object, String, String> {
+		private UserDTO mUserDTO;
+		private TripDTO mTripDTO;
+		private Boolean isMade;
+
+		@Override
+		protected String doInBackground(Object... params) {
+			// convert object into DTO
+			mUserDTO = (UserDTO) params[0];
+			mTripDTO = (TripDTO) params[1];
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
+					.toString(mTripDTO.getTripId())));
+			nameValuePairs.add(new BasicNameValuePair("user_id", Integer
+					.toString(mUserDTO.getUserId())));
+
+			Log.d("Made??", nameValuePairs.toString());
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/checkMakeVideo.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+
+				is.close();
+				result = sb.toString();
+				Log.d("photoLike_logMsg", result); // result 가 null이지???
+
+			} catch (Exception e) {
+				Log.e("photoLike_logMsg",
+						"Error converting result " + e.toString());
+			}
+
+			try {
+				JSONArray jArray = new JSONArray(result);
+				JSONObject json_data = null;
+				json_data = jArray.getJSONObject(0);
+				isMade = (1 == json_data.getInt("isMade"));
+
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (isMade) {
+				// 이미 만들기 누른경우 만드는 중 표시
+				Log.d("isMade?", "만들기 누른놈임");
+				Drawable res = getResources().getDrawable(
+						R.drawable.i_video_making_ing_582x100);
+				btnPhotoPlus.setImageDrawable(res);
+				btnPhotoPlus.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Toast toast = Toast.makeText(getApplicationContext(),
+								"영상을 만드는 중입니다.", Toast.LENGTH_SHORT);
+						toast.show();
+					}
+				});
+			} else {
+				// 만들기 아직 안누른경우
+				Log.d("isMade?", "만들기 안누른놈임");
+				Drawable res = getResources().getDrawable(
+						R.drawable.i_video_making_make_582x100);
+				btnPhotoPlus.setImageDrawable(res);
+				btnPhotoPlus.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Log.d("PhotoputActivity btnPhotoPlus",
+								"confirm making video");
+						ConfirmMakeVideo makeVideo = new ConfirmMakeVideo();
+						makeVideo.execute(user, trip);
+						
+						CheckMakeVideo checkMakeVideo = new CheckMakeVideo();
+						checkMakeVideo.execute(user, trip);
+						Drawable res = getResources().getDrawable(
+								R.drawable.i_video_making_ing_582x100);
+						btnPhotoPlus.setImageDrawable(res);
+						isMade=true;
+					}
+				});
+			}
+
+		}
+
+	}// end of photoLike
 
 }
