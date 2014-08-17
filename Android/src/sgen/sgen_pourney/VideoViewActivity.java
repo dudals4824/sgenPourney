@@ -1,5 +1,8 @@
 package sgen.sgen_pourney;
 
+import sgen.DTO.TripDTO;
+import sgen.DTO.UserDTO;
+import sgen.application.PourneyApplication;
 import sgen.session.UserSessionManager;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,19 +19,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+
 public class VideoViewActivity extends Activity implements MediaPlayerControl, OnClickListener{
 	private String fontpath="fonts/WalbaumBook-BoldItalic.otf";
 	private TextView video_view_text;
+	private String videoUrl = "http://54.178.166.213/video/video_";
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private SimpleSideDrawer mDrawer;
-	final String videoUrl="http://54.178.166.213/video_763/763.mp4";
+	private TripDTO trip;
 	UserSessionManager session;
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
+	
+	
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_video_complete);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		video_view_text = (TextView) findViewById(R.id.VideoView_Text);
+		Typeface tf = Typeface.createFromAsset(getAssets(), fontpath);
+		video_view_text.setTypeface(tf);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		askBtn = (Button) findViewById(R.id.ask_text);
@@ -47,67 +57,84 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl, O
 			}
 		});
 
-		Typeface tf=Typeface.createFromAsset(getAssets(), fontpath);
-		video_view_text.setTypeface(tf);
+		
 		
 		VideoView videoView = (VideoView) findViewById(R.id.VideoView);
+
+		// Use a media controller so that you can scroll the video contents
+		// and also to pause, start the video.
 		
-		//Use a media controller so that you can scroll the video contents
-		//and also to pause, start the video.
+		PourneyApplication Application = (PourneyApplication) getApplication();
+		trip = new TripDTO();
+		trip = Application.getSelectedTrip();
 		
-		MediaController mediaController = new MediaController(this); 
+		String trip_id = Integer.toString(trip.getTripId());
+		videoUrl = videoUrl + trip_id +  "/" + trip_id + ".mp4";
+		Log.d("video url", videoUrl);
+
+		MediaController mediaController = new MediaController(this);
 		mediaController.setMediaPlayer(this);
 		mediaController.setAnchorView(videoView);
 		videoView.setMediaController(mediaController);
 		videoView.setVideoURI(Uri.parse(videoUrl));
 		videoView.start();
-		
+
 	}
+
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public int getDuration() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	@Override
 	public int getCurrentPosition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	@Override
 	public void seekTo(int pos) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public boolean isPlaying() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	@Override
 	public int getBufferPercentage() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	@Override
 	public boolean canPause() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	@Override
 	public boolean canSeekBackward() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	@Override
 	public boolean canSeekForward() {
 		// TODO Auto-generated method stub
