@@ -29,7 +29,7 @@
         android:id="@+id/memoback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-4dp"
+        android:layout_marginTop="-6dp"
         android:background="@drawable/i_memo_back"
         android:fitsSystemWindows="true"
         android:scaleType="fitXY" >
