@@ -203,11 +203,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 		// 비디오 만들기 버튼 초기화
 		btnPhotoPlus = (ImageButton) findViewById(R.id.btnPhotoPlus);
-		btnPhotoPlus.setOnClickListener(this);
 		// video 만들기 버튼 tripDTO확인해서 현재 영상을 만들어졌는지, 만들기를 눌렀는지, 안눌렀는지에 따라서 버튼 모양이
 		// 바뀐다
 		if (trip.isVideoMade()) {
 			// 비디오가 만들어진 경우
+			btnPhotoPlus.setOnClickListener(this);
 			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
 			Drawable res = getResources().getDrawable(
 					R.drawable.i_video_making_go_582x100);
@@ -395,64 +395,66 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(resultCode==RESULT_OK){
-		if (requestCode == 200) {
-			// 선택된 데이앨범의 i값을 받아온다
-			i_dayalbum = data.getIntExtra("intent_date", 300);
-			Log.d("Photoput : i_dayalbum ", i_dayalbum + "");
-			// 사진 패스를 받아옴
-			ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
-					.getExtras().getSerializable("list");
-			// TODO Auto-generated method stub
-			Log.d("all_path.length", all_path.size() + "");
+		if (resultCode == RESULT_OK) {
+			if (requestCode == 200) {
+				// 선택된 데이앨범의 i값을 받아온다
+				i_dayalbum = data.getIntExtra("intent_date", 300);
+				Log.d("Photoput : i_dayalbum ", i_dayalbum + "");
+				// 사진 패스를 받아옴
+				ArrayList<PhotoInfo> all_path = (ArrayList<PhotoInfo>) data
+						.getExtras().getSerializable("list");
+				// TODO Auto-generated method stub
+				Log.d("all_path.length", all_path.size() + "");
 
-			PhotoUploader photoUploader = null;
+				PhotoUploader photoUploader = null;
 
-			int day = 0;
-			for (int i = 0; i < intent_dateList.size(); i++) {
-				if (intent_dateList.get(i) == i_dayalbum) {
-					day = i;
+				int day = 0;
+				for (int i = 0; i < intent_dateList.size(); i++) {
+					if (intent_dateList.get(i) == i_dayalbum) {
+						day = i;
+					}
 				}
-			}
-			Log.d("day", day + "");
-			for (int i = 0; i < all_path.size(); i++) {
-				// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
-				// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
-				// 선택된 사진만 들어가는데 서버에서 사진 가져오는 부분에는 저 밑에
-				// dayalbumList.get(i_dayalbum).addLayoutGridalbum(new
-				// AlbumImgCell(PhotoputActivity.this,파일타입));
-				// 넣으면 될 것 같아요.
-				all_path.get(i).setFile(new File(all_path.get(i).getPath()));
-				Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(), 300,
-						300, ResizeMode.FIT_TO_HEIGHT);
-				dayalbumList.get(day).addLayoutGridalbum(
-						new AlbumImgCell(PhotoputActivity.this, bm,
-								new PhotoDTO(), user.getUserId()));
-			}
-			// 서버에 사진 업로드
-			dialog = ProgressDialog.show(PhotoputActivity.this, "",
-					"Uploading file...", true);
-			// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
-			for (int i = 0; i < all_path.size(); i++) {
-				Log.d("photoput", "upload(" + i + ")");
-				trip.setPhotoCnt(trip.getPhotoCnt() + 1);
-				// upload[i] = new ImageUploader();
-				// upload[i].execute(all_path.get(i).getPath());
-				photoUploader = new PhotoUploader(all_path.get(i).getPath(),
-						user.getUserId(), trip.getTripId(), i_dayalbum);
-				photoUploader.start();
-				try {
-					photoUploader.join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				Log.d("day", day + "");
+				for (int i = 0; i < all_path.size(); i++) {
+					// 받아온 패스로 파일 만들어서 레이아웃 그리드 앨범에 추가한다.
+					// 아직 서버 부분은 고려하지 않았기 때문에 선택된 사진의 수만큼만 반복되고,
+					// 선택된 사진만 들어가는데 서버에서 사진 가져오는 부분에는 저 밑에
+					// dayalbumList.get(i_dayalbum).addLayoutGridalbum(new
+					// AlbumImgCell(PhotoputActivity.this,파일타입));
+					// 넣으면 될 것 같아요.
+					all_path.get(i)
+							.setFile(new File(all_path.get(i).getPath()));
+					Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(),
+							300, 300, ResizeMode.FIT_TO_HEIGHT);
+					dayalbumList.get(day).addLayoutGridalbum(
+							new AlbumImgCell(PhotoputActivity.this, bm,
+									new PhotoDTO(), user.getUserId()));
 				}
+				// 서버에 사진 업로드
+				dialog = ProgressDialog.show(PhotoputActivity.this, "",
+						"Uploading file...", true);
+				// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
+				for (int i = 0; i < all_path.size(); i++) {
+					Log.d("photoput", "upload(" + i + ")");
+					trip.setPhotoCnt(trip.getPhotoCnt() + 1);
+					// upload[i] = new ImageUploader();
+					// upload[i].execute(all_path.get(i).getPath());
+					photoUploader = new PhotoUploader(
+							all_path.get(i).getPath(), user.getUserId(),
+							trip.getTripId(), i_dayalbum);
+					photoUploader.start();
+					try {
+						photoUploader.join();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				dialog.dismiss();
+				// updatephotodate = new UpdatePhotodate();
+				// updatephotodate.execute(trip);
 			}
-			dialog.dismiss();
-			// updatephotodate = new UpdatePhotodate();
-			// updatephotodate.execute(trip);
+
 		}
-		
-	}
 	}
 
 	public class ProfileImageSetter extends AsyncTask<String, String, String> {
@@ -704,11 +706,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	}// end of photoLike
 
-	
 	/**
 	 * 
-	 * @author Junki
-	 *	비디오 만들기 버튼 눌렀을 때 호출
+	 * @author Junki 비디오 만들기 버튼 눌렀을 때 호출
 	 */
 	public class CheckMakeVideo extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
