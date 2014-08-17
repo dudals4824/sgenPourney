@@ -105,7 +105,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
 				R.drawable.i_photo_gray_mask318x318);
 		Bitmap coverBitmap = bd.getBitmap();
-		PhotoEditor photoEdit = new PhotoEditor(mBitmap, coverBitmap, 300, 300);
+		PhotoEditor photoEdit = new PhotoEditor(bitmap, coverBitmap, 300, 300);
 
 		imgPhoto.setImageBitmap(photoEdit.editPhotoAutoRectangle());
 
