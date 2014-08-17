@@ -638,7 +638,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	/**
 	 * 
-	 * @author Junki 비디오 만들기. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 등록한다.
+	 * @author Junki 비디오 만들기 버튼 누를시 호출. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 등록한다.
 	 */
 	public class ConfirmMakeVideo extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
@@ -704,6 +704,12 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	}// end of photoLike
 
+	
+	/**
+	 * 
+	 * @author Junki
+	 *	비디오 만들기 버튼 눌렀을 때 호출
+	 */
 	public class CheckMakeVideo extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
 		private TripDTO mTripDTO;
