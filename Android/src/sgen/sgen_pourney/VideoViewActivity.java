@@ -1,16 +1,19 @@
 package sgen.sgen_pourney;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.MediaController;
 import android.widget.MediaController.MediaPlayerControl;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 public class VideoViewActivity extends Activity implements MediaPlayerControl{
-
+	private String fontpath="fonts/WalbaumBook-BoldItalic.otf";
+	private TextView video_view_text;
 	final String videoUrl="http://54.178.166.213/final.mp4";
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -18,13 +21,17 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl{
 		setContentView(R.layout.activity_video_complete);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		
+		video_view_text=(TextView)findViewById(R.id.VideoView_Text);
+		Typeface tf=Typeface.createFromAsset(getAssets(), fontpath);
+		video_view_text.setTypeface(tf);
 		VideoView videoView = (VideoView) findViewById(R.id.VideoView);
+		
 		//Use a media controller so that you can scroll the video contents
 		//and also to pause, start the video.
+		
 		MediaController mediaController = new MediaController(this); 
 		mediaController.setMediaPlayer(this);
-		mediaController.setAnchorView((MediaController)findViewById(R.id.controller));
+		mediaController.setAnchorView(videoView);
 		videoView.setMediaController(mediaController);
 		videoView.setVideoURI(Uri.parse(videoUrl));
 		videoView.start();

@@ -106,17 +106,7 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(this, VideoViewActivity.class);
 			startActivity(intent);
 		}
-		if(v.getId()==R.id.btnInputPhoto){
-			Intent intent = new Intent(VideoMakingActivity.this, PhotoputActivity.class);
-			startActivity(intent);
-			finish();
-		}
-		
-		if(v.getId()==R.id.btnTravelInfo){
-			Intent intent = new Intent(VideoMakingActivity.this, TravelInfoActivity.class);
-			startActivity(intent);
-			finish();
-		}
+	
 	}
 
 }
