@@ -33,7 +33,7 @@
             android:fitsSystemWindows="true"
             android:paddingBottom="25dp"
             android:scaleType="fitXY"
-            android:src="@drawable/i_cancel" />
+            android:src="@layout/findfriend_cancelclick_event" />
 
         <ImageButton
             android:id="@+id/confirm"
@@ -46,7 +46,7 @@
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:scaleType="fitXY"
-            android:src="@drawable/i_findfriend_confirm" />
+            android:src="@layout/findfriend_confirmclick_event" />
 
         <ImageView
             android:id="@+id/friendBack"

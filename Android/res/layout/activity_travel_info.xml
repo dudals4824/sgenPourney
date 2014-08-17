@@ -355,73 +355,66 @@
 
                     <ImageButton
                         android:id="@+id/btnFriend1"
-                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/i_profile_200x200" />
+                        android:src="@layout/addfriend_click_event" />
 
                     <ImageButton
                         android:id="@+id/btnFriend2"
-                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/i_profile_200x200" />
+                        android:src="@layout/addfriend_click_event" />
 
                     <ImageButton
                         android:id="@+id/btnFriend3"
-                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/i_profile_200x200" />
+                        android:src="@layout/addfriend_click_event" />
 
                     <ImageButton
                         android:id="@+id/btnFriend4"
-                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/i_profile_200x200" />
+                        android:src="@layout/addfriend_click_event" />
 
                     <ImageButton
                         android:id="@+id/btnFriend5"
-                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/i_profile_200x200" />
+                        android:src="@layout/addfriend_click_event" />
 
                     <ImageButton
                         android:id="@+id/btnFriend6"
-                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/i_profile_200x200" />
+                        android:src="@layout/addfriend_click_event" />
                     
                     <ImageButton
                         android:id="@+id/btnFriend7"
-                        android:focusableInTouchMode="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/i_profile_200x200" />
+                        android:src="@layout/addfriend_click_event" />
                 </GridLayout>
 
                 <ImageButton
