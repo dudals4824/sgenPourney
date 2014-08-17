@@ -1,10 +1,15 @@
 package sgen.sgen_pourney;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -29,9 +34,15 @@ import org.w3c.dom.UserDataHandler;
 import sgen.DTO.UserDTO;
 import sgen.session.UserSessionManager;
 import sgen.application.PourneyApplication;
+import sgen.common.PhotoEditor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.MailTo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +52,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,12 +61,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private long m_startTime;
 	private long m_endTime;
 	private boolean m_isPressedBackButton;
+	private ImageView logo;
 	private ImageButton btnLogin;
 	private ImageButton btnFacebook, btnJoin;
 	private EditText editEmailaddress, editPassword;
 	private boolean isLoginSuccessful;
 	private UserDTO loggedInUser;
 
+	Drawable sPhoto;
+	private Bitmap mIcon;
+	private String userId;
+	private String email;
+	private String nickName;
 	private final String POURNEY_URL = "http://54.178.166.213";
 
 	// User Session Manager Class
@@ -71,6 +89,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private void init() {
 		Log.e("log_msg", "Initializing Layout...");
 
+		logo = (ImageView) findViewById(R.id.imgLogoimage);
 		btnLogin = (ImageButton) findViewById(R.id.btnLogin);
 		btnFacebook = (ImageButton) findViewById(R.id.btnFacebook);
 		btnJoin = (ImageButton) findViewById(R.id.btnJoin);
@@ -143,42 +162,100 @@ public class LoginActivity extends Activity implements OnClickListener {
 			});
 			// editPassword
 			// .setBackgroundResource(R.drawable.i_password_put);
-		} else if (v.getId() == R.id.btnFacebook) { // facebook login 占쏙옙 id
-													// 占쏙옙占�
-			Session.openActiveSession(this, true, new Session.StatusCallback() {
-
-				// callback when session changes state
-				@Override
-				public void call(Session session, SessionState state,
-						Exception exception) {
-					if (session.isOpened()) {
-						// make request to the /me API
-						Request.newMeRequest(session,
-								new Request.GraphUserCallback() {
-
-									// callback after Graph API response with
-									// user object
-									@Override
-									public void onCompleted(GraphUser user,
-											Response response) {
-										if (user != null) {
-											finish();
-											Intent intent = new Intent(
-													LoginActivity.this,
-													CoverActivity.class);
-											startActivity(intent);
-										}
-									}
-								}).executeAsync();
-					}
-				}
-			});
-
+		} else if (v.getId() == R.id.btnFacebook) {
+			facebookLogin();//페북 로그인
 		} else if (v.getId() == R.id.btnJoin) {
 			System.out.println("Join");
 			Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
 			startActivity(intent);
 		}
+	}
+
+	private void facebookLogin() { // facebook login 占쏙옙 id
+		
+		List<String> permissions = new ArrayList<String>();
+		permissions.add("email");
+		permissions.add("public_profile");
+		Session.openActiveSession(this, true, permissions,
+				new Session.StatusCallback() {
+
+					// callback when session changes state
+					@Override
+					public void call(Session session, SessionState state,
+							Exception exception) {
+						if (session.isOpened()) {
+							// make request to the /me API
+							Request.newMeRequest(session,
+									new Request.GraphUserCallback() {
+
+										// callback after Graph API response
+										// with
+										// user object
+										@Override
+										public void onCompleted(
+												GraphUser user,
+												Response response) {
+											if (user != null) {
+												nickName = user
+														.getFirstName();
+												//System.out.println(nickName);
+											
+												String id = user.getId();
+												userId = id;
+												//System.out.println(userId);
+												email = user
+														.getProperty(
+																"email")
+														.toString();
+												//System.out.println(email);
+												new BackTask().execute(mIcon);
+												
+
+												// finish();
+												// Intent intent = new
+												// Intent(
+												// LoginActivity.this,
+												// CoverActivity.class);
+												// startActivity(intent); //액티비티넘기는거
+											}
+										}
+									}).executeAsync();
+						}
+					}
+				});
+
+	
+		
+	}
+
+	public class BackTask extends AsyncTask<Bitmap, String, String> {
+
+		@Override
+		protected String doInBackground(Bitmap... args) {
+			mIcon = args[0];
+			//ImageView icon_pic = (ImageView) findViewById(R.id.imgLogoimage);
+
+			String img_value = "https://graph.facebook.com/" + userId
+					+ "/picture?type=large";
+			
+			System.out.println(img_value);
+			
+			mIcon = PhotoEditor.ImageurlToBitmapConverter(img_value);
+//	icon_pic.setImageBitmap(mIcon);
+			
+			sPhoto = new BitmapDrawable(getResources(), mIcon);//페북 메일이랑 닉넴이랑 프사 
+			System.out.println(email);						//mIcon 이 bitmap사진임
+			System.out.println(nickName);
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String text) {
+			//logo.setBackground(sPhoto);
+
+		}
+
 	}
 
 	@Override
@@ -335,5 +412,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 			android.os.Process.killProcess(android.os.Process.myPid());
 		}
 	}
-
+	public static Bitmap ImageurlToBitmapConverter(String src) {
+		try {
+			URL url = new URL(src);
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			connection.setDoInput(true);
+			connection.connect();
+			InputStream input = connection.getInputStream();
+			Bitmap myBitmap = BitmapFactory.decodeStream(input);
+			return myBitmap;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

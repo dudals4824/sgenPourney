@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
@@ -8,11 +7,11 @@
 
     <ImageView
         android:id="@+id/imgLogoimage"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27.33dp"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="87dp"
+        android:layout_marginTop="27.33dp"
         android:src="@drawable/i_logoimage" />
 
     <EditText
@@ -21,11 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imgLogoimage"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="27.67dp"
+        android:background="@layout/login_emailclick_event"
         android:gravity="center_horizontal|center_vertical"
         android:hint="E-mail address"
-        android:background="@layout/login_emailclick_event" 
-        android:layout_marginTop="27.67dp"
-        android:onClick="onClick"/>
+        android:onClick="onClick" />
 
     <EditText
         android:id="@+id/editPwd"
@@ -33,11 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editEmailaddress"
         android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal|center_vertical"
         android:layout_marginTop="10.33dp"
-        android:ems="10"
-                android:hint="Password"
         android:background="@layout/login_passwordclick_event"
+        android:ems="10"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="Password"
         android:inputType="textPassword" />
 
     <ImageButton
@@ -87,11 +86,11 @@
         android:fitsSystemWindows="true"
         android:scaleType="fitXY"
         android:src="@drawable/i_facebook_852x122" />
-<TextView
+
+    <TextView
         android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
 
 </RelativeLayout>
