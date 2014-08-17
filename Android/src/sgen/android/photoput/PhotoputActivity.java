@@ -394,6 +394,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode==RESULT_OK){
 		if (requestCode == 200) {
 			// 선택된 데이앨범의 i값을 받아온다
 			i_dayalbum = data.getIntExtra("intent_date", 300);
@@ -449,6 +450,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			// updatephotodate = new UpdatePhotodate();
 			// updatephotodate.execute(trip);
 		}
+		
+	}
 	}
 
 	public class ProfileImageSetter extends AsyncTask<String, String, String> {
