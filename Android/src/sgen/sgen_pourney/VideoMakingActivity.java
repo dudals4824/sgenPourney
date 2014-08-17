@@ -68,6 +68,7 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		timer = (TextView) this.findViewById(R.id.timer);
 		countDownTimer = new MyCountDownTimer(temp, interval);
 
+		//start time에 동영상 생성 시간 넣음
 		timer.setText(timer.getText() + String.valueOf(startTime / 1000));
 		countDownTimer.start();
 		
