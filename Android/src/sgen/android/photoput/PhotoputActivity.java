@@ -39,6 +39,7 @@ import sgen.sgen_pourney.LoginActivity;
 import sgen.sgen_pourney.ProfileModi;
 import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
+import sgen.sgen_pourney.VideoMakingActivity;
 import sgen.sgen_pourney.VideoViewActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -783,9 +784,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 				btnPhotoPlus.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Toast toast = Toast.makeText(getApplicationContext(),
-								"영상을 만드는 중입니다.", Toast.LENGTH_SHORT);
-						toast.show();
+						Intent intent = new Intent(getApplicationContext(),
+								VideoMakingActivity.class);
+						startActivity(intent);
 					}
 				});
 			} else {
@@ -801,13 +802,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 								"confirm making video");
 						ConfirmMakeVideo makeVideo = new ConfirmMakeVideo();
 						makeVideo.execute(user, trip);
-						
+
 						CheckMakeVideo checkMakeVideo = new CheckMakeVideo();
 						checkMakeVideo.execute(user, trip);
 						Drawable res = getResources().getDrawable(
 								R.drawable.i_video_making_ing_582x100);
 						btnPhotoPlus.setImageDrawable(res);
-						isMade=true;
+						isMade = true;
 					}
 				});
 			}
