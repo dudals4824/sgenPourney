@@ -198,6 +198,8 @@ public class AlbumImgCell extends RelativeLayout implements
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("photo_id", Integer
 					.toString(photo.getPhotoId())));
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
+					.toString(photo.getTripId())));
 			nameValuePairs.add(new BasicNameValuePair("user_id", Integer
 					.toString(userId)));
 			nameValuePairs.add(new BasicNameValuePair("like", Integer
