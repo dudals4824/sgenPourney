@@ -50,7 +50,6 @@ public class ImageResize {
 		} else if(mode == ResizeMode.FIT_TO_HEIGHT) {
 			width = calculateWidth(sourceWidth, sourceHeight, height);
 		}
-		
 		return Bitmap.createScaledBitmap(sampledSrcBitmap, width, height, true);
 	}
 	
