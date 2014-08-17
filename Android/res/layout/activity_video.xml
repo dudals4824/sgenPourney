@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:background="#003558" >
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnMakeVideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/i_makevideo" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnInputPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/i_registerphoto" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnTravelInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
