@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,11 +22,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sgen.DTO.PhotoDTO;
+import sgen.common.ListViewDialog;
+import sgen.common.ListViewDialog.ListViewDialogSelectListener;
 import sgen.common.PhotoEditor;
 import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.R;
-import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -42,10 +45,9 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class AlbumImgCell extends RelativeLayout implements
-		View.OnClickListener {
+		View.OnClickListener, View.OnLongClickListener {
 
 	private Context mContext = null;
 	private Bitmap mBitmap = null;
@@ -65,6 +67,8 @@ public class AlbumImgCell extends RelativeLayout implements
 	private int likeFlag;
 	private EditText memo;
 	private String editedMemo;
+	private ListViewDialog mDialog;
+	private View v;
 
 	public AlbumImgCell(Context context, Bitmap bitmap, PhotoDTO photo,
 			int userId) {
@@ -87,26 +91,26 @@ public class AlbumImgCell extends RelativeLayout implements
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
-		View v = li.inflate(R.layout.album_img_cell, this, false);
+		v = li.inflate(R.layout.album_img_cell, this, false);
 		addView(v);
 
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
 
 		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
-		
+
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
 		// 이미지를 비트맵으로 받아와서 이미지뷰에 추가 리사이징 해야함
 		imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
-		
-		BitmapDrawable bd = (BitmapDrawable) this.getResources()
-				.getDrawable(R.drawable.i_photo_gray_mask318x318);
+
+		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
+				R.drawable.i_photo_gray_mask318x318);
 		Bitmap coverBitmap = bd.getBitmap();
-		PhotoEditor photoEdit = new PhotoEditor(mBitmap, coverBitmap,
-				300, 300);
-		
+		PhotoEditor photoEdit = new PhotoEditor(mBitmap, coverBitmap, 300, 300);
+
 		imgPhoto.setImageBitmap(photoEdit.editPhotoAutoRectangle());
 
 		imgPhoto.setOnClickListener(this);
+		imgPhoto.setOnLongClickListener(this);
 		checkImage.setOnClickListener(this);
 
 		checkLike = new CheckAlreadyLiked();
@@ -116,7 +120,8 @@ public class AlbumImgCell extends RelativeLayout implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.imgPhoto) {
-			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,ResizeMode.AUTOMATIC);
+			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
+					ResizeMode.AUTOMATIC);
 			sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
 			ImageView selectedPhoto;
 			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext)
@@ -344,5 +349,44 @@ public class AlbumImgCell extends RelativeLayout implements
 		}
 
 	}// end of photoLike
+
+	@Override
+	public boolean onLongClick(View v) {
+		// TODO Auto-generated method stub
+		showDeleteDialog();
+		return false;
+	}
+
+	private void showDeleteDialog() {
+		/**
+		 * 
+		 * ListDialog를 보여주는 함수..
+		 */
+		// this.context = context;
+
+		String item = "삭제";
+		// array를 ArrayList로 변경을 하는 방법
+
+		List<String> listItem = Arrays.asList(item);
+
+		ArrayList<String> itemArrayList = new ArrayList<String>(listItem);
+
+		mDialog = new ListViewDialog(mContext, "사진을 앨범에서 삭제하시겠습니까?",
+				itemArrayList);
+		mDialog.onOnSetItemClickListener(new ListViewDialogSelectListener() {
+			// 여기서 inflate받은 뷰 v를 삭제함
+			@Override
+			public void onSetOnItemClickListener(int position) {
+				// TODO Auto-generated method stub
+				if (position == 0) {
+					removeView(v);
+				}
+				mDialog.dismiss();
+			}
+
+		});
+		mDialog.show();
+
+	}
 
 }
