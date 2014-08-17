@@ -155,7 +155,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
 
-
 		for (int i = 0; i < 7; i++) {
 			Log.e("numbertest", "" + i);
 			btnFriend.add((ImageButton) findViewById(ids[i]));
@@ -242,26 +241,23 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		if (v.getId() == R.id.ask_text) {
 			Intent intent = new Intent(this, AskActivity.class);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.log_out_text) {
+		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
 
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.last_album_text) {
+		} else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-		}
-		else if (v.getId() == R.id.profile_modifying_text) {
+		} else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
 		}
-		//findViewById(R.id.container).requestFocus();
+		// findViewById(R.id.container).requestFocus();
 		else if (v.getId() == R.id.btnPrevMonth) {
 			cnt--;
 		} else if (v.getId() == R.id.btnnextMonth) {
@@ -348,15 +344,14 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					Integer.parseInt(startDateString.substring(0, 4)), // 년
 					(Integer.parseInt(startDateString.substring(4, 6)) - 1), // 월
 					Integer.parseInt(startDateString.substring(6))); // 일
-			
-			//startDayCalendar.add(Calendar.MONTH, 1);
 
+			// startDayCalendar.add(Calendar.MONTH, 1);
 
 			GregorianCalendar endDayCalendar = new GregorianCalendar(
 					Integer.parseInt(endDateString.substring(0, 4)),
 					(Integer.parseInt(endDateString.substring(4, 6)) - 1),
 					Integer.parseInt(endDateString.substring(6)));
-		
+
 			// endDayCalendar.add(Calendar.MONTH, -1);
 
 			String startDate = Long
@@ -395,8 +390,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			}
 		}
-		Log.d("startdate", startdate+"");
-		Log.d("enddate", enddate+"");
+		Log.d("startdate", startdate + "");
+		Log.d("enddate", enddate + "");
 		calendarAdapter = new CalendarAdapter(TravelInfoActivity.this,
 				R.layout.calendar_grid, DayArray, today, startdate, enddate);
 		gridCalendar.setAdapter(calendarAdapter);
@@ -449,7 +444,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/makeTravel.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -573,7 +569,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 					HttpClient httpclient = new DefaultHttpClient();
 					HttpPost httppost = new HttpPost(
 							"http://54.178.166.213/userInTrips.php");
-					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+							"utf-8"));
 					HttpResponse response = httpclient.execute(httppost);
 					HttpEntity entity = response.getEntity();
 					is = entity.getContent();
@@ -582,7 +579,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				}
 				try {
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(is, "iso-8859-1"), 8);
+							new InputStreamReader(is, "UTF-8"), 8);
 					sb = new StringBuilder();
 					sb.append(reader.readLine() + "\n");
 					String line = "0";
@@ -636,7 +633,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/findFriends.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -647,7 +645,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			try {
 				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
+						new InputStreamReader(is, "UTF-8"), 8);
 				sb = new StringBuilder();
 				sb.append(reader.readLine() + "\n");
 				String line = "0";

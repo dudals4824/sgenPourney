@@ -158,7 +158,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/regis.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -168,8 +168,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 			}
 
 			try {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
 				sb = new StringBuilder();
 				sb.append(reader.readLine() + "\n");
 				String line = "0";

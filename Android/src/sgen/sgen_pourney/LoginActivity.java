@@ -44,7 +44,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity implements OnClickListener{
+public class LoginActivity extends Activity implements OnClickListener {
 
 	private long m_startTime;
 	private long m_endTime;
@@ -54,7 +54,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private EditText editEmailaddress, editPassword;
 	private boolean isLoginSuccessful;
 	private UserDTO loggedInUser;
-	
+
 	private final String POURNEY_URL = "http://54.178.166.213";
 
 	// User Session Manager Class
@@ -87,13 +87,14 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 		// User Session Manager
 		session = new UserSessionManager(getApplicationContext());
-		
-		//자동 로그인
-		if(session.isUserLoggedIn())
-		{
+
+		// 자동 로그인
+		if (session.isUserLoggedIn()) {
 			Log.d("Login Activity", "auto login");
 			LoginTask loginTask = new LoginTask();
-			loginTask.execute(Integer.toString(session.getUserDetails().get("user_id")), "1");
+			loginTask.execute(
+					Integer.toString(session.getUserDetails().get("user_id")),
+					"1");
 		}
 		Log.e("log_msg", "Initializing done...");
 	}
@@ -122,9 +123,9 @@ public class LoginActivity extends Activity implements OnClickListener{
 						.show();
 			}
 		} // else if (v.getId() == R.id.editEmailaddress) {
-		// editEmailaddress
-		// .setBackgroundResource(R.drawable.i_emailaddress_put);
-		// }
+			// editEmailaddress
+			// .setBackgroundResource(R.drawable.i_emailaddress_put);
+			// }
 		else if (v.getId() == R.id.editPwd) {
 			v.setOnTouchListener(new OnTouchListener() { // 버튼 터치시 이벤트
 				public boolean onTouch(View v, MotionEvent event) {
@@ -199,7 +200,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 			StringBuilder sb = null;
 			String result = null;
 
-			Log.d("LoginTask", "email : "+params[0] + "    password : " + params[1]);
+			Log.d("LoginTask", "email : " + params[0] + "    password : "
+					+ params[1]);
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("email", params[0]));
 			nameValuePairs.add(new BasicNameValuePair("password", params[1]));
@@ -208,7 +210,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/login.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -218,9 +221,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 			}
 
 			try {
-
 				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
+						new InputStreamReader(is, "UTF-8"), 8);
 				sb = new StringBuilder();
 				sb.append(reader.readLine() + "\n");
 				String line = "0";
@@ -259,11 +261,12 @@ public class LoginActivity extends Activity implements OnClickListener{
 					loggedInUser.setEmail(json_data.getString("email"));
 					loggedInUser.setProfileFilePath(json_data
 							.getString("profile_filename"));
-					//완성된 url 형태로 loggedin user에 저장.
-					
-					//유저 정보 전역 객체에 추가
-					loggedInUser.setProfileFilePath( POURNEY_URL + loggedInUser.getProfileFilePath() );
-					PourneyApplication UserInfo = (PourneyApplication)getApplication();
+					// 완성된 url 형태로 loggedin user에 저장.
+
+					// 유저 정보 전역 객체에 추가
+					loggedInUser.setProfileFilePath(POURNEY_URL
+							+ loggedInUser.getProfileFilePath());
+					PourneyApplication UserInfo = (PourneyApplication) getApplication();
 					UserInfo.setLoggedInUser(loggedInUser);
 					Log.e("user information", loggedInUser.toString());
 				}
@@ -312,7 +315,6 @@ public class LoginActivity extends Activity implements OnClickListener{
 		}
 
 	}
-
 
 	public void onBackPressed() {
 		m_endTime = System.currentTimeMillis();

@@ -1,6 +1,5 @@
 package sgen.sgen_pourney;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -25,7 +24,6 @@ import sgen.DTO.TripDTO;
 import sgen.sgen_pourney.CoverActivity;
 import sgen.android.photoput.PhotoputActivity;
 import sgen.application.PourneyApplication;
-
 
 import sgen.common.ListViewDialog;
 import sgen.common.PhotoEditor;
@@ -53,43 +51,44 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CoverCell extends LinearLayout implements View.OnClickListener,View.OnLongClickListener {
+public class CoverCell extends LinearLayout implements View.OnClickListener,
+		View.OnLongClickListener {
 	private TextView title, date, numberOfPeople, travelNumber;
 	private ImageButton backcard, btnCoverPhoto;
 	Context mContext = null;
 	private TripDTO tripDTO = new TripDTO();
 
 	// photo type select dialog
-//	private ListViewDialog mDialog;
+	// private ListViewDialog mDialog;
 	static String SAMPLEIMG = "profile.png";
 	static final int REQUEST_ALBUM = 1;
 	static final int REQUEST_PICTURE = 2;
 
-	public static final int RESULT_OK           = -1;
-	
+	public static final int RESULT_OK = -1;
+
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 	// photo type select dialog
-		private ListViewDialog mDialog;
-
-		// for profile phpto
-		private ProfileUploader pfUploader = null;
-		private Uri currImageURI;
-		private String imagePath = null;
-
-		private File imgFile;
-		private Bitmap mBitmap;
+	private ListViewDialog mDialog;
 
 	// for profile phpto
-//	private ProfileUploader pfUploader = null;
-//	private Uri currImageURI;
-//	private String imagePath = null;
-//
-//	private File imgFile;
-//	private Bitmap mBitmap;
-//
-//	private int photoAreaWidth;
-//	private int photoAreaHeight;
+	private ProfileUploader pfUploader = null;
+	private Uri currImageURI;
+	private String imagePath = null;
+
+	private File imgFile;
+	private Bitmap mBitmap;
+
+	// for profile phpto
+	// private ProfileUploader pfUploader = null;
+	// private Uri currImageURI;
+	// private String imagePath = null;
+	//
+	// private File imgFile;
+	// private Bitmap mBitmap;
+	//
+	// private int photoAreaWidth;
+	// private int photoAreaHeight;
 
 	public CoverCell(Context context, int attrs) {
 		super(context);
@@ -127,22 +126,20 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 		getTripInfo.execute(String.valueOf(attrs));
 
 		// onclicklistenr 뷰 아무데나 눌러도 다 넘어가게 모든거에 onclicklistner다줌.....ㅠㅠ
-//		title.setOnClickListener(this);
-//		date.setOnClickListener(this);
-//		numberOfPeople.setOnClickListener(this);
-//		travelNumber.setOnClickListener(this);
+		// title.setOnClickListener(this);
+		// date.setOnClickListener(this);
+		// numberOfPeople.setOnClickListener(this);
+		// travelNumber.setOnClickListener(this);
 		backcard.setOnClickListener(this);
-		
+
 		btnCoverPhoto.setOnClickListener(this);
-		
-//		title.setOnLongClickListener(this);
-//		date.setOnLongClickListener(this);
-//		numberOfPeople.setOnLongClickListener(this);
-//		travelNumber.setOnLongClickListener(this);
+
+		// title.setOnLongClickListener(this);
+		// date.setOnLongClickListener(this);
+		// numberOfPeople.setOnLongClickListener(this);
+		// travelNumber.setOnLongClickListener(this);
 		backcard.setOnLongClickListener(this);
-		
-		
-		
+
 	}
 
 	@Override
@@ -162,7 +159,6 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 			mContext.startActivity(intent);
 		}
 	}
-	
 
 	public class GetTripInfo extends AsyncTask<String, String, String> {
 
@@ -179,7 +175,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/getCoverInfo.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -188,7 +185,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 			}
 			try {
 				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
+						new InputStreamReader(is, "UTF-8"), 8);
 				sb = new StringBuilder();
 				sb.append(reader.readLine() + "\n");
 				String line = "0";
@@ -225,7 +222,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 			title.setText(tripDTO.getTripTitle());
 			date.setText(tripDTO.getStartDateInDateFormat() + " ~ "
 					+ tripDTO.getEndDateInDateFormat());
-			numberOfPeople.setText("With " + tripDTO.getPeopleCnt() + " people");
+			numberOfPeople
+					.setText("With " + tripDTO.getPeopleCnt() + " people");
 			travelNumber.setText(String.valueOf(tripDTO.getTripId()));
 		}
 	}
@@ -233,15 +231,16 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 	/*
 	 * Profile 사진 등록 클릭시 나타나는 dialog.
 	 */
-	
+
 	void showListDialog() {
 		/**
 		 * 
 		 * ListDialog를 보여주는 함수..
 		 */
-	//	this.context = context;
-		
-		String[] item = mContext.getResources().getStringArray(R.array.cover_change_list_item);
+		// this.context = context;
+
+		String[] item = mContext.getResources().getStringArray(
+				R.array.cover_change_list_item);
 
 		// array를 ArrayList로 변경을 하는 방법
 
@@ -259,36 +258,31 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 				if (position == 0) {
 					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
 					// open gallery browser
-					
-//					CoverActivity covercells = new CoverActivity();
-//					covercells.requestAlbum();
-//					startActivityForResult(
-//							Intent.createChooser(intent, "Select Picture"),
-//							REQUEST_ALBUM);
+
+					// CoverActivity covercells = new CoverActivity();
+					// covercells.requestAlbum();
+					// startActivityForResult(
+					// Intent.createChooser(intent, "Select Picture"),
+					// REQUEST_ALBUM);
 				} else if (position == 1) {
 					// 여기서 부터 카메라 사용
 					Log.v("dialog_msg", " 두번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
-					
-//					CoverActivity covercells = new CoverActivity();
-//					covercells.requestPicture();
-//					startActivityForResult(intent, REQUEST_PICTURE);
+
+					// CoverActivity covercells = new CoverActivity();
+					// covercells.requestPicture();
+					// startActivityForResult(intent, REQUEST_PICTURE);
 				}
 				mDialog.dismiss();
 			}
-			
-			
+
 		});
 		mDialog.show();
 
 	}
 
-
-	
-	
-	
-    public final String getString(int resId) {
-        return getResources().getString(resId);
-    }
+	public final String getString(int resId) {
+		return getResources().getString(resId);
+	}
 
 	// @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -330,8 +324,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 			// overay cover
 
 			// 이거하면 이미지 셋됨
-//			mBitmap = photoEdit.editPhotoAuto();
-//			btnCoverPhoto.setImageBitmap(mBitmap);
+			// mBitmap = photoEdit.editPhotoAuto();
+			// btnCoverPhoto.setImageBitmap(mBitmap);
 		}
 	}
 
@@ -360,7 +354,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 					converted = null;
 				}
 			} catch (OutOfMemoryError ex) {
-				Toast.makeText(mContext.getApplicationContext(), "메모리부족", 0).show();
+				Toast.makeText(mContext.getApplicationContext(), "메모리부족", 0)
+						.show();
 			}
 		}
 		return bitmap;
@@ -370,8 +365,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 	private String getRealPathFromURI(Uri contentUri) {
 		String path = null;
 		String[] proj = { MediaStore.MediaColumns.DATA };
-		Cursor cursor = mContext.getContentResolver().query(contentUri, proj, null,
-				null, null);
+		Cursor cursor = mContext.getContentResolver().query(contentUri, proj,
+				null, null, null);
 		if (cursor.moveToFirst()) {
 			int column_index = cursor
 					.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
@@ -385,16 +380,17 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 	public boolean onLongClick(View v) {
 		// TODO Auto-generated method stub
 		showDeleteDialog();
-		
+
 		return false;
 	}
+
 	void showDeleteDialog() {
 		/**
 		 * 
 		 * ListDialog를 보여주는 함수..
 		 */
-	//	this.context = context;
-		
+		// this.context = context;
+
 		String item = mContext.getResources().getString(R.string.delete_text);
 		// array를 ArrayList로 변경을 하는 방법
 
@@ -402,7 +398,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 
 		ArrayList<String> itemArrayList = new ArrayList<String>(listItem);
 
-		mDialog = new ListViewDialog(mContext,"해당 여행에서 나가시겠습니까?",itemArrayList);
+		mDialog = new ListViewDialog(mContext, "해당 여행에서 나가시겠습니까?",
+				itemArrayList);
 		mDialog.onOnSetItemClickListener(new ListViewDialogSelectListener() {
 
 			@Override
@@ -411,21 +408,19 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,View
 				if (position == 0) {
 					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
 					// open gallery browser
-					
-//					CoverActivity covercells = new CoverActivity();
-//					covercells.requestAlbum();
-//					startActivityForResult(
-//							Intent.createChooser(intent, "Select Picture"),
-//							REQUEST_ALBUM);
+
+					// CoverActivity covercells = new CoverActivity();
+					// covercells.requestAlbum();
+					// startActivityForResult(
+					// Intent.createChooser(intent, "Select Picture"),
+					// REQUEST_ALBUM);
 				}
 				mDialog.dismiss();
 			}
-			
-			
+
 		});
 		mDialog.show();
 
 	}
-	
-}
 
+}

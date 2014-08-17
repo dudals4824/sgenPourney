@@ -64,6 +64,7 @@ public class AlbumImgCell extends RelativeLayout implements
 	private int likeFlag;
 	private EditText memo;
 	private String editedMemo;
+
 	public AlbumImgCell(Context context, Bitmap bitmap, PhotoDTO photo,
 			int userId) {
 		super(context);
@@ -140,17 +141,17 @@ public class AlbumImgCell extends RelativeLayout implements
 			selectedPhoto.setBackground(sPhoto);
 			regist = (ImageButton) contentView.findViewById(R.id.regist);
 			cancel = (ImageButton) contentView.findViewById(R.id.cancel);
-			memo =(EditText)contentView.findViewById(R.id.memo);
-			editedMemo=memo.getText().toString();
-			
+			memo = (EditText) contentView.findViewById(R.id.memo);
+			editedMemo = memo.getText().toString();
+
 			regist.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Log.d("EditedMemo", editedMemo);
 					System.out.println(editedMemo);
-					//DB에 저장하는 부분
+					// DB에 저장하는 부분
 					memoPopupWindow.dismiss();
 				}
 			});
@@ -162,7 +163,7 @@ public class AlbumImgCell extends RelativeLayout implements
 
 				}
 			});
-			
+
 		} else if (v.getId() == R.id.checkImage) {
 			photoLike = new PhotoLike();
 			if (checkImage.isChecked()) {
@@ -207,7 +208,8 @@ public class AlbumImgCell extends RelativeLayout implements
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/photoLike.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -218,7 +220,7 @@ public class AlbumImgCell extends RelativeLayout implements
 
 			try {
 				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is, "iso-8859-1"), 8);
+						new InputStreamReader(is, "UTF-8"), 8);
 				sb = new StringBuilder();
 				sb.append(reader.readLine() + "\n");
 				String line = "0";
