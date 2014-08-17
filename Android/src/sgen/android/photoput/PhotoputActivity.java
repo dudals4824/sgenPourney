@@ -285,20 +285,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// setPhotoNum();
 	}
 
-	/*
-	 * public void setPhotoNum() {
-	 * 
-	 * for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) { checkedNum=0;
-	 * layoutAlbum.getContext().set(Integer.toString(checkedNum)); for (int k =
-	 * 0; k < listOfPhotoBitmapLists.get(i).size(); k++) { if
-	 * (imgCheckBox.isChecked() == true) { checkedNum++; } else checkedNum--;
-	 * 
-	 * photoNum.setText(Integer.toString(checkedNum));
-	 * 
-	 * } }
-	 * 
-	 * }
-	 */
 
 	public void onClick(View v) {
 		if (v.getId() == R.id.ask_text) {
