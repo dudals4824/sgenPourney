@@ -90,13 +90,9 @@ public class AlbumImgCell extends RelativeLayout implements
 		addView(v);
 
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
-		// scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 
-		mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
-				ResizeMode.AUTOMATIC);
-		sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
 		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
-
+		
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
 		// 이미지를 비트맵으로 받아와서 이미지뷰에 추가 리사이징 해야함
 		imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
@@ -112,6 +108,8 @@ public class AlbumImgCell extends RelativeLayout implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.imgPhoto) {
+			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,ResizeMode.AUTOMATIC);
+			sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
 			ImageView selectedPhoto;
 			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext)
 					.getBaseContext().getSystemService(
