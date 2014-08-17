@@ -26,6 +26,6 @@
                 android:background="@android:color/transparent"
                 android:fitsSystemWindows="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/i_backcard_new" />
+                android:src="@layout/backcard_new_press" />
         </RelativeLayout>
 

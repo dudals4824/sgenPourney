@@ -23,7 +23,7 @@
                 android:layout_marginLeft="14dp"
                 android:background="@android:color/transparent"
             android:scaleType="fitXY"
-                android:src="@drawable/i_backcard" />
+                android:src="@layout/backcard_click_event" />
 
             <ImageButton
                 android:id="@+id/cphoto"
