@@ -435,7 +435,7 @@
                     android:background="@android:color/transparent"
                     android:fitsSystemWindows="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/i_put"
+                    android:src="@layout/put_click_event"
                     />
             </RelativeLayout>
             <!-- end of inner rect -->
