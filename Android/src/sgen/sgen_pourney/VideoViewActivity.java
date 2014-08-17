@@ -14,7 +14,7 @@ import android.widget.VideoView;
 public class VideoViewActivity extends Activity implements MediaPlayerControl{
 	private String fontpath="fonts/WalbaumBook-BoldItalic.otf";
 	private TextView video_view_text;
-	final String videoUrl="http://54.178.166.213/final.mp4";
+	final String videoUrl="http://54.178.166.213/video_763/763.mp4";
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);

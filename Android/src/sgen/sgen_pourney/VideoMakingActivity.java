@@ -36,6 +36,7 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 	private final long videoDueTime=currentTime+10*1000;;
 	private long startTime= videoDueTime-currentTime;// 24 * 60 * 60 * 1000; //24시간 밀리세컨
 												// 단위임 비교한 값 여기에 넣으면 됨요
+	private long temp=startTime;
 	private final long interval = 100;
 	private Button gogoVideo;
 	private SimpleSideDrawer mDrawer;
@@ -65,11 +66,12 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		});
 		
 		timer = (TextView) this.findViewById(R.id.timer);
-		countDownTimer = new MyCountDownTimer(startTime, interval);
+		countDownTimer = new MyCountDownTimer(temp, interval);
 
 		timer.setText(timer.getText() + String.valueOf(startTime / 1000));
 		countDownTimer.start();
-
+		
+	
 	}
 
 	public class MyCountDownTimer extends CountDownTimer {
@@ -100,12 +102,10 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 					+ " : "
 					+ String.valueOf((millisUntilFinished % 1000) / 100)); // 밀리초
 			// timer.setText("" + millisUntilFinished / 1000);
-
+			
 		}
-		public void onBackPressed(){
-				
-		}
-
+		
+		
 
 	}
 
@@ -118,5 +118,10 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		}
 	
 	}
-
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		countDownTimer.cancel();
+		finish();
+	}
 }
