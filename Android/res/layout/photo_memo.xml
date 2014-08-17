@@ -57,7 +57,7 @@
         </EditText>
 
         <ImageButton
-            android:id="@+id/findfriend"
+            android:id="@+id/regist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/memo"
@@ -67,7 +67,7 @@
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:scaleType="fitXY"
-            android:src="@drawable/i_register" />
+            android:src="@layout/photo_memoclick_event" />
 
         <ImageButton
             android:id="@+id/cancel"
@@ -80,7 +80,7 @@
             android:background="@android:color/transparent"
             android:fitsSystemWindows="true"
             android:scaleType="fitXY"
-            android:src="@drawable/i_memocancelput" />
+            android:src="@layout/photo_memocancelclick_event" />
     </RelativeLayout>
 
 </LinearLayout>

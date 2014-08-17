@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -48,6 +49,7 @@ public class AlbumImgCell extends RelativeLayout implements
 	private Bitmap mBitmapMemo = null;
 	private Drawable sPhoto = null;
 	private ImageView imgPhoto = null;
+	private ImageButton regist,cancel;
 	private File mImgFile = null;
 	private PopupWindow memoPopupWindow;
 	private TextView date;
@@ -131,6 +133,10 @@ public class AlbumImgCell extends RelativeLayout implements
 			memoPopupWindow.showAtLocation(imgPhoto, 0, 0, 218);
 			selectedPhoto = (ImageView) contentView.findViewById(R.id.selectedphoto);
 			selectedPhoto.setBackground(sPhoto);
+			regist = (ImageButton) contentView.findViewById(R.id.regist);
+			cancel = (ImageButton) contentView.findViewById(R.id.cancel);
+			regist.setOnClickListener(this);
+			cancel.setOnClickListener(this);
 		} else if (v.getId() == R.id.checkImage) {
 			photoLike = new PhotoLike();
 			if (checkImage.isChecked()) {
