@@ -299,7 +299,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(PhotoputActivity.this,
 					VideoMakingActivity.class);
 			startActivity(intent);
-			finish();
 		} else if (v.getId() == R.id.last_album_text) {
 
 			Intent intent = new Intent(this, CoverActivity.class);
