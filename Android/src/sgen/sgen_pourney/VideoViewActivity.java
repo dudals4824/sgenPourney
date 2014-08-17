@@ -19,18 +19,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-
-public class VideoViewActivity extends Activity implements MediaPlayerControl, OnClickListener{
-	private String fontpath="fonts/WalbaumBook-BoldItalic.otf";
+public class VideoViewActivity extends Activity implements MediaPlayerControl,
+		OnClickListener {
+	private String fontpath = "fonts/WalbaumBook-BoldItalic.otf";
 	private TextView video_view_text;
 	private String videoUrl = "http://54.178.166.213/video/video_";
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private SimpleSideDrawer mDrawer;
 	private TripDTO trip;
 	UserSessionManager session;
+
 	public void onCreate(Bundle savedInstanceState) {
-	
-	
+
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_video_complete);
@@ -45,7 +45,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl, O
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-		video_view_text=(TextView)findViewById(R.id.VideoView_Text);
+		video_view_text = (TextView) findViewById(R.id.VideoView_Text);
 		askBtn.setOnClickListener(this);
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
@@ -57,19 +57,17 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl, O
 			}
 		});
 
-		
-		
 		VideoView videoView = (VideoView) findViewById(R.id.VideoView);
 
 		// Use a media controller so that you can scroll the video contents
 		// and also to pause, start the video.
-		
+
 		PourneyApplication Application = (PourneyApplication) getApplication();
 		trip = new TripDTO();
 		trip = Application.getSelectedTrip();
-		
+
 		String trip_id = Integer.toString(trip.getTripId());
-		videoUrl = videoUrl + trip_id +  "/" + trip_id + ".mp4";
+		videoUrl = videoUrl + trip_id + "/" + trip_id + ".mp4";
 		Log.d("video url", videoUrl);
 
 		MediaController mediaController = new MediaController(this);
@@ -140,6 +138,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl, O
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
