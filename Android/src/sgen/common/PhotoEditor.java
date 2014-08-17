@@ -71,6 +71,13 @@ public class PhotoEditor {
 		overlayCover();
 		return coveredPhoto;
 	}
+	
+	public Bitmap editPhotoAutoRectangle() {
+		resizeBitmapToProfileSize();
+		getCroppedRect();
+		overlayCover();
+		return coveredPhoto;
+	}
 
 	public void getCroppedCircle() {
 		Bitmap output = Bitmap.createBitmap(photoAreaWidth, photoAreaHeight,
@@ -90,11 +97,29 @@ public class PhotoEditor {
 		canvas.drawBitmap(photoBitmap, rect, rect, paint);
 		photoBitmap = output;
 	}
+	
+	public void getCroppedRect() {
+		Bitmap output = Bitmap.createBitmap(photoAreaWidth, photoAreaHeight,
+				Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, photoAreaWidth, photoAreaHeight);
+
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRect(rect, paint);
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(photoBitmap, rect, rect, paint);
+		photoBitmap = output;
+	}
 
 	// bitmap을 profile width,height size에 맞게 resize
 	public void resizeBitmapToProfileSize() {
 		Bitmap resized;
-		resized=ImageResize.resize(photoBitmap, photoAreaWidth, photoAreaHeight, ResizeMode.AUTOMATIC);
+		resized=ImageResize.resize(photoBitmap, photoAreaWidth, photoAreaHeight, ResizeMode.FIT_TO_WIDTH);
 //		resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
 //				photoAreaHeight, true);
 		photoBitmap = resized;
