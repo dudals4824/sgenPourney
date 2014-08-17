@@ -35,11 +35,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AlbumImgCell extends RelativeLayout implements
 		View.OnClickListener {
@@ -49,18 +51,19 @@ public class AlbumImgCell extends RelativeLayout implements
 	private Bitmap mBitmapMemo = null;
 	private Drawable sPhoto = null;
 	private ImageView imgPhoto = null;
-	private ImageButton regist,cancel;
+	private ImageButton regist, cancel;
 	private File mImgFile = null;
 	private PopupWindow memoPopupWindow;
 	private TextView date;
 	private PhotoDTO mPhoto;
 	private int mUserId;
-	//public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
+	// public static final String LAYOUT_INFLATER_SERVICE = "layout_inflater";
 	private PhotoLike photoLike;
 	private CheckAlreadyLiked checkLike;
 	private CheckBox checkImage;
 	private int likeFlag;
-
+	private EditText memo;
+	private String editedMemo;
 	public AlbumImgCell(Context context, Bitmap bitmap, PhotoDTO photo,
 			int userId) {
 		super(context);
@@ -88,9 +91,9 @@ public class AlbumImgCell extends RelativeLayout implements
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
 		// scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 
-
-		mBitmapMemo = ImageResize.resize(mBitmap, 900, 900, ResizeMode.AUTOMATIC);
-		sPhoto = new BitmapDrawable(getResources(),mBitmapMemo);
+		mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
+				ResizeMode.AUTOMATIC);
+		sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
 		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
 
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
@@ -109,8 +112,9 @@ public class AlbumImgCell extends RelativeLayout implements
 	public void onClick(View v) {
 		if (v.getId() == R.id.imgPhoto) {
 			ImageView selectedPhoto;
-			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext).getBaseContext()
-					.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext)
+					.getBaseContext().getSystemService(
+							mContext.LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
 			memoPopupWindow = new PopupWindow(popupView,
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
@@ -129,14 +133,36 @@ public class AlbumImgCell extends RelativeLayout implements
 			});
 
 			View contentView = memoPopupWindow.getContentView();
-			
+
 			memoPopupWindow.showAtLocation(imgPhoto, 0, 0, 218);
-			selectedPhoto = (ImageView) contentView.findViewById(R.id.selectedphoto);
+			selectedPhoto = (ImageView) contentView
+					.findViewById(R.id.selectedphoto);
 			selectedPhoto.setBackground(sPhoto);
 			regist = (ImageButton) contentView.findViewById(R.id.regist);
 			cancel = (ImageButton) contentView.findViewById(R.id.cancel);
-			regist.setOnClickListener(this);
-			cancel.setOnClickListener(this);
+			memo =(EditText)contentView.findViewById(R.id.memo);
+			editedMemo=memo.getText().toString();
+			
+			regist.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Log.d("EditedMemo", editedMemo);
+					System.out.println(editedMemo);
+					//DB에 저장하는 부분
+					memoPopupWindow.dismiss();
+				}
+			});
+			cancel.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					memoPopupWindow.dismiss();
+
+				}
+			});
+			
 		} else if (v.getId() == R.id.checkImage) {
 			photoLike = new PhotoLike();
 			if (checkImage.isChecked()) {
@@ -152,8 +178,6 @@ public class AlbumImgCell extends RelativeLayout implements
 		}
 		// 메모 불러와야 될 건 photoput activity 에 memooutput 으로 검색 ㄱㄱ
 	}
-
-
 
 	public class PhotoLike extends AsyncTask<Object, String, String> {
 		private PhotoDTO photo = new PhotoDTO();
