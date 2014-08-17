@@ -1,6 +1,9 @@
 package sgen.sgen_pourney;
 
 import java.util.Calendar; //나중에 필요
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import sgen.android.photoput.PhotoputActivity;
 
@@ -26,12 +29,18 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 	// int time = Hour*60*60+Minute*60+Second+24*60*60; // 줘야 함. 이건 디비에 저장하기
 	private CountDownTimer countDownTimer;
 	private TextView timer;
-	private final long startTime = 10 * 1000;// 24 * 60 * 60 * 1000; //24시간 밀리세컨
+	
+	private Calendar gregorian=new GregorianCalendar();
+
+	private long currentTime=gregorian.getTimeInMillis();
+	private final long videoDueTime=currentTime+10*1000;;
+	private long startTime= videoDueTime-currentTime;// 24 * 60 * 60 * 1000; //24시간 밀리세컨
 												// 단위임 비교한 값 여기에 넣으면 됨요
 	private final long interval = 100;
 	private Button gogoVideo;
 	private SimpleSideDrawer mDrawer;
-	private ImageButton btnTravelInfo, btnInputPhoto;
+	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,12 +50,9 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_video);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		
 		gogoVideo = (Button) findViewById(R.id.gogoVideo);
 		gogoVideo.setOnClickListener(this);
-		btnTravelInfo=(ImageButton)findViewById(R.id.btnTravelInfo);
-		btnInputPhoto=(ImageButton)findViewById(R.id.btnInputPhoto);
-		btnTravelInfo.setOnClickListener(this);
-		btnInputPhoto.setOnClickListener(this);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
@@ -96,6 +102,10 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 			// timer.setText("" + millisUntilFinished / 1000);
 
 		}
+		public void onBackPressed(){
+				
+		}
+
 
 	}
 
