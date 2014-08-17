@@ -20,6 +20,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl, O
 	private String fontpath="fonts/WalbaumBook-BoldItalic.otf";
 	private TextView video_view_text;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
+	private SimpleSideDrawer mDrawer;
 	final String videoUrl="http://54.178.166.213/video_763/763.mp4";
 	UserSessionManager session;
 	public void onCreate(Bundle savedInstanceState){
@@ -28,17 +29,27 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl, O
 		setContentView(R.layout.activity_video_complete);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		video_view_text=(TextView)findViewById(R.id.VideoView_Text);
-		Typeface tf=Typeface.createFromAsset(getAssets(), fontpath);
-		video_view_text.setTypeface(tf);
+		mDrawer = new SimpleSideDrawer(this);
+		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		askBtn = (Button) findViewById(R.id.ask_text);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		video_view_text=(TextView)findViewById(R.id.VideoView_Text);
 		askBtn.setOnClickListener(this);
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
+		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mDrawer.toggleLeftDrawer();
+			}
+		});
+
+		Typeface tf=Typeface.createFromAsset(getAssets(), fontpath);
+		video_view_text.setTypeface(tf);
+		
 		VideoView videoView = (VideoView) findViewById(R.id.VideoView);
 		
 		//Use a media controller so that you can scroll the video contents
