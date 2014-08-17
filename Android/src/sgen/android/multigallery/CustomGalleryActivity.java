@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +47,7 @@ public class CustomGalleryActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		StrictMode.enableDefaults();
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.gallery);
