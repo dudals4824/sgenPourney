@@ -93,7 +93,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
 		user = new UserDTO();
 		user = loggedInUser.getLoggedInUser();
-		Log.e("useruser", user.toString());
+		//Log.e("useruser", user.toString());
 
 		// logout을 위한 session 정보 settting
 		session = new UserSessionManager(getApplicationContext());

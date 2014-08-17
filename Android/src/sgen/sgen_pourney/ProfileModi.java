@@ -3,6 +3,7 @@ package sgen.sgen_pourney;
 import sgen.DTO.UserDTO;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
+import sgen.session.UserSessionManager;
 import sgen.sgen_pourney.CoverActivity.ProfileImageSetter;
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +25,7 @@ public class ProfileModi extends Activity implements OnClickListener {
 
 	private UserDTO user;
 	private Bitmap userProfilePhoto = null;
-
+	UserSessionManager session;
 	private ImageButton btnProfilePhoto;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private int photoAreaWidth;
@@ -86,6 +87,7 @@ public class ProfileModi extends Activity implements OnClickListener {
 			startActivity(intent);
 		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
+			session.logoutUser();
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);

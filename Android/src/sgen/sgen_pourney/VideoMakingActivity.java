@@ -6,11 +6,13 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import sgen.android.photoput.PhotoputActivity;
+import sgen.session.UserSessionManager;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -29,18 +31,19 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 	// int time = Hour*60*60+Minute*60+Second+24*60*60; // 줘야 함. 이건 디비에 저장하기
 	private CountDownTimer countDownTimer;
 	private TextView timer;
-	
-	private Calendar gregorian=new GregorianCalendar();
 
-	private long currentTime=gregorian.getTimeInMillis();
-	private final long videoDueTime=currentTime+10*1000;;
-	private long startTime= videoDueTime-currentTime;// 24 * 60 * 60 * 1000; //24시간 밀리세컨
-												// 단위임 비교한 값 여기에 넣으면 됨요
-	private long temp=startTime;
+	private Button askBtn, logoutBtn, albumBtn, profileBtn;
+	private Calendar gregorian = new GregorianCalendar();
+	UserSessionManager session;
+	private long currentTime = gregorian.getTimeInMillis();
+	private final long videoDueTime = currentTime + 10 * 1000;;
+	private long startTime = videoDueTime - currentTime;// 24 * 60 * 60 * 1000;
+														// //24시간 밀리세컨
+	// 단위임 비교한 값 여기에 넣으면 됨요
+	private long temp = startTime;
 	private final long interval = 100;
 	private Button gogoVideo;
 	private SimpleSideDrawer mDrawer;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +54,17 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_video);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		
+
 		gogoVideo = (Button) findViewById(R.id.gogoVideo);
 		gogoVideo.setOnClickListener(this);
+		askBtn = (Button) findViewById(R.id.ask_text);
+		logoutBtn = (Button) findViewById(R.id.log_out_text);
+		albumBtn = (Button) findViewById(R.id.last_album_text);
+		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		askBtn.setOnClickListener(this);
+		logoutBtn.setOnClickListener(this);
+		albumBtn.setOnClickListener(this);
+		profileBtn.setOnClickListener(this);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
@@ -64,15 +75,14 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 
 			}
 		});
-		
+
 		timer = (TextView) this.findViewById(R.id.timer);
 		countDownTimer = new MyCountDownTimer(temp, interval);
 
-		//start time에 동영상 생성 시간 넣음
+		// start time에 동영상 생성 시간 넣음
 		timer.setText(timer.getText() + String.valueOf(startTime / 1000));
 		countDownTimer.start();
-		
-	
+
 	}
 
 	public class MyCountDownTimer extends CountDownTimer {
@@ -87,7 +97,8 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		public void onFinish() {
 			countDownTimer.cancel();
 			timer.setText("Your Movie will be shown soon!");
-			Intent intent = new Intent(VideoMakingActivity.this, VideoViewActivity.class);
+			Intent intent = new Intent(VideoMakingActivity.this,
+					VideoViewActivity.class);
 			startActivity(intent);
 
 		}
@@ -103,10 +114,8 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 					+ " : "
 					+ String.valueOf((millisUntilFinished % 1000) / 100)); // 밀리초
 			// timer.setText("" + millisUntilFinished / 1000);
-			
+
 		}
-		
-		
 
 	}
 
@@ -116,11 +125,35 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		if (v.getId() == R.id.gogoVideo) {
 			Intent intent = new Intent(this, VideoViewActivity.class);
 			startActivity(intent);
+		} else if (v.getId() == R.id.ask_text) {
+			Intent intent = new Intent(this, AskActivity.class);
+			startActivity(intent);
+		} else if (v.getId() == R.id.log_out_text) {
+			Log.d("logout", "logout");
+			session.logoutUser();
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		} else if (v.getId() == R.id.last_album_text) {
+			Intent intent = new Intent(this, CoverActivity.class);
+
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+
+			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		} else if (v.getId() == R.id.profile_modifying_text) {
+			Intent intent = new Intent(this, ProfileModi.class);
+			startActivity(intent);
+			finish();
 		}
-	
+
 	}
-	public void onBackPressed()
-	{
+
+	public void onBackPressed() {
 		super.onBackPressed();
 		countDownTimer.cancel();
 		finish();

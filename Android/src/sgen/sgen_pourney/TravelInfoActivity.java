@@ -259,7 +259,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			startActivity(intent);
 		} else if (v.getId() == R.id.log_out_text) {
 			Intent intent = new Intent(this, LoginActivity.class);
-
+			session.logoutUser();
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
