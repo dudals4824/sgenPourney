@@ -87,7 +87,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		// scaledBitmap = ImageResizer.resize(imgFile, 300, 300);
 
 
-		mBitmapMemo = ImageResize.resize(mBitmap, 600, 600, ResizeMode.AUTOMATIC);
+		mBitmapMemo = ImageResize.resize(mBitmap, 900, 900, ResizeMode.AUTOMATIC);
 		sPhoto = new BitmapDrawable(getResources(),mBitmapMemo);
 		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
 
