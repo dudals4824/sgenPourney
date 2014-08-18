@@ -207,16 +207,16 @@
 
                     <ImageButton
                         android:id="@+id/Original_btn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                        android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                         android:background="@android:color/transparent"
                         android:scaleType="fitXY"
                         android:src="@drawable/i_original" />
 
                     <RadioButton
                         android:id="@+id/Original_radiobtn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                        android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="-85dp"
                         android:background="@drawable/radiobtnback"
@@ -225,16 +225,16 @@
 
                     <ImageView
                         android:id="@+id/Sunny_btn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                        android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                         android:background="@android:color/transparent"
                         android:scaleType="fitXY"
                         android:src="@drawable/i_sunnyday" />
 
                     <RadioButton
                         android:id="@+id/SunnyDay_radiobtn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                       android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="-85dp"
                         android:background="@drawable/radiobtnback"
@@ -242,8 +242,8 @@
 
                     <ImageView
                         android:id="@+id/Dramatic_btn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                        android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                         android:layout_marginLeft="2dp"
                         android:background="@android:color/transparent"
                         android:scaleType="fitXY"
@@ -251,8 +251,8 @@
 
                     <RadioButton
                         android:id="@+id/Dramatic_radiobtn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                        android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="-85dp"
                         android:background="@drawable/radiobtnback"
@@ -260,8 +260,8 @@
 
                     <ImageView
                         android:id="@+id/Cloudy_btn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                       android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                      
                         android:background="@android:color/transparent"
                         android:scaleType="fitXY"
@@ -269,8 +269,8 @@
 
                     <RadioButton
                         android:id="@+id/Cloudy_radiobtn"
-                        android:layout_width="250px"
-                        android:layout_height="250px"
+                        android:layout_width=" 83.33dp	"
+                        android:layout_height=" 83.33dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="-85dp"
                         android:background="@drawable/radiobtnback"
