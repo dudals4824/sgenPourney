@@ -230,10 +230,10 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		}
 	}
 
+	
 	/*
 	 * Profile 사진 등록 클릭시 나타나는 dialog.
 	 */
-
 	void showListDialog() {
 		/**
 		 * 

@@ -90,7 +90,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private PopupWindow memoPopupWindow;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 
-	private TextView popupLocation, title, date;
+	private TextView popupLocation, title, date, numberOfPeople;
 	private ImageButton friendList, btnProfilePhoto, btnMakeVideo,
 			btnTravelInfo, btnPhotoPlus;
 	private String storagePath = Environment.DIRECTORY_DCIM + "/pic";
@@ -152,6 +152,17 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String intent_date;
 
 	private ArrayList<Integer> intent_dateList;
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		GetTripInfo getTrip = new GetTripInfo();
+		getTrip.execute(Integer.toString(trip.getTripId()));
+		
+		CheckMakeVideo checkVideo = new CheckMakeVideo();
+		checkVideo.execute(user, trip);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -232,7 +243,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		popupLocation = (TextView) findViewById(R.id.textPeople); // 여행 사람 수
 		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
-
+		
 		// 여행 정보 setting
 		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));// 디비에서 사람
 																		// 수
@@ -822,5 +833,76 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 
 	}// end of photoLike
+	
+	public class GetTripInfo extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
+			Log.d("trip_Id", "trip id : " + params[0]);
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/getCoverInfo.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("log_tag", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				JSONArray JsonArray = new JSONArray(result);
+				JSONObject JsonObject = JsonArray.getJSONObject(0);
+				trip.setTripId(JsonObject.getInt("trip_id"));
+				trip.setTripTitle(JsonObject.getString("trip_name"));
+				trip.setStartDate(JsonObject.getLong("start_date"));
+				trip.setEndDate(JsonObject.getLong("end_date"));
+				//tripDTO.setVideoDueDate(JsonObject.getLong("video_due_date"));
+				trip.setPhotoCnt(JsonObject.getInt("photo_count"));
+				trip.setPeopleCnt(JsonObject.getInt("people_count"));
+				trip.setVideoMade("1".equals(JsonObject.getString("is_video_made")));
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			// travel information setting
+			Log.d("settext", trip.toString());
+			title.setText(trip.getTripTitle());
+			date.setText(trip.getStartDateInDateFormat() + " ~ "
+					+ trip.getEndDateInDateFormat());
+			popupLocation
+					.setText("With " + trip.getPeopleCnt() + " people");
+		}
+	}
+
+
 
 }
