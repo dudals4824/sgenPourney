@@ -96,8 +96,6 @@ public class AlbumImgCell extends RelativeLayout implements
 
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
 
-		mBitmap = ImageResize.resize(mBitmap, 300, 300, ResizeMode.AUTOMATIC);
-
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
 		// 이미지를 비트맵으로 받아와서 이미지뷰에 추가 리사이징 해야함
 		imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
@@ -105,7 +103,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
 				R.drawable.i_photo_gray_mask318x318);
 		Bitmap coverBitmap = bd.getBitmap();
-		PhotoEditor photoEdit = new PhotoEditor(bitmap, coverBitmap, 300, 300);
+		PhotoEditor photoEdit = new PhotoEditor(bitmap, coverBitmap, coverBitmap.getWidth(), coverBitmap.getHeight());
 
 		imgPhoto.setImageBitmap(photoEdit.editPhotoAutoRectangle());
 
