@@ -26,6 +26,7 @@ public class DayAlbum extends LinearLayout {
 	private ImageButton btnPhoto;
 	private Context mContext = null;
 	private GridLayout layoutGridPhotoAlbum;
+	private DayAlbumAdapter dayalbumadapter;
 	static final int SELECT_PICTURE = 1;
 	static final int REQUEST_PICTURE = 2;
 	private String mDate;
