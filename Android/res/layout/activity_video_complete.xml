@@ -58,29 +58,29 @@
                   android:layout_alignParentLeft="true"
                   android:layout_marginBottom="50dp" />
 
-              <ImageView
-                  android:id="@+id/video_view_logo"
-                  android:layout_width="300px"
-                  android:layout_height="300px"
-                  android:layout_alignParentBottom="true"
-                  android:layout_centerHorizontal="true"
-                  android:src="@drawable/i_logoimage" />
+				<ImageView
+				    android:id="@+id/video_view_logo"
+				    android:layout_width="300px"
+				    android:layout_height="300px"
+				    android:layout_alignParentBottom="true"
+				    android:layout_centerHorizontal="true"
+				    android:src="@drawable/i_logoimage" />
+
+				<ImageButton
+				    android:id="@+id/facebook_sharing_btn"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_above="@+id/video_view_logo"
+				    android:layout_alignLeft="@+id/video_view_logo"
+				    android:layout_marginBottom="12dp"
+				    android:background="@android:color/transparent"
+				    android:src="@drawable/facebook_share_button_300x100" />
 
         </RelativeLayout>
        
-        <RelativeLayout 
-            android:id="@+id/util_btns"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-            <Button
-                android:id="@+id/facebook_share_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FaceBook"></Button>
-        </RelativeLayout>
+      
             
-            "
+            
     </LinearLayout>
 
 </RelativeLayout>

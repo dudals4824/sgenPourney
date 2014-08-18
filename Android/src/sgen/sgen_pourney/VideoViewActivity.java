@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.MediaController.MediaPlayerControl;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 	private TextView video_view_text;
 	private String videoUrl = "http://54.178.166.213/video/video_";
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
+	private ImageButton fbShareBtn;
 	private SimpleSideDrawer mDrawer;
 	private TripDTO trip;
 	UserSessionManager session;
@@ -41,6 +43,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		video_view_text.setTypeface(tf);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
+		fbShareBtn=(ImageButton)findViewById(R.id.facebook_sharing_btn);
 		askBtn = (Button) findViewById(R.id.ask_text);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
