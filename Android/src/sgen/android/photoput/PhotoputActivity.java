@@ -157,11 +157,11 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		
-		GetTripInfo getTrip = new GetTripInfo();
-		getTrip.execute(Integer.toString(trip.getTripId()));
+		//GetTripInfo getTrip = new GetTripInfo();
+		//getTrip.execute(Integer.toString(trip.getTripId()));
 		
-		CheckMakeVideo checkVideo = new CheckMakeVideo();
-		checkVideo.execute(user, trip);
+		//CheckMakeVideo checkVideo = new CheckMakeVideo();
+		//checkVideo.execute(user, trip);
 	}
 
 	@Override
