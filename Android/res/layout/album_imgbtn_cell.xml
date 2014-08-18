@@ -11,19 +11,8 @@
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true"
         android:scaleType="fitXY"
+        android:paddingRight="4dp"
         android:src="@drawable/i_photo_gray318x318" />
 
-    <ImageButton
-        android:id="@+id/btnMemoWrite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="6.67dp"
-        android:layout_marginRight="6.67dp"
-        android:layout_alignBottom="@+id/btnPhotoAdd"
-        android:layout_alignRight="@+id/btnPhotoAdd"
-        android:background="@android:color/transparent"
-        android:fitsSystemWindows="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/i_write" />
 
 </RelativeLayout>
