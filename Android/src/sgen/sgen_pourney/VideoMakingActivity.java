@@ -54,6 +54,16 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_video);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		mDrawer = new SimpleSideDrawer(this);
+		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
+		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mDrawer.toggleLeftDrawer();
+
+			}
+		});
 
 		gogoVideo = (Button) findViewById(R.id.gogoVideo);
 		gogoVideo.setOnClickListener(this);
@@ -65,16 +75,6 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
-		mDrawer = new SimpleSideDrawer(this);
-		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
-		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mDrawer.toggleLeftDrawer();
-
-			}
-		});
 
 		timer = (TextView) this.findViewById(R.id.timer);
 		countDownTimer = new MyCountDownTimer(temp, interval);
