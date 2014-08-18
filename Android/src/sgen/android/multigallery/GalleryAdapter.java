@@ -1,9 +1,10 @@
 package sgen.android.multigallery;
 
 import java.util.ArrayList;
-import sgen.sgen_pourney.R;
 
+import sgen.sgen_pourney.R;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,6 +116,12 @@ public class GalleryAdapter extends BaseAdapter {
 		} else {
 			data.get(position).isSeleted = true;
 		}
+
+		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
+				.get(position).isSeleted);
+	}
+	public void changeSelection2(View v, int position){
+			data.get(position).isSeleted = false;
 
 		((ViewHolder) v.getTag()).imgQueueMultiSelected.setSelected(data
 				.get(position).isSeleted);
