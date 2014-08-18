@@ -45,6 +45,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -308,7 +309,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 
 			gregorianStart.add(Calendar.DATE, 1);
 		}
-		// setPhotoNum();
 	}
 
 	public void onClick(View v) {
@@ -435,8 +435,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 					// 넣으면 될 것 같아요.
 					all_path.get(i)
 							.setFile(new File(all_path.get(i).getPath()));
-					Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(),
-							300, 300, ResizeMode.FIT_TO_HEIGHT);
+					//패스를 가져와서 비트맵으로 만들어서 넘긴다. 리사이징은 앨범이미지셀에서한다.
+					Bitmap bm= BitmapFactory.decodeFile(all_path.get(i).getPath());
 					dayalbumList.get(day).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this, bm,
 									new PhotoDTO(), user.getUserId()));
