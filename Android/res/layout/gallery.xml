@@ -42,19 +42,20 @@
     </FrameLayout>
 
     <LinearLayout
+        android:layout_gravity="center_horizontal"
         android:id="@+id/llBottomContainer"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="5dp" >
 
         <Button
             android:id="@+id/btnGalleryOk"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_sel"
-            android:text="btn_ok" />
+            android:background="@drawable/i_photoselect"
+          />
     </LinearLayout>
 
 </LinearLayout>
