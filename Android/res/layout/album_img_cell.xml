@@ -9,18 +9,9 @@
         android:id="@+id/imgPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/i_photo_gray318x318"
         android:fitsSystemWindows="true"
         android:scaleType="fitXY"
         android:src="@drawable/i_photo_gray318x318" />
-    <ImageView
-        android:paddingRight="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/i_photo_gray_mask318x318" 
-        />
 
     <CheckBox
         android:id="@+id/checkImage"
