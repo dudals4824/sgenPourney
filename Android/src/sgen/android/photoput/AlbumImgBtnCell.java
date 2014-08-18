@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 
 public class AlbumImgBtnCell extends RelativeLayout {
 	private Context mContext = null;
-	private ImageButton btnPhotoAdd, btnMemoWrite;
+	private ImageButton btnPhotoAdd;
 	static final int SELECT_PICTURE = 1;
 	private int mIntent_date;
 
@@ -39,7 +39,6 @@ public class AlbumImgBtnCell extends RelativeLayout {
 		View v = li.inflate(R.layout.album_imgbtn_cell, this, false);
 		addView(v);
 
-		btnMemoWrite = (ImageButton) findViewById(R.id.btnMemoWrite);
 		btnPhotoAdd = (ImageButton) findViewById(R.id.btnPhotoAdd);
 
 		btnPhotoAdd.setOnClickListener(new OnClickListener() {
