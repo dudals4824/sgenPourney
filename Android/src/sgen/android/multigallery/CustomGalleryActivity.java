@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -34,16 +35,18 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 
 public class CustomGalleryActivity extends Activity {
 
-	GridView gridGallery;
-	Handler handler;
-	GalleryAdapter adapter;
+	private GridView gridGallery;
+	private Handler handler;
+	private GalleryAdapter adapter;
 
-	ImageView imgNoMedia;
-	Button btnGalleryOk;
+	private ImageView imgNoMedia;
+	private Button btnGalleryOk;
 
 	String action;
 	private ImageLoader imageLoader;
 	private int intent_date;
+	
+	private TextView textGalleryTitle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -174,12 +177,21 @@ public class CustomGalleryActivity extends Activity {
 
 		}
 	};
+	
+	//이미지 선택은 최대 열개까지만 가능, 이 부분에서 선택을 조절
 	AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {
 
 		@Override
 		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-			adapter.changeSelection(v, position);
-
+			textGalleryTitle=(TextView)findViewById(R.id.textGalleryTitle);
+			
+			
+			if(adapter.getSelected().size()<10)
+				adapter.changeSelection(v, position);
+			else
+				adapter.changeSelection2(v, position);
+			Log.d("선택된 크기", adapter.getSelected().size()+"");
+			textGalleryTitle.setText("Pourney "+adapter.getSelected().size()+"/10");		
 		}
 	};
 
