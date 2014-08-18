@@ -218,8 +218,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// 바뀐다
 		if (trip.isVideoMade()) {
 			// 비디오가 만들어진 경우
-			btnPhotoPlus.setOnClickListener(this);
 			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
+			btnPhotoPlus.setOnClickListener(this);
 			Drawable res = getResources().getDrawable(
 					R.drawable.i_video_making_go_582x100);
 			btnPhotoPlus.setImageDrawable(res);
