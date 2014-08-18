@@ -100,9 +100,10 @@ public class PhotoEditor {
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		// 위치 결정... rect
 		if (originalBitmap.getWidth() >= originalBitmap.getHeight())
-			canvas.drawBitmap(photoBitmap, 0, (300-proportionBitmap.getHeight())/2, paint);
+			canvas.drawBitmap(photoBitmap, 0, (photoAreaHeight-proportionBitmap.getHeight())/2, paint);
 		else
-			canvas.drawBitmap(photoBitmap, (300-proportionBitmap.getWidth())/2,0, paint);
+			canvas.drawBitmap(photoBitmap, (photoAreaWidth-proportionBitmap.getWidth())/2,0, paint);
+		
 		photoBitmap = output;
 	}
 
@@ -114,7 +115,7 @@ public class PhotoEditor {
 		final int color = 0xff424242;
 		final Paint paint = new Paint();
 		// 사진이 그려질 사각형의 크기
-		final Rect rect = new Rect(0, 0, 300, photoAreaHeight);
+		final Rect rect = new Rect(0, 0, photoAreaWidth, photoAreaHeight);
 
 		paint.setAntiAlias(true);
 		// canvas.drawARGB(0, 0, 0, 0);
@@ -122,14 +123,10 @@ public class PhotoEditor {
 
 		canvas.drawRect(rect, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-		// left top
-		Log.d("width", originalBitmap.getWidth()+"");
-		Log.d("height", originalBitmap.getHeight()+"");
-		//리사이즈된 비율을 알아야...하는데..
 		if (originalBitmap.getWidth() >= originalBitmap.getHeight())
-			canvas.drawBitmap(photoBitmap, 0, (300-proportionBitmap.getHeight())/2, paint);
+			canvas.drawBitmap(photoBitmap, 0, (photoAreaHeight-proportionBitmap.getHeight())/2, paint);
 		else
-			canvas.drawBitmap(photoBitmap, (300-proportionBitmap.getWidth())/2,0, paint);
+			canvas.drawBitmap(photoBitmap, (photoAreaWidth-proportionBitmap.getWidth())/2,0, paint);
 		photoBitmap = output;
 	}
 
