@@ -1,5 +1,16 @@
 package sgen.sgen_pourney;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionDefaultAudience;
+import com.facebook.SessionState;
+
 import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.application.PourneyApplication;
@@ -53,6 +64,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
+		fbShareBtn.setOnClickListener(this);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -165,10 +177,71 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		} else if (v.getId() == R.id.profile_modifying_text) {
+		} else if(v.getId() == R.id.facebook_sharing_btn){
+			// 페북 공유
+			facebookSharing();
+			
+		}
+		
+		else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
 		}
+	}
+	private void facebookSharing() {
+
+		List<String> permissions = new ArrayList<String>();
+		permissions.add("email");
+		permissions.add("public_profile");
+		// 포스팅위한 퍼미션
+		Session.openActiveSession(this, true, permissions,
+				new Session.StatusCallback() {
+
+					// callback when session changes state
+					@Override
+					public void call(Session session, SessionState state,
+							Exception exception) {
+						if (session.isOpened()) {/* make the API call */
+							new Request(session, "/{post-id}", null,
+									HttpMethod.GET, new Request.Callback() {
+										public void onCompleted(
+												Response response) {
+											/* handle the result */
+										}
+									}).executeAsync();
+						}
+					}
+				});
+
+		Session session = Session.getActiveSession();
+		List<String> permission = session.getPermissions();
+		if (!permission.contains("publish_actions")) {
+			Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
+					this, Arrays.asList("publish_actions"))
+					.setDefaultAudience(SessionDefaultAudience.EVERYONE);
+			session.requestNewPublishPermissions(newPermissionsRequest);
+			/* make the API call */
+			Bundle params = new Bundle();
+			params.putString("message", "Trip to paris" + "   "
+					+ "2014.06.14 ~ 2014.06.16");// 여기에 여행 제목이랑 날짜 넣어주면 될듯
+			params.putString("name", "Minha" + "'s Journey Movie");
+			// minha's journey movie 처럼 개인 이름 넣으면 됨 
+			params.putString("link", "http://54.178.166.213/video/video_778/778.mp4");// 여기에 영상 주소 넣고
+			params.putString("description", "..made by 'Pourney'");// 이건 우리 광고
+			params.putString("icon",
+					"http://54.178.166.213/video/video_763/i_logo.png");// 여기에
+																		// icon
+																		// 넣고
+			/* make the API call */
+			new Request(session, "/me/feed", params, HttpMethod.POST,
+					new Request.Callback() {
+						public void onCompleted(Response response) {
+							/* handle the result */
+						}
+					}).executeAsync();
+		}
+		// TODO Auto-generated method stub
+
 	}
 }
