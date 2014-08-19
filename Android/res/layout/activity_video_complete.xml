@@ -17,26 +17,6 @@
         <!-- 상단 단계 부분 -->
 
         <RelativeLayout
-            android:id="@+id/layoutStep"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="#003558" >
-
-            <!-- 글씨체 바꿔야됩니다. -->
-            <TextView
-                android:id="@+id/VideoView_Text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="Your Memory"
-                android:textSize="16pt" >
-                
-            </TextView>
-        </RelativeLayout>
-
-        <RelativeLayout
             android:id="@+id/layoutMakingMovie"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
@@ -48,12 +28,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/i_back_video" />
+                android:src="@drawable/i_back_videocomplete" />
 
               <VideoView
                   android:id="@+id/VideoView"
                   android:layout_width="match_parent"
                   android:layout_height="243dp"
+                  
                   android:layout_alignBottom="@+id/imgBackVideo"
                   android:layout_alignParentLeft="true"
                   android:layout_marginBottom="50dp" />
