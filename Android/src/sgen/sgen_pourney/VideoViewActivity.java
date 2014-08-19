@@ -224,13 +224,13 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 					}
 				});
 
-		Session session = Session.getActiveSession();
-		List<String> permission = session.getPermissions();
+		Session session1 = Session.getActiveSession();
+		List<String> permission = session1.getPermissions();
 		if (!permission.contains("publish_actions")) {
 			Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
 					this, Arrays.asList("publish_actions"))
 					.setDefaultAudience(SessionDefaultAudience.EVERYONE);
-			session.requestNewPublishPermissions(newPermissionsRequest);
+			session1.requestNewPublishPermissions(newPermissionsRequest);
 			/* make the API call */
 			Bundle params = new Bundle();
 			params.putString("message", "Trip to paris" + "   "
@@ -244,7 +244,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 																		// icon
 																		// 넣고
 			/* make the API call */
-			new Request(session, "/me/feed", params, HttpMethod.POST,
+			new Request(session1, "/me/feed", params, HttpMethod.POST,
 					new Request.Callback() {
 						public void onCompleted(Response response) {
 							/* handle the result */
