@@ -79,6 +79,11 @@ public class CoverActivity extends Activity implements OnClickListener {
 	// trip id 저장용 array list
 	private ArrayList<Integer> tripArray = new ArrayList<Integer>();
 
+	private Uri currImageURI;
+	private String imagePath;
+	private File imgFile;
+	private Bitmap mBitmap;
+
 	// CoverCell marble=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +98,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
 		user = new UserDTO();
 		user = loggedInUser.getLoggedInUser();
-		//Log.e("useruser", user.toString());
+		// Log.e("useruser", user.toString());
 
 		// logout을 위한 session 정보 settting
 		session = new UserSessionManager(getApplicationContext());
@@ -157,6 +162,64 @@ public class CoverActivity extends Activity implements OnClickListener {
 		// 프로필이미지 셋팅
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			if (requestCode == REQUEST_ALBUM) {
+				Log.d("REQUEST_ALBUM", "REQUEST_ALBUM");
+				// content:// URI of the image
+				currImageURI = data.getData();
+				// 실제 절대주소를 받아옴
+				imagePath = getRealPathFromURI(currImageURI);
+				Log.e("KJK", "URI : " + currImageURI.toString());
+				Log.e("KJK", "Real Path : " + imagePath);
+
+				// image path 얻어왔으면 imgFile초기화.
+				imgFile = new File(imagePath);
+				// img file bitmap 변경
+				if (imgFile.exists()) {
+					mBitmap = BitmapFactory.decodeFile(imgFile
+							.getAbsolutePath());
+					// getCroppedBitmap(mBitmap);
+					Log.e("비트맵 로드", "성공");
+				} else
+					Log.e("비트맵 디코딩", "실패");
+
+				
+			}
+//			// mPictureBtn.setImageBitmap(overlayCover(getCroppedBitmap(resizeBitmapToProfileSize(mBitmap))));
+//			BitmapDrawable bd = (BitmapDrawable) this.getResources()
+//					.getDrawable(R.drawable.i_profilephoto_cover);
+//			Bitmap coverBitmap = bd.getBitmap();
+//			// constructor
+//			// mBitmap에 찍은 사진 넣기
+//			// cover은 그대로
+//			PhotoEditor photoEdit = new PhotoEditor(mBitmap, coverBitmap,
+//					photoAreaWidth, photoAreaHeight);
+//			// resize
+//			// crop roun
+//			// overay cover
+//
+//			// 이거하면 이미지 셋됨
+//			// mBitmap = photoEdit.editPhotoAuto();
+//			// btnCoverPhoto.setImageBitmap(mBitmap);
+		}
+	}
+
+	private String getRealPathFromURI(Uri contentUri) {
+		String path = null;
+		String[] proj = { MediaStore.MediaColumns.DATA };
+		Cursor cursor = getApplicationContext().getContentResolver().query(contentUri, proj,
+				null, null, null);
+		if (cursor.moveToFirst()) {
+			int column_index = cursor
+					.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+			path = cursor.getString(column_index);
+		}
+		cursor.close();
+		return path;
 	}
 
 	@Override
@@ -264,7 +327,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/getCoverCount.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -272,7 +336,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 				Log.e("log_tag", "error in http connection" + e.toString());
 			}
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
 				sb = new StringBuilder();
 				sb.append(reader.readLine() + "\n");
 				String line = "0";
