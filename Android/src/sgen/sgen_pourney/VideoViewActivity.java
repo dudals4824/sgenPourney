@@ -49,7 +49,6 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		setContentView(R.layout.activity_video_complete);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		video_view_text = (TextView) findViewById(R.id.VideoView_Text);
 		Typeface tf = Typeface.createFromAsset(getAssets(), fontpath);
 		video_view_text.setTypeface(tf);
 		mDrawer = new SimpleSideDrawer(this);
@@ -59,7 +58,6 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-		video_view_text = (TextView) findViewById(R.id.VideoView_Text);
 		askBtn.setOnClickListener(this);
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
