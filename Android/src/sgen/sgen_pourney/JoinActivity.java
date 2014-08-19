@@ -105,10 +105,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 		duplicationCheckOk = Toast.makeText(this, "사용가능한 닉네임, 이메일 입니다.",
 				Toast.LENGTH_SHORT);
 
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
 
 		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
 				R.drawable.i_profilephoto);
@@ -324,22 +320,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_join, container,
-					false);
-			return rootView;
-		}
-	}
 
 	@Override
 	public void onClick(View arg0) {
