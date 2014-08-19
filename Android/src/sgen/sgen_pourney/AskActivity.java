@@ -52,6 +52,7 @@ public class AskActivity extends Activity {
 		call.setTypeface(tf);
 		call_info.setTypeface(tf);
 		
+		//facebookSharing();
 	}
 
 //	private void facebookSharing() {

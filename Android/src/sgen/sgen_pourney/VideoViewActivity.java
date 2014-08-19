@@ -15,12 +15,16 @@ import com.facebook.model.GraphUser;
 import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.application.PourneyApplication;
+import sgen.common.PhotoEditor;
 import sgen.session.UserSessionManager;
 import sgen.sgen_pourney.LoginActivity.BackTask;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -185,12 +189,11 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 			finish();
 		}
 	}
-	private void facebookSharing() {
-
+	private void facebookSharing() { // facebook login 占쏙옙 id
+		
 		List<String> permissions = new ArrayList<String>();
 		permissions.add("email");
 		permissions.add("public_profile");
-		// 포스팅위한 퍼미션
 		Session.openActiveSession(this, true, permissions,
 				new Session.StatusCallback() {
 
@@ -211,6 +214,22 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 												GraphUser user,
 												Response response) {
 											if (user != null) {
+												String nickName = user
+														.getFirstName();
+												System.out.println(nickName);
+											
+												String id = user.getId();
+												String userId = id;
+												System.out.println(userId);
+												String email = user
+														.getProperty(
+																"email")
+														.toString();
+												Bitmap mIcon = null;
+												//System.out.println(email);
+												new BackTask().execute(mIcon);
+												
+
 												// finish();
 												// Intent intent = new
 												// Intent(
@@ -224,9 +243,12 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 					}
 				});
 
+	
+		
+	
 		Session session1 = Session.getActiveSession();
-		List<String> permission = session1.getPermissions();
-		if (!permission.contains("publish_actions")) {
+		List<String> permission1 = session1.getPermissions();
+		if (!permission1.contains("publish_actions")) {
 			Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
 					this, Arrays.asList("publish_actions"))
 					.setDefaultAudience(SessionDefaultAudience.EVERYONE);
@@ -252,6 +274,23 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 					}).executeAsync();
 		}
 		// TODO Auto-generated method stub
+
+	}
+	public class BackTask extends AsyncTask<Bitmap, String, String> {
+
+		@Override
+		protected String doInBackground(Bitmap... args) {
+			Bitmap mIcon = args[0];
+			//ImageView icon_pic = (ImageView) findViewById(R.id.imgLogoimage);
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String text) {
+			//logo.setBackground(sPhoto);
+
+		}
 
 	}
 }
