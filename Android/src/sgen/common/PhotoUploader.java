@@ -112,7 +112,7 @@ public class PhotoUploader extends Thread {
 //			Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0,
 //					buffer.length, option);
 			Bitmap bitmap;
-			bitmap=ImageResize.resize(buffer, 300, 300, ResizeMode.AUTOMATIC);
+			bitmap=ImageResize.resize(buffer, 600, 600, ResizeMode.AUTOMATIC);
 			//ImageResize.resize(bitmap, 300, 300, ResizeMode.FIT_EXACT);
 			Log.e("bitmap validation",
 					bitmap.getWidth() + " " + bitmap.getHeight());
