@@ -189,11 +189,12 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 			finish();
 		}
 	}
-	private void facebookSharing() { // facebook login 占쏙옙 id
-		
+	private void facebookSharing() {
+		System.out.println("좆같다");
 		List<String> permissions = new ArrayList<String>();
 		permissions.add("email");
 		permissions.add("public_profile");
+	
 		Session.openActiveSession(this, true, permissions,
 				new Session.StatusCallback() {
 
@@ -214,19 +215,18 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 												GraphUser user,
 												Response response) {
 											if (user != null) {
-												String nickName = user
-														.getFirstName();
+Bitmap mIcon = null;
+												String nickName = user.getFirstName();
 												System.out.println(nickName);
-											
-												String id = user.getId();
-												String userId = id;
-												System.out.println(userId);
-												String email = user
-														.getProperty(
-																"email")
-														.toString();
-												Bitmap mIcon = null;
-												//System.out.println(email);
+//											
+//												String id = user.getId();
+//												userId = id;
+//												//System.out.println(userId);
+//												email = user
+//														.getProperty(
+//																"email")
+//														.toString();
+//												//System.out.println(email);
 												new BackTask().execute(mIcon);
 												
 
@@ -243,16 +243,13 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 					}
 				});
 
-	
-		
-	
-		Session session1 = Session.getActiveSession();
-		List<String> permission1 = session1.getPermissions();
-		if (!permission1.contains("publish_actions")) {
+		Session session = Session.getActiveSession();
+		List<String> permission = session.getPermissions();
+		if (!permission.contains("publish_actions")) {//퍼미션 추가
 			Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
 					this, Arrays.asList("publish_actions"))
 					.setDefaultAudience(SessionDefaultAudience.EVERYONE);
-			session1.requestNewPublishPermissions(newPermissionsRequest);
+			session.requestNewPublishPermissions(newPermissionsRequest);
 			/* make the API call */
 			Bundle params = new Bundle();
 			params.putString("message", "Trip to paris" + "   "
@@ -266,12 +263,35 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 																		// icon
 																		// 넣고
 			/* make the API call */
-			new Request(session1, "/me/feed", params, HttpMethod.POST,
+			new Request(session, "/me/feed", params, HttpMethod.POST,
 					new Request.Callback() {
 						public void onCompleted(Response response) {
+							System.out.println("TLqkf");
 							/* handle the result */
 						}
 					}).executeAsync();
+		}else if(permission.contains("publish_actions")){
+			/* make the API call */
+			Bundle params = new Bundle();
+			params.putString("message", "Trip to paris" + "   "
+					+ "2014.06.14 ~ 2014.06.16");// 여기에 여행 제목이랑 날짜 넣어주면 될듯
+			params.putString("name", "Minha" + "'s Journey Movie");
+			// minha's journey movie 처럼 개인 이름 넣으면 됨 
+			params.putString("link", "http://54.178.166.213/video/video_778/778.mp4");// 여기에 영상 주소 넣고
+			params.putString("description", "..made by 'Pourney'");// 이건 우리 광고
+			params.putString("icon",
+					"http://54.178.166.213/video/video_763/i_logo.png");// 여기에
+																		// icon
+																		// 넣고
+			/* make the API call */
+			new Request(session, "/me/feed", params, HttpMethod.POST,
+					new Request.Callback() {
+						public void onCompleted(Response response) {
+							System.out.println("TLqkf");
+							/* handle the result */
+						}
+					}).executeAsync();
+			
 		}
 		// TODO Auto-generated method stub
 
@@ -280,8 +300,6 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 
 		@Override
 		protected String doInBackground(Bitmap... args) {
-			Bitmap mIcon = args[0];
-			//ImageView icon_pic = (ImageView) findViewById(R.id.imgLogoimage);
 
 			return null;
 		}

@@ -52,15 +52,15 @@ public class AskActivity extends Activity {
 		call.setTypeface(tf);
 		call_info.setTypeface(tf);
 		
-		//facebookSharing();
+//		facebookSharing();
 	}
 
 //	private void facebookSharing() {
-//
+//		System.out.println("좆같다");
 //		List<String> permissions = new ArrayList<String>();
 //		permissions.add("email");
 //		permissions.add("public_profile");
-//		// 포스팅위한 퍼미션
+//	
 //		Session.openActiveSession(this, true, permissions,
 //				new Session.StatusCallback() {
 //
@@ -68,12 +68,41 @@ public class AskActivity extends Activity {
 //					@Override
 //					public void call(Session session, SessionState state,
 //							Exception exception) {
-//						if (session.isOpened()) {/* make the API call */
-//							new Request(session, "/{post-id}", null,
-//									HttpMethod.GET, new Request.Callback() {
+//						if (session.isOpened()) {
+//							// make request to the /me API
+//							Request.newMeRequest(session,
+//									new Request.GraphUserCallback() {
+//
+//										// callback after Graph API response
+//										// with
+//										// user object
+//										@Override
 //										public void onCompleted(
+//												GraphUser user,
 //												Response response) {
-//											/* handle the result */
+//											if (user != null) {
+//Bitmap mIcon = null;
+//												String nickName = user.getFirstName();
+//												System.out.println(nickName);
+////											
+////												String id = user.getId();
+////												userId = id;
+////												//System.out.println(userId);
+////												email = user
+////														.getProperty(
+////																"email")
+////														.toString();
+////												//System.out.println(email);
+//												new BackTask().execute(mIcon);
+//												
+//
+//												// finish();
+//												// Intent intent = new
+//												// Intent(
+//												// LoginActivity.this,
+//												// CoverActivity.class);
+//												// startActivity(intent); //액티비티넘기는거
+//											}
 //										}
 //									}).executeAsync();
 //						}
@@ -82,7 +111,7 @@ public class AskActivity extends Activity {
 //
 //		Session session = Session.getActiveSession();
 //		List<String> permission = session.getPermissions();
-//		if (!permission.contains("publish_actions")) {
+//		if (!permission.contains("publish_actions")) {//퍼미션 추가
 //			Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
 //					this, Arrays.asList("publish_actions"))
 //					.setDefaultAudience(SessionDefaultAudience.EVERYONE);
@@ -103,11 +132,49 @@ public class AskActivity extends Activity {
 //			new Request(session, "/me/feed", params, HttpMethod.POST,
 //					new Request.Callback() {
 //						public void onCompleted(Response response) {
+//							System.out.println("TLqkf");
 //							/* handle the result */
 //						}
 //					}).executeAsync();
+//		}else if(permission.contains("publish_actions")){
+//			/* make the API call */
+//			Bundle params = new Bundle();
+//			params.putString("message", "Trip to paris" + "   "
+//					+ "2014.06.14 ~ 2014.06.16");// 여기에 여행 제목이랑 날짜 넣어주면 될듯
+//			params.putString("name", "Minha" + "'s Journey Movie");
+//			// minha's journey movie 처럼 개인 이름 넣으면 됨 
+//			params.putString("link", "http://54.178.166.213/video/video_778/778.mp4");// 여기에 영상 주소 넣고
+//			params.putString("description", "..made by 'Pourney'");// 이건 우리 광고
+//			params.putString("icon",
+//					"http://54.178.166.213/video/video_763/i_logo.png");// 여기에
+//																		// icon
+//																		// 넣고
+//			/* make the API call */
+//			new Request(session, "/me/feed", params, HttpMethod.POST,
+//					new Request.Callback() {
+//						public void onCompleted(Response response) {
+//							System.out.println("TLqkf");
+//							/* handle the result */
+//						}
+//					}).executeAsync();
+//			
 //		}
 //		// TODO Auto-generated method stub
+//
+//	}
+//	public class BackTask extends AsyncTask<Bitmap, String, String> {
+//
+//		@Override
+//		protected String doInBackground(Bitmap... args) {
+//
+//			return null;
+//		}
+//
+//		@Override
+//		protected void onPostExecute(String text) {
+//			//logo.setBackground(sPhoto);
+//
+//		}
 //
 //	}
 }
