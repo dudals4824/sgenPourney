@@ -55,7 +55,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		View.OnLongClickListener {
 	private TextView title, date, numberOfPeople, travelNumber;
 	private ImageButton backcard, btnCoverPhoto;
-	Context mContext = null;
+	private Context mContext = null;
 	private TripDTO tripDTO = new TripDTO();
 
 	// photo type select dialog
@@ -78,6 +78,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 
 	private File imgFile;
 	private Bitmap mBitmap;
+
+	private View v;
 
 	// for profile phpto
 	// private ProfileUploader pfUploader = null;
@@ -102,7 +104,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) getContext().getSystemService(
 				infService);
-		View v = li.inflate(R.layout.album_cover, this, false);
+		v = li.inflate(R.layout.album_cover, this, false);
 		addView(v);
 
 		// view id 설정
@@ -206,10 +208,11 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				tripDTO.setTripTitle(JsonObject.getString("trip_name"));
 				tripDTO.setStartDate(JsonObject.getLong("start_date"));
 				tripDTO.setEndDate(JsonObject.getLong("end_date"));
-				//tripDTO.setVideoDueDate(JsonObject.getLong("video_due_date"));
+				// tripDTO.setVideoDueDate(JsonObject.getLong("video_due_date"));
 				tripDTO.setPhotoCnt(JsonObject.getInt("photo_count"));
 				tripDTO.setPeopleCnt(JsonObject.getInt("people_count"));
-				tripDTO.setVideoMade("1".equals(JsonObject.getString("is_video_made")));
+				tripDTO.setVideoMade("1".equals(JsonObject
+						.getString("is_video_made")));
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
@@ -230,7 +233,6 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		}
 	}
 
-	
 	/*
 	 * Profile 사진 등록 클릭시 나타나는 dialog.
 	 */
@@ -259,6 +261,12 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				// TODO Auto-generated method stub
 				if (position == 0) {
 					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
+					Intent intent = new Intent();
+					intent.setType("image/*");
+					intent.setAction(Intent.ACTION_GET_CONTENT);
+					((Activity) mContext).startActivityForResult(
+							Intent.createChooser(intent, "Select Picture"),
+							REQUEST_ALBUM);
 					// open gallery browser
 
 					// CoverActivity covercells = new CoverActivity();
@@ -290,7 +298,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
 			if (requestCode == REQUEST_ALBUM) {
-				// currImageURI is the global variable I'm using to hold the
+				Log.d("REQUEST_ALBUM", "REQUEST_ALBUM");
 				// content:// URI of the image
 				currImageURI = data.getData();
 				// 실제 절대주소를 받아옴
@@ -308,6 +316,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 					Log.e("비트맵 로드", "성공");
 				} else
 					Log.e("비트맵 디코딩", "실패");
+
+				backcard.setImageBitmap(mBitmap);
 			} else if (requestCode == REQUEST_PICTURE) {
 				Log.e("camera", "camera");
 				mBitmap = loadPicture();
@@ -363,6 +373,10 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		return bitmap;
 	}
 
+	public void setImageBackCard(Bitmap bitmap) {
+		backcard.setImageBitmap(bitmap);
+	}
+
 	// get real path - helping method
 	private String getRealPathFromURI(Uri contentUri) {
 		String path = null;
@@ -409,13 +423,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				// TODO Auto-generated method stub
 				if (position == 0) {
 					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
-					// open gallery browser
-
-					// CoverActivity covercells = new CoverActivity();
-					// covercells.requestAlbum();
-					// startActivityForResult(
-					// Intent.createChooser(intent, "Select Picture"),
-					// REQUEST_ALBUM);
+					removeView(v);
 				}
 				mDialog.dismiss();
 			}
