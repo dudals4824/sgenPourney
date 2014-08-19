@@ -35,8 +35,6 @@ import android.widget.VideoView;
 
 public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		OnClickListener {
-	private String fontpath = "fonts/WalbaumBook-BoldItalic.otf";
-	private TextView video_view_text;
 	private String videoUrl = "http://54.178.166.213/video/video_";
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private ImageButton fbShareBtn;
@@ -51,8 +49,6 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		setContentView(R.layout.activity_video_complete);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		Typeface tf = Typeface.createFromAsset(getAssets(), fontpath);
-		video_view_text.setTypeface(tf);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		fbShareBtn=(ImageButton)findViewById(R.id.facebook_sharing_btn);
