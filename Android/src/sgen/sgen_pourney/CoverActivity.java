@@ -78,6 +78,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 
 	// trip id 저장용 array list
 	private ArrayList<Integer> tripArray = new ArrayList<Integer>();
+	private ArrayList<CoverCell> intent_coverList = new ArrayList<CoverCell>();
 
 	private Uri currImageURI;
 	private String imagePath;
@@ -134,7 +135,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		Log.e("cover activity", "trip array size : " + tripArray.size());
 		if (tripArray.size() > 0) {
 			for (int i = 0; i < numberOfCover; i++) {// 커버 갯수만큼 나타나게 해주는 거임
-				layout_cover.addView(new CoverCell(this, tripArray.get(i)));
+				intent_coverList.add(new CoverCell(this, tripArray.get(i), i));
+				layout_cover.addView(intent_coverList.get(i));
 			}
 			// albumCover = (ImageButton) findViewById(R.id.backcard);
 			// albumCover.setOnClickListener(this);
@@ -170,49 +172,56 @@ public class CoverActivity extends Activity implements OnClickListener {
 			if (requestCode == REQUEST_ALBUM) {
 				Log.d("REQUEST_ALBUM", "REQUEST_ALBUM");
 				// content:// URI of the image
+				int intent_cover = data.getExtras().getInt("intent_cover", 300);
 				currImageURI = data.getData();
-				// 실제 절대주소를 받아옴
-				imagePath = getRealPathFromURI(currImageURI);
-				Log.e("KJK", "URI : " + currImageURI.toString());
-				Log.e("KJK", "Real Path : " + imagePath);
-
-				// image path 얻어왔으면 imgFile초기화.
-				imgFile = new File(imagePath);
-				// img file bitmap 변경
-				if (imgFile.exists()) {
-					mBitmap = BitmapFactory.decodeFile(imgFile
-							.getAbsolutePath());
-					// getCroppedBitmap(mBitmap);
-					Log.e("비트맵 로드", "성공");
-				} else
-					Log.e("비트맵 디코딩", "실패");
-
 				
+				// 실제 절대주소를 받아옴
+				Log.d("intent_cover", intent_cover+"");
+				for (int i = 0; i < intent_coverList.size(); i++) {
+					if (intent_coverList.get(i).getIntentCover() == intent_cover) {
+						imagePath = getRealPathFromURI(currImageURI);
+
+						// image path 얻어왔으면 imgFile초기화.
+						imgFile = new File(imagePath);
+						// img file bitmap 변경
+						if (imgFile.exists()) {
+							mBitmap = BitmapFactory.decodeFile(imgFile
+									.getAbsolutePath());
+							// getCroppedBitmap(mBitmap);
+							Log.e("비트맵 로드", "성공");
+						} else
+							Log.e("비트맵 디코딩", "실패");
+
+						intent_coverList.get(i).setImageBackCard(mBitmap);
+					}
+				}
+
 			}
-//			// mPictureBtn.setImageBitmap(overlayCover(getCroppedBitmap(resizeBitmapToProfileSize(mBitmap))));
-//			BitmapDrawable bd = (BitmapDrawable) this.getResources()
-//					.getDrawable(R.drawable.i_profilephoto_cover);
-//			Bitmap coverBitmap = bd.getBitmap();
-//			// constructor
-//			// mBitmap에 찍은 사진 넣기
-//			// cover은 그대로
-//			PhotoEditor photoEdit = new PhotoEditor(mBitmap, coverBitmap,
-//					photoAreaWidth, photoAreaHeight);
-//			// resize
-//			// crop roun
-//			// overay cover
-//
-//			// 이거하면 이미지 셋됨
-//			// mBitmap = photoEdit.editPhotoAuto();
-//			// btnCoverPhoto.setImageBitmap(mBitmap);
+			// //
+			// mPictureBtn.setImageBitmap(overlayCover(getCroppedBitmap(resizeBitmapToProfileSize(mBitmap))));
+			// BitmapDrawable bd = (BitmapDrawable) this.getResources()
+			// .getDrawable(R.drawable.i_profilephoto_cover);
+			// Bitmap coverBitmap = bd.getBitmap();
+			// // constructor
+			// // mBitmap에 찍은 사진 넣기
+			// // cover은 그대로
+			// PhotoEditor photoEdit = new PhotoEditor(mBitmap, coverBitmap,
+			// photoAreaWidth, photoAreaHeight);
+			// // resize
+			// // crop roun
+			// // overay cover
+			//
+			// // 이거하면 이미지 셋됨
+			// // mBitmap = photoEdit.editPhotoAuto();
+			// // btnCoverPhoto.setImageBitmap(mBitmap);
 		}
 	}
 
 	private String getRealPathFromURI(Uri contentUri) {
 		String path = null;
 		String[] proj = { MediaStore.MediaColumns.DATA };
-		Cursor cursor = getApplicationContext().getContentResolver().query(contentUri, proj,
-				null, null, null);
+		Cursor cursor = getApplicationContext().getContentResolver().query(
+				contentUri, proj, null, null, null);
 		if (cursor.moveToFirst()) {
 			int column_index = cursor
 					.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
