@@ -10,11 +10,13 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionDefaultAudience;
 import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.application.PourneyApplication;
 import sgen.session.UserSessionManager;
+import sgen.sgen_pourney.LoginActivity.BackTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -200,12 +202,26 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 					@Override
 					public void call(Session session, SessionState state,
 							Exception exception) {
-						if (session.isOpened()) {/* make the API call */
-							new Request(session, "/{post-id}", null,
-									HttpMethod.GET, new Request.Callback() {
+						if (session.isOpened()) {
+							// make request to the /me API
+							Request.newMeRequest(session,
+									new Request.GraphUserCallback() {
+
+										// callback after Graph API response
+										// with
+										// user object
+										@Override
 										public void onCompleted(
+												GraphUser user,
 												Response response) {
-											/* handle the result */
+											if (user != null) {
+												// finish();
+												// Intent intent = new
+												// Intent(
+												// LoginActivity.this,
+												// CoverActivity.class);
+												// startActivity(intent); //액티비티넘기는거
+											}
 										}
 									}).executeAsync();
 						}
