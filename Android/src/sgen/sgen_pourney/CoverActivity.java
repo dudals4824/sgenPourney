@@ -46,6 +46,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -86,8 +88,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private File imgFile;
 	private Bitmap mBitmap;
 
-	
+	//새로고침용
 	private ImageButton btnReload;
+	
 	// CoverCell marble=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		btnReload.setVisibility(View.VISIBLE);
 		// marble=(Cover_cell)findViewById(R.id.box1);
 
+		
 		// user 로그인 정보 setting
 		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
 		user = new UserDTO();
