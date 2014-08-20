@@ -31,6 +31,7 @@ public class CalendarAdapter extends BaseAdapter {
 	TextView textview;
 	ImageView gridflag;
 	int startdate, enddate;
+	private int selectedId;
 
 	public CalendarAdapter(Context context, int grid, String[] dayArray,
 			Dayinfo today) {
@@ -41,7 +42,6 @@ public class CalendarAdapter extends BaseAdapter {
 		res_id = grid;
 		inflator = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		Log.d("adapter", "캘린더어댑터");
 	}
 
 	public CalendarAdapter(Context context, int grid, String[] dayArray,
@@ -53,9 +53,21 @@ public class CalendarAdapter extends BaseAdapter {
 		res_id = grid;
 		inflator = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		Log.d("adapter", "캘린더어댑터");
 		this.startdate = startdate;
 		this.enddate = enddate;
+	}
+	public CalendarAdapter(Context context, int grid, String[] dayArray,
+			Dayinfo today, int startdate, int enddate, int position) {
+		// TODO Auto-generated constructor stub
+		this.context = context;
+		DayArray = dayArray;
+		this.today = today;
+		res_id = grid;
+		inflator = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.startdate = startdate;
+		this.enddate = enddate;
+		selectedId= Integer.parseInt(Long.toString(getItemId(position)));
 	}
 
 	@Override
@@ -94,6 +106,7 @@ public class CalendarAdapter extends BaseAdapter {
 			convertView = inflator.inflate(res_id, parent, false);
 		}
 		//
+		
 		textview = (TextView) convertView.findViewById(R.id.textview_grid);
 		textview.setText(DayArray[position]);
 		if (startdate > 0) {
@@ -101,6 +114,12 @@ public class CalendarAdapter extends BaseAdapter {
 				convertView.setBackgroundColor(Color.rgb(120, 192, 242));
 				textview.setTextColor(Color.WHITE);
 			}
+		}
+		if(getItemId(position)==selectedId&&selectedId!=0){
+			Log.d("selected", selectedId+"");
+			Log.d("getItemId(position)", getItemId(position)+"");
+			convertView.setBackgroundColor(Color.rgb(120, 192, 242));
+			textview.setTextColor(Color.WHITE);
 		}
 		textview.setGravity(Gravity.CENTER);
 		convertView.setPadding(5, 5, 5, 5);
