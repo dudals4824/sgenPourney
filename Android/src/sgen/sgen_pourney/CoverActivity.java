@@ -37,6 +37,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -85,6 +86,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private File imgFile;
 	private Bitmap mBitmap;
 
+	
+	private ImageButton btnReload;
 	// CoverCell marble=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,8 @@ public class CoverActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_cover);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		btnReload=(ImageButton)findViewById(R.id.btnReload);
+		btnReload.setVisibility(View.VISIBLE);
 		// marble=(Cover_cell)findViewById(R.id.box1);
 
 		// user 로그인 정보 setting
