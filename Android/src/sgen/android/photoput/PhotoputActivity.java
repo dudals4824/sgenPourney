@@ -99,7 +99,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private File storageFile;
 	private Bitmap mBitmap;
 	private Bitmap scaledBitmap;
-	private GridLayout layoutGridPhotoAlbum;
 	private ArrayList<String> imageUrls;
 	private DisplayImageOptions options;
 	private TextView photoNum;
@@ -149,6 +148,8 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	List<List<Bitmap>> listOfPhotoBitmapLists = new ArrayList<List<Bitmap>>();
 
 	//
+	private ImageButton btnReload;
+	
 	private PhotoUploader photoUploader;
 	private String intent_date;
 
@@ -157,22 +158,18 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		//GetTripInfo getTrip = new GetTripInfo();
-		//getTrip.execute(Integer.toString(trip.getTripId()));
-		
-		//CheckMakeVideo checkVideo = new CheckMakeVideo();
-		//checkVideo.execute(user, trip);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		StrictMode.enableDefaults();
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_photoput);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+		btnReload = (ImageButton)findViewById(R.id.btnReload);
+		btnReload.setVisibility(View.VISIBLE);
+		btnReload.setOnClickListener(this);
 
 		// user 로그인 정보 setting
 		PourneyApplication Application = (PourneyApplication) getApplication();
@@ -238,7 +235,7 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		// }
 		init();
 		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
-		layoutGridPhotoAlbum = (GridLayout) findViewById(R.id.layoutGridPhotoAlbum);
+		
 
 		friendList = (ImageButton) findViewById(R.id.imgBack);
 		popupLocation = (TextView) findViewById(R.id.textPeople); // 여행 사람 수
@@ -321,7 +318,13 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
-		} else if (v.getId() == R.id.btnPhotoPlus) {
+		}else if(v.getId()==R.id.btnReload){
+			Log.d("btnReload", "btnReload");
+			getPhoto = new GetAllPhotoByTripId();
+			getPhoto.execute(trip, intent_dateList);
+		}
+			
+		else if (v.getId() == R.id.btnPhotoPlus) {
 			// 이미 영상 보러가기 그림 뜬 상태
 			// 영상 페이지로 넘어가기
 			Intent intent = new Intent(PhotoputActivity.this,
@@ -377,30 +380,6 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 			}
 		}
 
-		// else if (v.getId() == R.id.btnMakeVideo) {
-		//
-		// LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-		// .getSystemService(LAYOUT_INFLATER_SERVICE);
-		// View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
-		// memoPopupWindow = new PopupWindow(popupView,
-		// LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
-		// memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-		// memoPopupWindow.setFocusable(true);
-		// memoPopupWindow.setOutsideTouchable(true);
-		// memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
-		//
-		// public boolean onTouch(View v, MotionEvent event) {
-		// if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-		// memoPopupWindow.dismiss();
-		// return true;
-		// }
-		// return false;
-		// }
-		// });
-		//
-		// memoPopupWindow.showAtLocation(date, 0, 0, 218);
-		//
-		// }
 
 	}
 
