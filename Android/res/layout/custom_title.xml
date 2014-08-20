@@ -21,5 +21,20 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="9dp"
         android:src="@drawable/i_main_title" />
+    
+    <ImageButton 
+        android:id="@+id/btnReload"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_reload"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:layout_marginRight="7.33dp"
+        android:layout_centerVertical="true"
+        />
 
 </RelativeLayout>

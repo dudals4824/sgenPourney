@@ -60,107 +60,13 @@
                 android:src="@drawable/i_travelinfo" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layoutInfoSummary"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp" >
-
-            <ImageView
-                android:id="@+id/imgBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10.33dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/i_back_1015x275" />
-
-            <ImageView
-                android:id="@+id/imgBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="52.33dp"
-                android:layout_marginTop="12.67dp"
-                android:src="@drawable/i_bar_544x70" />
-
-            <ImageView
-                android:id="@+id/imgProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="19.67dp"
-                android:layout_marginTop="30.33dp"
-                android:src="@drawable/i_profile_238x240" />
-
-            <ImageView
-                android:id="@+id/imgProfileColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="78.33dp"
-                android:layout_marginTop="33.67dp"
-                android:src="@drawable/ic_profilecolor_45x45" />
-
-            <ImageView
-                android:id="@+id/iconWrite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/imgBar"
-                android:layout_marginLeft="137.67dp"
-                android:layout_marginTop="9.67dp"
-                android:src="@drawable/ic_write_40x42" />
-
-            <ImageView
-                android:id="@+id/iconCalendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/iconWrite"
-                android:layout_below="@id/iconWrite"
-                android:layout_marginTop="7.67dp"
-                android:src="@drawable/ic_calendar_40x42" />
-
-            <ImageView
-                android:id="@+id/iconPeople"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/iconWrite"
-                android:layout_below="@id/iconCalendar"
-                android:layout_marginTop="7.33dp"
-                android:src="@drawable/ic_people_42x46" />
-
-            <TextView
-                android:id="@+id/textTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/iconWrite"
-                android:layout_marginLeft="18.67dp"
-                android:layout_toRightOf="@+id/iconPeople" />
-
-            <TextView
-                android:id="@+id/textCalendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/iconCalendar"
-                android:layout_alignLeft="@id/textTitle"
-                android:layout_toRightOf="@+id/iconCalendar" />
-
-            <TextView
-                android:id="@+id/textPeople"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/iconPeople"
-                android:layout_alignLeft="@id/textTitle"
-                android:layout_toRightOf="@+id/iconPeople"
-                android:text="With five People" />
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layoutInputInfo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="9dp"
-            android:layout_marginRight="9dp"
-            android:layout_marginBottom="9dp"
+            android:layout_margin="9dp"
             android:paddingBottom="3dp"
             android:background="#ffffff" >
 
