@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#78C0F2"
+    android:background="@drawable/i_coverbackimage_1080x1920"
     android:fillViewport="true" >
 
     <GridLayout
