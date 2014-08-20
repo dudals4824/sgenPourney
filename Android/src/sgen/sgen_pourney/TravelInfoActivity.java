@@ -382,7 +382,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		textMonth.setText(strMonth[today.getMonth()] + " " + today.getYear());
 
 	}
-
+//캘린더 한칸 클릭시
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -402,10 +402,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			}
 		}
-		Log.d("startdate", startdate + "");
-		Log.d("enddate", enddate + "");
 		calendarAdapter = new CalendarAdapter(TravelInfoActivity.this,
-				R.layout.calendar_grid, DayArray, today, startdate, enddate);
+				R.layout.calendar_grid, DayArray, today, startdate, enddate,position);
 		gridCalendar.setAdapter(calendarAdapter);
 
 	}
