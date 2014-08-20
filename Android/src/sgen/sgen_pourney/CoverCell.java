@@ -58,6 +58,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 	private Context mContext = null;
 	private TripDTO tripDTO = new TripDTO();
 
+	private int tripID;
+
 	// photo type select dialog
 	// private ListViewDialog mDialog;
 	static String SAMPLEIMG = "profile.png";
@@ -81,6 +83,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 
 	private View v;
 
+	private int intent_cover;
+
 	// for profile phpto
 	// private ProfileUploader pfUploader = null;
 	// private Uri currImageURI;
@@ -92,9 +96,14 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 	// private int photoAreaWidth;
 	// private int photoAreaHeight;
 
-	public CoverCell(Context context, int attrs) {
+	public CoverCell(Context context, int attrs, int i) {
 		super(context);
 		initMarbleView(context, attrs);
+		intent_cover = i;
+	}
+
+	public int getIntentCover() {
+		return intent_cover;
 	}
 
 	void initMarbleView(Context context, int attrs) {
@@ -262,11 +271,19 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				if (position == 0) {
 					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
 					Intent intent = new Intent();
+				intent.putExtra("intent_cover", intent_cover);
 					intent.setType("image/*");
 					intent.setAction(Intent.ACTION_GET_CONTENT);
+					Log.d("intent_cover(CoverCell)", intent_cover+"");
 					((Activity) mContext).startActivityForResult(
 							Intent.createChooser(intent, "Select Picture"),
 							REQUEST_ALBUM);
+					
+					/*
+					 * Intent data = new Intent().putExtra("list", list);
+			data.putExtra("intent_date", intent_date);
+			setResult(RESULT_OK, data);
+					 */
 					// open gallery browser
 
 					// CoverActivity covercells = new CoverActivity();

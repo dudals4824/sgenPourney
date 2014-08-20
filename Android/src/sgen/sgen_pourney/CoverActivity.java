@@ -172,7 +172,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 			if (requestCode == REQUEST_ALBUM) {
 				Log.d("REQUEST_ALBUM", "REQUEST_ALBUM");
 				// content:// URI of the image
-				int intent_cover = data.getExtras().getInt("intent_cover", 300);
+				int intent_cover = data.getIntExtra("intent_cover", 300);
 				currImageURI = data.getData();
 				
 				// 실제 절대주소를 받아옴
