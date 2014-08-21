@@ -321,6 +321,15 @@
                         android:fitsSystemWindows="true"
                         android:scaleType="fitXY"
                         android:src="@layout/addfriend_click_event" />
+                    
+                    <ImageButton
+                        android:id="@+id/btnFriend8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="fitXY"
+                        android:src="@layout/addfriend_click_event" />
                 </GridLayout>
 
                 <ImageButton
