@@ -18,17 +18,21 @@ import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import sgen.session.UserSessionManager;
 import sgen.sgen_pourney.LoginActivity.BackTask;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.MediaController;
@@ -41,9 +45,10 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		OnClickListener {
 	private String videoUrl = "http://54.178.166.213/video/video_";
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
-	private ImageButton fbShareBtn;
+	private ImageButton fbShareBtn, playBtn, pauseBtn, stretchBtn;
 	private SimpleSideDrawer mDrawer;
 	private TripDTO trip;
+	private VideoView videoView;
 	UserSessionManager session;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,15 +60,20 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 				R.layout.custom_title);
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
-		fbShareBtn=(ImageButton)findViewById(R.id.facebook_sharing_btn);
+		fbShareBtn = (ImageButton) findViewById(R.id.facebook_sharing_btn);
 		askBtn = (Button) findViewById(R.id.ask_text);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		playBtn = (ImageButton) findViewById(R.id.playBtn);
+		pauseBtn = (ImageButton) findViewById(R.id.pauseBtn);
+		videoView=(VideoView)findViewById(R.id.VideoView);
+
 		askBtn.setOnClickListener(this);
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
+		pauseBtn.setOnClickListener(this);
 		fbShareBtn.setOnClickListener(this);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
 			@Override
@@ -72,7 +82,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 			}
 		});
 
-		VideoView videoView = (VideoView) findViewById(R.id.VideoView);
+		
 
 		// Use a media controller so that you can scroll the video contents
 		// and also to pause, start the video.
@@ -88,11 +98,58 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		MediaController mediaController = new MediaController(this);
 		mediaController.setMediaPlayer(this);
 		mediaController.setAnchorView(videoView);
-		videoView.setMediaController(mediaController);
 		videoView.setVideoURI(Uri.parse(videoUrl));
-		videoView.start();
+		videoView.pause();
+		playBtn.setOnClickListener(new OnClickListener() {
 
-	}
+			@Override
+			public void onClick(View v) {
+				if (v.getId() == R.id.playBtn)
+					videoView.start();
+				playBtn.setVisibility(View.GONE);
+
+			}
+		});
+
+		
+		if (videoView.isPlaying()) {
+			System.out.println("재생중임!");
+			videoView.setOnTouchListener(new OnTouchListener() {
+				
+				@SuppressLint("ClickableViewAccessibility")
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					
+					if(v.getId()==R.id.VideoView)
+					{
+						System.out.println(event.getActionIndex());
+						switch (event.getAction()) {
+						case MotionEvent.ACTION_DOWN:
+							pauseBtn.setVisibility(View.VISIBLE);
+							break;
+
+						default:
+							break;
+						}
+					}
+					return false;
+				}
+			});
+		if(pauseBtn.getVisibility()==View.VISIBLE){
+			try {
+				wait(3000);
+				pauseBtn.setVisibility(View.GONE);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		}
+		}
+			
+			
+		}
+	
 
 	@Override
 	public void start() {
@@ -177,18 +234,25 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		} else if(v.getId() == R.id.facebook_sharing_btn){
+		} else if (v.getId() == R.id.facebook_sharing_btn) {
 			// 페북 공유
 			facebookSharing();
-			
+
 		}
-		
+
 		else if (v.getId() == R.id.profile_modifying_text) {
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
 		}
+		else if(v.getId()==R.id.pauseBtn){
+	
+					videoView.pause();
+		
+		}
+	
 	}
+
 	private void facebookSharing() {
 		System.out.println("좆같다");
 		List<String> permissions = new ArrayList<String>();
@@ -211,8 +275,7 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 										// with
 										// user object
 										@Override
-										public void onCompleted(
-												GraphUser user,
+										public void onCompleted(GraphUser user,
 												Response response) {
 											if (user != null) {
 Bitmap mIcon = null;
@@ -235,7 +298,8 @@ Bitmap mIcon = null;
 												// Intent(
 												// LoginActivity.this,
 												// CoverActivity.class);
-												// startActivity(intent); //액티비티넘기는거
+												// startActivity(intent);
+												// //액티비티넘기는거
 											}
 										}
 									}).executeAsync();
@@ -255,8 +319,10 @@ Bitmap mIcon = null;
 			params.putString("message", "Trip to paris" + "   "
 					+ "2014.06.14 ~ 2014.06.16");// 여기에 여행 제목이랑 날짜 넣어주면 될듯
 			params.putString("name", "Minha" + "'s Journey Movie");
-			// minha's journey movie 처럼 개인 이름 넣으면 됨 
-			params.putString("link", "http://54.178.166.213/video/video_778/778.mp4");// 여기에 영상 주소 넣고
+			// minha's journey movie 처럼 개인 이름 넣으면 됨
+			params.putString("link",
+					"http://54.178.166.213/video/video_778/778.mp4");// 여기에 영상
+																		// 주소 넣고
 			params.putString("description", "..made by 'Pourney'");// 이건 우리 광고
 			params.putString("icon",
 					"http://54.178.166.213/video/video_763/i_logo.png");// 여기에
@@ -296,6 +362,7 @@ Bitmap mIcon = null;
 		// TODO Auto-generated method stub
 
 	}
+
 	public class BackTask extends AsyncTask<Bitmap, String, String> {
 
 		@Override
