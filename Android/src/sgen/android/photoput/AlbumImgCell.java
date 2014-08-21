@@ -304,7 +304,7 @@ public class AlbumImgCell extends RelativeLayout implements
 					.toString(tripId)));
 			nameValuePairs.add(new BasicNameValuePair("user_id", Integer
 					.toString(userId)));
-			nameValuePairs.add(new BasicNameValuePair("like", comment));
+			nameValuePairs.add(new BasicNameValuePair("comment", comment));
 			Log.d(getClass().getName(),
 					"comment info : " + nameValuePairs.toString());
 
