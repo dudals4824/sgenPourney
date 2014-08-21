@@ -424,8 +424,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					all_path.get(i)
 							.setFile(new File(all_path.get(i).getPath()));
 					// 패스를 가져와서 비트맵으로 만들어서 넘긴다. 리사이징은 앨범이미지셀에서한다.
-					Bitmap bm = BitmapFactory.decodeFile(all_path.get(i)
-							.getPath());
+					Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(), 600, 600, ResizeMode.AUTOMATIC);
 					dayalbumList.get(day).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this, bm,
 									new PhotoDTO(), user.getUserId()));
@@ -756,6 +755,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				}
 
 				is.close();
+				//result에 최종적으로 값들이 들어감
 				result = sb.toString();
 				Log.d("photoLike_logMsg", result); // result 가 null이지???
 
@@ -768,6 +768,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				JSONArray jArray = new JSONArray(result);
 				JSONObject json_data = null;
 				json_data = jArray.getJSONObject(0);
+				//jSon에서 isMade값이 하나가 옴.
 				isMade = (1 == json_data.getInt("isMade"));
 
 			} catch (ParseException e1) {
@@ -782,6 +783,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if (isMade) {
+				//doinbackground
 				// 이미 만들기 누른경우 만드는 중 표시
 				Log.d("isMade?", "만들기 누른놈임");
 				Drawable res = getResources().getDrawable(
