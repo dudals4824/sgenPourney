@@ -12,6 +12,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import sgen.DTO.PhotoDTO;
 import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ImageResizer;
 import sgen.image.resizer.ResizeMode;
@@ -22,11 +26,15 @@ import android.graphics.Matrix;
 import android.util.Log;
 
 public class BitmapPhotoUploader extends Thread {
-	private final String upLoadServerUri = "http://54.178.166.213/photoUpload.php";
+	private static final  String SERVERURI = "http://54.178.166.213/";
+	private static final String upLoadServerUri = SERVERURI + "photoUpload.php";
 	private Bitmap bm;
 	private String user_id;
 	private String trip_id;
 	long photo_date;
+	
+	//스레드 호출한 곳에서 사용할 photoDTO
+	PhotoDTO photoDTO = null;
 
 	public BitmapPhotoUploader(Bitmap bm, int user_id, int trip_id,
 			long photo_date) {
@@ -51,10 +59,11 @@ public class BitmapPhotoUploader extends Thread {
 		int bytesRead, bytesAvailable, bufferSize;
 		byte[] buffer;
 		int maxBufferSize = 1 * 1024 * 1024;
-		//File sourceFile = new File(sourceFileUri);
+		// File sourceFile = new File(sourceFileUri);
 		try { // open a URL connection to the <span id="IL_AD7"
 				// class="IL_AD">Servlet</span>
-			//FileInputStream fileInputStream = new FileInputStream(sourceFile);
+			// FileInputStream fileInputStream = new
+			// FileInputStream(sourceFile);
 			URL url = new URL(upLoadServerUri);
 			conn = (HttpURLConnection) url.openConnection(); // Open a HTTP
 			// connection to
@@ -103,14 +112,15 @@ public class BitmapPhotoUploader extends Thread {
 			bytesRead = bytesAvailable;
 
 			Log.e("log_msg", "bytes read = " + bytesRead);
-			Log.e("bitmap validation",	bm.getWidth() + " " + bm.getHeight());
-			
-			//bitmap to stream
+			Log.e("bitmap validation", bm.getWidth() + " " + bm.getHeight());
+
+			// bitmap to stream
 			ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
 			bm.compress(Bitmap.CompressFormat.JPEG, 70, byteOutputStream);
 			byte[] bitmapdata = byteOutputStream.toByteArray();
-			ByteArrayInputStream byteInputsStream = new ByteArrayInputStream(bitmapdata);
-			
+			ByteArrayInputStream byteInputsStream = new ByteArrayInputStream(
+					bitmapdata);
+
 			buffer = byteOutputStream.toByteArray();
 			bufferSize = byteOutputStream.toByteArray().length;
 			// bitmap to byte array
@@ -119,7 +129,7 @@ public class BitmapPhotoUploader extends Thread {
 			while (bytesRead > 0) {
 				dos.write(buffer, 0, bufferSize);
 				bytesAvailable = byteInputsStream.available();
-				//bufferSize = Math.min(bytesAvailable, maxBufferSize);
+				// bufferSize = Math.min(bytesAvailable, maxBufferSize);
 				bytesRead = byteInputsStream.read(buffer, 0, bytesAvailable);
 			}
 			// send multipart form data necesssary after file data...
@@ -129,7 +139,7 @@ public class BitmapPhotoUploader extends Thread {
 			// Responses from the server (code and message)
 			is = conn.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
+					is, "UTF-8"), 8);
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
@@ -138,9 +148,21 @@ public class BitmapPhotoUploader extends Thread {
 			is.close();
 			stringResponse = sb.toString();
 			Log.d("response string:", stringResponse);
+			JSONObject json_data = new JSONObject(stringResponse);
+			json_data = new JSONObject(json_data.getString("0"));
+			
+			//스레드 호출한 곳에서 사용할 photoDTO
+			photoDTO = new PhotoDTO();
+			photoDTO.setPhotoId(json_data.getInt("photo_id"));
+			photoDTO.setUserId(json_data.getInt("user_id"));
+			photoDTO.setTripId(json_data.getInt("trip_id"));
+			photoDTO.setPhoto_date(json_data.getInt("photo_date"));
+			photoDTO.setLikes(json_data.getInt("likes"));
+			photoDTO.setPhotoFilename(SERVERURI
+					+ json_data.getString("photo_filename"));
 
 			// close the streams //
-			//fileInputStream.close();
+			// fileInputStream.close();
 			dos.flush();
 			dos.close();
 
@@ -152,5 +174,10 @@ public class BitmapPhotoUploader extends Thread {
 			Log.e("Upload file to server Exception",
 					"Exception : " + e.getMessage(), e);
 		}
+		
+	}
+
+	public PhotoDTO getResult(){
+		return photoDTO;
 	}
 }

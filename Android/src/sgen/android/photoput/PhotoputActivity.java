@@ -408,9 +408,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					// 패스를 가져와서 비트맵으로 만들어서 넘긴다. 리사이징은 앨범이미지셀에서한다.
 					Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(),
 							900, 900, ResizeMode.AUTOMATIC);
-					dayalbumList.get(day).addLayoutGridalbum(
-							new AlbumImgCell(PhotoputActivity.this, bm,
-									new PhotoDTO(), user.getUserId()));
 
 					// 서버 업로드 부분 시작
 					trip.setPhotoCnt(trip.getPhotoCnt() + 1);
@@ -425,6 +422,14 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					
+					PhotoDTO photo = new PhotoDTO();
+					photo = bitmapPhotoUploader.getResult();
+					
+					//앨범에 바료 표시
+					dayalbumList.get(day).addLayoutGridalbum(
+							new AlbumImgCell(PhotoputActivity.this, bm,
+									photo, user.getUserId()));
 				}
 
 				/*
