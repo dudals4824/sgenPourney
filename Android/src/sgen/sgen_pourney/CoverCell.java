@@ -56,7 +56,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 	private TextView title, date, numberOfPeople, travelNumber;
 	private ImageButton backcard, btnCoverPhoto;
 	private Context mContext = null;
-	private TripDTO tripDTO = new TripDTO();
+	private TripDTO trip = new TripDTO();
 
 	private int tripID;
 
@@ -162,7 +162,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		} else {
 			PourneyApplication Application = (PourneyApplication) ((Activity) mContext)
 					.getApplication();
-			Application.setSelectedTrip(tripDTO);
+			Application.setSelectedTrip(trip);
 			Log.d("CoverCell_LOG", "onclick"
 					+ Application.getSelectedTrip().getTripTitle());
 
@@ -213,14 +213,14 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 			try {
 				JSONArray JsonArray = new JSONArray(result);
 				JSONObject JsonObject = JsonArray.getJSONObject(0);
-				tripDTO.setTripId(JsonObject.getInt("trip_id"));
-				tripDTO.setTripTitle(JsonObject.getString("trip_name"));
-				tripDTO.setStartDate(JsonObject.getLong("start_date"));
-				tripDTO.setEndDate(JsonObject.getLong("end_date"));
-				// tripDTO.setVideoDueDate(JsonObject.getLong("video_due_date"));
-				tripDTO.setPhotoCnt(JsonObject.getInt("photo_count"));
-				tripDTO.setPeopleCnt(JsonObject.getInt("people_count"));
-				tripDTO.setVideoMade("1".equals(JsonObject
+				trip.setTripId(JsonObject.getInt("trip_id"));
+				trip.setTripTitle(JsonObject.getString("trip_name"));
+				trip.setStartDate(JsonObject.getLong("start_date"));
+				trip.setEndDate(JsonObject.getLong("end_date"));
+				// trip.setVideoDueDate(JsonObject.getLong("video_due_date"));
+				trip.setPhotoCnt(JsonObject.getInt("photo_count"));
+				trip.setPeopleCnt(JsonObject.getInt("people_count"));
+				trip.setVideoMade("1".equals(JsonObject
 						.getString("is_video_made")));
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
@@ -232,13 +232,13 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			// travel information setting
-			Log.d("settext", tripDTO.toString());
-			title.setText(tripDTO.getTripTitle());
-			date.setText(tripDTO.getStartDateInDateFormat() + " ~ "
-					+ tripDTO.getEndDateInDateFormat());
+			Log.d("settext", trip.toString());
+			title.setText(trip.getTripTitle());
+			date.setText(trip.getStartDateInDateFormat() + " ~ "
+					+ trip.getEndDateInDateFormat());
 			numberOfPeople
-					.setText("With " + tripDTO.getPeopleCnt() + " people");
-			travelNumber.setText(String.valueOf(tripDTO.getTripId()));
+					.setText("With " + trip.getPeopleCnt() + " people");
+			travelNumber.setText(String.valueOf(trip.getTripId()));
 		}
 	}
 
@@ -271,18 +271,18 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				if (position == 0) {
 					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
 					Intent intent = new Intent();
-				intent.putExtra("intent_cover", intent_cover);
+					intent.putExtra("intent_cover", intent_cover);
 					intent.setType("image/*");
 					intent.setAction(Intent.ACTION_GET_CONTENT);
-					Log.d("intent_cover(CoverCell)", intent_cover+"");
+					Log.d("intent_cover(CoverCell)", intent_cover + "");
 					((Activity) mContext).startActivityForResult(
 							Intent.createChooser(intent, "Select Picture"),
 							REQUEST_ALBUM);
-					
+
 					/*
 					 * Intent data = new Intent().putExtra("list", list);
-			data.putExtra("intent_date", intent_date);
-			setResult(RESULT_OK, data);
+					 * data.putExtra("intent_date", intent_date);
+					 * setResult(RESULT_OK, data);
 					 */
 					// open gallery browser
 
@@ -434,13 +434,13 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		mDialog = new ListViewDialog(mContext, "해당 여행에서 나가시겠습니까?",
 				itemArrayList);
 		mDialog.onOnSetItemClickListener(new ListViewDialogSelectListener() {
-
 			@Override
 			public void onSetOnItemClickListener(int position) {
 				// TODO Auto-generated method stub
 				if (position == 0) {
-					Log.v("dialog_msg", " 첫번째 인덱스가 선택되었습니다" + "여기에 맞는 작업을 해준다.");
 					removeView(v);
+					DeleteTrip deleteTrip = new DeleteTrip();
+					deleteTrip.execute(Integer.toString(trip.getTripId()));
 				}
 				mDialog.dismiss();
 			}
@@ -448,6 +448,68 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		});
 		mDialog.show();
 
+	}
+
+	public class DeleteTrip extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
+			Log.d("trip_Id", "trip id : " + params[0]);
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/deleteTrip.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("log_tag", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				JSONObject JsonObject = new JSONObject(result);
+				result = JsonObject.getString("result");
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if ("1".equals(result)) {
+				Toast.makeText(mContext.getApplicationContext(),
+						"여행에서 나갔습니다.", Toast.LENGTH_SHORT).show();
+			}else
+			{
+				Toast.makeText(mContext.getApplicationContext(),
+						"여행에서 나가지 못했습니다.", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 }
