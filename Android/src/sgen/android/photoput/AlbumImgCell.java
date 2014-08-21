@@ -28,6 +28,7 @@ import sgen.common.PhotoEditor;
 import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ResizeMode;
 import sgen.sgen_pourney.R;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -45,6 +46,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AlbumImgCell extends RelativeLayout implements
 		View.OnClickListener, View.OnLongClickListener {
@@ -55,6 +57,7 @@ public class AlbumImgCell extends RelativeLayout implements
 	private Drawable sPhoto = null;
 	private ImageView imgPhoto = null;
 	private ImageButton regist, cancel;
+	private ImageView selectedPhoto;
 	private File mImgFile = null;
 	private PopupWindow memoPopupWindow;
 	private TextView date;
@@ -84,11 +87,8 @@ public class AlbumImgCell extends RelativeLayout implements
 
 	private void initMarbleView(Context context, Bitmap bitmap, PhotoDTO photo,
 			int userId) {
-
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
-		
-		
-		
+
 		// Log.d("AlbumImgCell", mBitmap.toString());
 
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
@@ -98,6 +98,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		addView(v);
 
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
+
 		btnMemo=(ImageButton)v.findViewById(R.id.btnMemo);
 
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
@@ -107,7 +108,8 @@ public class AlbumImgCell extends RelativeLayout implements
 		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
 				R.drawable.i_photo_gray_mask318x318);
 		Bitmap coverBitmap = bd.getBitmap();
-		PhotoEditor photoEdit = new PhotoEditor(bitmap, coverBitmap, coverBitmap.getWidth(), coverBitmap.getHeight());
+		PhotoEditor photoEdit = new PhotoEditor(bitmap, coverBitmap,
+				coverBitmap.getWidth(), coverBitmap.getHeight());
 
 		imgPhoto.setImageBitmap(photoEdit.editPhotoAutoRectangle());
 
@@ -120,11 +122,14 @@ public class AlbumImgCell extends RelativeLayout implements
 		checkLike.execute(mPhoto, mUserId, checkImage);
 	}
 
+	@SuppressLint("ShowToast")
 	@Override
 	public void onClick(View v) {
 		 if(v.getId()==R.id.btnMemo){
-			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
-					ResizeMode.AUTOMATIC);
+		
+				mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
+						ResizeMode.AUTOMATIC);
+			
 			sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
 			ImageView selectedPhoto;
 			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext)
@@ -185,10 +190,12 @@ public class AlbumImgCell extends RelativeLayout implements
 				Log.d("checked", "checked : " + mPhoto.getPhotoId() + " "
 						+ mPhoto.getPhoto_date());
 				likeFlag = 1;
+				Toast.makeText(mContext, "사진이 선택되었습니다.", Toast.LENGTH_SHORT).show();
 			} else {
 				Log.d("unchecked", "unchecked : " + mPhoto.getPhotoId() + " "
 						+ mPhoto.getPhoto_date());
 				likeFlag = 0;
+				Toast.makeText(mContext, "사진 선택을 취소하셨습니다.", Toast.LENGTH_SHORT).show();
 			}
 			photoLike.execute(mPhoto, mUserId, likeFlag);
 		}
