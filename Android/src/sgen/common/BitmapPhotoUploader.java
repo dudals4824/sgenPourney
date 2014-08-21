@@ -119,8 +119,8 @@ public class BitmapPhotoUploader extends Thread {
 			while (bytesRead > 0) {
 				dos.write(buffer, 0, bufferSize);
 				bytesAvailable = byteInputsStream.available();
-				bufferSize = Math.min(bytesAvailable, maxBufferSize);
-				bytesRead = byteInputsStream.read(buffer, 0, bufferSize);
+				//bufferSize = Math.min(bytesAvailable, maxBufferSize);
+				bytesRead = byteInputsStream.read(buffer, 0, bytesAvailable);
 			}
 			// send multipart form data necesssary after file data...
 			dos.writeBytes(lineEnd);
