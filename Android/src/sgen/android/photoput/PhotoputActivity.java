@@ -988,6 +988,5 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		}
 		selectFilter.execute(user, trip, filterType);
 		Log.d(getClass().getName(), "filter select : " + filterType);
-
 	}
 }
