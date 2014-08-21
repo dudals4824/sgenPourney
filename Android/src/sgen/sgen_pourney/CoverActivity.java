@@ -147,6 +147,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 				intent_coverList.add(new CoverCell(this, tripArray.get(i), i));
 				layout_cover.addView(intent_coverList.get(i));
 			}
+			
 			// albumCover = (ImageButton) findViewById(R.id.backcard);
 			// albumCover.setOnClickListener(this);
 		}
