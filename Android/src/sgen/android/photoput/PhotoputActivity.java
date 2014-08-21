@@ -68,6 +68,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
@@ -76,7 +78,7 @@ import android.widget.VideoView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class PhotoputActivity extends Activity implements OnClickListener {
+public class PhotoputActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 	static final int SELECT_PICTURE = 1;
 	private TextView profileName;
 	LinearLayout layoutAlbum;
@@ -154,6 +156,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 	private String intent_date;
 
 	private ArrayList<Integer> intent_dateList;
+	
+	//filter 변수
+	private RadioGroup filterRadioGroup; 
 	
 	@Override
 	protected void onResume() {
@@ -251,7 +256,9 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		date.setText(trip.getStartDateInDateFormat() + " ~ "
 				+ trip.getEndDateInDateFormat());
 
-		upLoadServerUri = "http://54.178.166.213/androidPixUploadToPhp.php";
+		//filter radio button
+		filterRadioGroup = (RadioGroup) findViewById(R.id.filterRadioGroup);
+		filterRadioGroup.setOnCheckedChangeListener(this);
 
 		// friendlist 표시
 		friendList.setOnClickListener(this);
@@ -882,6 +889,105 @@ public class PhotoputActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	public class SelectFilter extends AsyncTask<Object, String, String> {
+		private UserDTO mUserDTO;
+		private TripDTO mTripDTO;
+		private int filterType;
 
+		@Override
+		protected String doInBackground(Object... params) {
+			// convert object into DTO
+			mUserDTO = (UserDTO) params[0];
+			mTripDTO = (TripDTO) params[1];
+			filterType = (Integer)params[2];
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
 
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
+					.toString(mTripDTO.getTripId())));
+			nameValuePairs.add(new BasicNameValuePair("user_id", Integer
+					.toString(mUserDTO.getUserId())));
+			nameValuePairs.add(new BasicNameValuePair("filter_type", Integer
+					.toString(filterType)));
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/selectFilter.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "iso-8859-1"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+
+				is.close();
+				result = sb.toString();
+				Log.d("photoLike_logMsg", result); // result 가 null이지???
+
+			} catch (Exception e) {
+				Log.e("photoLike_logMsg",
+						"Error converting result " + e.toString());
+			}
+
+			try {
+				JSONArray jArray = new JSONArray(result);
+				JSONObject json_data = null;
+				json_data = jArray.getJSONObject(0);
+				int jsonResult = json_data.getInt("isSuccess");
+				Log.d(getClass().getName(), "select filter result : " + jsonResult);
+				
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+
+		}
+	}// end of photoLike
+
+	@Override
+	public void onCheckedChanged(RadioGroup arg0, int arg1) {
+		int filterType = -1;
+		SelectFilter selectFilter = new SelectFilter();
+		switch (arg1) {
+		case R.id.Original_radiobtn:
+			filterType = 0;
+			break;
+		case R.id.SunnyDay_radiobtn:
+			filterType = 1;
+			break;
+		case R.id.Dramatic_radiobtn:
+			filterType = 2;
+			break;
+		case R.id.Cloudy_radiobtn:
+			filterType = 3;
+			break;
+		default:
+			filterType = -1;
+			break;
+		}
+		selectFilter.execute(user, trip, filterType);
+		Log.d(getClass().getName(), "filter select : " + filterType);
+		
+	}
 }
