@@ -814,7 +814,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 				targetImageView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
 				photoAreaWidth = targetImageView.getMeasuredWidth();
-				photoAreaHeight = targetImageView.getMaxHeight();
+				photoAreaHeight = targetImageView.getMeasuredHeight();
 				PhotoEditor photoEdit = new PhotoEditor(friendProfilePhoto,
 						coverBitmap, photoAreaWidth, photoAreaHeight);
 				friendProfilePhoto = photoEdit.editPhotoAuto();
