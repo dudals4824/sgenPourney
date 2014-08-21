@@ -87,5 +87,17 @@ public class DayAlbum extends LinearLayout {
 	public int getSizeOfDayAlbum(){
 		return layoutGridPhotoAlbum.getChildCount()-1;
 	}
+	
+	public void setEnabledButton(int index){
+		Log.d("setEnabled", "enabled");
+		View v=(View)layoutGridPhotoAlbum.getChildAt(index);
+		CheckBox checkbox;
+		ImageButton btnMeno;
+		checkbox=(CheckBox)v.findViewById(R.id.checkImage);
+		btnMeno=(ImageButton)v.findViewById(R.id.btnMemo);
+		checkbox.setEnabled(false);
+		btnMeno.setEnabled(false);
+		
+	}
 
 }
