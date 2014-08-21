@@ -31,7 +31,6 @@ import sgen.application.PourneyApplication;
 import sgen.common.BitmapPhotoUploader;
 import sgen.common.PhotoEditor;
 import sgen.common.PhotoUploader;
-import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ImageResizer;
 import sgen.image.resizer.ResizeMode;
 import sgen.session.UserSessionManager;
@@ -43,26 +42,20 @@ import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
 import sgen.sgen_pourney.VideoMakingActivity;
 import sgen.sgen_pourney.VideoViewActivity;
-import sgen.sgen_pourney.TravelInfoActivity.FriendProfileImageSetter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -74,10 +67,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.Toast;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -242,6 +232,11 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
 			Drawable res = getResources().getDrawable(R.drawable.i_watchmovie);
 			btnPhotoPlus.setImageDrawable(res);
+			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+					dayalbumList.get(i).setEnabledButton(k);
+			}
+			}
 		} else {
 			CheckMakeVideo checkmakevideo = new CheckMakeVideo();
 			checkmakevideo.execute(user, trip);
@@ -653,7 +648,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				BitmapDrawable bd = null;
 
 				bd = (BitmapDrawable) getResources().getDrawable(
-						R.drawable.i_profile_238x240_cover);
+						R.drawable.i_profile_200x200_cover);
 
 				Bitmap coverBitmap = bd.getBitmap();
 
@@ -826,6 +821,11 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				// doinbackground
 				// 이미 만들기 누른경우 만드는 중 표시
 				Log.d("isMade?", "만들기 누른놈임");
+				for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+
+					for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+						dayalbumList.get(i).setEnabledButton(k);
+				}
 				Drawable res = getResources().getDrawable(
 						R.drawable.i_checktime);
 				btnPhotoPlus.setImageDrawable(res);
@@ -833,11 +833,11 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(getApplicationContext(),
-								VideoMakingActivity.class);
+								VideoViewActivity.class);
 						startActivity(intent);
 					}
 				});
-			} else {
+			}} else {
 				// 만들기 아직 안누른경우
 				Log.d("isMade?", "만들기 안누른놈임");
 				btnPhotoPlus.setOnClickListener(new OnClickListener() {
@@ -845,11 +845,11 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					public void onClick(View v) {
 						Log.d("PhotoputActivity btnPhotoPlus",
 								"confirm making video");
+						Intent intent = new Intent(getApplicationContext(),
+								VideoMakingActivity.class);
+						startActivity(intent);
 						ConfirmMakeVideo makeVideo = new ConfirmMakeVideo();
 						makeVideo.execute(user, trip);
-
-						CheckMakeVideo checkMakeVideo = new CheckMakeVideo();
-						checkMakeVideo.execute(user, trip);
 						isMade = true;
 					}
 				});
