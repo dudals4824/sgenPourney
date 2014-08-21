@@ -43,6 +43,7 @@ import sgen.sgen_pourney.R;
 import sgen.sgen_pourney.SimpleSideDrawer;
 import sgen.sgen_pourney.VideoMakingActivity;
 import sgen.sgen_pourney.VideoViewActivity;
+import sgen.sgen_pourney.TravelInfoActivity.FriendProfileImageSetter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -164,6 +165,9 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 	// filter 변수
 	private RadioGroup filterRadioGroup;
 
+	private Bitmap profilePhoto = null;
+	private ImageView imgProfile = null;
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -187,8 +191,14 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		trip = new TripDTO();
 		user = Application.getLoggedInUser();
 		trip = Application.getSelectedTrip();
-		
+
 		Log.d("PhotoputActivity_log", user.toString() + " , " + trip.toString());
+
+		// 프로필 사진 세팅
+		imgProfile = (ImageView) findViewById(R.id.imgProfile);
+		FriendProfileImageSetter imageSetter = new FriendProfileImageSetter();
+		// 친구 추가할때마다 button indicator 한개씩 증가시켜줌. 7번까지만
+		imageSetter.execute(user, imgProfile);
 
 		// 드로워임
 		mDrawer = new SimpleSideDrawer(this);
@@ -232,9 +242,9 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
 			Drawable res = getResources().getDrawable(R.drawable.i_watchmovie);
 			btnPhotoPlus.setImageDrawable(res);
-		}else{
+		} else {
 			CheckMakeVideo checkmakevideo = new CheckMakeVideo();
-			checkmakevideo.execute(user,trip);
+			checkmakevideo.execute(user, trip);
 		}
 
 		btnMakeVideo.setOnClickListener(this);
@@ -329,8 +339,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			Log.d("btnReload", "btnReload");
 			// getPhoto = new GetAllPhotoByTripId();
 			// getPhoto.execute(trip, intent_dateList);
-		}
-		else if (v.getId() == R.id.btnPhotoPlus) {
+		} else if (v.getId() == R.id.btnPhotoPlus) {
 			// 이미 영상 보러가기 그림 뜬 상태
 			// 영상 페이지로 넘어가기
 			Log.d("click", "btnPhotoPlus");
@@ -339,7 +348,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				Intent intent = new Intent(PhotoputActivity.this,
 						VideoViewActivity.class);
 				startActivity(intent);
-			}else{
+			} else {
 				Log.d("click", "아직아님");
 				Log.d("click", "btnPhotoPlus");
 				Intent intent = new Intent(PhotoputActivity.this,
@@ -354,7 +363,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
-		}  else if (v.getId() == R.id.btnMakeVideo) {
+		} else if (v.getId() == R.id.btnMakeVideo) {
 			// 체크가 선택된 이미지들 가져오기
 			// 체크된 애는 2갠데 view는 3개라서 3번 돌아서 죽음
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
@@ -397,18 +406,19 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					all_path.get(i)
 							.setFile(new File(all_path.get(i).getPath()));
 					// 패스를 가져와서 비트맵으로 만들어서 넘긴다. 리사이징은 앨범이미지셀에서한다.
-					Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(), 600, 600, ResizeMode.AUTOMATIC);
+					Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(),
+							900, 900, ResizeMode.AUTOMATIC);
 					dayalbumList.get(day).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this, bm,
 									new PhotoDTO(), user.getUserId()));
-					
-					//서버 업로드 부분 시작
+
+					// 서버 업로드 부분 시작
 					trip.setPhotoCnt(trip.getPhotoCnt() + 1);
 					// upload[i] = new ImageUploader();
 					// upload[i].execute(all_path.get(i).getPath());
-					bitmapPhotoUploader = new BitmapPhotoUploader(bm, user.getUserId(),
-							trip.getTripId(), i_dayalbum);
-					//photoUploader.start();
+					bitmapPhotoUploader = new BitmapPhotoUploader(bm,
+							user.getUserId(), trip.getTripId(), i_dayalbum);
+					// photoUploader.start();
 					bitmapPhotoUploader.start();
 					try {
 						bitmapPhotoUploader.join();
@@ -416,31 +426,22 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 						e.printStackTrace();
 					}
 				}
-				
+
 				/*
-				// 서버에 사진 업로드
-				dialog = ProgressDialog.show(PhotoputActivity.this, "",
-						"Uploading file...", true);
-				// 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서 조회하게 될 것 데이트 자체를 리스트로 받아서
-				for (int i = 0; i < all_path.size(); i++) {
-					Log.d("photoput", "upload(" + i + ")");
-					trip.setPhotoCnt(trip.getPhotoCnt() + 1);
-					// upload[i] = new ImageUploader();
-					// upload[i].execute(all_path.get(i).getPath());
-					photoUploader = new PhotoUploader(
-							all_path.get(i).getPath(), user.getUserId(),
-							trip.getTripId(), i_dayalbum);
-					photoUploader.start();
-					try {
-						photoUploader.join();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				dialog.dismiss();
-				// updatephotodate = new UpdatePhotodate();
-				// updatephotodate.execute(trip);
-				 * 
+				 * // 서버에 사진 업로드 dialog =
+				 * ProgressDialog.show(PhotoputActivity.this, "",
+				 * "Uploading file...", true); // 한 날짜만 될 듯, 한번만 조회해서 18일것만 서버에서
+				 * 조회하게 될 것 데이트 자체를 리스트로 받아서 for (int i = 0; i <
+				 * all_path.size(); i++) { Log.d("photoput", "upload(" + i +
+				 * ")"); trip.setPhotoCnt(trip.getPhotoCnt() + 1); // upload[i]
+				 * = new ImageUploader(); //
+				 * upload[i].execute(all_path.get(i).getPath()); photoUploader =
+				 * new PhotoUploader( all_path.get(i).getPath(),
+				 * user.getUserId(), trip.getTripId(), i_dayalbum);
+				 * photoUploader.start(); try { photoUploader.join(); } catch
+				 * (InterruptedException e) { e.printStackTrace(); } }
+				 * dialog.dismiss(); // updatephotodate = new UpdatePhotodate();
+				 * // updatephotodate.execute(trip);
 				 */
 			}
 
@@ -628,6 +629,49 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		}
 	}// end of GetfileName
 
+	public class FriendProfileImageSetter extends
+			AsyncTask<Object, String, String> {
+
+		UserDTO foundFriend = new UserDTO();
+		ImageView targetImageView = null;
+
+		@Override
+		protected String doInBackground(Object... params) {
+			// parameter converting to original object
+			foundFriend = (UserDTO) params[0];
+			targetImageView = (ImageView) params[1];
+
+			// image view setting
+
+			profilePhoto = PhotoEditor.ImageurlToBitmapConverter(foundFriend
+					.getProfileFilePath());
+			if (profilePhoto != null) {
+				// profile 사진 크기에 맞게 cover bitmap 설정
+				BitmapDrawable bd = null;
+
+				bd = (BitmapDrawable) getResources().getDrawable(
+						R.drawable.i_profile_238x240_cover);
+
+				Bitmap coverBitmap = bd.getBitmap();
+
+				photoAreaWidth = targetImageView.getWidth();
+				photoAreaHeight = targetImageView.getHeight();
+				PhotoEditor photoEdit = new PhotoEditor(profilePhoto,
+						coverBitmap, photoAreaWidth, photoAreaHeight);
+				profilePhoto = photoEdit.editPhotoAuto();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			// 친구 찾은 화면일 경우
+			targetImageView.setImageBitmap(profilePhoto);
+		}
+
+	}
+
 	/**
 	 * 
 	 * @author Junki 비디오 만들기 버튼 누를시 호출. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 등록한다.
@@ -746,7 +790,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				}
 
 				is.close();
-				//result에 최종적으로 값들이 들어감
+				// result에 최종적으로 값들이 들어감
 				result = sb.toString();
 				Log.d("photoLike_logMsg", result); // result 가 null이지???
 
@@ -759,7 +803,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				JSONArray jArray = new JSONArray(result);
 				JSONObject json_data = null;
 				json_data = jArray.getJSONObject(0);
-				//jSon에서 isMade값이 하나가 옴.
+				// jSon에서 isMade값이 하나가 옴.
 				isMade = (1 == json_data.getInt("isMade"));
 
 			} catch (ParseException e1) {
@@ -774,7 +818,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if (isMade) {
-				//doinbackground
+				// doinbackground
 				// 이미 만들기 누른경우 만드는 중 표시
 				Log.d("isMade?", "만들기 누른놈임");
 				Drawable res = getResources().getDrawable(
