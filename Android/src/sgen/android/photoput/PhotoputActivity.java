@@ -242,7 +242,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		init();
 		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
 
-		friendList = (ImageButton) findViewById(R.id.imgBack);
 		popupLocation = (TextView) findViewById(R.id.textPeople); // 여행 사람 수
 		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
@@ -261,7 +260,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		filterRadioGroup.setOnCheckedChangeListener(this);
 
 		// friendlist 표시
-		friendList.setOnClickListener(this);
 
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
@@ -354,36 +352,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
-		} else if (v.getId() == R.id.imgBack) {
-			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
-					.getSystemService(LAYOUT_INFLATER_SERVICE);
-			View popupView = layoutInflater.inflate(R.layout.friend_list_popup,
-					null);
-			friendListPopupWindow = new PopupWindow(popupView,
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
-			friendListPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-			friendListPopupWindow.setFocusable(true);
-			friendListPopupWindow.setOutsideTouchable(true);
-			friendListPopupWindow.setTouchInterceptor(new OnTouchListener() {
-
-				public boolean onTouch(View v, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-						friendListPopupWindow.dismiss();
-						return true;
-					}
-					return false;
-				}
-			});
-			for (int i = 0; i < 7; i++) {
-				((GridLayout) friendListPopupWindow.getContentView()
-						.findViewById(R.id.friendlistpopupback))
-						.addView(new FriendListCell(this));
-				friendListPopupWindow.showAtLocation(popupLocation, 0, 0, 218);
-
-				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
-				// 27);
-			}
-		} else if (v.getId() == R.id.btnMakeVideo) {
+		}  else if (v.getId() == R.id.btnMakeVideo) {
 			// 체크가 선택된 이미지들 가져오기
 			// 체크된 애는 2갠데 view는 3개라서 3번 돌아서 죽음
 			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
