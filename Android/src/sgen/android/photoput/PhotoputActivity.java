@@ -30,6 +30,7 @@ import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import sgen.common.PhotoUploader;
+import sgen.image.resizer.ImageResize;
 import sgen.image.resizer.ImageResizer;
 import sgen.image.resizer.ResizeMode;
 import sgen.session.UserSessionManager;
@@ -78,7 +79,8 @@ import android.widget.VideoView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class PhotoputActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
+public class PhotoputActivity extends Activity implements OnClickListener,
+		OnCheckedChangeListener {
 	static final int SELECT_PICTURE = 1;
 	private TextView profileName;
 	LinearLayout layoutAlbum;
@@ -151,15 +153,15 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 
 	//
 	private ImageButton btnReload;
-	
+
 	private PhotoUploader photoUploader;
 	private String intent_date;
 
 	private ArrayList<Integer> intent_dateList;
-	
-	//filter 변수
-	private RadioGroup filterRadioGroup; 
-	
+
+	// filter 변수
+	private RadioGroup filterRadioGroup;
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -172,7 +174,7 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 		setContentView(R.layout.activity_photoput);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		btnReload = (ImageButton)findViewById(R.id.btnReload);
+		btnReload = (ImageButton) findViewById(R.id.btnReload);
 		btnReload.setVisibility(View.VISIBLE);
 		btnReload.setOnClickListener(this);
 
@@ -217,21 +219,18 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 
 		// 비디오 만들기 버튼 초기화
 		btnPhotoPlus = (ImageButton) findViewById(R.id.btnPhotoPlus);
+		btnPhotoPlus.setOnClickListener(this);
+
 		// video 만들기 버튼 tripDTO확인해서 현재 영상을 만들어졌는지, 만들기를 눌렀는지, 안눌렀는지에 따라서 버튼 모양이
 		// 바뀐다
 		if (trip.isVideoMade()) {
 			// 비디오가 만들어진 경우
 			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
-			btnPhotoPlus.setOnClickListener(this);
-			Drawable res = getResources().getDrawable(
-					R.drawable.i_video_making_go_582x100);
+			Drawable res = getResources().getDrawable(R.drawable.i_watchmovie);
 			btnPhotoPlus.setImageDrawable(res);
-		} else {
-			// 비디오 안만들어진경우
-			// 지금 user가 비디오 만든앤지 체크.. 체크해서 onpost에서 버튼을 바꾼다.
-			Log.d("비디오 안 만들어져있엉", "체크하자");
-			CheckMakeVideo checkMakeVideo = new CheckMakeVideo();
-			checkMakeVideo.execute(user, trip);
+		}else{
+			CheckMakeVideo checkmakevideo = new CheckMakeVideo();
+			checkmakevideo.execute(user,trip);
 		}
 
 		btnMakeVideo.setOnClickListener(this);
@@ -240,13 +239,12 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 		// }
 		init();
 		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
-		
 
 		friendList = (ImageButton) findViewById(R.id.imgBack);
 		popupLocation = (TextView) findViewById(R.id.textPeople); // 여행 사람 수
 		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
-		
+
 		// 여행 정보 setting
 		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));// 디비에서 사람
 																		// 수
@@ -256,7 +254,7 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 		date.setText(trip.getStartDateInDateFormat() + " ~ "
 				+ trip.getEndDateInDateFormat());
 
-		//filter radio button
+		// filter radio button
 		filterRadioGroup = (RadioGroup) findViewById(R.id.filterRadioGroup);
 		filterRadioGroup.setOnCheckedChangeListener(this);
 
@@ -325,17 +323,27 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
-		}else if(v.getId()==R.id.btnReload){
+		} else if (v.getId() == R.id.btnReload) {
 			Log.d("btnReload", "btnReload");
-			getPhoto = new GetAllPhotoByTripId();
-			getPhoto.execute(trip, intent_dateList);
+			// getPhoto = new GetAllPhotoByTripId();
+			// getPhoto.execute(trip, intent_dateList);
 		}
 		else if (v.getId() == R.id.btnPhotoPlus) {
 			// 이미 영상 보러가기 그림 뜬 상태
 			// 영상 페이지로 넘어가기
-			Intent intent = new Intent(PhotoputActivity.this,
-					VideoViewActivity.class);
-			startActivity(intent);
+			Log.d("click", "btnPhotoPlus");
+			if (trip.isVideoMade()) {
+				Log.d("click", "만들어짐");
+				Intent intent = new Intent(PhotoputActivity.this,
+						VideoViewActivity.class);
+				startActivity(intent);
+			}else{
+				Log.d("click", "아직아님");
+				Log.d("click", "btnPhotoPlus");
+				Intent intent = new Intent(PhotoputActivity.this,
+						VideoMakingActivity.class);
+				startActivity(intent);
+			}
 		} else if (v.getId() == R.id.last_album_text) {
 			Intent intent = new Intent(this, CoverActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -382,7 +390,6 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 			}
 		}
 
-
 	}
 
 	@Override
@@ -416,8 +423,9 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 					// 넣으면 될 것 같아요.
 					all_path.get(i)
 							.setFile(new File(all_path.get(i).getPath()));
-					//패스를 가져와서 비트맵으로 만들어서 넘긴다. 리사이징은 앨범이미지셀에서한다.
-					Bitmap bm= BitmapFactory.decodeFile(all_path.get(i).getPath());
+					// 패스를 가져와서 비트맵으로 만들어서 넘긴다. 리사이징은 앨범이미지셀에서한다.
+					Bitmap bm = BitmapFactory.decodeFile(all_path.get(i)
+							.getPath());
 					dayalbumList.get(day).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this, bm,
 									new PhotoDTO(), user.getUserId()));
@@ -777,7 +785,7 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 				// 이미 만들기 누른경우 만드는 중 표시
 				Log.d("isMade?", "만들기 누른놈임");
 				Drawable res = getResources().getDrawable(
-						R.drawable.i_video_making_ing_582x100);
+						R.drawable.i_checktime);
 				btnPhotoPlus.setImageDrawable(res);
 				btnPhotoPlus.setOnClickListener(new OnClickListener() {
 					@Override
@@ -790,9 +798,6 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 			} else {
 				// 만들기 아직 안누른경우
 				Log.d("isMade?", "만들기 안누른놈임");
-				Drawable res = getResources().getDrawable(
-						R.drawable.i_video_making_make_582x100);
-				btnPhotoPlus.setImageDrawable(res);
 				btnPhotoPlus.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -803,9 +808,6 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 
 						CheckMakeVideo checkMakeVideo = new CheckMakeVideo();
 						checkMakeVideo.execute(user, trip);
-						Drawable res = getResources().getDrawable(
-								R.drawable.i_video_making_ing_582x100);
-						btnPhotoPlus.setImageDrawable(res);
 						isMade = true;
 					}
 				});
@@ -814,7 +816,7 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 		}
 
 	}// end of photoLike
-	
+
 	public class GetTripInfo extends AsyncTask<String, String, String> {
 
 		@Override
@@ -861,10 +863,11 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 				trip.setTripTitle(JsonObject.getString("trip_name"));
 				trip.setStartDate(JsonObject.getLong("start_date"));
 				trip.setEndDate(JsonObject.getLong("end_date"));
-				//tripDTO.setVideoDueDate(JsonObject.getLong("video_due_date"));
+				// tripDTO.setVideoDueDate(JsonObject.getLong("video_due_date"));
 				trip.setPhotoCnt(JsonObject.getInt("photo_count"));
 				trip.setPeopleCnt(JsonObject.getInt("people_count"));
-				trip.setVideoMade("1".equals(JsonObject.getString("is_video_made")));
+				trip.setVideoMade("1".equals(JsonObject
+						.getString("is_video_made")));
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
@@ -879,8 +882,7 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 			title.setText(trip.getTripTitle());
 			date.setText(trip.getStartDateInDateFormat() + " ~ "
 					+ trip.getEndDateInDateFormat());
-			popupLocation
-					.setText("With " + trip.getPeopleCnt() + " people");
+			popupLocation.setText("With " + trip.getPeopleCnt() + " people");
 		}
 	}
 
@@ -894,7 +896,7 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 			// convert object into DTO
 			mUserDTO = (UserDTO) params[0];
 			mTripDTO = (TripDTO) params[1];
-			filterType = (Integer)params[2];
+			filterType = (Integer) params[2];
 			InputStream is = null;
 			StringBuilder sb = null;
 			String result = null;
@@ -943,8 +945,9 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 				JSONObject json_data = null;
 				json_data = jArray.getJSONObject(0);
 				int jsonResult = json_data.getInt("isSuccess");
-				Log.d(getClass().getName(), "select filter result : " + jsonResult);
-				
+				Log.d(getClass().getName(), "select filter result : "
+						+ jsonResult);
+
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			} catch (JSONException e) {
@@ -983,6 +986,6 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 		}
 		selectFilter.execute(user, trip, filterType);
 		Log.d(getClass().getName(), "filter select : " + filterType);
-		
+
 	}
 }
