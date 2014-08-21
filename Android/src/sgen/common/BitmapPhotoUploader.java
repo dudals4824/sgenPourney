@@ -105,6 +105,7 @@ public class BitmapPhotoUploader extends Thread {
 			Log.e("log_msg", "bytes read = " + bytesRead);
 			Log.e("bitmap validation",	bm.getWidth() + " " + bm.getHeight());
 			
+			//bitmap to stream
 			ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
 			bm.compress(Bitmap.CompressFormat.JPEG, 70, byteOutputStream);
 			byte[] bitmapdata = byteOutputStream.toByteArray();
