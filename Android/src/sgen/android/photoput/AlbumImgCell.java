@@ -16,6 +16,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.Wire;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +60,7 @@ public class AlbumImgCell extends RelativeLayout implements
 	private ImageButton regist, cancel;
 	private ImageView selectedPhoto;
 	private File mImgFile = null;
-	private PopupWindow memoPopupWindow;
+	private PopupWindow photoPopupWindow;
 	private TextView date;
 	private PhotoDTO mPhoto;
 	private int mUserId;
@@ -73,7 +74,7 @@ public class AlbumImgCell extends RelativeLayout implements
 	private ListViewDialog mDialog;
 	private View v;
 	private ImageButton btnMemo;
-	
+
 	public AlbumImgCell(Context context, Bitmap bitmap, PhotoDTO photo,
 			int userId) {
 		super(context);
@@ -99,7 +100,7 @@ public class AlbumImgCell extends RelativeLayout implements
 
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
 
-		btnMemo=(ImageButton)v.findViewById(R.id.btnMemo);
+		btnMemo = (ImageButton) v.findViewById(R.id.btnMemo);
 
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
 		// 이미지를 비트맵으로 받아와서 이미지뷰에 추가 리사이징 해야함
@@ -125,7 +126,7 @@ public class AlbumImgCell extends RelativeLayout implements
 	@SuppressLint("ShowToast")
 	@Override
 	public void onClick(View v) {
-		 if(v.getId()==R.id.btnMemo){
+		if (v.getId() == R.id.btnMemo) {
 			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
 					ResizeMode.AUTOMATIC);
 			sPhoto = new BitmapDrawable(getResources(),mBitmap);
@@ -134,66 +135,66 @@ public class AlbumImgCell extends RelativeLayout implements
 					.getBaseContext().getSystemService(
 							mContext.LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
-			memoPopupWindow = new PopupWindow(popupView,
+			photoPopupWindow = new PopupWindow(popupView,
 					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
-			memoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-			memoPopupWindow.setFocusable(true);
-			memoPopupWindow.setOutsideTouchable(true);
-			memoPopupWindow.setTouchInterceptor(new OnTouchListener() {
+			photoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+			photoPopupWindow.setFocusable(true);
+			photoPopupWindow.setOutsideTouchable(true);
+			photoPopupWindow.setTouchInterceptor(new OnTouchListener() {
 
 				public boolean onTouch(View v, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-						memoPopupWindow.dismiss();
+						photoPopupWindow.dismiss();
 						return true;
 					}
 					return false;
 				}
 			});
 
-			View contentView = memoPopupWindow.getContentView();
+			View contentView = photoPopupWindow.getContentView();
 
-			memoPopupWindow.showAtLocation(imgPhoto, 0, 0, 218);
+			photoPopupWindow.showAtLocation(imgPhoto, 0, 0, 218);
 			selectedPhoto = (ImageView) contentView
 					.findViewById(R.id.selectedphoto);
 			selectedPhoto.setBackground(sPhoto);
 			regist = (ImageButton) contentView.findViewById(R.id.regist);
 			cancel = (ImageButton) contentView.findViewById(R.id.cancel);
 			memo = (EditText) contentView.findViewById(R.id.memo);
-			editedMemo = memo.getText().toString();
 
 			regist.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					editedMemo = memo.getText().toString();
 					Log.d("EditedMemo", editedMemo);
-					System.out.println(editedMemo);
 					// DB에 저장하는 부분
-					memoPopupWindow.dismiss();
+					WriteComment writeComment = new WriteComment();
+					writeComment.execute(mPhoto, editedMemo);
 				}
 			});
 			cancel.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					memoPopupWindow.dismiss();
-
+					photoPopupWindow.dismiss();
 				}
 			});
 
-		}
-		else if (v.getId() == R.id.checkImage) {
+		} else if (v.getId() == R.id.checkImage) {
 			photoLike = new PhotoLike();
 			if (checkImage.isChecked()) {
 				Log.d("checked", "checked : " + mPhoto.getPhotoId() + " "
 						+ mPhoto.getPhoto_date());
 				likeFlag = 1;
-				Toast.makeText(mContext, "사진이 선택되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext.getApplicationContext(),
+						"사진이 선택되었습니다.", Toast.LENGTH_SHORT).show();
 			} else {
 				Log.d("unchecked", "unchecked : " + mPhoto.getPhotoId() + " "
 						+ mPhoto.getPhoto_date());
 				likeFlag = 0;
-				Toast.makeText(mContext, "사진 선택을 취소하셨습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext.getApplicationContext(),
+						"사진 선택을 취소하셨습니다.", Toast.LENGTH_SHORT).show();
 			}
 			photoLike.execute(mPhoto, mUserId, likeFlag);
 		}
@@ -276,6 +277,89 @@ public class AlbumImgCell extends RelativeLayout implements
 		}
 
 	}// end of photoLike
+
+	public class WriteComment extends AsyncTask<Object, String, String> {
+		private PhotoDTO photo = new PhotoDTO();
+		private int photoId, tripId, userId;
+		private String comment;
+
+		@Override
+		protected String doInBackground(Object... params) {
+			// convert object into photoDTO
+			photo = (PhotoDTO) params[0];
+			photoId = photo.getPhotoId();
+			tripId = photo.getTripId();
+			userId = photo.getUserId();
+			comment = (String) params[1];
+
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			// parameter setting
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("photo_id", Integer
+					.toString(photoId)));
+			nameValuePairs.add(new BasicNameValuePair("trip_id", Integer
+					.toString(tripId)));
+			nameValuePairs.add(new BasicNameValuePair("user_id", Integer
+					.toString(userId)));
+			nameValuePairs.add(new BasicNameValuePair("like", comment));
+			Log.d(getClass().getName(),
+					"comment info : " + nameValuePairs.toString());
+
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/writeComment.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+
+				is.close();
+				result = sb.toString();
+				Log.d("photoLike_logMsg", result); // result 가 null이지???
+
+			} catch (Exception e) {
+				Log.e("photoLike_logMsg",
+						"Error converting result " + e.toString());
+			}
+
+			try {
+				// JSONArray jArray = new JSONArray(result);
+				// JSONObject json_data = null;
+				// json_data = jArray.getJSONObject(0);
+
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			Toast.makeText(mContext.getApplicationContext(),
+					"댓글을 등록했습니다.", Toast.LENGTH_SHORT).show();
+			photoPopupWindow.dismiss();
+		}
+	}//write comment
 
 	public class CheckAlreadyLiked extends AsyncTask<Object, String, String> {
 		private PhotoDTO photo = new PhotoDTO();
