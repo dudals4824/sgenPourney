@@ -653,8 +653,8 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				Bitmap coverBitmap = bd.getBitmap();
 
 				targetImageView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
-				photoAreaWidth = targetImageView.getWidth();
-				photoAreaHeight = targetImageView.getHeight();
+				photoAreaWidth = targetImageView.getMeasuredWidth();
+				photoAreaHeight = targetImageView.getMaxHeight();
 				Log.d("width height", photoAreaWidth + "    " + photoAreaHeight);
 				PhotoEditor photoEdit = new PhotoEditor(profilePhoto,
 						coverBitmap, photoAreaWidth, photoAreaHeight);
