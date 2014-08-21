@@ -28,6 +28,7 @@ import sgen.DTO.TripDTO;
 import sgen.DTO.UserDTO;
 import sgen.android.multigallery.PhotoInfo;
 import sgen.application.PourneyApplication;
+import sgen.common.BitmapPhotoUploader;
 import sgen.common.PhotoEditor;
 import sgen.common.PhotoUploader;
 import sgen.image.resizer.ImageResize;
@@ -155,6 +156,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 	private ImageButton btnReload;
 
 	private PhotoUploader photoUploader;
+	private BitmapPhotoUploader bitmapPhotoUploader;
 	private String intent_date;
 
 	private ArrayList<Integer> intent_dateList;
@@ -399,7 +401,23 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					dayalbumList.get(day).addLayoutGridalbum(
 							new AlbumImgCell(PhotoputActivity.this, bm,
 									new PhotoDTO(), user.getUserId()));
+					
+					//서버 업로드 부분 시작
+					trip.setPhotoCnt(trip.getPhotoCnt() + 1);
+					// upload[i] = new ImageUploader();
+					// upload[i].execute(all_path.get(i).getPath());
+					bitmapPhotoUploader = new BitmapPhotoUploader(bm, user.getUserId(),
+							trip.getTripId(), i_dayalbum);
+					//photoUploader.start();
+					bitmapPhotoUploader.start();
+					try {
+						bitmapPhotoUploader.join();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
+				
+				/*
 				// 서버에 사진 업로드
 				dialog = ProgressDialog.show(PhotoputActivity.this, "",
 						"Uploading file...", true);
@@ -422,6 +440,8 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				dialog.dismiss();
 				// updatephotodate = new UpdatePhotodate();
 				// updatephotodate.execute(trip);
+				 * 
+				 */
 			}
 
 		}
