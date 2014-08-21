@@ -41,6 +41,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
@@ -811,6 +812,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				}
 				Bitmap coverBitmap = bd.getBitmap();
 
+				targetImageView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
 				photoAreaWidth = targetImageView.getWidth();
 				photoAreaHeight = targetImageView.getHeight();
 				PhotoEditor photoEdit = new PhotoEditor(friendProfilePhoto,

@@ -60,6 +60,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
@@ -197,7 +198,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		// 프로필 사진 세팅
 		imgProfile = (ImageView) findViewById(R.id.imgProfile);
 		FriendProfileImageSetter imageSetter = new FriendProfileImageSetter();
-		// 친구 추가할때마다 button indicator 한개씩 증가시켜줌. 7번까지만
 		imageSetter.execute(user, imgProfile);
 
 		// 드로워임
@@ -636,7 +636,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 	public class FriendProfileImageSetter extends
 			AsyncTask<Object, String, String> {
-
 		UserDTO foundFriend = new UserDTO();
 		ImageView targetImageView = null;
 
@@ -647,7 +646,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			targetImageView = (ImageView) params[1];
 
 			// image view setting
-
 			profilePhoto = PhotoEditor.ImageurlToBitmapConverter(foundFriend
 					.getProfileFilePath());
 			if (profilePhoto != null) {
@@ -659,8 +657,10 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 				Bitmap coverBitmap = bd.getBitmap();
 
+				targetImageView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
 				photoAreaWidth = targetImageView.getWidth();
 				photoAreaHeight = targetImageView.getHeight();
+				Log.d("width height", photoAreaWidth + "    " + photoAreaHeight);
 				PhotoEditor photoEdit = new PhotoEditor(profilePhoto,
 						coverBitmap, photoAreaWidth, photoAreaHeight);
 				profilePhoto = photoEdit.editPhotoAuto();
