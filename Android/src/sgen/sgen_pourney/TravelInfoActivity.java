@@ -804,10 +804,10 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				BitmapDrawable bd = null;
 				if (targetImageView.equals(friendProfileOnPopupWindow)) {
 					bd = (BitmapDrawable) getResources().getDrawable(
-							R.drawable.i_findfriend_profile_cover);
+							R.drawable.i_profile_200x200_cover);
 				} else {
 					bd = (BitmapDrawable) getResources().getDrawable(
-							R.drawable.i_profile_200x200_cover);
+							R.drawable.i_findfriend_profile_cover);
 				}
 				Bitmap coverBitmap = bd.getBitmap();
 
