@@ -22,4 +22,16 @@
         android:background="@layout/select_img_checkbox_theme"
         android:button="@android:color/transparent" />
 
+    <ImageButton
+        android:id="@+id/btnMemo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="44dp"
+        android:layout_below="@+id/checkImage"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/i_write" />
+
 </RelativeLayout>
