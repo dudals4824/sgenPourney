@@ -25,83 +25,96 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp" />
+            android:layout_marginTop="130dp" />
 
         <Button
             android:id="@+id/last_album_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="240dp"
-            android:padding="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="190dp"
             android:background="@layout/drawer_click_event"
+            android:focusable="true"
+            android:padding="10dp"
             android:text="@string/last_album"
-            android:textColor="#FFF" 
-            android:focusable="true"/>
+            android:textColor="#FFF" />
 
         <Button
             android:id="@+id/profile_modifying_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="300dp"
-            android:padding="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="250dp"
             android:background="@layout/drawer_click_event"
+            android:focusable="true"
+            android:padding="10dp"
             android:text="@string/profile_modifying"
-            android:textColor="#FFF" 
-            android:focusable="true" />
+            android:textColor="#FFF" />
 
         <Button
             android:id="@+id/log_out_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="360dp"
-            android:padding="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="310dp"
             android:background="@layout/drawer_click_event"
+            android:focusable="true"
+            android:padding="10dp"
             android:text="@string/log_out"
-            android:textColor="#FFF" 
-            android:focusable="true" />
+            android:textColor="#FFF" />
 
         <Button
             android:id="@+id/ask_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="420dp"
-            android:padding="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="370dp"
             android:background="@layout/drawer_click_event"
+            android:focusable="true"
+            android:padding="10dp"
             android:text="@string/ask"
-            android:textColor="#FFF" 
-            android:focusable="true" />
+            android:textColor="#FFF" />
 
         <ImageView
             android:id="@+id/last_album_image"
             style="@style/behindMenuItemLabel"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="256dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="206dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_album" />
 
         <ImageView
             android:id="@+id/profile_modifying_image"
             style="@style/behindMenuItemLabel"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="314dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="262dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_pencil" />
 
         <ImageView
             android:id="@+id/log_out_image"
             style="@style/behindMenuItemLabel"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="371dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="321dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_logout" />
 
         <ImageView
             android:id="@+id/ask_image"
             style="@style/behindMenuItemLabel"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="435dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="385dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_speaker" />
+
+        <ImageView
+            android:id="@+id/drawer_logo"
+            style="@style/behindMenuItemLabel"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="445dp"
+            android:src="@drawable/i_logoimage" />
     </RelativeLayout>
 
 </ScrollView>
