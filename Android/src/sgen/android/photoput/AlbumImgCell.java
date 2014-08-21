@@ -126,8 +126,9 @@ public class AlbumImgCell extends RelativeLayout implements
 	@Override
 	public void onClick(View v) {
 		 if(v.getId()==R.id.btnMemo){
-			mBitmapMemo = mBitmap;
-			sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
+			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
+					ResizeMode.AUTOMATIC);
+			sPhoto = new BitmapDrawable(getResources(),mBitmap);
 			ImageView selectedPhoto;
 			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext)
 					.getBaseContext().getSystemService(
