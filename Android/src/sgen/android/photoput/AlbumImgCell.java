@@ -69,7 +69,8 @@ public class AlbumImgCell extends RelativeLayout implements
 	private String editedMemo;
 	private ListViewDialog mDialog;
 	private View v;
-
+	private ImageButton btnMemo;
+	
 	public AlbumImgCell(Context context, Bitmap bitmap, PhotoDTO photo,
 			int userId) {
 		super(context);
@@ -85,7 +86,9 @@ public class AlbumImgCell extends RelativeLayout implements
 			int userId) {
 
 		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
-
+		
+		
+		
 		// Log.d("AlbumImgCell", mBitmap.toString());
 
 		String infService = Context.LAYOUT_INFLATER_SERVICE;
@@ -95,6 +98,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		addView(v);
 
 		checkImage = (CheckBox) v.findViewById(R.id.checkImage);
+		btnMemo=(ImageButton)v.findViewById(R.id.btnMemo);
 
 		// mBitmap=ImageResizer.resize(mImgFile, 300, 300);
 		// 이미지를 비트맵으로 받아와서 이미지뷰에 추가 리사이징 해야함
@@ -110,6 +114,7 @@ public class AlbumImgCell extends RelativeLayout implements
 		imgPhoto.setOnClickListener(this);
 		imgPhoto.setOnLongClickListener(this);
 		checkImage.setOnClickListener(this);
+		btnMemo.setOnClickListener(this);
 
 		checkLike = new CheckAlreadyLiked();
 		checkLike.execute(mPhoto, mUserId, checkImage);
@@ -117,7 +122,7 @@ public class AlbumImgCell extends RelativeLayout implements
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.imgPhoto) {
+		 if(v.getId()==R.id.btnMemo){
 			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
 					ResizeMode.AUTOMATIC);
 			sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
@@ -173,7 +178,8 @@ public class AlbumImgCell extends RelativeLayout implements
 				}
 			});
 
-		} else if (v.getId() == R.id.checkImage) {
+		}
+		else if (v.getId() == R.id.checkImage) {
 			photoLike = new PhotoLike();
 			if (checkImage.isChecked()) {
 				Log.d("checked", "checked : " + mPhoto.getPhotoId() + " "
