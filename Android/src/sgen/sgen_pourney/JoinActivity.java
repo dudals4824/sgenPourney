@@ -393,11 +393,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 		}
 		// check duplication
 		else if (arg0.getId() == R.id.btnCheckDuplications) {
-			Dialog dialog = new Dialog(JoinActivity.this,
-					R.style.CustomDialogTheme);
-			dialog.setTitle("ddd");
-			dialog.setCancelable(true);
-			dialog.show();
 			isDuplicationChecked = true;
 
 			String email = editEmail.getText().toString();
