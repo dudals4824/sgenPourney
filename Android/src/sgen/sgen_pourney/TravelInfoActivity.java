@@ -61,11 +61,11 @@ import android.widget.Toast;
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener, OnDismissListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
-	private TextView textTitle, textCalendar, textTitleHere, textCalendarHere,
+	private TextView  textTitleHere, textCalendarHere,
 			textPeopleHere, textInputInfo, textMonth, name;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
-	private ImageButton btn1,btn2,btn3,btn4,btn5,btn6,btn7;
+	private ImageButton btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8;
 	private ArrayList<ImageButton> btnFriend = new ArrayList<ImageButton>();
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
@@ -112,7 +112,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	// 친구 목록용 변수
 	private Bitmap friendProfilePhoto = null;
 	int[] ids = { R.id.btnFriend1, R.id.btnFriend2, R.id.btnFriend3,
-			R.id.btnFriend4, R.id.btnFriend5, R.id.btnFriend6, R.id.btnFriend7 };
+			R.id.btnFriend4, R.id.btnFriend5, R.id.btnFriend6, R.id.btnFriend7 ,R.id.btnFriend8};
 	private int lastFriendButtonIndex = 0;
 
 	// 상수
@@ -145,8 +145,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
-		textTitle = (TextView) findViewById(R.id.textTitle);
-		textCalendar = (TextView) findViewById(R.id.textCalendar);
 		textTitleHere = (TextView) findViewById(R.id.textTitleHere);
 		textCalendarHere = (TextView) findViewById(R.id.textCalendarHere);
 		textPeopleHere = (TextView) findViewById(R.id.textPeopleHere);
@@ -154,20 +152,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		textMonth = (TextView) findViewById(R.id.textMonth);
 		btnPrevMonth = (ImageButton) findViewById(R.id.btnPrevMonth);
 		btnNextMonth = (ImageButton) findViewById(R.id.btnnextMonth);
-		btn1 = (ImageButton) findViewById(R.id.btnFriend1);
-		btn2 = (ImageButton) findViewById(R.id.btnFriend2);
-		btn3 = (ImageButton) findViewById(R.id.btnFriend3);
-		btn4 = (ImageButton) findViewById(R.id.btnFriend4);
-		btn5 = (ImageButton) findViewById(R.id.btnFriend5);
-		btn6 = (ImageButton) findViewById(R.id.btnFriend6);
-		btn7 = (ImageButton) findViewById(R.id.btnFriend7);
 		btnPut = (ImageButton) findViewById(R.id.btnPut);
 
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 8; i++) {
 			Log.e("numbertest", "" + i);
 			btnFriend.add((ImageButton) findViewById(ids[i]));
 		}
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 8; i++) {
 			Log.e("numbertest", "" + i);
 			btnFriend.get(i).setOnClickListener(this);
 		}
@@ -188,15 +179,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnNextMonth.setOnClickListener(this);
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
-		editTitle.setOnFocusChangeListener(this);
 
-		btn1.setOnClickListener(this);
-		btn2.setOnClickListener(this);
-		btn3.setOnClickListener(this);
-		btn4.setOnClickListener(this);
-		btn5.setOnClickListener(this);
-		btn6.setOnClickListener(this);
-		btn7.setOnClickListener(this);
 
 		// session test code, 화면에 토스트로 현재 세선 정보를 보여준다.
 		session = new UserSessionManager(getApplicationContext());
@@ -284,7 +267,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				|| (v.getId() == R.id.btnFriend4)
 				|| (v.getId() == R.id.btnFriend5)
 				|| (v.getId() == R.id.btnFriend6)
-				|| (v.getId() == R.id.btnFriend7)) {// 친구찾기 검색창 부분
+				|| (v.getId() == R.id.btnFriend7)
+			|| (v.getId() == R.id.btnFriend8)) {// 친구찾기 검색창 부분
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View findFriendPopupView = layoutInflater.inflate(
@@ -409,22 +393,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	}
 
 	@Override
-	public void onFocusChange(View v, boolean hasFocus) {
-		// TODO Auto-generated method stub
-		String start_date1 = " ";
-		String end_date1 = " ";
-
-		textTitle.setText(editTitle.getText());
-
-		start_date1 = Integer.toString(startdate / 10000) + " "
-				+ Integer.toString((startdate % 10000) / 100) + "."
-				+ Integer.toString(startdate % 100);
-		end_date1 = Integer.toString(enddate / 10000) + " "
-				+ Integer.toString((enddate % 10000) / 100) + "."
-				+ Integer.toString(enddate % 100);
-
-		textCalendar.setText(start_date1 + "~" + end_date1);
-	}
+	public void onFocusChange(View v, boolean hasFocus) {}
 
 	/**
 	 * @author Junki MakeTravel 여행정보 추가 AsyncTask 여행의 기본 정보들(trip_name,
