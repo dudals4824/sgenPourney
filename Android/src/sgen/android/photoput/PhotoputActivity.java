@@ -180,10 +180,12 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 		// user 로그인 정보 setting
 		PourneyApplication Application = (PourneyApplication) getApplication();
+		session = new UserSessionManager(getApplicationContext());
 		user = new UserDTO();
 		trip = new TripDTO();
 		user = Application.getLoggedInUser();
 		trip = Application.getSelectedTrip();
+		
 		Log.d("PhotoputActivity_log", user.toString() + " , " + trip.toString());
 
 		// 드로워임
