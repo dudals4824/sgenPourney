@@ -330,7 +330,6 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 			getPhoto = new GetAllPhotoByTripId();
 			getPhoto.execute(trip, intent_dateList);
 		}
-			
 		else if (v.getId() == R.id.btnPhotoPlus) {
 			// 이미 영상 보러가기 그림 뜬 상태
 			// 영상 페이지로 넘어가기
@@ -338,18 +337,14 @@ public class PhotoputActivity extends Activity implements OnClickListener, OnChe
 					VideoViewActivity.class);
 			startActivity(intent);
 		} else if (v.getId() == R.id.last_album_text) {
-
 			Intent intent = new Intent(this, CoverActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-
 		} else if (v.getId() == R.id.profile_modifying_text) {
-
 			Intent intent = new Intent(this, ProfileModi.class);
 			startActivity(intent);
 			finish();
 		} else if (v.getId() == R.id.imgBack) {
-
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.friend_list_popup,
