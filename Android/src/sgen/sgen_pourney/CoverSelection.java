@@ -6,18 +6,31 @@ import sgen.common.PhotoEditor;
 import sgen.session.UserSessionManager;
 import sgen.sgen_pourney.CoverActivity.ProfileImageSetter;
 import android.app.Activity;
+
+import android.content.Intent;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+
 import android.view.View;
+import android.view.View.OnClickListener;
+
+import android.view.View;
+
 import android.view.Window;
+
+import android.widget.ImageButton;
+
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,6 +40,12 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 
 	private RadioGroup coverRadioGroup;
 	private ImageView imgviewCover;
+
+	private ImageButton btnSelectCover;
+	private int coverType=-1;
+	private int  intent_cover;
+	private int tripId;
+
 	private SimpleSideDrawer mDrawer;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	UserSessionManager session;
@@ -35,12 +54,17 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 	private Bitmap userProfilePhoto = null;
 	private ImageButton  btnProfilePhoto;
 	private UserDTO user;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.album_cover_select);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+
+		intent_cover=getIntent().getIntExtra("intent_cover", 300);
+		tripId = getIntent().getIntExtra("tripId", 300);
+
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		findViewById(R.id.btnMenu).setOnClickListener(new OnClickListener() {
@@ -57,9 +81,27 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
 		btnProfilePhoto=(ImageButton)findViewById(R.id.btnForProfilePhoto);
+
 		imgviewCover=(ImageView)findViewById(R.id.imgviewCover);
+		btnSelectCover=(ImageButton)findViewById(R.id.btnSelectCover);
 		coverRadioGroup = (RadioGroup) findViewById(R.id.cover_select_radioGrp);
 		coverRadioGroup.setOnCheckedChangeListener(this);
+
+		btnSelectCover.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Log.d("커버 셀렉션 intent_cover", intent_cover+"");
+				Intent intent=new Intent(CoverSelection.this,CoverActivity.class);
+				intent.putExtra("coverType", coverType);
+				intent.putExtra("intent_cover", intent_cover);
+				startActivity(intent);
+				finish();
+			}
+		});
+
+
 		session = new UserSessionManager(getApplicationContext());
 		
 		askBtn.setOnClickListener(this);
@@ -69,13 +111,14 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 		
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
+
 	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup arg0, int arg1) {
 		// TODO Auto-generated method stub
 		Log.d("checked", "ddd");
-		int coverType=-1;
+		
 		switch (arg1) {
 		case R.id.backcard1_radioBtn:
 			coverType = 0;
