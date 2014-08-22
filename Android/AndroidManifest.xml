@@ -88,6 +88,8 @@
         </activity>
         <activity android:name="sgen.android.multigallery.MainActivity" >
         </activity>
+        <activity android:name="sgen.sgen_pourney.SplashActivity" >
+        </activity>
     </application>
 
 </manifest>
