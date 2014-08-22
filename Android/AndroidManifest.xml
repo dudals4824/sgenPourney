@@ -41,6 +41,10 @@
             android:name="sgen.sgen_pourney.CoverActivity"
             android:label="@string/title_activity_cover" >
         </activity>
+        <activity 
+            android:name="sgen.sgen_pourney.CoverSelection"
+            android:label="@string/title_album_cover_selection"
+          ></activity>
         <activity
             android:name="sgen.sgen_pourney.DrawerActivity"
             android:label="@string/title_activity_drawer"
