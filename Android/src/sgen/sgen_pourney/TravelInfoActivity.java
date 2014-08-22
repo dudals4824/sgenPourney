@@ -195,9 +195,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		int tripId = map.get("trip_id");
 		loggedInUser.setUserId(userId);
 		selectedTrip.setTripId(tripId);
-		Toast.makeText(getApplicationContext(),
-				"user id : " + userId + "  trip id : " + tripId,
-				Toast.LENGTH_LONG).show();
 
 		// 유저 전역 셋팅
 		PourneyApplication Application = (PourneyApplication) getApplication();
