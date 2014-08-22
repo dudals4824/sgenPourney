@@ -454,7 +454,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 							.setFile(new File(all_path.get(i).getPath()));
 					// 패스를 가져와서 비트맵으로 만들어서 넘긴다. 리사이징은 앨범이미지셀에서한다.
 					Bitmap bm = ImageResizer.resize(all_path.get(i).getFile(),
-							900, 900, ResizeMode.AUTOMATIC);
+							600, 600, ResizeMode.AUTOMATIC);
 
 					// 서버 업로드 부분 시작
 					trip.setPhotoCnt(trip.getPhotoCnt() + 1);
