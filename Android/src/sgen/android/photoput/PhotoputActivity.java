@@ -69,6 +69,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
@@ -1031,6 +1032,69 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		}
 	}// end of photoLike
 
+	public class DeletePhoto extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("photo_id", params[0]));
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/deletePhoto.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("log_tag", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				JSONObject JsonObject = new JSONObject(result);
+				result = JsonObject.getString("result");
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if ("1".equals(result)) {
+				Toast.makeText(getApplicationContext(),
+						"사진을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+			}else
+			{
+				Toast.makeText(getApplicationContext(),
+						"사진을 삭제하지 못했습니다..", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+
+	
 	@Override
 	public void onCheckedChanged(RadioGroup arg0, int arg1) {
 		int filterType = -1;

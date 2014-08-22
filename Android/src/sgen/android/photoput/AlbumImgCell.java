@@ -443,6 +443,70 @@ public class AlbumImgCell extends RelativeLayout implements
 
 	}// end of photoLike
 
+	public class DeletePhoto extends AsyncTask<Object, String, String> {
+		PhotoDTO photo = new PhotoDTO();
+		
+		@Override
+		protected String doInBackground(Object... params) {
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+			String photoId = Integer.toString(((PhotoDTO)params[0]).getPhotoId());
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("photo_id",photoId));
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/deletePhoto.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("log_tag", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				JSONObject JsonObject = new JSONObject(result);
+				result = JsonObject.getString("result");
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if ("1".equals(result)) {
+				Toast.makeText(mContext.getApplicationContext(),
+						"사진을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+				removeView(v);
+			}else
+			{
+				Toast.makeText(mContext.getApplicationContext(),
+						"사진을 삭제하지 못했습니다..", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+	
 	@Override
 	public boolean onLongClick(View v) {
 		// TODO Auto-generated method stub
@@ -472,7 +536,8 @@ public class AlbumImgCell extends RelativeLayout implements
 			public void onSetOnItemClickListener(int position) {
 				// TODO Auto-generated method stub
 				if (position == 0) {
-					removeView(v);
+					DeletePhoto deletePhoto = new DeletePhoto();
+					deletePhoto.execute(mPhoto , v);
 				}
 				mDialog.dismiss();
 			}
