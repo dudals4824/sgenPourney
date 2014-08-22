@@ -88,9 +88,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private File imgFile;
 	private Bitmap mBitmap;
 
-	//새로고침용
+	// 새로고침용
 	private ImageButton btnReload;
-	
+
 	// CoverCell marble=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +99,10 @@ public class CoverActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_cover);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		btnReload=(ImageButton)findViewById(R.id.btnReload);
+		btnReload = (ImageButton) findViewById(R.id.btnReload);
 		btnReload.setVisibility(View.VISIBLE);
 		// marble=(Cover_cell)findViewById(R.id.box1);
 
-		
 		// user 로그인 정보 setting
 		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
 		user = new UserDTO();
@@ -147,7 +146,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 				intent_coverList.add(new CoverCell(this, tripArray.get(i), i));
 				layout_cover.addView(intent_coverList.get(i));
 			}
-			
+
 			// albumCover = (ImageButton) findViewById(R.id.backcard);
 			// albumCover.setOnClickListener(this);
 		}
@@ -170,6 +169,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
+		btnReload.setOnClickListener(this);
 
 		// 프로필이미지 셋팅
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
@@ -184,9 +184,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 				// content:// URI of the image
 				int intent_cover = data.getIntExtra("intent_cover", 300);
 				currImageURI = data.getData();
-				
+
 				// 실제 절대주소를 받아옴
-				Log.d("intent_cover", intent_cover+"");
+				Log.d("intent_cover", intent_cover + "");
 				for (int i = 0; i < intent_coverList.size(); i++) {
 					if (intent_coverList.get(i).getIntentCover() == intent_cover) {
 						imagePath = getRealPathFromURI(currImageURI);
@@ -279,6 +279,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(CoverActivity.this,
 					PhotoputActivity.class);
 			startActivity(intent);
+		} else if (v.getId() == R.id.btnReload) {
+			finish();
+			startActivity(getIntent());
 		}
 	}
 
