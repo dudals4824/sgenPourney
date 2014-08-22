@@ -1,6 +1,7 @@
 package sgen.sgen_pourney;
 
 import sgen.DTO.UserDTO;
+import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import sgen.session.UserSessionManager;
 import sgen.sgen_pourney.CoverActivity.ProfileImageSetter;
@@ -49,6 +50,8 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 
 			}
 		});
+		PourneyApplication Application = (PourneyApplication) getApplication();
+		user = Application.getLoggedInUser();
 		askBtn = (Button) findViewById(R.id.ask_text);
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
