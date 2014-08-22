@@ -17,22 +17,10 @@ public class TripDTO {
 	private long videoDueDate;
 	private int photoCnt;
 	private int peopleCnt;
+	private int coverType;
 
 	public TripDTO() {
 		super();
-	}
-
-	public TripDTO(int tripId, String tripTitle, long startDate, long endDate,
-			boolean isVideoMade, long videoDueDate, int photoCnt, int peopleCnt) {
-		super();
-		this.tripId = tripId;
-		this.tripTitle = tripTitle;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.isVideoMade = isVideoMade;
-		this.videoDueDate = videoDueDate;
-		this.photoCnt = photoCnt;
-		this.peopleCnt = peopleCnt;
 	}
 
 	public int getTripId() {
@@ -112,13 +100,23 @@ public class TripDTO {
 		this.videoDueDate = videoDueDate;
 	}
 
+
+	public int getCoverType() {
+		return coverType;
+	}
+
+	public void setCoverType(int coverType) {
+		this.coverType = coverType;
+	}
+
 	@Override
 	public String toString() {
 		return "TripDTO [tripId=" + tripId + ", tripTitle=" + tripTitle
 				+ ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", isVideoMade=" + isVideoMade + ", videoDueDate="
 				+ videoDueDate + ", photoCnt=" + photoCnt + ", peopleCnt="
-				+ peopleCnt + "]";
+				+ peopleCnt + ", coverType=" + coverType + "]";
 	}
 
+	
 }

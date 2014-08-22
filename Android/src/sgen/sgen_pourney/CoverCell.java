@@ -99,7 +99,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 	public CoverCell(Context context, int attrs, int i) {
 		super(context);
 		initMarbleView(context, attrs);
-		Log.d("커버셀 intent_cover", i+"");
+		Log.d("커버셀 intent_cover", i + "");
 		intent_cover = i;
 	}
 
@@ -158,12 +158,12 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		// trip 정보 setting
 		if (v.getId() == R.id.cphoto) {
 			Log.e("onClick", "click buttons picture dialog.......");
-				Log.d("intent_Cover", intent_cover+"");
-					Intent intent = new Intent(mContext, CoverSelection.class);
-					intent.putExtra("intent_cover", intent_cover);
-					intent.putExtra("tripId", trip.getTripId());
-					mContext.startActivity(intent);
-			
+			Log.d("intent_Cover", intent_cover + "");
+			Intent intent = new Intent(mContext, CoverSelection.class);
+			intent.putExtra("intent_cover", intent_cover);
+			intent.putExtra("tripId", trip.getTripId());
+			mContext.startActivity(intent);
+
 		} else {
 			PourneyApplication Application = (PourneyApplication) ((Activity) mContext)
 					.getApplication();
@@ -172,7 +172,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 					+ Application.getSelectedTrip().getTripTitle());
 
 			Intent intent = new Intent(mContext, PhotoputActivity.class);
-			
+
 			mContext.startActivity(intent);
 		}
 	}
@@ -211,7 +211,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				}
 				is.close();
 				result = sb.toString().trim();
-				//Log.e("log_tag", result);
+				// Log.e("log_tag", result);
 
 			} catch (Exception e) {
 				Log.e("log_tag", "Error converting result " + e.toString());
@@ -228,6 +228,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				trip.setPeopleCnt(JsonObject.getInt("people_count"));
 				trip.setVideoMade("1".equals(JsonObject
 						.getString("is_video_made")));
+				trip.setCoverType(JsonObject.getInt("cover_type"));
 			} catch (JSONException e1) {
 				Log.e("log_msg", e1.toString());
 			}
@@ -238,13 +239,28 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			// travel information setting
-			//Log.d("settext", trip.toString());
+			// Log.d("settext", trip.toString());
 			title.setText(trip.getTripTitle());
 			date.setText(trip.getStartDateInDateFormat() + " ~ "
 					+ trip.getEndDateInDateFormat());
-			numberOfPeople
-					.setText("With " + trip.getPeopleCnt() + " people");
+			numberOfPeople.setText("With " + trip.getPeopleCnt() + " people");
 			travelNumber.setText(String.valueOf(trip.getTripId()));
+
+			switch (trip.getCoverType()) {
+			case 0:
+				backcard.setImageResource(R.drawable.i_backcard_1);
+				break;
+			case 1:
+				backcard.setImageResource(R.drawable.i_backcard_2);
+				break;
+			case 2:
+				backcard.setImageResource(R.drawable.i_backcard_3);
+				break;
+			case 3:
+				backcard.setImageResource(R.drawable.i_backcard_4);
+				break;
+			default:
+			}
 		}
 	}
 
@@ -399,7 +415,6 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 	public void setImageBackCard(int resId) {
 		backcard.setImageResource(resId);
 	}
-	
 
 	// get real path - helping method
 	private String getRealPathFromURI(Uri contentUri) {
@@ -508,10 +523,9 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if ("1".equals(result)) {
-				Toast.makeText(mContext.getApplicationContext(),
-						"여행에서 나갔습니다.", Toast.LENGTH_SHORT).show();
-			}else
-			{
+				Toast.makeText(mContext.getApplicationContext(), "여행에서 나갔습니다.",
+						Toast.LENGTH_SHORT).show();
+			} else {
 				Toast.makeText(mContext.getApplicationContext(),
 						"여행에서 나가지 못했습니다.", Toast.LENGTH_SHORT).show();
 			}
