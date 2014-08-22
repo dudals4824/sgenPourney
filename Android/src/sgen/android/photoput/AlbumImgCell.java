@@ -136,7 +136,7 @@ public class AlbumImgCell extends RelativeLayout implements
 							mContext.LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.photo_memo, null);
 			photoPopupWindow = new PopupWindow(popupView,
-					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, true);
+					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
 			photoPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 			photoPopupWindow.setFocusable(true);
 			photoPopupWindow.setOutsideTouchable(true);
