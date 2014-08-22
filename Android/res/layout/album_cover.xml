@@ -4,90 +4,87 @@
     android:id="@+id/cover"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/i_shadow" />
+    <ImageView
+        android:id="@+id/shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="13dp"
+        android:src="@drawable/i_shadow" />
 
-            <ImageButton
-                android:id="@+id/backcard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
-                android:layout_marginLeft="14dp"
-                android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-                android:src="@layout/backcard_click_event" />
+    <ImageButton
+        android:id="@+id/backcard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="13dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@layout/backcard_click_event" />
 
-            <ImageButton
-                android:id="@+id/cphoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/backcard"
-                android:layout_alignTop="@+id/backcard"
-                android:layout_marginLeft="6.33dp"
-                android:layout_marginRight="11.33dp"
-                android:layout_marginTop="10.33dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_photo" />
+    <ImageButton
+        android:id="@+id/cphoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/backcard"
+        android:layout_alignTop="@+id/backcard"
+        android:layout_marginLeft="6.33dp"
+        android:layout_marginRight="11.33dp"
+        android:layout_marginTop="10.33dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_photo" />
 
-            <TextView
-                android:id="@+id/travelTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/backcard"
-                android:layout_alignTop="@+id/backcard"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="8.67dp"
-                android:layout_marginTop="39.33dp"
-                android:text="01.Title"
-                android:textSize="10dip"
-                android:gravity="center" 
-                android:background="@drawable/i_titleback" />
+    <TextView
+        android:id="@+id/travelTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/backcard"
+        android:layout_alignTop="@+id/backcard"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="8.67dp"
+        android:layout_marginTop="39.33dp"
+        android:background="@drawable/i_titleback"
+        android:gravity="center"
+        android:text="01.Title"
+        android:textSize="10dip" />
 
-            <TextView
-                android:id="@+id/dayBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                
-                android:layout_alignRight="@+id/backcard"
-                android:layout_alignBottom="@+id/backcard"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="55dp"
-                android:layout_marginRight="6dp"
-                android:text="2014.4.5~2014.4.10"
-                android:textSize="10dip"
-                android:gravity="center" 
-                android:background="@drawable/i_dayback" />
+    <TextView
+        android:id="@+id/dayBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/backcard"
+        android:layout_alignRight="@+id/backcard"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="55dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/i_dayback"
+        android:gravity="center"
+        android:text="2014.4.5~2014.4.10"
+        android:textSize="10dip" />
 
-            <TextView
-                android:id="@+id/peopleBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/backcard"
-                android:layout_alignRight="@+id/backcard"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="19.33dp"
-                android:layout_marginRight="22.67dp"
-                android:text="With N people"
-                android:textSize="10dip"
-                android:gravity="center" 
-                android:background="@drawable/i_peopleback" />
+    <TextView
+        android:id="@+id/peopleBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/backcard"
+        android:layout_alignRight="@+id/backcard"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="19.33dp"
+        android:layout_marginRight="22.67dp"
+        android:background="@drawable/i_peopleback"
+        android:gravity="center"
+        android:text="With N people"
+        android:textSize="10dip" />
 
-            <TextView
-                android:id="@+id/travelNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/dayBack"
-                android:layout_marginRight="20dp"
-                android:visibility="visible"
-                android:layout_toLeftOf="@+id/cphoto"
-                android:text="1" />
+    <TextView
+        android:id="@+id/travelNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/dayBack"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/cphoto"
+        android:visibility="visible" />
 
-        </RelativeLayout>
+</RelativeLayout>
