@@ -58,7 +58,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private int numberOfCover = 0; // 디비에서 개인의 커버 갯수 받아와서 저장해주세요
 	private TextView profileName;
 	private GridLayout layout_cover;
-	private ImageButton btn_new_travel, btnProfilePhoto, albumCover;
+	private ImageButton btn_new_travel, btnProfilePhoto;
 	private SimpleSideDrawer mDrawer;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private long m_startTime;
@@ -66,7 +66,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private boolean m_isPressedBackButton;
 	private Bitmap userProfilePhoto = null;
 
-	static final int REQUEST_ALBUM = 1;
+	static final int REQUEST_COVER = 1;
 	static final int REQUEST_PICTURE = 2;
 
 	static String SAMPLEIMG = "profile.png";
@@ -83,13 +83,9 @@ public class CoverActivity extends Activity implements OnClickListener {
 	private ArrayList<Integer> tripArray = new ArrayList<Integer>();
 	private ArrayList<CoverCell> intent_coverList = new ArrayList<CoverCell>();
 
-	private Uri currImageURI;
-	private String imagePath;
-	private File imgFile;
-	private Bitmap mBitmap;
-
 	// 새로고침용
 	private ImageButton btnReload;
+
 
 	// CoverCell marble=null;
 	@Override
@@ -102,6 +98,7 @@ public class CoverActivity extends Activity implements OnClickListener {
 		btnReload = (ImageButton) findViewById(R.id.btnReload);
 		btnReload.setVisibility(View.VISIBLE);
 		// marble=(Cover_cell)findViewById(R.id.box1);
+		setCover();
 
 		// user 로그인 정보 setting
 		PourneyApplication loggedInUser = (PourneyApplication) getApplication();
@@ -176,70 +173,39 @@ public class CoverActivity extends Activity implements OnClickListener {
 		profileImageSetter.execute();
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			if (requestCode == REQUEST_ALBUM) {
-				Log.d("REQUEST_ALBUM", "REQUEST_ALBUM");
-				// content:// URI of the image
-				int intent_cover = data.getIntExtra("intent_cover", 300);
-				currImageURI = data.getData();
+	private void setCover() {
 
-				// 실제 절대주소를 받아옴
-				Log.d("intent_cover", intent_cover + "");
-				for (int i = 0; i < intent_coverList.size(); i++) {
-					if (intent_coverList.get(i).getIntentCover() == intent_cover) {
-						imagePath = getRealPathFromURI(currImageURI);
+		// content:// URI of the image
+		Log.d("requestcover", "cover");
+		int intent_cover = getIntent().getIntExtra("intent_cover", 300);
+		int coverType = getIntent().getIntExtra("coverType", 300);
+		
 
-						// image path 얻어왔으면 imgFile초기화.
-						imgFile = new File(imagePath);
-						// img file bitmap 변경
-						if (imgFile.exists()) {
-							mBitmap = BitmapFactory.decodeFile(imgFile
-									.getAbsolutePath());
-							// getCroppedBitmap(mBitmap);
-							Log.e("비트맵 로드", "성공");
-						} else
-							Log.e("비트맵 디코딩", "실패");
-
-						intent_coverList.get(i).setImageBackCard(mBitmap);
-					}
+		// 실제 절대주소를 받아옴
+		Log.d("커버 액티비티에서 받은 intent_cover", intent_cover + "");
+		Log.d("커버 액티비티에서 받은 covertype", coverType+"");
+		for (int i = 0; i < intent_coverList.size(); i++) {
+			if (intent_coverList.get(i).getIntentCover() == intent_cover) {
+				Log.d("같음", "같음");
+				if (coverType == 0) {
+					Log.d("covertype", 1+"");
+					intent_coverList.get(i).setImageBackCard(
+							R.drawable.i_backcard_1);
+				} else if (coverType == 1) {
+					intent_coverList.get(i).setImageBackCard(
+							R.drawable.i_backcard_2);
+				} else if (coverType == 2) {
+					intent_coverList.get(i).setImageBackCard(
+							R.drawable.i_backcard_3);
 				}
-
+			} else if (coverType == 3) {
+				intent_coverList.get(i).setImageBackCard(
+						R.drawable.i_backcard_4);
 			}
-			// //
-			// mPictureBtn.setImageBitmap(overlayCover(getCroppedBitmap(resizeBitmapToProfileSize(mBitmap))));
-			// BitmapDrawable bd = (BitmapDrawable) this.getResources()
-			// .getDrawable(R.drawable.i_profilephoto_cover);
-			// Bitmap coverBitmap = bd.getBitmap();
-			// // constructor
-			// // mBitmap에 찍은 사진 넣기
-			// // cover은 그대로
-			// PhotoEditor photoEdit = new PhotoEditor(mBitmap, coverBitmap,
-			// photoAreaWidth, photoAreaHeight);
-			// // resize
-			// // crop roun
-			// // overay cover
-			//
-			// // 이거하면 이미지 셋됨
-			// // mBitmap = photoEdit.editPhotoAuto();
-			// // btnCoverPhoto.setImageBitmap(mBitmap);
 		}
 	}
 
-	private String getRealPathFromURI(Uri contentUri) {
-		String path = null;
-		String[] proj = { MediaStore.MediaColumns.DATA };
-		Cursor cursor = getApplicationContext().getContentResolver().query(
-				contentUri, proj, null, null, null);
-		if (cursor.moveToFirst()) {
-			int column_index = cursor
-					.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-			path = cursor.getString(column_index);
-		}
-		cursor.close();
-		return path;
-	}
+
 
 	@Override
 	public void onClick(View v) {
