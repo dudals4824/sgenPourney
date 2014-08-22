@@ -480,6 +480,31 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		}
 	}
 
+	@Override
+	public void onCheckedChanged(RadioGroup arg0, int arg1) {
+		int filterType = -1;
+		SelectFilter selectFilter = new SelectFilter();
+		switch (arg1) {
+		case R.id.Original_radiobtn:
+			filterType = 0;
+			break;
+		case R.id.SunnyDay_radiobtn:
+			filterType = 1;
+			break;
+		case R.id.Dramatic_radiobtn:
+			filterType = 2;
+			break;
+		case R.id.Cloudy_radiobtn:
+			filterType = 3;
+			break;
+		default:
+			filterType = -1;
+			break;
+		}
+		selectFilter.execute(user, trip, filterType);
+		Log.d(getClass().getName(), "filter select : " + filterType);
+	}
+
 	public class ProfileImageSetter extends AsyncTask<String, String, String> {
 
 		@Override
@@ -1162,28 +1187,4 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		}
 	}
 
-	@Override
-	public void onCheckedChanged(RadioGroup arg0, int arg1) {
-		int filterType = -1;
-		SelectFilter selectFilter = new SelectFilter();
-		switch (arg1) {
-		case R.id.Original_radiobtn:
-			filterType = 0;
-			break;
-		case R.id.SunnyDay_radiobtn:
-			filterType = 1;
-			break;
-		case R.id.Dramatic_radiobtn:
-			filterType = 2;
-			break;
-		case R.id.Cloudy_radiobtn:
-			filterType = 3;
-			break;
-		default:
-			filterType = -1;
-			break;
-		}
-		selectFilter.execute(user, trip, filterType);
-		Log.d(getClass().getName(), "filter select : " + filterType);
-	}
 }
