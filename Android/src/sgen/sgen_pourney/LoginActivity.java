@@ -5,18 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.ProfilePictureView; //페북로긴에 필요함
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,20 +20,17 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.UserDataHandler;
 
 import sgen.DTO.UserDTO;
-import sgen.session.UserSessionManager;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
+import sgen.session.UserSessionManager;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.MailTo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,8 +41,14 @@ import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
+//페북로긴에 필요함
 
 public class LoginActivity extends Activity implements OnClickListener {
 
@@ -81,6 +75,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		startActivity(new Intent(this, SplashActivity.class));
 		setContentView(R.layout.activity_login);
 		init();
 
