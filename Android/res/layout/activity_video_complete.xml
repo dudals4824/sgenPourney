@@ -30,15 +30,6 @@
                 android:layout_alignParentTop="true"
                 android:src="@drawable/i_back_videocomplete" />
 
-              <VideoView
-                  android:id="@+id/VideoView"
-                  android:layout_width="match_parent"
-                  android:layout_height="243dp"
-                  
-                  android:layout_alignBottom="@+id/imgBackVideo"
-                  android:layout_alignParentLeft="true"
-                  android:layout_marginBottom="50dp" />
-
 				<ImageView
 				    android:id="@+id/video_view_logo"
 				    android:layout_width="300px"
@@ -48,35 +39,31 @@
 				    android:src="@drawable/i_logoimage" />
 
 				<ImageButton
-				    android:id="@+id/facebook_sharing_btn"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_above="@+id/video_view_logo"
-				    android:layout_alignLeft="@+id/video_view_logo"
-				    android:layout_marginBottom="12dp"
-				    android:background="@android:color/transparent"
-				    android:src="@drawable/facebook_share_button_300x100" />
-
-				<ImageButton
-				    android:id="@+id/playBtn"
+				    android:id="@+id/pauseBtn"
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
 				    android:layout_alignTop="@+id/VideoView"
 				    android:layout_centerHorizontal="true"
-				    android:layout_marginTop="97dp"
-				    android:background="@android:color/transparent"
-				    android:src="@drawable/play128x128"
-				    android:visibility="visible" />
-
-				<ImageButton
-				    android:id="@+id/pauseBtn"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_alignTop="@+id/playBtn"
-				    android:layout_centerHorizontal="true"
 				    android:background="@android:color/transparent"
 				    android:src="@drawable/pause128x128"
 				    android:visibility="gone" />
+
+				<ImageButton
+				    android:id="@+id/facebook_sharing_btn"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignLeft="@+id/video_view_logo"
+				    android:layout_below="@+id/imgBackVideo"
+				    android:background="@android:color/transparent"
+				    android:src="@drawable/facebook_share_button_300x100" />
+
+				<VideoView
+				    android:id="@+id/VideoView"
+				    android:layout_width="300dp"
+				    android:layout_height="300dp"
+				    android:layout_alignBottom="@+id/imgBackVideo"
+				    android:layout_marginBottom="17dp"
+				    android:layout_marginLeft="32dp" />
 
         </RelativeLayout>
        
