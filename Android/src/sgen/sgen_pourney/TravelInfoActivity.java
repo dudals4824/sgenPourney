@@ -26,6 +26,7 @@ import sgen.android.photoput.PhotoputActivity;
 import sgen.application.PourneyApplication;
 import sgen.common.PhotoEditor;
 import sgen.session.UserSessionManager;
+import sgen.sgen_pourney.CoverSelection.ProfileImageSetter;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -76,9 +77,12 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private TripDTO selectedTrip; // 민아
 	private String frinedNameToFind;
 
-	// 사진 관련 변수
 	private int photoAreaWidth;
 	private int photoAreaHeight;
+	private Bitmap userProfilePhoto = null;
+	private ImageButton  btnProfilePhoto;
+	private UserDTO user;
+	// 사진 관련 변수
 
 	// 친구찾기에서 사용할 popup관련 변수들
 	private PopupWindow findFriendPopupWindow;
@@ -144,6 +148,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		btnProfilePhoto=(ImageButton)findViewById(R.id.btnForProfilePhoto);
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
 		textTitleHere = (TextView) findViewById(R.id.textTitleHere);
@@ -193,6 +198,13 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		Toast.makeText(getApplicationContext(),
 				"user id : " + userId + "  trip id : " + tripId,
 				Toast.LENGTH_LONG).show();
+		
+		//유저 전역 셋팅
+		PourneyApplication Application = (PourneyApplication) getApplication();
+		user = Application.getLoggedInUser();
+		
+		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
+		profileImageSetter.execute();
 	}// TravelActivity onCreate();
 
 	private void setFont() {
@@ -829,5 +841,30 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			targetImageView.setImageBitmap(friendProfilePhoto);
 		}
 
+	}
+	public class ProfileImageSetter extends AsyncTask<String, String, String> {
+		@Override
+		protected String doInBackground(String... params) {
+			userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
+					.getProfileFilePath());
+			if (userProfilePhoto != null) {
+				BitmapDrawable bd = (BitmapDrawable) getResources()
+						.getDrawable(R.drawable.i_profilephoto_cover);
+				Bitmap coverBitmap = bd.getBitmap();
+				photoAreaWidth = bd.getBitmap().getWidth();
+				photoAreaHeight = bd.getBitmap().getHeight();
+				PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
+						coverBitmap, photoAreaWidth, photoAreaHeight);
+				userProfilePhoto = photoEdit.editPhotoAuto();
+				
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			btnProfilePhoto.setImageBitmap(userProfilePhoto);
+		}
 	}
 }

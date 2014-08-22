@@ -1,15 +1,22 @@
 package sgen.sgen_pourney;
 
+import sgen.DTO.UserDTO;
+import sgen.common.PhotoEditor;
 import sgen.session.UserSessionManager;
+import sgen.sgen_pourney.CoverActivity.ProfileImageSetter;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,6 +29,11 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 	private SimpleSideDrawer mDrawer;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	UserSessionManager session;
+	private int photoAreaWidth;
+	private int photoAreaHeight;
+	private Bitmap userProfilePhoto = null;
+	private ImageButton  btnProfilePhoto;
+	private UserDTO user;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -41,6 +53,7 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		btnProfilePhoto=(ImageButton)findViewById(R.id.btnForProfilePhoto);
 		imgviewCover=(ImageView)findViewById(R.id.imgviewCover);
 		coverRadioGroup = (RadioGroup) findViewById(R.id.cover_select_radioGrp);
 		coverRadioGroup.setOnCheckedChangeListener(this);
@@ -50,6 +63,9 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 		logoutBtn.setOnClickListener(this);
 		albumBtn.setOnClickListener(this);
 		profileBtn.setOnClickListener(this);
+		
+		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
+		profileImageSetter.execute();
 	}
 
 	@Override
@@ -104,4 +120,30 @@ public class CoverSelection extends Activity implements OnCheckedChangeListener,
 			finish();
 		}
 	}
+	
+	public class ProfileImageSetter extends AsyncTask<String, String, String> {
+		@Override
+		protected String doInBackground(String... params) {
+			userProfilePhoto = PhotoEditor.ImageurlToBitmapConverter(user
+					.getProfileFilePath());
+			if (userProfilePhoto != null) {
+				BitmapDrawable bd = (BitmapDrawable) getResources()
+						.getDrawable(R.drawable.i_profilephoto_cover);
+				Bitmap coverBitmap = bd.getBitmap();
+				photoAreaWidth = bd.getBitmap().getWidth();
+				photoAreaHeight = bd.getBitmap().getHeight();
+				PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
+						coverBitmap, photoAreaWidth, photoAreaHeight);
+				userProfilePhoto = photoEdit.editPhotoAuto();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			btnProfilePhoto.setImageBitmap(userProfilePhoto);
+		}
+	}
+
 }
