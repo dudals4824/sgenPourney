@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -151,7 +152,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 	//
 	private ImageButton btnReload;
-
 	private PhotoUploader photoUploader;
 	private BitmapPhotoUploader bitmapPhotoUploader;
 	private String intent_date;
@@ -160,12 +160,12 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 	// filter 변수
 	private RadioGroup filterRadioGroup;
-
 	private Bitmap profilePhoto = null;
 	private ImageView imgProfile = null;
 
 	// 더보기 눌렀을 때
 	private TextView textMore;
+	ArrayList<UserDTO> friendsList = null;
 
 	@Override
 	protected void onResume() {
@@ -197,6 +197,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		imgProfile = (ImageView) findViewById(R.id.imgProfile);
 		FriendProfileImageSetter imageSetter = new FriendProfileImageSetter();
 		imageSetter.execute(user, imgProfile);
+
 		// 더보기 눌렀을 때
 		textMore = (TextView) findViewById(R.id.textMore);
 		textMore.setOnClickListener(this);
@@ -224,15 +225,12 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		initDayAlbum();
 
 		// 여행 정보 setting
-		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));// 디비에서 사람
-																		// 수
-																		// 불러와서
-																		// 넣어주세요
+		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));
 		title.setText(trip.getTripTitle());
 		date.setText(trip.getStartDateInDateFormat() + " ~ "
 				+ trip.getEndDateInDateFormat());
 
-		// friendlist 표시
+		// profile 사진 표시
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
 
@@ -241,6 +239,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			getPhoto = new GetAllPhotoByTripId();
 			getPhoto.execute(trip, intent_dateList);
 		}
+
 	}
 
 	private void getViewIdsetListener() {
@@ -377,7 +376,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				Log.d("checked array", dayalbumList.get(i)
 						.getCheckedImageArray().toString());
 			}
-		}else if(v.getId()==R.id.textMore){
+		} else if (v.getId() == R.id.textMore) {
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View popupView = layoutInflater.inflate(R.layout.friend_list_popup,
@@ -397,16 +396,27 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					return false;
 				}
 			});
-			for (int i = 0; i < 7; i++) {
+
+			// 친구 목록 초기화
+			GetFriendsList getFriendsList = new GetFriendsList();
+			getFriendsList.execute(Integer.toString(trip.getTripId()));
+			try {
+				getFriendsList.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+			for (int i = 0; i < trip.getPeopleCnt(); i++) {
 				((GridLayout) friendListPopupWindow.getContentView()
 						.findViewById(R.id.friendlistpopupback))
-						.addView(new FriendListCell(this));
+						.addView(new FriendListCell(this, friendsList.get(i)));
 				friendListPopupWindow.showAtLocation(popupLocation, 0, 0, 218);
 
 				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
 				// 27);
 			}
-		
+
 		}
 
 	}
@@ -955,6 +965,69 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		}
 	}
 
+	public class GetFriendsList extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			InputStream is = null;
+			StringBuilder sb = null;
+			String result = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(
+						"http://54.178.166.213/getFriendsList.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+				is = entity.getContent();
+			} catch (Exception e) {
+				Log.e("log_tag", "error in http connection" + e.toString());
+			}
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
+				sb = new StringBuilder();
+				sb.append(reader.readLine() + "\n");
+				String line = "0";
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				result = sb.toString().trim();
+				Log.e("friend List", result);
+
+			} catch (Exception e) {
+				Log.e("log_tag", "Error converting result " + e.toString());
+			}
+			try {
+				JSONArray JsonArray = new JSONArray(result);
+				friendsList = new ArrayList<UserDTO>();
+				for (int i = 0; i < JsonArray.length(); i++) {
+					UserDTO friend = new UserDTO();
+					JSONObject JsonObject = JsonArray.getJSONObject(i);
+					friend.setUserId(JsonObject.getInt("user_id"));
+					friend.setNickName(JsonObject.getString("nick_name"));
+					friend.setEmail(JsonObject.getString("email"));
+					friend.setProfileFilePath(SERVERURI
+							+ JsonObject.getString("profile_filename"));
+					friendsList.add(friend);
+				}
+			} catch (JSONException e1) {
+				Log.e("log_msg", e1.toString());
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+		}
+	}
+
 	public class SelectFilter extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
 		private TripDTO mTripDTO;
@@ -1083,18 +1156,15 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if ("1".equals(result)) {
-				Toast.makeText(getApplicationContext(),
-						"사진을 삭제했습니다.", Toast.LENGTH_SHORT).show();
-			}else
-			{
-				Toast.makeText(getApplicationContext(),
-						"사진을 삭제하지 못했습니다..", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "사진을 삭제했습니다.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(), "사진을 삭제하지 못했습니다..",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
 
-
-	
 	@Override
 	public void onCheckedChanged(RadioGroup arg0, int arg1) {
 		int filterType = -1;
