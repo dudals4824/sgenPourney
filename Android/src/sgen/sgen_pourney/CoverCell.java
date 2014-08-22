@@ -99,6 +99,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 	public CoverCell(Context context, int attrs, int i) {
 		super(context);
 		initMarbleView(context, attrs);
+		Log.d("커버셀 intent_cover", i+"");
 		intent_cover = i;
 	}
 
@@ -157,10 +158,11 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		// trip 정보 setting
 		if (v.getId() == R.id.cphoto) {
 			Log.e("onClick", "click buttons picture dialog.......");
-				
+				Log.d("intent_Cover", intent_cover+"");
 					Intent intent = new Intent(mContext, CoverSelection.class);
+					intent.putExtra("intent_cover", intent_cover);
+					intent.putExtra("tripId", trip.getTripId());
 					mContext.startActivity(intent);
-
 			
 		} else {
 			PourneyApplication Application = (PourneyApplication) ((Activity) mContext)
@@ -170,6 +172,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 					+ Application.getSelectedTrip().getTripTitle());
 
 			Intent intent = new Intent(mContext, PhotoputActivity.class);
+			
 			mContext.startActivity(intent);
 		}
 	}
@@ -393,9 +396,10 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		return bitmap;
 	}
 
-	public void setImageBackCard(Bitmap bitmap) {
-		backcard.setImageBitmap(bitmap);
+	public void setImageBackCard(int resId) {
+		backcard.setImageResource(resId);
 	}
+	
 
 	// get real path - helping method
 	private String getRealPathFromURI(Uri contentUri) {
