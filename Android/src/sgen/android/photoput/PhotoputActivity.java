@@ -683,7 +683,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				BitmapDrawable bd = null;
 
 				bd = (BitmapDrawable) getResources().getDrawable(
-						R.drawable.i_profile_200x200_cover);
+						R.drawable.i_profile_238x240_cover);
 
 				Bitmap coverBitmap = bd.getBitmap();
 
