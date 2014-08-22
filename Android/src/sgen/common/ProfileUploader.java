@@ -89,7 +89,9 @@ public class ProfileUploader extends Thread {
 					+ lineEnd + lineEnd);
 			dos.writeBytes(email + lineEnd);
 
+			
 			// Send parameter #2
+			dos.flush();
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
 			dos.writeBytes("Content-Disposition: form-data; name=\"nickname\""
 					+ lineEnd + lineEnd);
