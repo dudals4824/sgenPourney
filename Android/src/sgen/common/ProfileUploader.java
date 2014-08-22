@@ -77,25 +77,24 @@ public class ProfileUploader extends Thread {
 			conn.setUseCaches(false); // Don't use a Cached Copy
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Connection", "Keep-Alive");
-			conn.setRequestProperty("Charset", "utf-8");
 			conn.setRequestProperty("ENCTYPE", "multipart/form-data");
 			conn.setRequestProperty("Content-Type",
-					"multipart/form-data;boundary=" + boundary);
+					"multipart/form-data;charset=utf-8;text/plain;boundary=" + boundary);
 			conn.setRequestProperty("uploaded_file", sourceFileUri);
 			dos = new DataOutputStream(conn.getOutputStream());
 
 			// Send parameter #1
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
-			dos.writeBytes("Content-Disposition: form-data; name=\"nickname\""
+			dos.writeBytes("Content-Disposition: form-data; name=\"email\""
 					+ lineEnd + lineEnd);
-			dos.writeUTF(nickname + lineEnd);
+			dos.writeBytes(email + lineEnd);
 
 			// Send parameter #2
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
-			dos.writeBytes("Content-Disposition: form-data; name=\"email\""
+			dos.writeBytes("Content-Disposition: form-data; name=\"nickname\""
 					+ lineEnd + lineEnd);
-			dos.writeUTF(email + lineEnd);
-
+			dos.writeUTF(nickname + lineEnd);
+			
 			// send parameter #3
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
 			dos.writeBytes("Content-Disposition: form-data; name=\"password\""

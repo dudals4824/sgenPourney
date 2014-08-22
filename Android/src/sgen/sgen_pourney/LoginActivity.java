@@ -48,6 +48,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
+
 //페북로긴에 필요함
 
 public class LoginActivity extends Activity implements OnClickListener {
@@ -122,14 +123,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 			emailAddress = editEmailaddress.getText().toString();
 			password = editPassword.getText().toString();
 			isLoginSuccessful = false;
-			Log.e("log_msg", "Email : " + emailAddress + " , Password: "
-					+ password);
+			Log.e("log_msg", "Email : " + emailAddress + ", Password: "
+					+ password + "/");
 
 			if (emailAddress.trim().length() > 0
 					&& password.trim().length() > 0) {
 
 				LoginTask loginTask = new LoginTask();
-				loginTask.execute(emailAddress, password);
+				loginTask.execute(emailAddress.trim(), password.trim());
 			} else {
 				// user didn't entered username or password
 				Toast.makeText(getApplicationContext(),
@@ -158,7 +159,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			// editPassword
 			// .setBackgroundResource(R.drawable.i_password_put);
 		} else if (v.getId() == R.id.btnFacebook) {
-			facebookLogin();//페북 로그인
+			facebookLogin();// 페북 로그인
 		} else if (v.getId() == R.id.btnJoin) {
 			System.out.println("Join");
 			Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
@@ -167,7 +168,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void facebookLogin() { // facebook login 占쏙옙 id
-		
+
 		List<String> permissions = new ArrayList<String>();
 		permissions.add("email");
 		permissions.add("public_profile");
@@ -187,31 +188,27 @@ public class LoginActivity extends Activity implements OnClickListener {
 										// with
 										// user object
 										@Override
-										public void onCompleted(
-												GraphUser user,
+										public void onCompleted(GraphUser user,
 												Response response) {
 											if (user != null) {
-												nickName = user
-														.getFirstName();
-												//System.out.println(nickName);
-											
+												nickName = user.getFirstName();
+												// System.out.println(nickName);
+
 												String id = user.getId();
 												userId = id;
-												//System.out.println(userId);
-												email = user
-														.getProperty(
-																"email")
-														.toString();
-												//System.out.println(email);
+												// System.out.println(userId);
+												email = user.getProperty(
+														"email").toString();
+												// System.out.println(email);
 												new BackTask().execute(mIcon);
-												
 
 												// finish();
 												// Intent intent = new
 												// Intent(
 												// LoginActivity.this,
 												// CoverActivity.class);
-												// startActivity(intent); //액티비티넘기는거
+												// startActivity(intent);
+												// //액티비티넘기는거
 											}
 										}
 									}).executeAsync();
@@ -219,8 +216,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 					}
 				});
 
-	
-		
 	}
 
 	public class BackTask extends AsyncTask<Bitmap, String, String> {
@@ -228,18 +223,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 		@Override
 		protected String doInBackground(Bitmap... args) {
 			mIcon = args[0];
-			//ImageView icon_pic = (ImageView) findViewById(R.id.imgLogoimage);
+			// ImageView icon_pic = (ImageView) findViewById(R.id.imgLogoimage);
 
 			String img_value = "https://graph.facebook.com/" + userId
 					+ "/picture?type=large";
-			
+
 			System.out.println(img_value);
-			
+
 			mIcon = PhotoEditor.ImageurlToBitmapConverter(img_value);
-//	icon_pic.setImageBitmap(mIcon);
-			
-			sPhoto = new BitmapDrawable(getResources(), mIcon);//페북 메일이랑 닉넴이랑 프사 
-			System.out.println(email);						//mIcon 이 bitmap사진임
+			// icon_pic.setImageBitmap(mIcon);
+
+			sPhoto = new BitmapDrawable(getResources(), mIcon);// 페북 메일이랑 닉넴이랑
+																// 프사
+			System.out.println(email); // mIcon 이 bitmap사진임
 			System.out.println(nickName);
 
 			return null;
@@ -247,7 +243,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(String text) {
-			//logo.setBackground(sPhoto);
+			// logo.setBackground(sPhoto);
 
 		}
 
@@ -349,12 +345,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
 
 		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
-		}
-
-		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			// if(서버 로그인 성공이면)
@@ -407,6 +397,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			android.os.Process.killProcess(android.os.Process.myPid());
 		}
 	}
+
 	public static Bitmap ImageurlToBitmapConverter(String src) {
 		try {
 			URL url = new URL(src);

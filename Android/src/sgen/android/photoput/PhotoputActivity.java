@@ -862,7 +862,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				JSONObject json_data = null;
 				json_data = jArray.getJSONObject(0);
 				// jSon에서 isMade값이 하나가 옴.
-				isMade = (1 == json_data.getInt("isMade"));
+				isMade = ("1".equals(json_data.getString("isMade")));;
 
 			} catch (ParseException e1) {
 				e1.printStackTrace();
