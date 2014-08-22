@@ -3,90 +3,66 @@
     android:id="@+id/album_cover_containger"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:background="#EEEEEE"
     android:fillViewport="true"
     android:gravity="center"
     tools:context="sgen.android.photoput.PhotoputActivity"
     tools:ignore="MergeRootFrame" >
 
-    <RadioGroup
-        android:id="@+id/cover_select_radioGrp"
+    <ImageView
+        android:id="@+id/imgviewCover"
+        android:layout_width="200dp"
+        android:layout_height="262.67dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/i_backcard_2" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imgviewCover"
+        android:layout_marginTop="35dp" >
 
-        <RelativeLayout>
-
-            <ImageView
-                android:id="@+id/backcard1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/i_backcard_1" />
+        <RadioGroup
+            android:id="@+id/cover_select_radioGrp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            
+            android:background="#67b2ee"
+            android:checkedButton="@+id/backcard2_radioBtn"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
 
             <RadioButton
                 android:id="@+id/backcard1_radioBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/cover_cbox_theme"
-                android:button="@android:color/transparent"
-                android:checked="true" />
-
-            <ImageView
-                android:id="@+id/backcard2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/i_backcard_2" />
+                android:layout_width="80dp"
+                android:layout_height="105dp"
+                android:background="@drawable/i_backcard_1"
+                android:button="@drawable/cover_cbox_theme" />
 
             <RadioButton
                 android:id="@+id/backcard2_radioBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/cover_cbox_theme"
-                android:button="@android:color/transparent" />
-
-            <ImageView
-                android:id="@+id/backcard3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="200dp"
-                android:src="@drawable/i_backcard_3" />
+                android:layout_width="80dp"
+                android:layout_height="105dp"
+                android:background="@drawable/i_backcard_2"
+                android:button="@drawable/cover_cbox_theme" />
 
             <RadioButton
                 android:id="@+id/backcard3_radioBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="200dp"
-                android:background="@drawable/cover_cbox_theme"
-                android:button="@android:color/transparent" />
-
-            <ImageView
-                android:id="@+id/backcard4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
-                android:layout_marginTop="200dp"
-                android:src="@drawable/i_backcard_4" />
+                android:layout_width="80dp"
+                android:layout_height="105dp"
+                android:background="@drawable/i_backcard_3"
+                android:button="@drawable/cover_cbox_theme" />
 
             <RadioButton
                 android:id="@+id/backcard4_radioBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
-                android:layout_marginTop="200dp"
-                android:background="@drawable/cover_cbox_theme"
-                android:button="@android:color/transparent" />
-        </RelativeLayout>
-    </RadioGroup>
+                android:layout_width="80dp"
+                android:layout_height="105dp"
+                android:background="@drawable/i_backcard_4"
+                android:button="@drawable/cover_cbox_theme" />
+        </RadioGroup>
+    </LinearLayout>
+    <Image
 
 </RelativeLayout>
