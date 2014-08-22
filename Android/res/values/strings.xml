@@ -40,5 +40,6 @@
     </string-array>
     <string name="delete_text">나가기</string>
     <string name="video_view_title">VideoViewActivity</string>
+    <string name="title_album_cover_selection">album_cover_selection</string>
 
 </resources>
