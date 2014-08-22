@@ -8,7 +8,7 @@
     tools:context="sgen.android.photoput.PhotoputActivity"
     tools:ignore="MergeRootFrame" >
 
-    <LinearLayout
+   <LinearLayout
         android:id="@+id/photoput_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -153,7 +153,18 @@
                 android:layout_alignBottom="@id/iconPeople"
                 android:layout_alignLeft="@id/textTitle"
                 android:layout_toRightOf="@+id/iconPeople"
-                android:text="With five People" />
+                android:text="김영민 외 2명" />
+            
+            <TextView
+                android:id="@+id/textMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#3f7eb1"
+                android:textStyle="bold"
+                android:layout_alignBottom="@id/iconPeople"
+                android:layout_alignRight="@+id/textCalendar"
+                android:text="더보기>>"
+                />
         </RelativeLayout>
 
         <LinearLayout
@@ -233,7 +244,7 @@
 
                     <RadioButton
                         android:id="@+id/SunnyDay_radiobtn"
-                       android:layout_width=" 83.33dp	"
+                        android:layout_width=" 83.33dp	"
                         android:layout_height=" 83.33dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="-85dp"
@@ -260,9 +271,8 @@
 
                     <ImageView
                         android:id="@+id/Cloudy_btn"
-                       android:layout_width=" 83.33dp	"
+                        android:layout_width=" 83.33dp	"
                         android:layout_height=" 83.33dp"
-                     
                         android:background="@android:color/transparent"
                         android:scaleType="fitXY"
                         android:src="@drawable/i_cloudy" />
@@ -296,6 +306,8 @@
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
             android:src="@drawable/i_photoplus_582x100" />
+
+
     </LinearLayout>
 
 </ScrollView>
