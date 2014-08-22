@@ -96,10 +96,10 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 		@Override
 		public void onFinish() {
 			countDownTimer.cancel();
-			timer.setText("Your Movie will be shown soon!");
-			Intent intent = new Intent(VideoMakingActivity.this,
-					VideoViewActivity.class);
-			startActivity(intent);
+			timer.setText("영상이 곧 완성됩니다.");
+			//Intent intent = new Intent(VideoMakingActivity.this,
+			//		VideoViewActivity.class);
+			//startActivity(intent);
 
 		}
 
