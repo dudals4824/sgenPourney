@@ -144,7 +144,6 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		backcard.setOnClickListener(this);
 
 		btnCoverPhoto.setOnClickListener(this);
-
 		// title.setOnLongClickListener(this);
 		// date.setOnLongClickListener(this);
 		// numberOfPeople.setOnLongClickListener(this);
@@ -158,7 +157,11 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		// trip 정보 setting
 		if (v.getId() == R.id.cphoto) {
 			Log.e("onClick", "click buttons picture dialog.......");
-			showListDialog();
+				
+					Intent intent = new Intent(mContext, CoverSelection.class);
+					mContext.startActivity(intent);
+
+			
 		} else {
 			PourneyApplication Application = (PourneyApplication) ((Activity) mContext)
 					.getApplication();
