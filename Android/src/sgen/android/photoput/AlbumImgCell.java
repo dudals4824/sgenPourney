@@ -80,7 +80,6 @@ public class AlbumImgCell extends RelativeLayout implements
 		super(context);
 		// TODO Auto-generated constructor stub
 		mContext = context;
-		mBitmap = bitmap;
 		mPhoto = photo;
 		mUserId = userId;
 		initMarbleView(context, bitmap, photo, userId);
@@ -121,6 +120,8 @@ public class AlbumImgCell extends RelativeLayout implements
 
 		checkLike = new CheckAlreadyLiked();
 		checkLike.execute(mPhoto, mUserId, checkImage);
+		
+		bitmap.recycle();
 	}
 
 	@SuppressLint("ShowToast")
