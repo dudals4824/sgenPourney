@@ -244,8 +244,8 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 			date.setText(trip.getStartDateInDateFormat() + " ~ "
 					+ trip.getEndDateInDateFormat());
 			numberOfPeople.setText("With " + trip.getPeopleCnt() + " people");
-			travelNumber.setText(String.valueOf(trip.getTripId()));
-
+			//travelNumber.setText(String.valueOf(trip.getTripId()));
+			
 			switch (trip.getCoverType()) {
 			case 0:
 				backcard.setImageResource(R.drawable.i_backcard_1);
