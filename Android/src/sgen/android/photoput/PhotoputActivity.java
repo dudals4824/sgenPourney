@@ -53,9 +53,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -67,6 +70,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -159,6 +163,9 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 	private Bitmap profilePhoto = null;
 	private ImageView imgProfile = null;
 
+	// 더보기 눌렀을 때
+	private TextView textMore;
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -171,10 +178,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		setContentView(R.layout.activity_photoput);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
-		btnReload = (ImageButton) findViewById(R.id.btnReload);
-		btnReload.setVisibility(View.VISIBLE);
-		btnReload.setOnClickListener(this);
-
 		// user 로그인 정보 setting
 		PourneyApplication Application = (PourneyApplication) getApplication();
 		session = new UserSessionManager(getApplicationContext());
@@ -184,13 +187,93 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		trip = Application.getSelectedTrip();
 
 		Log.d("PhotoputActivity_log", user.toString() + " , " + trip.toString());
+		// 드로워임
+		initDrawer();
+
+		getViewIdsetListener();
 
 		// 프로필 사진 세팅
 		imgProfile = (ImageView) findViewById(R.id.imgProfile);
 		FriendProfileImageSetter imageSetter = new FriendProfileImageSetter();
 		imageSetter.execute(user, imgProfile);
+		// 더보기 눌렀을 때
+		textMore = (TextView) findViewById(R.id.textMore);
+		textMore.setOnClickListener(this);
 
-		// 드로워임
+		// video 만들기 버튼 tripDTO확인해서 현재 영상을 만들어졌는지, 만들기를 눌렀는지, 안눌렀는지에 따라서 버튼 모양이
+		// 바뀐다
+		if (trip.isVideoMade()) {
+			// 비디오가 만들어진 경우
+			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
+			Drawable res = getResources().getDrawable(R.drawable.i_watchmovie);
+			btnPhotoPlus.setImageDrawable(res);
+			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
+					dayalbumList.get(i).setEnabledButton(k);
+				}
+			}
+		} else {
+			CheckMakeVideo checkmakevideo = new CheckMakeVideo();
+			checkmakevideo.execute(user, trip);
+		}
+
+		// for (int i = 0; i < travel; i++) {
+		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
+		// }
+		initDayAlbum();
+
+		// 여행 정보 setting
+		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));// 디비에서 사람
+																		// 수
+																		// 불러와서
+																		// 넣어주세요
+		title.setText(trip.getTripTitle());
+		date.setText(trip.getStartDateInDateFormat() + " ~ "
+				+ trip.getEndDateInDateFormat());
+
+		// friendlist 표시
+		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
+		profileImageSetter.execute();
+
+		if (trip.getPhotoCnt() > 0) {
+			Log.d("PhotoputActivity", "" + trip.getPhotoCnt());
+			getPhoto = new GetAllPhotoByTripId();
+			getPhoto.execute(trip, intent_dateList);
+		}
+	}
+
+	private void getViewIdsetListener() {
+		// 타이틀 바에서 새로고침 버튼 보이게
+		photoNum = (TextView) findViewById(R.id.textPhotoNum);
+		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
+		askBtn = (Button) findViewById(R.id.ask_text);
+		albumBtn = (Button) findViewById(R.id.last_album_text);
+		logoutBtn = (Button) findViewById(R.id.log_out_text);
+		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
+		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
+		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
+		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
+		popupLocation = (TextView) findViewById(R.id.textPeople); // 여행 사람 수
+		btnPhotoPlus = (ImageButton) findViewById(R.id.btnPhotoPlus);
+		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
+		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
+		// filter radio button
+		filterRadioGroup = (RadioGroup) findViewById(R.id.filterRadioGroup);
+		btnReload = (ImageButton) findViewById(R.id.btnReload);
+		btnProfilePhoto.setOnClickListener(this);
+		askBtn.setOnClickListener(this);
+		albumBtn.setOnClickListener(this);
+		logoutBtn.setOnClickListener(this);
+		profileBtn.setOnClickListener(this);
+		// 비디오 만들기 버튼 초기화
+		btnPhotoPlus.setOnClickListener(this);
+		btnMakeVideo.setOnClickListener(this);
+		filterRadioGroup.setOnCheckedChangeListener(this);
+		btnReload.setVisibility(View.VISIBLE);
+		btnReload.setOnClickListener(this);
+	}
+
+	private void initDrawer() {
 		mDrawer = new SimpleSideDrawer(this);
 		mDrawer.setLeftBehindContentView(R.layout.left_behind_drawer);
 		profileName = (TextView) findViewById(R.id.profileName);
@@ -204,81 +287,9 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 			}
 		});
-
-		photoNum = (TextView) findViewById(R.id.textPhotoNum);
-
-		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
-		btnProfilePhoto.setOnClickListener(this);
-		askBtn = (Button) findViewById(R.id.ask_text);
-		askBtn.setOnClickListener(this);
-		albumBtn = (Button) findViewById(R.id.last_album_text);
-		albumBtn.setOnClickListener(this);
-		logoutBtn = (Button) findViewById(R.id.log_out_text);
-		logoutBtn.setOnClickListener(this);
-		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-		profileBtn.setOnClickListener(this);
-
-		layoutAlbum = (LinearLayout) findViewById(R.id.layoutAlbum);
-		btnMakeVideo = (ImageButton) findViewById(R.id.btnMakeVideo);
-
-		// 비디오 만들기 버튼 초기화
-		btnPhotoPlus = (ImageButton) findViewById(R.id.btnPhotoPlus);
-		btnPhotoPlus.setOnClickListener(this);
-
-		// video 만들기 버튼 tripDTO확인해서 현재 영상을 만들어졌는지, 만들기를 눌렀는지, 안눌렀는지에 따라서 버튼 모양이
-		// 바뀐다
-		if (trip.isVideoMade()) {
-			// 비디오가 만들어진 경우
-			Log.d("비디오 만들어져있엉", "ㄱ만드는주으로 셋팅");
-			Drawable res = getResources().getDrawable(R.drawable.i_watchmovie);
-			btnPhotoPlus.setImageDrawable(res);
-			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
-				for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
-					dayalbumList.get(i).setEnabledButton(k);
-			}
-			}
-		} else {
-			CheckMakeVideo checkmakevideo = new CheckMakeVideo();
-			checkmakevideo.execute(user, trip);
-		}
-
-		btnMakeVideo.setOnClickListener(this);
-		// for (int i = 0; i < travel; i++) {
-		// layoutAlbum.addView(new DayAlbum(PhotoputActivity.this));
-		// }
-		init();
-		gridviewPhotoAlbum = (GridView) findViewById(R.id.gridviewPhotoAlbum);
-
-		popupLocation = (TextView) findViewById(R.id.textPeople); // 여행 사람 수
-		title = (TextView) findViewById(R.id.textTitle); // 여행 제목
-		date = (TextView) findViewById(R.id.textCalendar); // 여행 날짜
-
-		// 여행 정보 setting
-		popupLocation.setText(Integer.toString(trip.getPeopleCnt()));// 디비에서 사람
-																		// 수
-																		// 불러와서
-																		// 넣어주세요
-		title.setText(trip.getTripTitle());
-		date.setText(trip.getStartDateInDateFormat() + " ~ "
-				+ trip.getEndDateInDateFormat());
-
-		// filter radio button
-		filterRadioGroup = (RadioGroup) findViewById(R.id.filterRadioGroup);
-		filterRadioGroup.setOnCheckedChangeListener(this);
-
-		// friendlist 표시
-
-		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
-		profileImageSetter.execute();
-
-		if (trip.getPhotoCnt() > 0) {
-			Log.d("PhotoputActivity", "" + trip.getPhotoCnt());
-			getPhoto = new GetAllPhotoByTripId();
-			getPhoto.execute(trip, intent_dateList);
-		}
 	}
 
-	private void init() {
+	private void initDayAlbum() {
 		// 여행일정만큼 어레이리스트 생성
 		dayalbumList = new ArrayList<DayAlbum>();
 		intent_dateList = new ArrayList<Integer>();
@@ -365,6 +376,36 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				Log.d("checked array", dayalbumList.get(i)
 						.getCheckedImageArray().toString());
 			}
+		}else if(v.getId()==R.id.textMore){
+			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
+					.getSystemService(LAYOUT_INFLATER_SERVICE);
+			View popupView = layoutInflater.inflate(R.layout.friend_list_popup,
+					null);
+			friendListPopupWindow = new PopupWindow(popupView,
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+			friendListPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+			friendListPopupWindow.setFocusable(true);
+			friendListPopupWindow.setOutsideTouchable(true);
+			friendListPopupWindow.setTouchInterceptor(new OnTouchListener() {
+
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+						friendListPopupWindow.dismiss();
+						return true;
+					}
+					return false;
+				}
+			});
+			for (int i = 0; i < 7; i++) {
+				((GridLayout) friendListPopupWindow.getContentView()
+						.findViewById(R.id.friendlistpopupback))
+						.addView(new FriendListCell(this));
+				friendListPopupWindow.showAtLocation(popupLocation, 0, 0, 218);
+
+				// friendListPopupWindow.showAsDropDown(popupLocation, -475,
+				// 27);
+			}
+		
 		}
 
 	}
@@ -417,14 +458,14 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
+
 					PhotoDTO photo = new PhotoDTO();
 					photo = bitmapPhotoUploader.getResult();
-					
-					//앨범에 바료 표시
+
+					// 앨범에 바료 표시
 					dayalbumList.get(day).addLayoutGridalbum(
-							new AlbumImgCell(PhotoputActivity.this, bm,
-									photo, user.getUserId()));
+							new AlbumImgCell(PhotoputActivity.this, bm, photo,
+									user.getUserId()));
 				}
 
 				/*
@@ -456,7 +497,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 					.getProfileFilePath());
 			if (userProfilePhoto != null) {
 				BitmapDrawable bd = (BitmapDrawable) getResources()
-						.getDrawable(R.drawable.i_profilephoto_cover);
+						.getDrawable(R.drawable.i_profile_238x240_cover);
 				Bitmap coverBitmap = bd.getBitmap();
 				photoAreaWidth = bd.getBitmap().getWidth();
 				photoAreaHeight = bd.getBitmap().getHeight();
@@ -652,7 +693,8 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 				Bitmap coverBitmap = bd.getBitmap();
 
-				targetImageView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
+				targetImageView.measure(MeasureSpec.UNSPECIFIED,
+						MeasureSpec.UNSPECIFIED);
 				photoAreaWidth = targetImageView.getMeasuredWidth();
 				photoAreaHeight = targetImageView.getMeasuredHeight();
 				Log.d("width height", photoAreaWidth + "    " + photoAreaHeight);
@@ -825,19 +867,20 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 					for (int k = 0; k < listOfPhotoBitmapLists.get(i).size(); k++) {
 						dayalbumList.get(i).setEnabledButton(k);
-				}
-				Drawable res = getResources().getDrawable(
-						R.drawable.i_checktime);
-				btnPhotoPlus.setImageDrawable(res);
-				btnPhotoPlus.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intent = new Intent(getApplicationContext(),
-								VideoViewActivity.class);
-						startActivity(intent);
 					}
-				});
-			}} else {
+					Drawable res = getResources().getDrawable(
+							R.drawable.i_checktime);
+					btnPhotoPlus.setImageDrawable(res);
+					btnPhotoPlus.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent(getApplicationContext(),
+									VideoViewActivity.class);
+							startActivity(intent);
+						}
+					});
+				}
+			} else {
 				// 만들기 아직 안누른경우
 				Log.d("isMade?", "만들기 안누른놈임");
 				btnPhotoPlus.setOnClickListener(new OnClickListener() {
