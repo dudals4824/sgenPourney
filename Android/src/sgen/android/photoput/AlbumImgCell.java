@@ -79,6 +79,7 @@ public class AlbumImgCell extends RelativeLayout implements
 			int userId) {
 		super(context);
 		// TODO Auto-generated constructor stub
+		mBitmap = bitmap;
 		mContext = context;
 		mPhoto = photo;
 		mUserId = userId;

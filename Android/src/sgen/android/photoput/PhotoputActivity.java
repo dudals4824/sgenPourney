@@ -152,7 +152,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 	//
 	private ImageButton btnReload;
-	private PhotoUploader photoUploader;
 	private BitmapPhotoUploader bitmapPhotoUploader;
 	private String intent_date;
 
@@ -433,8 +432,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 						.getExtras().getSerializable("list");
 				// TODO Auto-generated method stub
 				Log.d("all_path.length", all_path.size() + "");
-
-				PhotoUploader photoUploader = null;
 
 				int day = 0;
 				for (int i = 0; i < intent_dateList.size(); i++) {
