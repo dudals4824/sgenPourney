@@ -65,7 +65,6 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-		playBtn = (ImageButton) findViewById(R.id.playBtn);
 		pauseBtn = (ImageButton) findViewById(R.id.pauseBtn);
 		videoView=(VideoView)findViewById(R.id.VideoView);
 
@@ -99,55 +98,9 @@ public class VideoViewActivity extends Activity implements MediaPlayerControl,
 		mediaController.setMediaPlayer(this);
 		mediaController.setAnchorView(videoView);
 		videoView.setVideoURI(Uri.parse(videoUrl));
-		videoView.pause();
-		playBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (v.getId() == R.id.playBtn)
-					videoView.start();
-				playBtn.setVisibility(View.GONE);
-
-			}
-		});
-
+		videoView.setMediaController(mediaController);
+		videoView.start();
 		
-		if (videoView.isPlaying()) {
-			System.out.println("재생중임!");
-			videoView.setOnTouchListener(new OnTouchListener() {
-				
-				@SuppressLint("ClickableViewAccessibility")
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					
-					if(v.getId()==R.id.VideoView)
-					{
-						System.out.println(event.getActionIndex());
-						switch (event.getAction()) {
-						case MotionEvent.ACTION_DOWN:
-							pauseBtn.setVisibility(View.VISIBLE);
-							break;
-
-						default:
-							break;
-						}
-					}
-					return false;
-				}
-			});
-		if(pauseBtn.getVisibility()==View.VISIBLE){
-			try {
-				wait(3000);
-				pauseBtn.setVisibility(View.GONE);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		}
-		}
-			
-			
 		}
 	
 
