@@ -63,11 +63,11 @@ import android.widget.Toast;
 public class TravelInfoActivity extends Activity implements OnClickListener,
 		OnItemClickListener, OnFocusChangeListener, OnDismissListener {
 	private ExpandableHeightGridView gridCalendar, gridDate;
-	private TextView  textTitleHere, textCalendarHere,
-			textPeopleHere, textInputInfo, textMonth, name;
+	private TextView textTitleHere, textCalendarHere, textPeopleHere,
+			textInputInfo, textMonth, name;
 	private Button askBtn, logoutBtn, albumBtn, profileBtn;
 	private ImageButton btnPrevMonth, btnNextMonth, btnPut;
-	private ImageButton btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8;
+	private ImageButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8;
 	private ArrayList<ImageButton> btnFriend = new ArrayList<ImageButton>();
 	private EditText editTitle, peopleName;
 	private Dayinfo today;
@@ -80,7 +80,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 	private Bitmap userProfilePhoto = null;
-	private ImageButton  btnProfilePhoto;
+	private ImageButton btnProfilePhoto;
 	private UserDTO user;
 	// 사진 관련 변수
 
@@ -117,7 +117,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 	// 친구 목록용 변수
 	private Bitmap friendProfilePhoto = null;
 	int[] ids = { R.id.btnFriend1, R.id.btnFriend2, R.id.btnFriend3,
-			R.id.btnFriend4, R.id.btnFriend5, R.id.btnFriend6, R.id.btnFriend7 ,R.id.btnFriend8};
+			R.id.btnFriend4, R.id.btnFriend5, R.id.btnFriend6, R.id.btnFriend7,
+			R.id.btnFriend8 };
 	private int lastFriendButtonIndex = 0;
 
 	// 상수
@@ -148,7 +149,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		logoutBtn = (Button) findViewById(R.id.log_out_text);
 		albumBtn = (Button) findViewById(R.id.last_album_text);
 		profileBtn = (Button) findViewById(R.id.profile_modifying_text);
-		btnProfilePhoto=(ImageButton)findViewById(R.id.btnForProfilePhoto);
+		btnProfilePhoto = (ImageButton) findViewById(R.id.btnForProfilePhoto);
 		gridCalendar = (ExpandableHeightGridView) findViewById(R.id.gridCalendar);
 		gridDate = (ExpandableHeightGridView) findViewById(R.id.gridDate);
 		textTitleHere = (TextView) findViewById(R.id.textTitleHere);
@@ -186,7 +187,6 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		btnPut.setOnClickListener(this);
 		gridCalendar.setOnItemClickListener(this);
 
-
 		// session test code, 화면에 토스트로 현재 세선 정보를 보여준다.
 		session = new UserSessionManager(getApplicationContext());
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -198,11 +198,11 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		Toast.makeText(getApplicationContext(),
 				"user id : " + userId + "  trip id : " + tripId,
 				Toast.LENGTH_LONG).show();
-		
-		//유저 전역 셋팅
+
+		// 유저 전역 셋팅
 		PourneyApplication Application = (PourneyApplication) getApplication();
 		user = Application.getLoggedInUser();
-		
+
 		ProfileImageSetter profileImageSetter = new ProfileImageSetter();
 		profileImageSetter.execute();
 	}// TravelActivity onCreate();
@@ -281,7 +281,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				|| (v.getId() == R.id.btnFriend5)
 				|| (v.getId() == R.id.btnFriend6)
 				|| (v.getId() == R.id.btnFriend7)
-			|| (v.getId() == R.id.btnFriend8)) {// 친구찾기 검색창 부분
+				|| (v.getId() == R.id.btnFriend8)) {// 친구찾기 검색창 부분
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View findFriendPopupView = layoutInflater.inflate(
@@ -337,7 +337,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 
 			findFriendPopupWindow.showAsDropDown(textCalendarHere, -150, 50);
 
-		} 
+		}
 
 		else if (v.getId() == R.id.btnPut) {
 			String trip_name = editTitle.getText().toString();
@@ -379,7 +379,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		textMonth.setText(strMonth[today.getMonth()] + " " + today.getYear());
 
 	}
-//캘린더 한칸 클릭시
+
+	// 캘린더 한칸 클릭시
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -400,13 +401,15 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 			}
 		}
 		calendarAdapter = new CalendarAdapter(TravelInfoActivity.this,
-				R.layout.calendar_grid, DayArray, today, startdate, enddate,position);
+				R.layout.calendar_grid, DayArray, today, startdate, enddate,
+				position);
 		gridCalendar.setAdapter(calendarAdapter);
 
 	}
 
 	@Override
-	public void onFocusChange(View v, boolean hasFocus) {}
+	public void onFocusChange(View v, boolean hasFocus) {
+	}
 
 	/**
 	 * @author Junki MakeTravel 여행정보 추가 AsyncTask 여행의 기본 정보들(trip_name,
@@ -824,7 +827,8 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				}
 				Bitmap coverBitmap = bd.getBitmap();
 
-				targetImageView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
+				targetImageView.measure(MeasureSpec.UNSPECIFIED,
+						MeasureSpec.UNSPECIFIED);
 				photoAreaWidth = targetImageView.getMeasuredWidth();
 				photoAreaHeight = targetImageView.getMeasuredHeight();
 				PhotoEditor photoEdit = new PhotoEditor(friendProfilePhoto,
@@ -842,6 +846,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 		}
 
 	}
+
 	public class ProfileImageSetter extends AsyncTask<String, String, String> {
 		@Override
 		protected String doInBackground(String... params) {
@@ -856,7 +861,7 @@ public class TravelInfoActivity extends Activity implements OnClickListener,
 				PhotoEditor photoEdit = new PhotoEditor(userProfilePhoto,
 						coverBitmap, photoAreaWidth, photoAreaHeight);
 				userProfilePhoto = photoEdit.editPhotoAuto();
-				
+
 			}
 			return null;
 		}
