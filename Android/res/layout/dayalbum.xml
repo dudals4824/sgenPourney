@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-   <RelativeLayout
+  <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginRight="6dp"
@@ -30,14 +30,6 @@
             android:layout_marginTop="7dp"
             android:text="photo" />
 
-        <TextView
-            android:id="@+id/textPhotoNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/textPhoto"
-            android:layout_below="@id/textPhoto"
-            android:layout_marginTop="2.67dp"
-            android:text="1" />
         
 
     </RelativeLayout>
