@@ -211,7 +211,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 				}
 				is.close();
 				result = sb.toString().trim();
-				Log.e("log_tag", result);
+				//Log.e("log_tag", result);
 
 			} catch (Exception e) {
 				Log.e("log_tag", "Error converting result " + e.toString());
@@ -238,7 +238,7 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			// travel information setting
-			Log.d("settext", trip.toString());
+			//Log.d("settext", trip.toString());
 			title.setText(trip.getTripTitle());
 			date.setText(trip.getStartDateInDateFormat() + " ~ "
 					+ trip.getEndDateInDateFormat());
@@ -467,7 +467,6 @@ public class CoverCell extends LinearLayout implements View.OnClickListener,
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("trip_id", params[0]));
-			Log.d("trip_Id", "trip id : " + params[0]);
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(

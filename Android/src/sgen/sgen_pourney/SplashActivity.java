@@ -13,7 +13,6 @@ public class SplashActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
 		Handler hd = new Handler(){
-
 			@Override
 			public void handleMessage(Message msg) {
 				// TODO Auto-generated method stub
