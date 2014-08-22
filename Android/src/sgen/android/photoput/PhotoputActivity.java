@@ -343,8 +343,8 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			startActivity(intent);
 		} else if (v.getId() == R.id.btnReload) {
 			Log.d("btnReload", "btnReload");
-			// getPhoto = new GetAllPhotoByTripId();
-			// getPhoto.execute(trip, intent_dateList);
+			finish();
+			startActivity(getIntent());
 		} else if (v.getId() == R.id.btnPhotoPlus) {
 			// 이미 영상 보러가기 그림 뜬 상태
 			// 영상 페이지로 넘어가기
