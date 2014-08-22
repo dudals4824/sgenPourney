@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,6 +37,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -78,8 +80,6 @@ public class AlbumImgCell extends RelativeLayout implements
 	public AlbumImgCell(Context context, Bitmap bitmap, PhotoDTO photo,
 			int userId) {
 		super(context);
-		// TODO Auto-generated constructor stub
-		mBitmap = bitmap;
 		mContext = context;
 		mPhoto = photo;
 		mUserId = userId;
@@ -121,7 +121,7 @@ public class AlbumImgCell extends RelativeLayout implements
 
 		checkLike = new CheckAlreadyLiked();
 		checkLike.execute(mPhoto, mUserId, checkImage);
-		
+
 		bitmap.recycle();
 	}
 
@@ -129,9 +129,19 @@ public class AlbumImgCell extends RelativeLayout implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btnMemo) {
+			GetPhoto getPhoto = new GetPhoto();
+			getPhoto.execute(mPhoto);
+			try {
+				getPhoto.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+			mBitmap = getPhoto.getLargePhotoBitmap();
 			mBitmapMemo = ImageResize.resize(mBitmap, 900, 900,
 					ResizeMode.AUTOMATIC);
-			sPhoto = new BitmapDrawable(getResources(),mBitmap);
+			//sPhoto = new BitmapDrawable(getResources(), mBitmapMemo);
 			ImageView selectedPhoto;
 			LayoutInflater layoutInflater = (LayoutInflater) ((ContextWrapper) mContext)
 					.getBaseContext().getSystemService(
@@ -143,7 +153,6 @@ public class AlbumImgCell extends RelativeLayout implements
 			photoPopupWindow.setFocusable(true);
 			photoPopupWindow.setOutsideTouchable(true);
 			photoPopupWindow.setTouchInterceptor(new OnTouchListener() {
-
 				public boolean onTouch(View v, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
 						photoPopupWindow.dismiss();
@@ -158,7 +167,7 @@ public class AlbumImgCell extends RelativeLayout implements
 			photoPopupWindow.showAtLocation(imgPhoto, 0, 0, 218);
 			selectedPhoto = (ImageView) contentView
 					.findViewById(R.id.selectedphoto);
-			selectedPhoto.setBackground(sPhoto);
+			selectedPhoto.setImageBitmap(mBitmap);
 			regist = (ImageButton) contentView.findViewById(R.id.regist);
 			cancel = (ImageButton) contentView.findViewById(R.id.cancel);
 			memo = (EditText) contentView.findViewById(R.id.memo);
@@ -357,11 +366,11 @@ public class AlbumImgCell extends RelativeLayout implements
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			Toast.makeText(mContext.getApplicationContext(),
-					"댓글을 등록했습니다.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext.getApplicationContext(), "댓글을 등록했습니다.",
+					Toast.LENGTH_SHORT).show();
 			photoPopupWindow.dismiss();
 		}
-	}//write comment
+	}// write comment
 
 	public class CheckAlreadyLiked extends AsyncTask<Object, String, String> {
 		private PhotoDTO photo = new PhotoDTO();
@@ -447,16 +456,17 @@ public class AlbumImgCell extends RelativeLayout implements
 
 	public class DeletePhoto extends AsyncTask<Object, String, String> {
 		PhotoDTO photo = new PhotoDTO();
-		
+
 		@Override
 		protected String doInBackground(Object... params) {
 			InputStream is = null;
 			StringBuilder sb = null;
 			String result = null;
-			String photoId = Integer.toString(((PhotoDTO)params[0]).getPhotoId());
+			String photoId = Integer.toString(((PhotoDTO) params[0])
+					.getPhotoId());
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("photo_id",photoId));
+			nameValuePairs.add(new BasicNameValuePair("photo_id", photoId));
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
@@ -498,17 +508,39 @@ public class AlbumImgCell extends RelativeLayout implements
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if ("1".equals(result)) {
-				Toast.makeText(mContext.getApplicationContext(),
-						"사진을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext.getApplicationContext(), "사진을 삭제했습니다.",
+						Toast.LENGTH_SHORT).show();
 				removeView(v);
-			}else
-			{
+			} else {
 				Toast.makeText(mContext.getApplicationContext(),
 						"사진을 삭제하지 못했습니다..", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
-	
+
+	public class GetPhoto extends AsyncTask<Object, String, String> {
+		private PhotoDTO largePhoto = new PhotoDTO();
+		private Bitmap largePhotoBitmap = null;
+
+		@Override
+		protected String doInBackground(Object... arg0) {
+			largePhoto = (PhotoDTO) arg0[0];
+			largePhotoBitmap = PhotoEditor.ImageurlToBitmapConverter(largePhoto
+					.getPhotoFilename());
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+		}
+		
+		public Bitmap getLargePhotoBitmap(){
+			return largePhotoBitmap;
+		}
+
+	}
+
 	@Override
 	public boolean onLongClick(View v) {
 		// TODO Auto-generated method stub
@@ -539,7 +571,7 @@ public class AlbumImgCell extends RelativeLayout implements
 				// TODO Auto-generated method stub
 				if (position == 0) {
 					DeletePhoto deletePhoto = new DeletePhoto();
-					deletePhoto.execute(mPhoto , v);
+					deletePhoto.execute(mPhoto, v);
 				}
 				mDialog.dismiss();
 			}

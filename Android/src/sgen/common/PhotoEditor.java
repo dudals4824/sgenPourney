@@ -31,7 +31,7 @@ public class PhotoEditor {
 			int photoAreaWidth, int photoAreaHeight) {
 		super();
 		this.photoBitmap = photoBitmap;
-		originalBitmap=photoBitmap;
+		originalBitmap = photoBitmap;
 		this.coverBitmap = coverBitmap;
 		this.photoAreaWidth = photoAreaWidth;
 		this.photoAreaHeight = photoAreaHeight;
@@ -100,10 +100,13 @@ public class PhotoEditor {
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		// 위치 결정... rect
 		if (originalBitmap.getWidth() >= originalBitmap.getHeight())
-			canvas.drawBitmap(photoBitmap, 0, (photoAreaHeight-proportionBitmap.getHeight())/2, paint);
+			canvas.drawBitmap(photoBitmap, 0,
+					(photoAreaHeight - proportionBitmap.getHeight()) / 2, paint);
 		else
-			canvas.drawBitmap(photoBitmap, (photoAreaWidth-proportionBitmap.getWidth())/2,0, paint);
-		
+			canvas.drawBitmap(photoBitmap,
+					(photoAreaWidth - proportionBitmap.getWidth()) / 2, 0,
+					paint);
+
 		photoBitmap = output;
 	}
 
@@ -124,9 +127,12 @@ public class PhotoEditor {
 		canvas.drawRect(rect, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		if (originalBitmap.getWidth() >= originalBitmap.getHeight())
-			canvas.drawBitmap(photoBitmap, 0, (photoAreaHeight-proportionBitmap.getHeight())/2, paint);
+			canvas.drawBitmap(photoBitmap, 0,
+					(photoAreaHeight - proportionBitmap.getHeight()) / 2, paint);
 		else
-			canvas.drawBitmap(photoBitmap, (photoAreaWidth-proportionBitmap.getWidth())/2,0, paint);
+			canvas.drawBitmap(photoBitmap,
+					(photoAreaWidth - proportionBitmap.getWidth()) / 2, 0,
+					paint);
 		photoBitmap = output;
 	}
 
@@ -138,7 +144,7 @@ public class PhotoEditor {
 		// resized = Bitmap.createScaledBitmap(photoBitmap, photoAreaWidth,
 		// photAreaHeight, true);
 		photoBitmap = resized;
-		proportionBitmap=resized;
+		proportionBitmap = resized;
 	}
 
 	// cover 씌우는애
@@ -158,12 +164,15 @@ public class PhotoEditor {
 			connection.setDoInput(true);
 			connection.connect();
 			InputStream input = connection.getInputStream();
-			Bitmap myBitmap = BitmapFactory.decodeStream(input);
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = false;
+			options.inPreferredConfig = Config.RGB_565;
+			options.inDither = true;
+			Bitmap myBitmap = BitmapFactory.decodeStream(input, null, options);
 			return myBitmap;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-
 }

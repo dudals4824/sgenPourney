@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import sgen.DTO.UserDTO;
+import sgen.application.PourneyApplication;
 import sgen.common.ListViewDialog;
 import sgen.common.ListViewDialog.ListViewDialogSelectListener;
 import sgen.common.PhotoEditor;
@@ -70,7 +73,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 	static final int REQUEST_PICTURE = 2;
 
 	// for profile phpto
-	private ProfileUploader pfUploader = null;
 	private Uri currImageURI;
 	private String imagePath = null;
 
@@ -96,15 +98,12 @@ public class JoinActivity extends Activity implements OnClickListener {
 		// layout initializing
 		initLayout();
 
-		pfUploader = new ProfileUploader();
-
 		idDuplicationToast = Toast.makeText(this, "닉네임이 중복됩니다.",
 				Toast.LENGTH_SHORT);
 		emailDuplicationToast = Toast.makeText(this, "이메일이 중복됩니다.",
 				Toast.LENGTH_SHORT);
 		duplicationCheckOk = Toast.makeText(this, "사용가능한 닉네임, 이메일 입니다.",
 				Toast.LENGTH_SHORT);
-
 
 		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
 				R.drawable.i_profilephoto);
@@ -134,11 +133,12 @@ public class JoinActivity extends Activity implements OnClickListener {
 
 	// server task - regist
 	public class RegistTask extends AsyncTask<String, String, String> {
+		private static final String SERVER_URI = "http://54.178.166.213";
+		private boolean isSuccess;
+		private UserDTO newUser = new UserDTO();
 
 		@Override
 		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
-
 			String result = null;
 			InputStream is = null;
 			StringBuilder sb = null;
@@ -154,7 +154,8 @@ public class JoinActivity extends Activity implements OnClickListener {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://54.178.166.213/regis.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -164,7 +165,8 @@ public class JoinActivity extends Activity implements OnClickListener {
 			}
 
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "UTF-8"), 8);
 				sb = new StringBuilder();
 				sb.append(reader.readLine() + "\n");
 				String line = "0";
@@ -179,32 +181,31 @@ public class JoinActivity extends Activity implements OnClickListener {
 			} catch (Exception e) {
 				Log.e("log_tag", "Error converting result " + e.toString());
 			}
+			// paring data
+			try {
+				JSONArray jArray = new JSONArray(result);
+				JSONObject json_data = jArray.getJSONObject(0);
+				newUser.setUserId(json_data.getInt("user_id"));
+				newUser.setNickName(json_data.getString("nick_name"));
+				newUser.setEmail(json_data.getString("email"));
+				newUser.setProfileFilePath(SERVER_URI
+						+ json_data.getString("profile_filename"));
 
+				Log.e("user information", newUser.toString());
+			} catch (JSONException e1) {
+				Log.e("log_tag", "Error converting result " + e1.toString());
+			}
 			return null;
-		}
-
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-
-			if (result != null) {
-				Log.d("ASYNC", "result = " + result);
-			}
-			Intent intent = new Intent(JoinActivity.this, LoginActivity.class);
-			startActivity(intent);
-			finish();
 		}
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
+		public UserDTO getRegisteredUser() {
+			return newUser;
 		}
-
 	}
 
 	public class CheckDuplication extends AsyncTask<String, String, String> {
@@ -271,12 +272,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 		}
 
 		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
-		}
-
-		@Override
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
@@ -291,13 +286,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 				Log.d("ASYNC", "result = " + result);
 			}
 		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
-
 	}
 
 	@Override
@@ -320,7 +308,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 		return super.onOptionsItemSelected(item);
 	}
 
-
 	@Override
 	public void onClick(View arg0) {
 
@@ -336,7 +323,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 			passwordConfirm = editPasswordConfirm.getText().toString();
 
 			boolean isPasswordValid = false;
-
 			isPasswordValid = PasswordValidityCheck(password);
 			/*
 			 * 1. 중복체크했는지 확인 2. password일치하는지 확인 3. id 중복인지 확인. 4.
@@ -345,23 +331,46 @@ public class JoinActivity extends Activity implements OnClickListener {
 			if (isDuplicationChecked && isPasswordValid && !isIdDuplicated
 					&& !isEmailDuplicated && password.equals(passwordConfirm)) {
 				// 5개 validation check 모두 했을시 회원가입 task 수행.
+				UserDTO newUser = new UserDTO();
 				if (imagePath == null) {
 					Log.d("Join Activity.btnJoin", "join without profile image");
 					registTask = new RegistTask();
 					registTask.execute(email, nickname, password);
+					try {
+						registTask.get();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+					newUser = registTask.getRegisteredUser();
 				} else {
-					new Thread(new Runnable() {
-						public void run() {
-							Log.d("Join Activity.btnJoin", "join with profile image");
-							pfUploader.uploadFile(imagePath, nickname, email,
-									password);
-						}
-					}).start();
+					ProfileUploader profileUploader = new ProfileUploader(
+							imagePath, nickname, email, password);
+					profileUploader.start();
+					try {
+						profileUploader.join();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					newUser = profileUploader.getRegisteredUser();
 				}
-				Intent intent = new Intent(JoinActivity.this,
-						LoginActivity.class);
-				startActivity(intent);
-				finish();
+				if (newUser != null) {
+					// 유저 정보 전역 객체에 추가
+					PourneyApplication UserInfo = (PourneyApplication) getApplication();
+					UserInfo.setLoggedInUser(newUser);
+					Intent intent = new Intent(JoinActivity.this,
+							CoverActivity.class);
+					startActivity(intent);
+					finish();
+				}
+				else{
+					Intent intent = new Intent(JoinActivity.this,
+							LoginActivity.class);
+					startActivity(intent);
+					finish();
+				}
+					
 
 			}
 			// 예외처리
@@ -399,7 +408,6 @@ public class JoinActivity extends Activity implements OnClickListener {
 			String nickname = editNickname.getText().toString();
 			checkDuplication = new CheckDuplication();
 			checkDuplication.execute(email, nickname);
-
 		}
 	}
 

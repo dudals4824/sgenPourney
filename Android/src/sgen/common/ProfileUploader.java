@@ -11,19 +11,47 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import sgen.DTO.UserDTO;
+import sgen.application.PourneyApplication;
+
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 
-public class ProfileUploader {
-	InputStream is;
+public class ProfileUploader extends Thread {
+	private static final String SERVER_URI = "http://54.178.166.213";
+	private UserDTO newUser = new UserDTO();
+	private InputStream is;
 	String stringResponse = null;
 	private final String upLoadServerUri = "http://54.178.166.213/profileUpload.php";
 
+	private String sourceFileUri;
+	private String nickname;
+	private String email;
+	private String password;
+
+	public ProfileUploader(String sourceFileUri, String nickname, String email,
+			String password) {
+		super();
+		this.sourceFileUri = sourceFileUri;
+		this.nickname = nickname;
+		this.email = email;
+		this.password = password;
+	}
+
+	public void run() {
+		super.run();
+		uploadFile(sourceFileUri, nickname, email, password);
+	}
+
 	// 여기 고칠부분!!
-	public String uploadFile(String sourceFileUri, String nickname, String email, String password) {
+	public UserDTO uploadFile(String sourceFileUri, String nickname,
+			String email, String password) {
 		HttpURLConnection conn = null;
 		DataOutputStream dos = null;
 		String lineEnd = "\r\n";
@@ -38,8 +66,7 @@ public class ProfileUploader {
 			Log.e("uploadFile", "Source File Does not exist");
 			return null;
 		}
-		try { // open a URL connection to the <span id="IL_AD7"
-				// class="IL_AD">Servlet</span>
+		try {
 			FileInputStream fileInputStream = new FileInputStream(sourceFile);
 			URL url = new URL(upLoadServerUri);
 			conn = (HttpURLConnection) url.openConnection(); // Open a HTTP
@@ -50,6 +77,7 @@ public class ProfileUploader {
 			conn.setUseCaches(false); // Don't use a Cached Copy
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Connection", "Keep-Alive");
+			conn.setRequestProperty("Charset", "UTF-8");
 			conn.setRequestProperty("ENCTYPE", "multipart/form-data");
 			conn.setRequestProperty("Content-Type",
 					"multipart/form-data;boundary=" + boundary);
@@ -67,7 +95,7 @@ public class ProfileUploader {
 			dos.writeBytes("Content-Disposition: form-data; name=\"email\""
 					+ lineEnd + lineEnd);
 			dos.writeBytes(email + lineEnd);
-			
+
 			// send parameter #3
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
 			dos.writeBytes("Content-Disposition: form-data; name=\"password\""
@@ -119,7 +147,7 @@ public class ProfileUploader {
 			// Responses from the server (code and message)
 			is = conn.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
+					is, "utf-8"), 8);
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
@@ -129,11 +157,17 @@ public class ProfileUploader {
 			String stringResponse = sb.toString();
 			Log.d("response string:", stringResponse);
 
+			JSONArray jArray = new JSONArray(stringResponse);
+			JSONObject json_data = jArray.getJSONObject(0);
+			newUser.setUserId(json_data.getInt("user_id"));
+			newUser.setNickName(json_data.getString("nick_name"));
+			newUser.setEmail(json_data.getString("email"));
+			newUser.setProfileFilePath(SERVER_URI
+					+ json_data.getString("profile_filename"));
 			// close the streams //
 			fileInputStream.close();
 			dos.flush();
 			dos.close();
-
 		} catch (MalformedURLException ex) {
 			ex.printStackTrace();
 			Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
@@ -142,7 +176,11 @@ public class ProfileUploader {
 			Log.e("Upload file to server Exception",
 					"Exception : " + e.getMessage(), e);
 		}
-		return stringResponse;
+		return newUser;
+	}
+
+	public UserDTO getRegisteredUser() {
+		return newUser;
 	}
 
 }
