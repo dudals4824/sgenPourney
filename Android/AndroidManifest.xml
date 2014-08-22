@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/CustomTitle" >
         <activity
-            android:name="sgen.sgen_pourney.SplashActivity"
+            android:name="sgen.sgen_pourney.LoginActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
