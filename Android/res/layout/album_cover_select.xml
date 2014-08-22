@@ -77,7 +77,6 @@
                 android:button="@drawable/cover_cbox_theme" />
         </RadioGroup>
     </LinearLayout>
-
     <ImageButton
         android:id="@+id/btnSelectCover"
         android:layout_width="wrap_content"
@@ -89,7 +88,5 @@
         android:fitsSystemWindows="true"
         android:scaleType="fitXY"
         android:src="@drawable/i_photoselect" />
-
-
 
 </RelativeLayout>
