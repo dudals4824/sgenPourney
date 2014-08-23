@@ -185,6 +185,18 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		trip = new TripDTO();
 		user = Application.getLoggedInUser();
 		trip = Application.getSelectedTrip();
+		
+		//전달받은 trip 객체로 새로 trip 정보를 받아온다.
+		//cover에서 바로 올땐 이 과정이 필요없지만 새로고침에서 필요하다.
+		GetTripInfo getTripInfo = new GetTripInfo();
+		getTripInfo.execute(Integer.toString(trip.getTripId()));
+		try {
+			getTripInfo.get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
 
 		Log.d("PhotoputActivity_log", user.toString() + " , " + trip.toString());
 		// 드로워임
@@ -732,7 +744,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 	/**
 	 * 
-	 * @author Junki 비디오 만들기 버튼 누를시 호출. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 등록한다.
+	 * @author Junki 비디오 만들기 버튼 누를시 호출. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 비디오를 만들었다고 등록한다.
 	 */
 	public class ConfirmMakeVideo extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
@@ -800,7 +812,7 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 	/**
 	 * 
-	 * @author Junki 비디오 만들기 버튼 눌렀을 때 호출
+	 * @author Junki 비디오 만들기 버튼 눌렀을 때 호출 비디오를 만들기 했던 앤지 체크한다.
 	 */
 	public class CheckMakeVideo extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
