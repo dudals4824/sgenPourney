@@ -163,7 +163,7 @@
             android:background="@layout/join_edittextclick_event"
             android:gravity="center"
             android:inputType="textPassword"
-            android:hint="8자 이상" />
+            android:hint="4자 이상" />
 
         <!-- 비밀번호 확인 -->
 
