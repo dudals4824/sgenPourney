@@ -78,8 +78,8 @@ public class ProfileUploader extends Thread {
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Connection", "Keep-Alive");
 			conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-			conn.setRequestProperty("Content-Type",
-					"multipart/form-data;charset=utf-8;text/plain;boundary=" + boundary);
+			//conn.setRequestProperty("Content-Type","multipart/form-data;charset=utf-8;text/plain;boundary=" + boundary);
+			conn.setRequestProperty("Content-Type","multipart/form-data;boundary=" + boundary);
 			conn.setRequestProperty("uploaded_file", sourceFileUri);
 			dos = new DataOutputStream(conn.getOutputStream());
 
@@ -95,7 +95,7 @@ public class ProfileUploader extends Thread {
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
 			dos.writeBytes("Content-Disposition: form-data; name=\"nickname\""
 					+ lineEnd + lineEnd);
-			dos.writeUTF(nickname + lineEnd);
+			dos.writeBytes(nickname + lineEnd);
 			
 			// send parameter #3
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
