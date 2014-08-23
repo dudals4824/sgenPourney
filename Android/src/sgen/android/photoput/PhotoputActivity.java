@@ -165,6 +165,9 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 	// 더보기 눌렀을 때
 	private TextView textMore;
 	ArrayList<UserDTO> friendsList = null;
+	
+	//얘가 비디오 만들기 누른앤지 아닌지 설정
+	private Boolean isMade;
 
 	@Override
 	protected void onResume() {
@@ -185,9 +188,9 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		trip = new TripDTO();
 		user = Application.getLoggedInUser();
 		trip = Application.getSelectedTrip();
-		
-		//전달받은 trip 객체로 새로 trip 정보를 받아온다.
-		//cover에서 바로 올땐 이 과정이 필요없지만 새로고침에서 필요하다.
+
+		// 전달받은 trip 객체로 새로 trip 정보를 받아온다.
+		// cover에서 바로 올땐 이 과정이 필요없지만 새로고침에서 필요하다.
 		GetTripInfo getTripInfo = new GetTripInfo();
 		getTripInfo.execute(Integer.toString(trip.getTripId()));
 		try {
@@ -383,10 +386,10 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 		} else if (v.getId() == R.id.btnMakeVideo) {
 			// 체크가 선택된 이미지들 가져오기
 			// 체크된 애는 2갠데 view는 3개라서 3번 돌아서 죽음
-			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
-				Log.d("checked array", dayalbumList.get(i)
-						.getCheckedImageArray().toString());
-			}
+//			for (int i = 0; i < listOfPhotoBitmapLists.size(); i++) {
+//				Log.d("checked array", dayalbumList.get(i)
+//						.getCheckedImageArray().toString());
+//			}
 		} else if (v.getId() == R.id.textMore) {
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -398,7 +401,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 			friendListPopupWindow.setFocusable(true);
 			friendListPopupWindow.setOutsideTouchable(true);
 			friendListPopupWindow.setTouchInterceptor(new OnTouchListener() {
-
 				public boolean onTouch(View v, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
 						friendListPopupWindow.dismiss();
@@ -744,11 +746,13 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 
 	/**
 	 * 
-	 * @author Junki 비디오 만들기 버튼 누를시 호출. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 비디오를 만들었다고 등록한다.
+	 * @author Junki 비디오 만들기 버튼 누를시 호출. 유저 정보와 trip정보를 받아서 UserInTrips테이블에 비디오를
+	 *         만들었다고 등록한다.
 	 */
 	public class ConfirmMakeVideo extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
 		private TripDTO mTripDTO;
+		private boolean isVideoMaking = false;
 
 		@Override
 		protected String doInBackground(Object... params) {
@@ -800,6 +804,19 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				Log.e("confirm_video_logMsg",
 						"Error converting result " + e.toString());
 			}
+
+			try {
+				JSONArray jArray = new JSONArray(result);
+				JSONObject json_data = jArray.getJSONObject(0);
+				isVideoMaking = "1".equals(json_data.getString("isVideoMaking"));
+				// jSon에서 isMade값이 하나가 옴.
+
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
 			return null;
 		}
 
@@ -817,7 +834,6 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 	public class CheckMakeVideo extends AsyncTask<Object, String, String> {
 		private UserDTO mUserDTO;
 		private TripDTO mTripDTO;
-		private Boolean isMade;
 
 		@Override
 		protected String doInBackground(Object... params) {
@@ -874,7 +890,8 @@ public class PhotoputActivity extends Activity implements OnClickListener,
 				JSONObject json_data = null;
 				json_data = jArray.getJSONObject(0);
 				// jSon에서 isMade값이 하나가 옴.
-				isMade = ("1".equals(json_data.getString("isMade")));;
+				isMade = ("1".equals(json_data.getString("isMade")));
+				;
 
 			} catch (ParseException e1) {
 				e1.printStackTrace();
