@@ -363,7 +363,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 					 * profileUploader.start(); try { profileUploader.join(); }
 					 * catch (InterruptedException e) { e.printStackTrace(); }
 					 */
-					ProfileUploaderByUserId profileUploader = new ProfileUploaderByUserId(
+					ProfileUploaderByUserId profileUploader = new ProfileUploaderByUserId(imagePath,
 							newUser);
 					profileUploader.start();
 					try {
