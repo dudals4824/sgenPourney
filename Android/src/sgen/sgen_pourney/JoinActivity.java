@@ -27,6 +27,7 @@ import sgen.common.ListViewDialog;
 import sgen.common.ListViewDialog.ListViewDialogSelectListener;
 import sgen.common.PhotoEditor;
 import sgen.common.ProfileUploader;
+import sgen.common.ProfileUploaderByUserId;
 import sgen.session.UserSessionManager;
 
 import android.app.Activity;
@@ -340,29 +341,42 @@ public class JoinActivity extends Activity implements OnClickListener {
 					&& !isEmailDuplicated && password.equals(passwordConfirm)) {
 				// 5개 validation check 모두 했을시 회원가입 task 수행.
 				UserDTO newUser = new UserDTO();
+
+				// registTask로 가입하고 가입해서 받은 newUser의 userId로 image 올림
+				registTask = new RegistTask();
+				registTask.execute(email, nickname, password);
+				try {
+					registTask.get();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+				newUser = registTask.getRegisteredUser();
+
 				if (imagePath == null) {
 					Log.d("Join Activity.btnJoin", "join without profile image");
-					registTask = new RegistTask();
-					registTask.execute(email, nickname, password);
-					try {
-						registTask.get();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
-					newUser = registTask.getRegisteredUser();
 				} else {
-					ProfileUploader profileUploader = new ProfileUploader(
-							imagePath, nickname, email, password);
+					/*
+					 * ProfileUploader profileUploader = new ProfileUploader(
+					 * imagePath, nickname, email, password);
+					 * profileUploader.start(); try { profileUploader.join(); }
+					 * catch (InterruptedException e) { e.printStackTrace(); }
+					 */
+					ProfileUploaderByUserId profileUploader = new ProfileUploaderByUserId(
+							newUser);
 					profileUploader.start();
 					try {
 						profileUploader.join();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					newUser = profileUploader.getRegisteredUser();
+					newUser = profileUploader.getRegisteredUser(); // 사진 포함정보로
+																	// 업뎃
 				}
+				
+				Log.d("new user 정보!!!!!!", newUser.toString());
+
 				if (newUser != null) {
 					// 유저 정보 전역 객체에 추가
 					session.createUserLoginSession(newUser.getUserId(), 0);
