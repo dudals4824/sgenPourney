@@ -36,19 +36,20 @@ public class ProfileUploaderByUserId extends Thread {
 	private String email;
 	private String password;
 
-	public ProfileUploaderByUserId(UserDTO newUser) {
+	public ProfileUploaderByUserId(String sourceFileUri, UserDTO newUser) {
 		super();
+		this.sourceFileUri = sourceFileUri;
 		this.newUser = newUser;
 		this.userId = Integer.toString(newUser.getUserId());
 	}
 
 	public void run() {
 		super.run();
-		uploadFile(newUser);
+		uploadFile(sourceFileUri, newUser);
 	}
 
 	// 여기 고칠부분!!
-	public UserDTO uploadFile(UserDTO newUser) {
+	public UserDTO uploadFile(String sourceFileUri, UserDTO newUser) {
 		HttpURLConnection conn = null;
 		DataOutputStream dos = null;
 		String lineEnd = "\r\n";
