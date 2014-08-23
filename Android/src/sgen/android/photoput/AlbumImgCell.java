@@ -167,13 +167,12 @@ public class AlbumImgCell extends RelativeLayout implements
 			photoPopupWindow.showAtLocation(imgPhoto, 0, 0, 218);
 			selectedPhoto = (ImageView) contentView
 					.findViewById(R.id.selectedphoto);
-			selectedPhoto.setImageBitmap(mBitmap);
+			selectedPhoto.setImageBitmap(mBitmapMemo);
 			regist = (ImageButton) contentView.findViewById(R.id.regist);
 			cancel = (ImageButton) contentView.findViewById(R.id.cancel);
 			memo = (EditText) contentView.findViewById(R.id.memo);
 
 			regist.setOnClickListener(new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -185,10 +184,11 @@ public class AlbumImgCell extends RelativeLayout implements
 				}
 			});
 			cancel.setOnClickListener(new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					photoPopupWindow.dismiss();
+					mBitmapMemo.recycle();
+					mBitmap.recycle();
 				}
 			});
 
@@ -369,6 +369,8 @@ public class AlbumImgCell extends RelativeLayout implements
 			Toast.makeText(mContext.getApplicationContext(), "댓글을 등록했습니다.",
 					Toast.LENGTH_SHORT).show();
 			photoPopupWindow.dismiss();
+			mBitmapMemo.recycle();
+			mBitmap.recycle();
 		}
 	}// write comment
 
@@ -515,6 +517,8 @@ public class AlbumImgCell extends RelativeLayout implements
 				Toast.makeText(mContext.getApplicationContext(),
 						"사진을 삭제하지 못했습니다..", Toast.LENGTH_SHORT).show();
 			}
+			mBitmapMemo.recycle();
+			mBitmap.recycle();
 		}
 	}
 

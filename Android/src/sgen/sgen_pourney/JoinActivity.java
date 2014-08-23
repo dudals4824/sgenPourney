@@ -27,6 +27,7 @@ import sgen.common.ListViewDialog;
 import sgen.common.ListViewDialog.ListViewDialogSelectListener;
 import sgen.common.PhotoEditor;
 import sgen.common.ProfileUploader;
+import sgen.session.UserSessionManager;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -82,6 +83,9 @@ public class JoinActivity extends Activity implements OnClickListener {
 	private int photoAreaWidth;
 	private int photoAreaHeight;
 
+	// User Session Manager Class
+	UserSessionManager session;
+
 	//
 	private String email;
 	private String nickname;
@@ -95,6 +99,10 @@ public class JoinActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_join);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
+
+		// User Session Manager
+		session = new UserSessionManager(getApplicationContext());
+
 		// layout initializing
 		initLayout();
 
@@ -357,20 +365,19 @@ public class JoinActivity extends Activity implements OnClickListener {
 				}
 				if (newUser != null) {
 					// 유저 정보 전역 객체에 추가
+					session.createUserLoginSession(newUser.getUserId(), 0);
 					PourneyApplication UserInfo = (PourneyApplication) getApplication();
 					UserInfo.setLoggedInUser(newUser);
 					Intent intent = new Intent(JoinActivity.this,
 							CoverActivity.class);
 					startActivity(intent);
 					finish();
-				}
-				else{
+				} else {
 					Intent intent = new Intent(JoinActivity.this,
 							LoginActivity.class);
 					startActivity(intent);
 					finish();
 				}
-					
 
 			}
 			// 예외처리
