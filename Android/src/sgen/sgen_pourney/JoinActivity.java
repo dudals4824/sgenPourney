@@ -468,7 +468,7 @@ public class JoinActivity extends Activity implements OnClickListener {
 	}
 
 	private boolean PasswordValidityCheck(String password) {
-		if (password.length() < 8)
+		if (password.length() < 4)
 			return false;
 		else
 			return true;
