@@ -197,7 +197,7 @@
             android:layout_toRightOf="@id/imgVerticalStroke4"
             android:background="@layout/join_edittextclick_event"
             
-            android:hint="8자 이상"
+            android:hint="4자 이상"
             android:gravity="center"
             android:inputType="textPassword" />
 
