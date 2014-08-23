@@ -36,7 +36,7 @@ public class VideoMakingActivity extends Activity implements OnClickListener {
 	private Calendar gregorian = new GregorianCalendar();
 	UserSessionManager session;
 	private long currentTime = gregorian.getTimeInMillis();
-	private final long videoDueTime = currentTime + 10 * 1000;;
+	private final long videoDueTime = currentTime + 10*6*10 * 1000;;
 	private long startTime = videoDueTime - currentTime;// 24 * 60 * 60 * 1000;
 														// //24시간 밀리세컨
 	// 단위임 비교한 값 여기에 넣으면 됨요
